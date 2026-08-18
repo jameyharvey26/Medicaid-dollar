@@ -92,3 +92,41 @@ Senior decision-makers. When a cut and a caveat compete, cut.
 
 *(New notes append below, most recent last. Promotion rule: any correction JW makes twice
 gets written here automatically.)*
+
+## Added in review — 2026-08-18 kickoff
+
+**S-018 · Production Manager · GitHub push reminders are event-triggered, not scheduled.**
+Remind JW to push when: a renderer or build script changes; a whitepaper section reaches
+approved-final; the standing notes gain three or more entries; or a working session ends
+with new files in outputs. The reminder comes at the point of change, so it arrives when
+there is actually something to save.
+*Pending JW approval.*
+
+**S-019 · Designer · Grayscale proofing happens on the raster, never in the SVG.**
+`cairosvg` silently ignores `feColorMatrix`, the same class of gotcha as its `paint-order`
+failure. Convert the rendered PNG with Pillow instead. Every diagram gets a grayscale check
+before it ships, because the deliverable is print.
+
+**S-020 · Designer · Run `audit_state_palette()` before any state build; refuse to render on
+an unresolved collision.**
+Matches the seven balance checks' behaviour. The audit caught three collisions at kickoff
+that were invisible by eye. Ten mutually distinct colours per family is not achievable at
+professional saturation — the floor is real, and per-state auditing is what makes the
+reserved scheme work.
+
+**S-021 · Designer · Cool = money moving. Warm = money stopping. No exceptions.**
+A payer colour drifting into magenta breaks the reader's core legend. Health-system violets
+are bounded at hue 288 for exactly this reason.
+
+**S-022 · All · Colours live in `palette.py` and nowhere else.**
+Both renderers import it. One place to change a colour; the state series inherits
+automatically. Same principle as `inputs.json`.
+
+**S-023 · Research · CBO's behavioural assumptions are already inside its estimates.**
+Do not layer an additional state-backfill multiplier on top of CBO provision totals. Check
+whether a behavioural response is already priced before modelling it separately.
+
+**S-024 · Author · Never introduce current reported actuals as "old data."**
+FY2024 is the most recent complete fiscal year in the February 2026 MACStats. The honest
+caveat is mixed vintages inside a composite, not age. Understating the currency of the
+baseline undercuts the argument that rests on it.
