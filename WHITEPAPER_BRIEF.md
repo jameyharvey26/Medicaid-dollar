@@ -2,6 +2,7 @@
 
 **Working title:** $100 Medicaid Dollars — The National View and the Impact of HR-1
 **Executive Producer:** JW
+**Byline:** Jamey Harvey, Erin Henderson
 **Kickoff:** 2026-08-18
 **Status:** structure approved, research in progress, no drafting started
 
@@ -146,6 +147,105 @@ type and colour. A designer would notice it was not laid out by hand; the reader
 not. **Build toward a finished PDF, not a designer handoff package.** Designer decisions
 optimise for what renders reliably in print CSS.
 
+### D-17 · Byline and author bios
+Jamey Harvey and Erin Henderson.
+
+**Erin Henderson (as supplied by JW, verbatim):**
+> Erin Henderson is a Ward Five resident and served as the CEO of Fidelis Care New Jersey,
+> a Medicaid MCO covering 300,000 lives. Prior to turning around that health plan for
+> Centene she served as the market executive for United HealthCare's Dual Choice program in
+> the District of Columbia. Erin got her Bachelor's degree at Columbia University and her
+> Master's in Public Administration at the University of Missouri-Columbia. Erin is on the
+> board of Community of Hope, an FQHC in the District and a proud mom.
+
+**Editorial note — two variants, same facts.** The bio is DC-framed (Ward Five, Community
+of Hope). Ideal for the DC edition; on a national paper a reader in Ohio does not know what
+Ward Five signals.
+- *National edition:* lead with Fidelis Care New Jersey and the UnitedHealthcare Dual Choice
+  market role. DC residency closes rather than opens.
+- *DC edition:* run as written, Ward Five first.
+This pattern carries through the state series — each edition foregrounds whatever local tie
+the authors have.
+
+**Two substantive hooks in her background:**
+1. She ran a D-SNP market in DC. The DC diagram carries a carved D-SNP band. That is a real
+   credibility asset in Section IV, and she is a primary source on how those dollars move.
+2. Community of Hope board seat connects directly to the FQHC sidecar flagged for Section
+   VI. If we pursue it, interview her rather than desk-research it.
+
+**Jamey Harvey (as supplied by JW; two typo fixes marked):**
+> Jamey Harvey is a Ward Four resident and the CEO of Agilian LLC, a boutique CBE firm
+> helping Medicaid beneficiaries stay enrolled. Jamey got into Medicaid when [he] led the
+> technology implementation of Obamacare in the District. Previous to starting Agilian,
+> Jamey was the Deputy Chief Technology Officer for software and data during the Williams
+> Administration. Jamey is a seven-time entrepreneur and the author of "Wired for White:
+> Confessions from Silicon Valley on the technology of racism," scheduled to be published in
+> 2028. Jamey has a degree in political theory from UC Santa Cruz and two kids in college.
+
+*Copy Editor: inserted "he" after "when"; closed the space in "seven- time".*
+
+**Ward Four / Ward Five is an asset — use it deliberately in the DC edition.** Two authors,
+two wards, both residents. For a paper about DC Medicaid written for a DC audience, that is
+the credential that lands hardest, and it cannot be manufactured later.
+
+**Raised once, JW's call:** *Wired for White* in the byline is authentic and on-brand for a
+justice-driven firm, and hiding it would be its own kind of tell. It also signals something
+about the author before a reader reaches the analysis, in a paper that holds non-partisan
+framing on motive (S-003) and travels to plans across many political geographies.
+**Recommendation: keep it.** A variant without it is a two-minute change if a particular
+edition calls for one.
+
+**Both bios close on family** (proud mom / two kids in college). Keep that parallel; it is
+doing real work, humanising a technical document without sentimentality.
+
+### D-18 · Fork 1 utilization drop: 26% central case
+Source: Oregon Health Insurance Experiment (Finkelstein et al., NEJM 2013). Medicaid
+coverage raised annual medical spending across Rx, office visits, ED, and hospital
+admissions by $1,172, about 35% over control. Inverted: uninsured spending runs ~74% of
+insured, a **26% drop** on coverage loss.
+
+Why it transfers well: the study population is able-bodied uninsured adults below 100% FPL
+who wanted coverage — close to a direct match for the expansion adults that work
+requirements and six-month renewals actually hit. Duals and LTSS beneficiaries are largely
+exempt from those provisions, so the usual population-mismatch objection mostly does not
+apply. It is also lottery-randomised, so the claim is causal, not associational.
+
+- **Central case 26%. Sensitivity at 20% and 35%.**
+- Applies to **coverage-loss provisions only.** Financing cuts do not work through
+  utilization and need separate treatment.
+- Observational comparisons show far larger gaps (e.g. insured vs uninsured diabetes
+  spending of $13,706 vs $4,367 below 138% FPL). **Cite as an upper bound; do not average
+  with the RCT.** Selection confounds it — sicker people obtain coverage.
+
+**Counterintuitive finding for Section VI:** Oregon raised ED visits ~40%. Coverage
+*increases* emergency department use; it does not reduce it. Many readers hold the opposite
+belief, and the paper should correct it explicitly.
+
+### D-19 · Section VI human-impact sourcing
+CBO and CMS for coverage loss and uncompensated care. **Peer-reviewed only** for mortality
+or morbidity. Nothing from advocacy modelling on contested health outcomes. Keeps S-003
+intact: unflinching on consequence, without reaching past what survives scrutiny.
+*Claude default, not a JW ruling — flag on review.*
+
+### D-20 · Section VII CTA — interim, with a spec for marketing
+No subscribe form or state-request form exists yet.
+
+**Interim (ships without new infrastructure):** CTA points at `communications@agilian.com`
+with a stated subject-line convention for state requests, matching what the published
+chapters already do.
+
+**Spec for marketing:** one landing page, two actions — subscribe to the series, and
+request a state. State field as a **dropdown**, so responses arrive clean rather than as
+free text. Mirrors the 2025 playbook sign-up flow that fed `Playbook Sign-ups.xlsx`.
+
+If the page lands before publication, swap the email CTA for the URL. **This is no longer a
+publication blocker.**
+
+### D-21 · Length
+Build full (~30–40pp), then cut. Cutting is easier than expanding, and the national edition
+sets the template for the state series.
+*Claude default, not a JW ruling — flag on review.*
+
 ---
 
 ## Structure
@@ -174,14 +274,14 @@ numbers swapped. **Section V will be returned if it reads as Section III with re
 
 | # | Item | Owner | Blocking |
 |---|---|---|---|
-| O-1 | Fork 1 utilization ratio — insured vs uninsured | Research | Section IV modeling |
-| O-2 | Print-quality bar: programmatic PDF vs human designer pass | JW | Designer approach |
-| O-3 | Byline and credentials | JW | Cover |
-| O-4 | Target length (currently scoped ~30–40pp) | JW | Scope |
-| O-5 | Subscribe URL + state-request mechanism | JW / marketing | Section VII |
+
+| O-11 | Interview Erin on D-SNP flows + FQHC sidecar | Author | Sections IV & VI |
 | O-6 | Claude disclosure — needs marketing/legal routing? | JW | Section IX |
 | O-7 | Vertical phase-slice render mode does not exist yet | Designer | Sections III & V |
-| O-8 | Human-impact sourcing: peer-reviewed only, or broader | JW | Section VI |
+| O-9 | Provision-level 2028 split — CBO gives 10-yr totals by provision, FY totals in aggregate | Research | Section IV root-cause bars |
+| O-10 | Landing page build | Marketing | Section VII (interim in place) |
+
+*Closed at kickoff: O-1 (D-18), O-2 (D-16), O-4 (D-21), O-5 (D-20), O-8 (D-19).*
 
 ---
 
