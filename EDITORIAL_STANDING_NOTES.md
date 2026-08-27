@@ -247,3 +247,72 @@ updated.
 Correct the table in `WHITEPAPER_BRIEF.md` rather than carrying two answers. General rule:
 when a later decision resolves an earlier one, amend the earlier entry in place and note the
 superseding decision number, so the brief has one answer per question.
+
+## Added in review — 2026-08-27 second session (financing / FMAP)
+
+**S-018 AMENDED · Commits happen at session close, not at mid-session thresholds.**
+JW ruling, 2026-08-27. The original note fired a reminder at events: a renderer
+change, an approved-final section, three new standing notes, or new files in outputs.
+Those events still define what belongs in a commit; they no longer trigger one.
+
+The risk this creates, recorded so it is not rediscovered: reconstructing a session's
+decisions at the end is harder than it looks, and this project has already lost work
+that way. Mitigation is a **running commit manifest** maintained through the session
+and updated as each decision lands, so the close-of-session write is mechanical
+rather than a recall exercise. If the manifest is not being kept, the reminder rule
+reverts.
+
+**S-033 · All · Plain-language label leads, section number follows.**
+Every HR-1 provision is named by what it does. The section number appears in
+parentheses at first use within each section of the paper, and in endnotes,
+methodology, and the crosswalk. It never leads a sentence, never appears in a
+heading, and never stands alone as a lane identifier. Diagram labels carry the plain
+label only, with numbers in a footnote block beneath.
+
+Origin: JW, on reading a draft written in section numbers. CBO scores in section
+numbers, and letting the source's filing system become the paper's vocabulary makes
+the reader do translation the author should have done. This is S-018's
+stakeholder-differentiated principle applied to language rather than to dollars.
+
+Extends to statutory versus industry terminology. The audience's term leads; the
+statutory term is glossed once at first use. "Community engagement requirement" is
+glossed under "work reporting," not the reverse.
+
+Approved lane labels:
+
+| Label | Section | What it does |
+|---|---|---|
+| Work reporting | §71119 | 80 hrs/month reporting for expansion adults |
+| Six-month renewals | §71107 | Expansion adults renew twice yearly |
+| Provider tax limits | §71115 | Caps state taxes on providers |
+| Directed payment caps | §71116 | Ratchets MCO supplemental payments toward Medicare |
+| Blocked senior enrollment rule | §71101 | Blocks 2023 MSP auto-enrollment rule |
+| Blocked Medicaid enrollment rule | §71102 | Blocks 2024 E&E streamlining rule |
+| Everything else | — | Cost sharing, immigrant eligibility, retroactive coverage, minor items, plus CBO's interaction netting |
+
+The two "Blocked" labels were disambiguated because they render as adjacent bands.
+Also note both are *preserved friction* per D-38: nobody loses coverage, but rules
+that would have lowered barriers are blocked. That mechanism needs a sentence at
+first appearance in Section IV, not just a label. It is one dollar in five at 2029
+and a label alone will read as a bureaucratic footnote.
+
+**S-034 · Research · Medians do not aggregate. Check which one a published share is.**
+Caught in the second-ledger sourcing. KFF's 2025 Medicaid Budget Survey reports
+non-federal share composition as **state medians** (70/18/6, summing to 94). GAO's
+SFY2018 figures are a **national aggregate** (68/17/12/4, summing to 101 on
+rounding). Only the aggregate can open a conserved ledger. The median is a currency
+check confirming the aggregate has not structurally drifted.
+
+Both were tempting because the KFF figure is eight years more current. Using it
+would have produced a ledger that could not conserve and a national claim assembled
+from state midpoints. Generalisation: before adopting any published share, establish
+whether it is an aggregate, a median, or a mean across units, and never mix them in
+one denominator. Related to S-013 but distinct: S-013 is about mixed denominators,
+this is about mixed estimators on the same denominator.
+
+**S-035 · Research · An unsourced split is `None`, never a plausible number.**
+`financing.py` sets `SDP_PROVIDER_TAX_VS_IGT_SPLIT = None` so that any attempt to
+render D-41 fails loudly. A plausible placeholder would have balanced and looked
+audited, which S-029 identifies as worse than no diagram. Applies to every input
+that is genuinely unknown rather than merely modelled: modelled values get a value
+and a flag, unknown values get `None` and a hard stop.
