@@ -224,7 +224,24 @@ for x,val,lab in cps:
 for x,d in deltas:
     txt(x,by-24,d,24,FRAUD,"middle","bold",halo=False)
 
-SVG=f'<svg viewBox="0 0 {W} {H}" width="100%" xmlns="http://www.w3.org/2000/svg">\n'+"\n".join(svg)+"\n</svg>"
+# ===================== LAYER ASSEMBLY =====================
+# The baseline is everything drawn above. The HR-1 overlay is a sibling group,
+# empty until provision-level values exist. Three files are emitted from this one
+# model on an IDENTICAL viewBox, so the singles register by construction.
+OVERLAY=[]   # <-- HR-1 gap bands land here. No values available: intentionally empty.
+
+def _wrap(body_groups):
+    return (f'<svg viewBox="0 0 {W} {H}" width="100%" xmlns="http://www.w3.org/2000/svg">\n'
+            + body_groups + "\n</svg>")
+
+_BASE = '<g id="baseline">\n' + "\n".join(svg) + '\n</g>'
+_OVER = '<g id="overlay-hr1">\n' + "\n".join(OVERLAY) + '\n</g>'
+
+SVG_COMBINED = _wrap(_BASE + "\n" + _OVER)
+SVG_BASELINE = _wrap(_BASE + '\n<g id="overlay-hr1" display="none">\n</g>')
+SVG_OVERLAY  = _wrap('<g id="baseline" display="none">\n</g>\n' + _OVER)
+
+SVG = SVG_COMBINED   # back-compat for the HTML block below
 leg=[(FED,"Federal"),(STATE,"State"),(DOLLAR,"Medicaid dollar (state agency)"),(MCO,"MCO capitation"),(DUAL,"Dual MCO capitation"),(FFS,"Fee-for-service"),
  (ADMIN,"Administration (out)"),(MEDI,"Medicare premiums (back to federal)"),(RETAIN,"MCO plan administration (out)"),(DUALADM,"Dual MCO plan administration (out)"),(EARN,"Public-company earnings (out)"),(FRAUD,"Documented fraud (out)")]
 legh="".join([f'<span class="lg"><span class="sw" style="background:{c}"></span>{t}</span>' for c,t in leg])
@@ -252,6 +269,41 @@ HTML=f'''<!doctype html><html><head><meta charset="utf-8"><title>$100 Medicaid D
 <b>Draft notes.</b> (1) <b>FQHCs are merged into "Physicians &amp; clinics"</b> &mdash; the FFS FQHC line is real but MCO FQHC dollars sit unlabelled inside the capitated "professional" bucket, so a standalone FQHC node would understate it. (2) <b>Behavioral health (~$9.51, ~11% of service dollars; literature 9.3&ndash;13%)</b> is broken out as its own node from every line it occupies. The cross-line split is an estimate; T-MSIS claims would refine it. (3) <b>"Wrap around services" ($13.33)</b>, now net of behavioral health, = dental + the CMS-64 "other acute" catch-all (NEMT, DME, lab/imaging, therapies, EPSDT/preventive, hospice, etc.); not itemised in the source. (4) Provider order is true size. (5) Plan administration $4.85 is split by lane in proportion to each lane's share ($3.81 non-dual MCO + $1.04 dual-MCO); public-company earnings ($0.76) is a subset of margin, estimated pending 10-K allocation. (6) Beneficiary pies are IPF-balanced to each service's user mix and to group totals &mdash; a re-expression of provider dollars, not a measured flow. (7) Dual capitation (~$10.89) is the softest payer figure. (8) Vintages: CMS-64 FY2024, HMA mix CY2021, group shares FY2023, duals CY2022.
 </div>
 </div></body></html>'''
-open("/home/claude/medicaid_dollar_sankey.html","w").write(HTML)
-open("/home/claude/medicaid_dollar_sankey.svg","w").write(SVG)
+open("/home/claude/nat/medicaid_dollar_sankey.html","w").write(HTML)
+open("/home/claude/nat/medicaid_dollar_sankey.svg","w").write(SVG)
 print("wrote v3")
+
+# ===================== EMIT + RENDER (S-027, S-028) =====================
+import os, sys
+OUT = os.environ.get("SANKEY_OUT", "/mnt/user-data/outputs")
+os.makedirs(OUT, exist_ok=True)
+
+FILES = (("national_combined",    SVG_COMBINED),
+         ("national_baseline",    SVG_BASELINE),
+         ("national_overlay_hr1", SVG_OVERLAY))
+
+for name, doc in FILES:
+    open(f"{OUT}/{name}.svg", "w").write(doc)
+    print(f"  svg  {name}.svg  ({len(doc):,} bytes)")
+
+# --- viewBox registration check: the three files must be compositable ---
+import re
+vbs = {re.search(r'viewBox="([^"]+)"', d).group(1) for _, d in FILES}
+assert len(vbs) == 1, f"S-027 VIOLATION: viewBox mismatch across emitted files: {vbs}"
+print(f"  ok   viewBox identical across all three: {vbs.pop()}")
+
+# --- render: resvg only. cairosvg silently breaks paint-order halos (S-028) ---
+try:
+    import resvg_py
+except ImportError:
+    sys.exit("FATAL (S-028): resvg_py not installed. Run: pip install resvg-py\n"
+             "Do NOT substitute cairosvg — it ignores paint-order and blurs the pie labels.")
+
+RENDER_WIDTH = 2600   # S-028 minimum for the national master
+for name in ("national_baseline", "national_combined"):
+    png = resvg_py.svg_to_bytes(svg_string=open(f"{OUT}/{name}.svg").read(),
+                                width=RENDER_WIDTH)
+    open(f"{OUT}/{name}.png", "wb").write(bytes(png))
+    print(f"  png  {name}.png  ({RENDER_WIDTH}px, resvg)")
+
+print("build complete.")
