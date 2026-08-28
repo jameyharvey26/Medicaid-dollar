@@ -79,13 +79,20 @@ SDP_PROVIDER_FINANCED_SHARE = 8.4 / 12.3          # 0.683
 SDP_STATE_GENERAL_FUND_SHARE = 1.0 - SDP_PROVIDER_FINANCED_SHARE
 SDP_FINANCING_VINTAGE = "ASPE 2026, CY2022 SDP spending"
 
-# OPEN GAP. D-41 needs provider tax and IGT SEPARATELY, because tax routes to the
-# state line of the second ledger and IGT routes to the local line. ASPE reports
-# them combined. CRS RS22843 gives a partial handle: provider taxes were 51% of
-# "other state funds" in SFY2018. That is a different denominator and cannot be
-# substituted in without a basis argument. Set to None deliberately so that any
-# attempt to draw the split fails loudly rather than silently guessing.
-SDP_PROVIDER_TAX_VS_IGT_SPLIT = None               # BLOCKING for D-41 render
+# RESOLVED 2026-08-27 session 2 by D-46: NOT SEPARATED, deliberately.
+# The split cannot be closed from published data. MACPAC recommended Congress
+# require states to report non-federal share by source (general funds, health
+# care taxes, IGTs, CPEs); Congress has not acted, so every published figure
+# combines taxes and IGTs. CRS RS22843 gives a partial handle (provider taxes
+# were 51% of "other state funds" in SFY2018) but on a different denominator.
+#
+# For the FIRST ledger the distinction is immaterial: both recycle, both mean
+# providers lose only the federal match, both are exempt from D-25's gross-up.
+# It matters only for which line of the second ledger receives it, and D-03
+# node 4 already reads "state and local". Collapsed to one category nationally.
+# Revisit for state editions, where single-state preprints make it tractable
+# and where the distinction actually carries information.
+SDP_PROVIDER_TAX_VS_IGT_SPLIT = None   # unresolved by decision, NOT blocking
 
 # ---------------------------------------------------------------------------
 # FN-4  Ledger anchor  (D-10, unchanged, restated here for the join)
@@ -147,6 +154,7 @@ FOOTNOTES = {
 
 CHANGELOG = [
     "2026-08-27  Created. FN-1 0.80, FN-2 GAO SFY2018 aggregate, FN-3 ASPE 2026.",
+    "2026-08-27  D-46: tax-vs-IGT split collapsed for the national edition.",
 ]
 
 if __name__ == "__main__":
@@ -159,5 +167,4 @@ if __name__ == "__main__":
     print(f"\nD-41 SDP financing (FN-3): provider-financed "
           f"{SDP_PROVIDER_FINANCED_SHARE:.1%}, state general fund "
           f"{SDP_STATE_GENERAL_FUND_SHARE:.1%}")
-    if SDP_PROVIDER_TAX_VS_IGT_SPLIT is None:
-        print("  BLOCKING: tax-vs-IGT split unsourced; D-41 render cannot proceed.")
+    print("  tax-vs-IGT split: not separated (D-46); see fmap.sdp_split()")

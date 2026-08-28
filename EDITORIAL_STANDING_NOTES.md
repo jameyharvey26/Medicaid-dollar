@@ -316,3 +316,48 @@ render D-41 fails loudly. A plausible placeholder would have balanced and looked
 audited, which S-029 identifies as worse than no diagram. Applies to every input
 that is genuinely unknown rather than merely modelled: modelled values get a value
 and a flag, unknown values get `None` and a hard stop.
+
+## Added in review — 2026-08-27 second session, part 2 (FMAP, basis, second ledger)
+
+**S-036 · All · Recommend on methodology, ask on direction.**
+Amends the one-question-at-a-time working rule. Where the call is technical and
+Claude has a defensible view, Claude leads with the recommendation and the
+reasoning; JW confirms or overrides. Where the call is about what the paper argues,
+who it is for, what ships, or anything where Claude's view would substitute for
+JW's judgement, Claude asks without a recommendation.
+
+Origin: JW, mid-session, after several consecutive methodological questions were
+put to him as open menus. The failure mode this closes is asking as a way of
+avoiding a position. One-question-at-a-time still governs; it now governs the
+questions that are actually JW's to answer.
+
+Rough line: methodology Claude recommends, editorial direction JW decides.
+
+**S-037 · Research · CBO's section-level narrative uses inconsistent basis language;
+check the sum, not the wording.**
+In the October 2025 supplemental, six of seven Medicaid sections are described as
+decreasing *deficits* and one (71116) as decreasing *federal outlays*. That reads
+like a mixed basis and is not. The seven section figures sum to $886.8B, the chapter
+DEFICIT total, exactly. Section 71116 has no coverage effect by CBO's own finding,
+so its outlay and deficit figures are identical and both descriptions are accurate.
+
+Generalisation: when a source's section-level wording is ambiguous about basis, the
+arithmetic against the published total settles it. Do not infer basis from the verb.
+
+**S-038 · Encoding · A lane exempt from the gross-up must not be width-comparable to
+lanes that carry it.**
+After D-39 and D-41, two lanes (71115, 71116) carry no total-computable band while
+five do. That is $332.1B of $886.8B in federal dollars, over a third of the overlay,
+drawn on a different basis from its neighbours. Band width is the diagram's primary
+encoding, so two adjacent lanes measuring different things is the S-029 failure:
+balances, still lies. The encoding layer must make the difference legible before
+this renders. Open at the close of this session.
+
+**S-039 · Encoding · An unsized container must not read as a scaled band.**
+Per D-47 the state general fund renders as an unsized container around the state
+node. Because it carries no scale, a reader will eyeball it against the $100 and
+infer a ratio the paper never claimed. It must be visibly a different object from
+the Sankey around it: different stroke treatment, no fill that invites width
+comparison, and flows crossing its boundary annotated with explicit figures rather
+than drawn proportionally. This is an ENCODING-layer rule under D-27's four-layer
+split, not a data-layer one.
