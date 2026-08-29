@@ -26,9 +26,19 @@ operate plans.
 ## Decisions made at kickoff
 
 ### D-01 · The $100 unit under HR-1
-$100 = **2028 baseline spending under prior law** (the counterfactual). HR-1 flows sum to
-roughly $90, with the remainder rendered as gap bands peeling off at the point each
-provision bites.
+**AMENDED 2026-08-27 (see D-22, D-23) and re-confirmed 2026-08-27 part 3.**
+$100 = **2029 baseline spending under prior law** (the counterfactual), not 2028. 2029 is
+the first full-effect year; a 2028 base carrying 2029 overlay figures would not sit on one
+year. HR-1 flows sum to roughly $90, with the remainder rendered as gap bands peeling off
+at the point each provision bites.
+
+**PROVISIONAL pending verification (D-62, S-049).** The 2029 anchor rests on D-08's
+claim that 2029 is the first full-effect year. That has not been checked against the
+statutory phase-in schedule, and it is not true for at least two lanes: the provider
+tax safe harbour and directed payment caps both ratchet in annual steps past 2029.
+Settle by building the phase-in table from the enacted text of P.L. 119-21. The
+denominator is available for any candidate year 2025–2035; the year is not constrained
+by data availability. See `SOURCES.md`.
 
 The ledger stays conserved: **$100 = dollars still flowing + dollars that stopped.**
 The gaps *are* the conservation. Missing width becomes literally visible.

@@ -361,3 +361,118 @@ the Sankey around it: different stroke treatment, no fill that invites width
 comparison, and flows crossing its boundary annotated with explicit figures rather
 than drawn proportionally. This is an ENCODING-layer rule under D-27's four-layer
 split, not a data-layer one.
+
+## Added in review — 2026-08-27, part 3 (framework architecture, overlay encoding)
+
+**S-038 RESOLVED by D-49, and its premise was wrong twice.**
+The note said two *lanes* were drawn on a different *basis*. Both halves were wrong:
+D-46 had already made the exemption a property of a slice rather than a lane, and the
+exempt slices are not on a different basis at all — the federal match is a
+total-computable figure. The real difference is composition, and it encodes as an
+internal partition rather than as a special treatment for the minority. Corrected
+exempt block: $284.7B / 32.1%, not $332.1B / 37.4%.
+
+Generalisation worth keeping: when a note frames something as an incommensurability,
+check whether the two things are actually incommensurable before designing around it.
+Every fix aimed at the wrong diagnosis here would have encoded a false claim.
+
+**S-039 RESOLVED by D-52.** Open edge, no fill, fixed-width crossings.
+
+**S-040 · All · Look at the current render before designing anything.**
+This session designed a layout from scratch across three iterations before JW supplied
+`national_baseline.png`, which is the diagram he had been picturing throughout. The
+existing render answered questions that were instead put to him as open ones — most
+visibly the unit, which the artifact states plainly as dollars per $100.
+
+`build_sankey.py` reproduces it exactly in one command. There was no obstacle other
+than not thinking to run it. **First action of any diagram session: run the build and
+look at the output.**
+
+**S-041 · Build · The render must land in the repo, not only in outputs.**
+Root cause of S-040. `build_sankey.py` writes to `/mnt/user-data/outputs` and nothing
+carries the PNGs back, so the current picture of the project exists on JW's machine
+and nowhere a session can reach it. Precedent exists for committing renders —
+`dc_preview.png` and both palette renders are already tracked.
+
+Fix at the script, not the commit: `build_sankey.py` should copy its renders into the
+repo on every run, so a stale reference render becomes impossible rather than merely
+unlikely.
+
+**S-042 · Designer · Loss direction is the master's existing grammar, not a new rule.**
+The baseline already peels leakage **upward** in grey with the figure labelled above
+the peel — Medicare premiums, administration, plan administration, public-company
+earnings, documented fraud. S-026's warm-peels-downward rule is therefore a mirror of
+an established convention, and the empty canvas below the flow is where the HR-1
+overlay goes. Grey up is money the system always lost; warm down is money HR-1 took.
+
+**S-043 · Author · Every figure on the to-be is modelled, including the ordinary ones.**
+The as-is is FY2024 actuals. The to-be is a projection of prior law with FY2024
+structure held constant (D-11), so the beneficiary pie shares, the payer split and the
+provider nodes are all modelled even though they look like plain baseline numbers. The
+flag belongs to the whole diagram, not only to the overlay bands, or the to-be borrows
+the as-is's authority.
+
+**S-044 · All · A stale in-place entry will be read back as a decision.**
+JW specified the architecture at a 2028 anchor. The 2029 amendment (D-22, D-23) had
+been recorded only in the 2026-08-27 append while `WHITEPAPER_BRIEF.md`'s D-01 still
+read 2028. This is S-032's failure mode reaching the principal rather than the
+assistant: the brief carried two answers and the wrong one surfaced.
+
+D-01 is now amended in place. Reinforces S-032's general rule and raises its priority:
+amend the earlier entry when a later decision supersedes it, in the same session,
+because the append file is not what gets read later.
+
+**S-045 · All · Reference renders belong in the repo, or they get re-explained.**
+Three times in one session JW had to supply or describe something that existed only
+outside the repo: the national baseline render, the overlay grammar schematic, and the
+2029 anchor (which was in an append but stale in the brief). Each gap produced work
+aimed at the wrong target — a from-scratch layout, a flat bar chart, and a withdrawn
+decision (D-51).
+
+The pattern is not forgetfulness, it is that **the picture of the project lives in
+JW's head and on his machine, and the repo holds only the code that makes part of it.**
+Fix is mechanical, not conversational:
+
+- Every reference render JW works from goes in the repo (S-041 covers the build
+  output; this extends it to schematics and hand sketches).
+- A design decision is not recorded until it is in `WHITEPAPER_BRIEF.md` or an append
+  *and* the superseded entry is amended in place (S-032, S-044).
+- When JW has to explain something a second time, that is the signal it was never
+  written down. Write it down before continuing.
+
+**S-046 · Designer · The baseline's grammar is the specification.**
+Before designing any new diagram element, read what the master already does and mirror
+it. The overlay's entire grammar — ribbon leaves a lane, travels, terminates in a small
+labelled node beyond a divider rule — was already on the page as upward leakage.
+It did not need inventing, only reflecting. Two wrong objects were built this session
+by designing from first principles instead of from the existing render.
+
+**S-047 · All · Tense is load-bearing on the to-be.**
+The overlay is a projection to 2029. Past-tense copy ("cut," "lost," "was removed")
+asserts that something has happened. Future tense throughout the to-be instance
+(D-56), paired with the whole-diagram modelled flag (S-043).
+
+**S-048 · Designer · When encodings compete for one channel, remove one.**
+Three systems wanted texture: lane identity, destination identity, non-federal share.
+The instinct to partition more finely (D-51) made it worse. The fix was noticing that
+lane identity was already carried redundantly by the terminal node label, and dropping
+it. Ask what is already carried elsewhere before adding a distinction.
+
+**S-049 · Research Editor · The anchor year is a dependency, not a decision.**
+The brief recorded 2029 as a decision (D-01, D-22, D-23) with a stated rationale —
+first full-effect year. Neither the rationale nor the year had been checked against
+the statute's phase-in schedule or against what CBO actually publishes. A decision
+whose validity rests on external data is a dependency, and must be recorded with the
+source that would confirm or break it. See D-59 to D-62.
+
+Test to apply: if the answer would change when a government document is read, it is
+not settled. Write it as provisional and name the document.
+
+**S-050 · Research Editor · Check that a vintage exists before relying on its contents.**
+This session asserted that CBO's Medicaid baseline detail would convert modelled
+to-be structure into sourced values, reasoning from the June 2024 file. There is no
+January 2025 Medicaid detail file (D-61) — the series skips from June 2024 to February
+2026, uniquely among the programs in that series. The claim was withdrawn.
+
+Establish that the specific vintage exists before describing what it contains. Series
+have gaps, and the gap is not always where you expect it.

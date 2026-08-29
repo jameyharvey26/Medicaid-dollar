@@ -307,3 +307,20 @@ for name in ("national_baseline", "national_combined"):
     print(f"  png  {name}.png  ({RENDER_WIDTH}px, resvg)")
 
 print("build complete.")
+
+# --- S-041: carry the renders into the repo -------------------------------
+# Root cause of the 2026-08-27 part 3 session loss: the render landed in OUT
+# and nothing brought it back, so the current picture of the project existed
+# on JW's machine and nowhere a session could reach it. Copying on every run
+# makes a stale reference render impossible rather than merely unlikely.
+import shutil
+REPO = os.path.dirname(os.path.abspath(__file__))
+REF = os.path.join(REPO, "reference_renders")
+os.makedirs(REF, exist_ok=True)
+if os.path.abspath(OUT) != os.path.abspath(REF):
+    for name in ("national_baseline", "national_combined", "national_overlay_hr1"):
+        for ext in ("svg", "png"):
+            src = f"{OUT}/{name}.{ext}"
+            if os.path.exists(src):
+                shutil.copy2(src, os.path.join(REF, f"{name}.{ext}"))
+    print(f"  ref  reference_renders/ updated (S-041)")
