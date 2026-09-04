@@ -1,4 +1,7 @@
 import math
+import tracker as TR
+FAN_STACK_TOP=806.0
+from outflows import OUTFLOWS, fan_rows, fan_crossings, resolve_bite_order
 # ===== Medicaid Dollar-Flow Sankey, DRAFT V.4 (Public Comment) =====
 W,H=2200,1240; cY=540; ys=4.4; bw=18
 FED="#2f5d74"; STATE="#9bb8c4"; DOLLAR="#1a6b40"
@@ -127,25 +130,30 @@ def render(cfg):
     # (S-056). cfg.steps is [(name, "top"|"bot", value, x)], sorted by x.
     _T=100-fb
     rect(xSA[0],T0,bw,_T*ys,DOLLAR)
-    ax=mx=None; top2=top3=T0
+    ax=mx=None; top3=T0; origin={}
     _top=T0; _thk=_T; _x=xSA[0]+bw
-    for _nm,_side,_v,_sx in sorted(cfg.steps,key=lambda r:r[3]):
+    # Bite order for the ordinary peels is SOLVED, not declared: whichever
+    # terminates higher peels first, so the two never swap places (STYLE_GUIDE 2.9).
+    for _nm,_side,_v,_sx in sorted(resolve_bite_order(cfg.steps),key=lambda r:r[3]):
         band(_x,_sx,_top,_top,_thk*ys,_thk*ys,DOLLAR,0.82)
         if _side=="top":
-            if _nm=="admin": ax=_sx; top2=_top+_v*ys
-            else: mx=_sx; top3=_top+_v*ys
+            # Each peel records its OWN origin. Reading one outflow's origin off
+            # another's step is what made the order un-swappable before.
+            origin[_nm]=_top
+            if _nm=="admin": ax=_sx
+            else: mx=_sx
             _top+=_v*ys
         else:
             bites.append((_nm,_sx,_top+_thk*ys,_v))
         _thk-=_v; _x=_sx
     band(_x,xSA[1],_top,_top,_thk*ys,_thk*ys,DOLLAR,0.82)
     top3=_top
-    fexit(ax,T0,admin*ys,xSA[1]-6,250,ADMIN,f"Administration  ${admin:.2f}","state / program overhead")
+    fexit(ax,origin["admin"],admin*ys,xSA[1]-6,250,ADMIN,f"Administration  ${admin:.2f}","state / program overhead")
     # Medicare premiums peels flush off the TOP edge like any ordinary outflow, then
     # returns to the federal lane. The return is the one sanctioned exception to the
     # downstream rule (S-055), because the money genuinely goes back (S-062).
-    _mh=medicare*ys; _mk=mx+64; _mky=top2-48
-    band(mx,_mk,top2,_mky,_mh,_mh,MEDI,0.72)
+    _mh=medicare*ys; _mk=mx+64; _mky=origin["medicare"]-48
+    band(mx,_mk,origin["medicare"],_mky,_mh,_mh,MEDI,0.72)
     add(f'<path d="M{_mk:.1f},{_mky+_mh/2:.1f} C{_mk-200:.1f},{_mky+_mh/2-80:.1f} 470,130 236,136" fill="none" stroke="{MEDI}" stroke-width="{_mh:.1f}" stroke-opacity="0.72" stroke-linecap="round"/>')
     add(f'<path d="M226,136 l16,-6 l0,12 Z" fill="{MEDI}"/>')
     lbg(252,112,f"Medicare premiums  ${medicare:.2f}",12,"start"); txt(252,112,f"Medicare premiums  ${medicare:.2f}",12,"#5f6166","start","bold",halo=False)
@@ -256,41 +264,59 @@ def render(cfg):
             11,MUT,"start",halo=False,italic=True)
 
     # ===== BOTTOM TRACKER: running balance of the $100 (fonts 2x) =====
-    add(f'<line x1="110" y1="1030" x2="{W-20}" y2="1030" stroke="{LINE}" stroke-width="1.2"/>')
+    add(f'<line x1="110" y1="{TR.RULE_Y:.0f}" x2="{W-20}" y2="{TR.RULE_Y:.0f}" stroke="{LINE}" stroke-width="1.2"/>')
     by=1100
     # Checkpoints: shared furniture, identical on every artifact (S-060). $100 sits
     # under the FEDERAL column, before federal and state combine. Health services
-    # delivered sits on the providers / beneficiaries boundary.
-    # The claims-fan bite (directed payment caps) can only be placed once the
-    # fee-for-service lane geometry exists, so it joins the bite list here.
+    # The claims-fan bite can only be placed once the fee-for-service lane
+    # geometry exists, so it joins the bite list here.
     if cfg.claims_hr1>0:
         bites.append((cfg.claims_hr1_name,xCL[0]+2,ffs_y+ffs*ys,cfg.claims_hr1))
-    cps=[(205,"$100.00",cfg.cp0_label),
-         (820,f"${100-fb-admin-medicare-cfg.sa_hr1:.2f}",["Disbursed"]),
-         (1300,f"${mco_care+dual_care+ffs:.2f}",["Claims paid"]),
-         (1760,f"${mco_care+dual_care+ffs-fraud-cfg.claims_hr1:.2f}",["Health Services","delivered"])]
-    ordinaries=[(xSA[1]-8,admin+medicare,"administration + Medicare premiums"),
-                (xPA[1]-8,mco_ret+dual_ret,"plan administration + earnings"),
-                (xCL[1]-8,fraud,"documented fraud")]
-    ordinaries=[r for r in ordinaries if r[1] > 0.004]
-    hr1s=cfg.tracker_hr1
-    TRKINK="#111418"; TRKGREY="#8e9298"; TRKWARM="#8B5A5A"
-    add(f'<line x1="{cps[0][0]}" y1="{by}" x2="{cps[-1][0]}" y2="{by}" stroke="{TRKINK}" stroke-width="3.4" stroke-opacity="0.85"/>')
-    for x,val,lab in cps:
-        add(f'<circle cx="{x}" cy="{by}" r="11" fill="{TRKINK}"/>')
-        txt(x,by-24,val,36,TRKINK,"middle","bold",halo=False)
-        for j,ln in enumerate(lab):
-            txt(x,by+80+j*30,ln,25,TRKINK,"middle","bold",halo=False)
-    for x,v,lab in ordinaries:
-        if v<=0.004: continue
-        txt(x,by-58,f"\u2212${v:.2f}",24,TRKGREY,"end","bold",halo=False)
-        txt(x,by-40,lab,12,MUT,"end",halo=False,italic=True)
-    for x,v,lab in hr1s:
-        if v<=0.004: continue
-        txt(x,by+28,f"\u2212${v:.2f}",24,TRKWARM,"end","bold",halo=False)
-        txt(x,by+46,lab,12,TRKWARM,"end",halo=False,italic=True)
+    subs = cfg.subtractions(dict(adm_med=admin+medicare,
+                                 plan=mco_ret+dual_ret, fraud=fraud))
+    balances, bites_t = TR.dots(subs)
+    names = TR.named(balances, bites_t)
+    names[balances[0][0]] = cfg.cp0_label
 
-    return svg, _draw_hr1(cfg, bites, ys, TB)
+    add(f'<line x1="{balances[0][0]:.0f}" y1="{TR.BY}" x2="{balances[-1][0]:.0f}" '
+        f'y2="{TR.BY}" stroke="{TR.INK}" stroke-width="3.4" stroke-opacity="0.85"/>')
+    # Subtraction dots: coloured, at the left edge of the column they are charged
+    # to. Amount above, short name below, both centred on the dot.
+    # Descriptors and short names de-collide onto a second row as a GROUP, so the
+    # rows stay level rather than each label finding its own height.
+    desc_r=TR.two_rows([(x,lab,13) for x,_a,_c,_s,lab in bites_t])
+    for x,amt,cls,short,lab in bites_t:
+        c=TR.COLOUR[cls]
+        add(f'<circle cx="{x:.0f}" cy="{TR.BY}" r="11" fill="{c}"/>')
+        txt(x,TR.BY+TR.AMT_Y,f"\u2212${amt:.2f}",26,c,"middle","bold",halo=False)
+        txt(x,TR.BY+TR.AMT_LAB_Y+desc_r[x]*18,lab,13,c,"middle",halo=False,italic=True)
+        txt(x,TR.BY+TR.SHORT_Y,short,TR.SHORT_PX,c,"middle","bold",halo=False)
+    # Balance dots: always black. The running total is never coloured by the bite
+    # that produced it.
+    rows=TR.value_rows([(x,v,None) for x,v in balances])
+    for x,val in balances:
+        add(f'<circle cx="{x:.0f}" cy="{TR.BY}" r="11" fill="{TR.INK}"/>')
+        txt(x,TR.BY+rows[x],f"${val:.2f}",36,TR.INK,"middle","bold",halo=False)
+        lines=names.get(x,[])
+        for k,ln in enumerate(lines):
+            txt(x,TR.BY+TR.NAME_Y+k*TR.NAME_LEAD,ln,TR.TITLE_PX,TR.INK,"middle","bold",halo=False)
+        if val < 99.99:
+            py=TR.BY+TR.NAME_Y+max(len(lines)-1,0)*TR.NAME_LEAD+TR.PCT_Y
+            txt(x,py,f"{100-val:.2f}% lost",TR.PCT_PX,TR.INK,"middle","bold",halo=False)
+
+    # Keep-out boxes for the fan solver: provider bars with their labels, and the
+    # fraud terminal. A tributary terminal must not land on existing furniture.
+    _obs=[]
+    for p in order:
+        _obs.append((barL-8, node_y[p]-26, barR+8, node_y[p]+node[p]*ys+6))
+    _pin=[]
+    if fraud > 0:
+        _obs.append((xPR[1]-330, _fy-22, xPR[1]+6, _fy+22))
+        _pin.append(dict(name="__fraud", xb=xCL[0]+6, xt=xPR[1]-8,
+                         th=max(fraud*ys,3.0), sub="",
+                         y_src=ffs_y+ffs*ys-max(fraud*ys,3.0)/2,
+                         fixed_y=_fy, anchor="end"))
+    return svg, _draw_hr1(cfg, bites, ys, TB, _obs, _pin)
 
 
 def _solve_pies(order, node, gt):
@@ -307,7 +333,7 @@ def _solve_pies(order, node, gt):
     return {p:[M[p][g]/sum(M[p].values()) for g in G] for p in order}
 
 # --------------------------------------------------------------------------
-def _draw_hr1(cfg, bites, ys, TB):
+def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=()):
     """HR-1 tributaries. Each leaves flush with the edge it comes from and
     terminates downstream of its own bite x (S-055, S-057). Terminal geometry
     comes from cfg.hr1_term, sourced from outflows.py, never written twice."""
@@ -322,22 +348,67 @@ def _draw_hr1(cfg, bites, ys, TB):
     add(f'<line x1="330" y1="788" x2="1560" y2="788" stroke="{WARM}" stroke-width="1.1" '
         f'stroke-dasharray="7 5" stroke-opacity="0.7"/>')
     txt(336,780,"HR-1 TAKES THESE OUT",11,WARM,"start","bold",halo=False)
+    # Solve the fan: terminals are placed so no tributary crosses another
+    # (STYLE_GUIDE 2.9). Nothing here is hand-positioned.
+    items=[]
     for name,xb,yb,v in bites:
-        xt,row,sub = cfg.hr1_term[name]
+        xt,sub = cfg.hr1_term[name]
         assert xt > xb, f"{name}: terminal {xt} is upstream of its bite {xb} (S-057)"
-        th=max(v*ys,3.4); yt=(806 if row<0 else 800+row*62)
+        th=max(v*ys,3.4)
+        items.append(dict(name=name, xb=xb, xt=xt, th=th, sub=sub,
+                          y_src=(yb-v*ys)+th/2,
+                          anchor=OUTFLOWS.get(name,{}).get("label_side")))
+    # Tributaries that share a terminal column stack CONTIGUOUSLY there, so the
+    # reader can add their thicknesses by eye and get the column's subtraction.
+    # Their labels become a keyed list beside the stack rather than a block under
+    # each terminal, which is what makes the stack fit at all.
+    from collections import defaultdict
+    grp=defaultdict(list)
+    for it in items: grp[round(it["xt"])].append(it)
+    STACKS={k:sorted(v,key=lambda i:i["y_src"]) for k,v in grp.items() if len(v)>1}
+    solo=[it for it in items if round(it["xt"]) not in STACKS]
+    YT, ANCH, fan_warn = fan_rows(solo + list(pinned), obstacles=obstacles)
+    for k,v in STACKS.items():
+        y=FAN_STACK_TOP
+        for it in v:
+            YT[it["name"]]=y; ANCH[it["name"]]="start"; y+=it["th"]
+    for w in fan_warn:
+        print(f"  WARNING  fan layout: {w}")
+    _x = fan_crossings(solo + list(pinned), YT)
+    assert not _x, ("tributaries cross and the solver did not resolve it: "
+                    + "; ".join(f"{a} x {b}" for a, b in _x) + " (STYLE_GUIDE 2.9)")
+    for name,xb,yb,v in bites:
+        it=next(i for i in items if i["name"]==name)
+        xt,sub,th = it["xt"], it["sub"], it["th"]
+        yt=YT[name]
         y0=yb-v*ys                      # flush with the edge (S-057)
         band(xb,xt,y0,yt,th,th,WARM,0.74)
         xm=(xb+xt)/2
         add(f'<path d="M{xb:.1f},{y0:.1f} C{xm:.1f},{y0:.1f} {xm:.1f},{yt:.1f} {xt:.1f},{yt:.1f} '
             f'L{xt:.1f},{yt+th:.1f} C{xm:.1f},{yt+th:.1f} {xm:.1f},{y0+th:.1f} {xb:.1f},{y0+th:.1f} Z" '
             f'fill="url(#hr1hatch)"/>')
+        if round(xt) in STACKS:
+            continue                      # stacked group is labelled as a list below
         rect(xt,yt,6,max(th,4),WARMD)
-        an="end" if row<0 else "start"; lx=xt-8 if row<0 else xt
+        an=ANCH[name]; lx=xt-8 if an=="end" else xt
         ly=yt+max(th,4)+15
         lbg(lx,ly,name,12,an);   txt(lx,ly,name,12,WARMD,an,"bold",halo=False)
         lbg(lx,ly+14,sub,10,an); txt(lx,ly+14,sub,10,MUT,an,halo=False,italic=True)
         lbg(lx,ly+28,f"\u2212${v:.2f}",12,an)
         txt(lx,ly+28,f"\u2212${v:.2f}",12,WARM,an,"bold",halo=False)
+    # keyed list beside each contiguous stack
+    for k,v in STACKS.items():
+        y0=YT[v[0]["name"]]; tot=sum(i["th"] for i in v)
+        rect(k,y0,7,tot,WARMD)
+        ly=y0
+        for it in v:
+            amt=next(b[3] for b in bites if b[0]==it["name"])
+            add(f'<line x1="{k+9:.0f}" y1="{ly+it["th"]/2:.1f}" x2="{k+22:.0f}" '
+                f'y2="{ly+14:.1f}" stroke="{WARMD}" stroke-width="0.9" stroke-opacity="0.6"/>')
+            lbg(k+26,ly+18,f"{it['name']}  \u2212${amt:.2f}",12,"start")
+            txt(k+26,ly+18,f"{it['name']}  \u2212${amt:.2f}",12,WARMD,"start","bold",halo=False)
+            lbg(k+26,ly+31,it["sub"],10,"start")
+            txt(k+26,ly+31,it["sub"],10,MUT,"start",halo=False,italic=True)
+            ly+=max(it["th"],34)
     out, svg = svg, _saved
     return out

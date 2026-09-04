@@ -57,6 +57,44 @@ claiming something about that column.
 **2.8 Outflow paths do not tangle with node bars.** Drop clear of the fan early
 rather than cutting across it.
 
+**2.9 No avoidable crossings.** Tributaries leaving a common edge must not cross
+one another. Their vertical order at the source is set by their bite x; that order
+is preserved all the way to their terminals. Terminal heights are SOLVED at render
+time by `outflows.fan_rows`, never hand-assigned — hand-assigned rows are how the
+FY2030 fan came to cross itself in five places. A crossing that survives the solver
+fails the build.
+
+Two tributaries whose x-spans do not overlap cannot cross, so they may share a
+height. Labels sit to the right of their terminal by default and flip left only
+where that buys height. Terminals also clear declared keep-out boxes for furniture
+already on the canvas, so a tributary never lands on a node label.
+
+**2.9b The rule governs EVERY outflow, not just HR-1.** It was first written for
+the HR-1 fan and that was a mistake: administration and Medicare premiums crossed
+on every render of both diagrams for weeks. Where terminals are free the solver
+moves them (`fan_rows`); where terminals are pinned and the sources are free it
+moves the bite order instead (`resolve_bite_order`), which is the same invariant
+solved on the other axis. An outflow whose terminal is already fixed — documented
+fraud — enters the solve as a PINNED PARTICIPANT, never as a keep-out box: a
+keep-out can only push a neighbour down, and the right answer is sometimes to push
+it up. That distinction is what let directed payment caps cross fraud.
+
+**2.9c The rule is scoped by REGION, not by element.** It applies to a tributary
+only once it is out in the MARGIN above or below the flow body. A ribbon leaving
+from the middle of the stack has to cut across whatever sits between it and the
+edge, and that crossing is the flow working, not a defect: dual-plan
+administration crossing the MCO care lane on its way up is correct and stays. A
+band is not a tributary for the purpose of this rule until it reaches the margin
+to terminate early. `crossings.py` derives the body envelope from the render and
+counts only intersections outside it.
+
+**2.9a This rule governs declared outflows, not the main lanes.** In the CLAIMS
+column every payer lane is pinned at both ends — a fixed origin and a fixed
+provider node — and the two orderings genuinely disagree. Those crossings cannot be
+removed by reordering anything, and they should not be: the tangle is the finding.
+The rule exists to remove crossings that are artefacts of layout, not crossings
+that are facts about the money.
+
 ---
 
 ## 3. The flow narrows
@@ -85,30 +123,41 @@ must never displace them. Moving those two is what fouled the FY2030 return path
 
 ## 4. The bottom tracker
 
-**4.1 Shared furniture. Its geometry never moves.** (S-060)
+Rewritten 2026-09-03 (JW). The tracker was four fixed milestones with subtractions
+annotated around them. It is now a running ledger. Everything in the old 4.1-4.7
+is superseded.
 
-**4.2 Checkpoints:** $100 at 205 under the FEDERAL column, before federal and state
-combine. Disbursed at 820. Claims paid at 1300. Health services delivered at 1760,
-on the providers / beneficiaries boundary.
+**4.1 A dot only where a number changes.** 2024 lights four balances, 2030 lights
+seven. Nothing is padded to make the two match; the gaps ARE the comparison.
 
-**4.3 Subtractions are charged to the column where the money leaves,** and RIGHT
-ALIGNED to that column's right edge minus 8. A reader can drop a vertical line from
-any outflow on the flow straight down to its figure. (S-061)
+**4.2 Two kinds of dot, alternating: balance, bite, balance, bite.**
+BALANCE dots are the running total and are ALWAYS BLACK — dot, value and
+percentage — however the bite that produced them was coloured. BITE dots are
+coloured by class and carry their amount above and a short name below, both
+centred on the dot, never on the span.
 
-**4.4 Every subtraction carries a plain-language label** under the figure, in the
-same voice as the flow labels.
+**4.3 Classes carry colour, everywhere they appear.**
+HR-1 brown #8B5A5A · admin grey #5c6169 · fraud red #b23a32.
 
-**4.5 Colour:** line, dots and checkpoint values are BLACK (#111418). Ordinary
-subtractions are GREY (#8e9298) ABOVE the line. HR-1 subtractions are the diagram's
-warm red-brown (#8B5A5A) BELOW the line. Red is reserved for fraud on the flow and
-is never used on the tracker.
+**4.4 The lattice.** A bite is charged to the column where the money leaves the
+flow. Its BITE dot sits at that column's left edge and its BALANCE dot at the
+right edge. Fixed ends: $100 at the centre of the FEDERAL column, health services
+delivered at the centre of the BENEFICIARY column. The delivered dot carries the
+last bite, so the final figure is printed once, and it is the most important dot
+on the artifact.
 
-**4.6 Type:** 36px checkpoint values, 25px checkpoint labels, 24px subtraction
-figures, 12px subtraction labels, r=11 nodes. Fixed.
+**4.5 Invisible sub-columns.** A column carrying k bites divides into 2k-1 equal
+steps, giving 2k alternating slots. No rule is drawn for the subdivision. At k=1
+it collapses to the column's own edges. This is what lets a future year carry any
+number of bites without breaking the cadence.
 
-**4.7 Rows:** subtraction figure at by−58 and label at by−40 for ordinary; figure
-at by+28 and label at by+46 for HR-1; checkpoint labels at by+80. Nothing is placed
-between the value row and the line.
+**4.6 A balance lands strictly between its own bite and the next.** It takes its
+sub-column's right edge when that falls clear, and the midpoint when it does not.
+Without this the plain rule stacks a balance dot on the following bite dot.
+
+**4.7 Three rows below the line, each with one job:** phase name, then percentage
+lost beneath it, then bite short names on their own row. Sharing a row breaks as
+soon as a year has more bites in it.
 
 ---
 
@@ -135,9 +184,15 @@ a 45-degree hatch. Grey dashed and hollow means memo, outside the ledger.
 **6.2 Renders land in `reference_renders/`.** (S-041)
 
 **6.3 One renderer, many instances.** `sankey.py` draws; `instances.py` configures;
-`outflows.py` declares geometry; `build.py` is the only entry point. No builder
-forks another and no builder text-substitutes another. A new state edition is a
-config. (S-064)
+`outflows.py` declares geometry; `sheet.py` stacks rendered panels for comparison;
+`build.py` is the only entry point. No builder forks another and no builder
+text-substitutes another. A new state edition is a config. (S-064)
+
+**6.3a Comparison sheets take N panels and never rescale one.** A sheet is a list
+of panel keys declared once in `sheet.py: PANELS`. Panels are pasted at native
+pixel width, because horizontal register between panels is the entire reason the
+sheet exists (1.2, 1.3, S-060). If two panels come back at different widths, that
+is a renderer defect and `sheet.py` reports it rather than resizing to hide it.
 
 **6.5 A refactor that changes a pixel is not a refactor.** Render before, change,
 render after, diff the PNGs, expect an empty difference bounding box.

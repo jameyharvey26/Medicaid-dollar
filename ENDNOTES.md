@@ -176,8 +176,11 @@ of what the statute does. D-63.
 
 **EN-17 · Overhead sensitivity. | P**
 Services delivered per $100 in FY2030: overhead held throughout $77.28; overhead
-scaled throughout $77.91; split overhead as published $77.79. Spread $0.63 on a
-$10.26 reduction, six percent of the cut.
+scaled throughout $77.85; split overhead as published $77.79. Spread $0.57 on a
+$10.26 reduction, five and a half percent of the cut. All three are build outputs
+of `ledger_2030.ledger(variant)`, rendered as `reference_renders/sheet_overhead.png`.
+*Corrected 2026-09-03 from $77.91 and a $0.63 spread, which the build has never
+produced. See S-073.*
 **The overhead assumption is not load-bearing,** and every variant errs in the same
 direction, since more overhead shrinkage means more money reaching services.
 
@@ -460,3 +463,12 @@ group; the provider tax phase-down applies to expansion states only; the directe
 payment cap runs to a different Medicare threshold over a number of steps that
 depends on where DC's arrangements start. The panel ships blank with the reason
 printed in it (S-072).
+
+
+**EN-41 · Running loss percentages on the tracker. | P**
+The "% lost" under each balance dot is 100 minus that balance. On a $100 ledger
+the percentage lost and the dollars lost are the same number, so this row restates
+the balance rather than adding a fact; it is carried because it is the form the
+finding is quoted in. FY2024 ends at 13.73%; FY2030 under P.L. 119-21 at 22.21%.
+Both derive from the ledgers already sourced at EN-01 through EN-17. No new
+vintage. Added 2026-09-03.

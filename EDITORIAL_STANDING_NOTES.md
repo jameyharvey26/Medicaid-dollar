@@ -553,8 +553,17 @@ shrinking when D-11 was written.
   of what the statute does.
 
 Sensitivity retained, not published as alternatives: overhead holds throughout
-gives $77.28 delivered, overhead scales throughout gives $77.91, split gives
-$77.79. Full spread $0.63 on a $10.26 reduction, six percent of the cut.
+gives $77.28 delivered, overhead scales throughout gives $77.85, split gives
+$77.79. Full spread $0.57 on a $10.26 reduction, five and a half percent of the cut.
+
+*Corrected 2026-09-03.* This paragraph read $77.91 and a $0.63 spread from
+2026-08-29 until 2026-09-03. The build has never produced $77.91:
+`ledger_2030.ledger("scales")` returns 77.8498, confirmed by an independent
+recomputation from `tobe2030.per100` and the FY2024 base that reproduces all three
+variants to four places. The origin of $77.91 could not be reconstructed and is not
+guessed at here. Holds and split were correct as written and are unchanged. The
+ruling itself is unaffected, and the narrower spread strengthens rather than weakens
+the conclusion below.
 
 **Consequence for the methodology, and it is the useful part:** the overhead
 assumption is not load-bearing. One line says so and nobody needs to litigate it.
@@ -899,3 +908,65 @@ prototype for the vantage layer (S-070).
 The DC FY2030 panel on the stacked sheet is blank on purpose, with the reason
 printed in it. That is more useful to a reader than an absent panel and far more
 honest than a plausible one. Same principle as S-071, one level up.
+
+
+**S-073 · All · A figure that travels by hand travels wrong, and takes new
+artifacts with it.**
+2026-09-03. D-63's sensitivity paragraph recorded overhead-scales at $77.91. The
+build has never produced that number; it returns $77.85. The error sat unnoticed
+for five days because it belonged to the one variant that is not published, so
+nothing rendered it and nobody read it against a diagram.
+
+It had already spread. The panel caption in `sheet.py` for `national_2030_scales`
+was written by copying the figure out of D-63, so the sheet's own header
+contradicted the sheet's own tracker on the same panel. That is the failure mode,
+not the six cents: a hand-carried figure seeds every artifact built afterwards, and
+each copy looks like corroboration.
+
+Two consequences. **Sensitivities get rendered, not just recorded** — an unpublished
+variant with no artifact has nothing to check it against, which is exactly how this
+survived. `sheet.py --set overhead` now exists for that. **Panel captions must read
+from the ledger, not restate it.** Any figure typed into a caption is a second
+source of truth for a number that already has one. Folded into S-066: when `Fig`
+lands, a caption interpolates the field and a caption carrying a bare literal fails
+the build.
+
+**S-074 · All · The tracker is a ledger, not a set of milestones.**
+2026-09-03. JW marked up the 2024 panel and the architecture fell out of it. A dot
+wherever a number changes and nowhere else; balance dots always black; bite dots
+coloured by class. The alternation of HR-1 and admin down the line is not a design
+choice, it is what the lifecycle does, and the tracker now shows it.
+
+The move that made it general was JW's: the column slots are not a hard rule. A
+column subdivides into as many invisible sub-columns as the cadence needs. That is
+why a 2026 or 2036 view with a different number of bites needs no new code.
+
+**S-075 · All · Terminals and the tracker must answer the same question.**
+2026-09-03. My tributary terminals encoded how far a dollar would have travelled;
+the tracker encoded where the money left the flow. For most outflows those
+coincide, so nothing looked wrong. For the five state-agency levers they diverged
+completely, which is why JW read the anchors as arbitrary — they were answering a
+question he was not asking. Terminals now ride the tracker lattice. The reach
+survives as a phrase in each sub-label, where it is legible.
+
+A side effect worth keeping: because the five levers now land in one column, they
+stack CONTIGUOUSLY and their thicknesses add by eye to the column's subtraction.
+That was JW's original request weeks earlier, which I could not satisfy while they
+were scattered. The right fix for a layout problem was a data-architecture fix.
+
+**S-076 · All · Judge crossings by region, not by element.**
+2026-09-03. Rule 2.9 was written for the HR-1 fan and applied to one of two code
+paths, so administration and Medicare premiums crossed on every render for weeks
+while I reported zero crossings. Two lessons, and the second is the real one.
+A rule applied to one path is worse than no rule, because it looks handled. And a
+detector that only checks what I thought to check will confirm whatever I already
+believe — mine tested three tagged colours and reported clean while a crossing sat
+in plain sight. `crossings.py` now samples every band on the canvas and scopes the
+rule to the margin, because a ribbon leaving the middle of the stack HAS to cut
+across whatever lies between it and the edge. That crossing is the flow working.
+
+**S-077 · All · Show the picture.**
+2026-09-03. JW: "how can i tell if you don't show me the picture." I twice
+described geometry in prose instead of rendering it and twice was wrong. Any claim
+about what a diagram looks like ships with the diagram, or a crop of it with the
+thing circled.

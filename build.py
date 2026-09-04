@@ -85,10 +85,23 @@ if __name__ == "__main__":
     if which in ("all", "2024"):
         print("FY2024 as-is"); build_2024()
     if which in ("all", "2030"):
+        # Split overhead only. The holds/scales sensitivities are settled (D-63,
+        # EN-17) and are not rebuilt in a working session; `python3 build.py
+        # sensitivity` renders all three when the endnote needs re-checking.
+        print("FY2030 to-be [mixed]"); build_2030("mixed")
+    if which == "sensitivity":
         for v in ("holds", "scales", "mixed"):
             print(f"FY2030 to-be [{v}]"); build_2030(v)
+        subprocess.run([sys.executable, os.path.join(REPO, "sheet.py"),
+                        "--set", "overhead"], check=True)
     if which in ("all", "dc"):
         print("DC FY2024 as-is"); build_dc()
     if which == "all":
-        subprocess.run([sys.executable, os.path.join(REPO, "build_pair.py")], check=True)
+        # Every declared set is rebuilt, so no sheet in reference_renders/ can go
+        # stale behind a render that moved. Adding a set to sheet.py:SETS is
+        # enough; nothing here needs touching.
+        import sheet as _sheet
+        for _name in _sheet.WORKING_SETS:
+            subprocess.run([sys.executable, os.path.join(REPO, "sheet.py"),
+                            "--set", _name], check=True)
     print("build complete.")

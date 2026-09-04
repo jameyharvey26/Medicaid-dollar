@@ -215,3 +215,12 @@ firmly as they are at state one:
 - Every figure carries provenance and every modelled figure is flagged (S-012,
   S-054).
 - No number invented to make a diagram balance (S-029).
+
+
+## graffle.py — OmniGraffle export (added 2026-09-03)
+
+`python3 graffle.py <instance>` converts `reference_renders/<instance>_combined.svg`
+into `<instance>.graffle`. One direction only. The SVG stays authoritative; the
+.graffle is a markup surface, and any change it prompts is made in `sankey.py` or
+`instances.py` and re-rendered. Reading figures back out of a drawing tool would
+create a second source of truth for numbers that already have one (S-073).
