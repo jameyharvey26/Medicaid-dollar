@@ -3,7 +3,7 @@
 Working sketches from the 2026-08-27 part 3 encoding session. **Not artifacts.**
 
 `bite_points.py` / `.svg` / `.png`
-Live. Composites a bite-point annotation layer onto the real `national_baseline.svg`
+Live. Composites a bite-point annotation layer onto the real `national_2024_combined.svg`
 at the same viewBox. This is the D-58 mapping made visible. Band widths deliberately
 not drawn — per-$100 values are blocked on the FY2029 denominator.
 

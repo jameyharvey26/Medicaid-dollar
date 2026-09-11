@@ -122,19 +122,50 @@ def report(path):
     return hits
 
 
+def live_tags():
+    """The renders a reader can actually reach, taken from sheet.py:PANELS.
+
+    Globbing reference_renders/ for *_combined.svg was wrong: build.py aliased a
+    PNG forward under an old name without its SVG, so an orphan combined.svg from
+    a superseded build sat in the folder and the gate kept reporting a crossing
+    in a render nothing draws any more. A detector pointed at a dead file
+    confirms whatever the dead file says.
+    """
+    import sheet
+    tags = {p["png"][:-4] for p in sheet.PANELS.values() if p["png"]}
+    return sorted(t for t in tags if t.endswith("_combined"))
+
+
+def orphans(tags):
+    """Any *_combined.svg in the folder that no declared panel claims."""
+    have = {f[:-4] for f in os.listdir(R) if f.endswith("_combined.svg")}
+    return sorted(have - set(tags))
+
+
 def main():
-    names = sys.argv[1:] or [f[:-13] for f in sorted(os.listdir(R))
-                             if f.endswith("_combined.svg")]
+    args = sys.argv[1:]
+    if args:
+        names = [a if a.endswith("_combined") else f"{a}_combined" for a in args]
+        stray = []
+    else:
+        names = live_tags()
+        stray = orphans(names)
     bad = 0
     for n in names:
-        p = os.path.join(R, f"{n}_combined.svg")
+        p = os.path.join(R, f"{n}.svg")
         if not os.path.exists(p):
+            print(f"{n[:-9]:28s} MISSING  run  python3 build.py")
+            bad += 1
             continue
         h = report(p)
         bad += len(h)
-        print(f"{n:28s} {len(h)} crossing(s) in the margin")
+        print(f"{n[:-9]:28s} {len(h)} crossing(s) in the margin")
         for l1, l2, x, y in h:
             print(f"    at ({x:.0f},{y:.0f})  {l1}  x  {l2}")
+    for s in stray:
+        print(f"{s[:-9]:28s} ORPHAN   no panel in sheet.py claims this render; "
+              f"delete it or declare it")
+        bad += 1
     return 1 if bad else 0
 
 

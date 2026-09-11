@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Bite-point mapping sketch: where each HR-1 lane peels out of the master.
-Annotation layer composited onto the real national_baseline.svg, same viewBox.
+Annotation layer composited onto the real national_2024_combined.svg, same viewBox.
 No band widths drawn: per-$100 values are blocked on the FY2029 denominator."""
 import resvg_py, re
 
-BASE = open("render/national_baseline.svg").read()
+BASE = open("reference_renders/national_2024_combined.svg").read()
 LOSS, INK, MUT, RELIEF = "#8B5A5A", "#272727", "#6f6f6f", "#C4A45C"
 BG = "#faf8f3"
 

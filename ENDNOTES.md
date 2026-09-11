@@ -472,3 +472,166 @@ the balance rather than adding a fact; it is carried because it is the form the
 finding is quoted in. FY2024 ends at 13.73%; FY2030 under P.L. 119-21 at 22.21%.
 Both derive from the ledgers already sourced at EN-01 through EN-17. No new
 vintage. Added 2026-09-03.
+
+**EN-37 AMENDED · The FY2030 tracker lights an intermediate balance at $92.06. | D**
+Refines EN-37, which ran the state agency column together as "less $6.70 ordinary
+and $8.17 HR-1". The rebuilt tracker (S-074) puts a dot wherever a number changes,
+so that column now reads as two bites with a balance between them: $98.76 less
+$6.70 administration and Medicare premiums gives **$92.06**, and $92.06 less $8.17
+work reporting, renewals, enrolment rules and other gives $83.89 disbursed. No
+figure moved; a figure that was previously implicit is now printed, and it is
+listed here because it is printed. Added 2026-09-04.
+
+**EN-42 · The FY2024 as-is spine, payer lanes and provider nodes. | M / D**
+These are the measured figures the reader meets first, and they are carried
+forward unchanged onto the to-be under EN-20.
+
+*Spine.* Federal $64.70, state $35.30 per $100 total computable. Federal share
+64.7%, MACStats February 2026 Exhibit 16 (spending by source of funds), FY2024.
+Independently recomputed from CMS-64 National Totals for the four FY2024 quarters
+as 0.6472 — see `fmap.py: BLENDED_ALL`, which carries the raw quarterly inputs so
+the rate can be recomputed rather than trusted. **Measured.**
+
+*Anchors.* Total Medicaid spending $957.4B (Exhibit 16); total benefit spending
+$908.8B (Exhibit 17). Every per-$100 figure below is a share of the total
+computable ledger, not of benefits alone.
+
+*Payer lanes.* MCO capitation $40.06, dual-MCO capitation $10.89, fee-for-service
+$41.08. Sum $92.03, which is the disbursed balance at EN-37. **Derived** from
+MACStats February 2026 Exhibit 17, FY2024.
+
+*Provider nodes.* Long-term care $28.53, hospitals $18.66, wrap-around services
+$13.33, physicians and clinics $12.63, behavioral health $9.51, prescription drugs
+$3.76. Sum $86.42, which is the claims-paid balance at EN-37 before documented
+fraud. **Derived** from MACStats February 2026 Exhibit 17, FY2024. "Wrap-around
+services" is the plain-language label for the residual category (S-033); it is a
+residual by construction and conserves the column.
+
+*Beneficiary shares.* The pie splits by eligibility group and dual status are
+MACStats February 2026 Exhibit 21, **FY2023** — a year older than the rest of the
+ledger. This is the mixed-vintage caveat already stated at EN-20 and it is
+restated here because the shares are printed on the artifact.
+
+Added 2026-09-04. Previously covered only by class at EN-20, which stated the
+vintages without carrying the figures; 5.4 requires the figures themselves.
+
+**EN-43 · Public-company earnings $0.76. OPEN**
+Printed on both national panels as a subset of the payer margin, alongside plan
+administration $4.85 ($3.81 non-dual MCO plus $1.04 dual-MCO, both at EN-15). The
+two together are the $5.61 taken at the payer column on the FY2024 tracker.
+
+**$0.76 is an estimate with no primary source behind it.** Plan administration is
+sourced; the earnings carve out of margin is not. The intended derivation is a
+segment-level allocation from the Medicaid segments of the publicly traded plans'
+10-K filings, and that work has not been done.
+
+Consequences, stated rather than buried. The $5.61 total is sound because it is
+the measured margin; only the split between administration and earnings inside it
+rests on an estimate. Nothing downstream of the payer column depends on the split,
+so no balance on the tracker and no provider node moves if the carve changes. But
+the artifact currently draws a labelled $0.76 with the same weight as measured
+figures beside it, and that is what S-012 and S-043 exist to prevent.
+
+**Must not ship as currently drawn.** Either the 10-K carve is done, or the
+earnings label comes off and the payer column shows the undivided $5.61 margin
+with the split declared absent on the artifact (S-071). Recommend the second for
+the freeze and the first afterwards: an absent split declared is honest at any
+vintage, and the carve is a week of filings work that should not gate the
+presentation layer. Added 2026-09-04.
+
+**EN-44 · The FY2030 payer lanes and provider nodes as drawn. | P**
+Printed on the to-be panel and listed here because they are printed. None is a
+sourced 2030 value; each is a build output of the conserved ledger, and the method
+behind it is already sourced at EN-12 through EN-20.
+
+*Payer lanes.* MCO capitation $36.52, dual-MCO capitation $9.93, fee-for-service
+$37.44. Sum $83.89, the disbursed balance.
+
+*Provider nodes.* Long-term care $25.75, hospitals $16.71, wrap-around services
+$12.15, physicians and clinics $11.22, behavioral health $8.67, prescription drugs
+$3.43. Sum $78.77, the claims-paid balance before directed payment caps and
+documented fraud.
+
+*Payer margin.* Plan administration $3.47 non-dual and $0.95 dual (EN-15), and
+public-company earnings $0.69.
+
+Each is the FY2024 figure under EN-42 carried forward at held structure (EN-20)
+and narrowed by the lever incidence at EN-14. **Every one of these is modelled and
+none is measured**, which is why the panel strap reads "Every figure modelled"
+rather than flagging them individually (S-012).
+
+The node values are the figures a reader will take personally — a health system
+reads its own bar falling $18.66 → $16.71 — and the incidence behind that fall is
+the open item at EN-21 and EN-24. The figure is sound as a share of the conserved
+ledger; what it does not yet say is which lever took it.
+
+$0.69 inherits **EN-43 OPEN**: it is $0.76 carried forward, and $0.76 is an
+estimate with no primary source. It must not ship while EN-43 is open.
+Added 2026-09-04.
+
+**EN-43 AMENDED · Public-company earnings is scoped to public companies. | OPEN, not blocking**
+JW ruling, 2026-09-04: "Its labeled as public earnings. Why would we worry about
+earnings at non profits. Just source it to the public reporting."
+
+Supersedes the coverage concern in EN-43 as written. Plans that file nothing
+comparable were never in scope for this figure; the band is named for what it
+counts. What remains is a straightforward sourcing task — the Medicaid segment
+disclosures in the SEC 10-K filings of the publicly traded plans, summed and
+reconciled to the payer margin — not a question about whether the figure can
+exist. **EN-43 no longer blocks the presentation freeze**: it is a ledger value
+awaiting its source, not a presentation-layer decision, and the recommendation to
+strip the label is withdrawn.
+
+**One consequence, and it is a labelling matter.** The payer margin $5.61 is
+measured and conserves. If $0.76 counts only public-company retention, then
+retention by nonprofit and provider-sponsored plans has nowhere else to sit and is
+inside the $4.85 band, which the artifact labels as plan administration. No figure
+is wrong and no balance moves; the label claims something narrower than what it
+holds. Carried as a wording fix, not a sourcing gap.
+
+Status until the carve is done: the $0.76 and $0.69 stay on the artifacts,
+**modelled and flagged** (S-012, S-043), with this entry as the endnote.
+Added 2026-09-04.
+
+**EN-45 · Directed payment caps come out of managed care, not fee-for-service. | D**
+JW, 2026-09-04, reading the diagram: "Do Directed payment caps really subtract
+only from Fee for service, which is what the diagram looks like?" They do not, and
+the diagram said they did.
+
+A state directed payment is defined at 42 CFR 438.6(c) as a contract arrangement
+that directs an MCO's, PIHP's or PAHP's expenditures. It is a managed-care
+instrument by construction: the state directs what the plan pays its network. There
+is no fee-for-service counterpart, because in fee-for-service there is no plan
+contract to direct — the state is already setting the rate it pays directly.
+
+The $0.85 bite was carved off the bottom edge of the fee-for-service band at the
+claims column, so the artifact told the reader the opposite of what the instrument
+is. Corrected 2026-09-04: the ribbon now leaves the **top edge of the managed-care
+block**. The bottom edge was measured at y=553.8 with the fee-for-service lane
+beginning at exactly 553.8 — no gap — so a bite taken there sits on a shared edge
+and reads as either lane; the top edge has peeled-off white space above it and is
+unambiguous. The ribbon crosses the fee-for-service lane on its way down, which is
+a body crossing and correct (S-076, STYLE_GUIDE 2.9c).
+
+**No figure moved.** $0.85 is unchanged, the claims-column subtraction is
+unchanged, every balance on the tracker is unchanged, and conservation is
+unchanged. What changed is which lane the reader sees it leave.
+
+*Limitation, declared.* State directed payments apply across both MCO capitation
+and dual-MCO capitation. The ledger does not decompose the $0.85 between them, so
+the ribbon leaves the combined managed-care block at a single edge rather than
+being split in proportion. Decomposing it needs SDP preprint data by plan type and
+is not currently sourced — related to EN-21 and EN-22, and it should not be filled
+in with a share (S-068). Added 2026-09-04.
+
+**EN-37 AMENDED (2) · The FY2030 line reports $78.77 at Claims Paid. | D**
+The four-anchor line (S-082) replaces the running ledger, and the anchors sit on
+column LEFT edges — where money arrives — rather than wherever a number last
+changed. "Claims Paid" therefore moves from the claims column's right edge to its
+left edge, and reports $78.77 rather than $77.93.
+
+Both figures are true of their own point: $78.77 is what enters the claims column,
+$77.93 was what left it after directed payment caps. **No ledger figure moved.**
+The same six decrements at the same amounts, conservation unchanged, and
+$77.79 delivered. $92.06, $98.76 and $77.93 no longer appear on the artifact,
+since the line now sums only at its four anchors. Added 2026-09-04.

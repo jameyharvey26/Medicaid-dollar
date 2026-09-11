@@ -1,9 +1,15 @@
 import math
 import tracker as TR
+import outflows as OF
 FAN_STACK_TOP=806.0
 from outflows import OUTFLOWS, fan_rows, fan_crossings, resolve_bite_order
 # ===== Medicaid Dollar-Flow Sankey, DRAFT V.4 (Public Comment) =====
-W,H=2200,1240; cY=540; ys=4.4; bw=18
+# H was 1240, which left the short-name row 4 units from the canvas edge and no
+# room for a second line. A bite whose short name cannot fit between its
+# neighbouring dots wraps (tracker.wrap_short, STYLE_GUIDE 4.8), so the canvas
+# carries the extra line. W is untouched: column register is frozen (1.2), panel
+# HEIGHT never was.
+W,H=2200,1376; cY=540; ys=4.4; bw=18
 FED="#2f5d74"; STATE="#9bb8c4"; DOLLAR="#1a6b40"
 MCO="#3f8f8a"; DUAL="#9a6fa6"; FFS="#5f7f96"
 ADMIN="#9a9a9a"; MEDI="#9aa0a6"; RETAIN="#5e5e5e"; EARN="#000000"; FRAUD="#e8170f"; DUALADM="#7d6f86"
@@ -86,9 +92,11 @@ def render(cfg):
     pie_frac = _solve_pies(order, node, gt) if cfg.show_beneficiaries else None
     add(f'<rect x="0" y="0" width="{W}" height="{H}" fill="{BG}"/>')
     # phase headers + dividers
-    heads=[("FEDERAL","money from above",xFED),("STATE GOVERNMENT","fed + state in parallel",xSG),
-     ("STATE AGENCY","the $100 combined",xSA),("DISBURSEMENTS","state Medicaid \u2192 3 lanes",xDI),
-     ("PAYER","plan administration peeled",xPA),("CLAIMS","payers fund claims",xCL),("PROVIDERS",f"{len(cfg.order)} nodes, sized by spend",xPR)]
+    # Column sub-labels name the FUNCTION the column performs, not a note about
+    # how the drawing was put together (JW, 2026-09-04).
+    heads=[("FEDERAL","federal appropriation",xFED),("STATE GOVERNMENT","blended cost allocation",xSG),
+     ("STATE AGENCY","budgeted to Medicaid",xSA),("DISBURSEMENTS","payment mechanisms",xDI),
+     ("PAYER","MCO administration",xPA),("CLAIMS","claims paid to providers",xCL),("PROVIDERS","sized by spend",xPR)]
     if cfg.show_beneficiaries:
         heads.append(("BENEFICIARIES","who consumes each service",xBE))
     for name,sub,(x0,x1) in heads:
@@ -206,14 +214,29 @@ def render(cfg):
     ncur={p:node_y[p] for p in order}
     if fraud > 0:
         fh=max(fraud*ys,3.0)
-        # Documented fraud runs clear beneath the provider bars and stops ON the
-        # providers / beneficiaries boundary. Providers receive it, so it must not cross
-        # into the beneficiary column, and it must not tangle with the Rx drugs bar.
-        _fy=max(node_y[order[-1]]+node[order[-1]]*ys, ffs_y+ffs*ys)+40
-        add(f'<path d="M{xCL[0]+6:.1f},{ffs_y+ffs*ys-fh/2:.1f} C{xCL[0]+70:.1f},{ffs_y+ffs*ys+70:.1f} {xPR[0]-120:.1f},{_fy:.1f} {xPR[1]-8:.1f},{_fy:.1f}" fill="none" stroke="{FRAUD}" stroke-width="{fh:.1f}" stroke-opacity="0.95" stroke-linecap="round"/>')
-        rect(xPR[1]-8,_fy-max(fh,5)/2,6,max(fh,5),FRAUD)
-        lbg(xPR[1]-14,_fy-8,f"Documented fraud  ${fraud:.2f}",12,"end"); txt(xPR[1]-14,_fy-8,f"Documented fraud  ${fraud:.2f}",12,FRAUD,"end","bold",halo=False)
-        lbg(xPR[1]-14,_fy+9,"providers receive it; it is not services delivered (not to scale)",9.5,"end"); txt(xPR[1]-14,_fy+9,"providers receive it; it is not services delivered (not to scale)",9.5,MUT,"end",halo=False,italic=True)
+        # Documented fraud is drawn as a RIBBON in the same family as the lanes
+        # above it, not as a swooping stroke across the canvas (JW, 2026-09-04).
+        # It leaves the claims column where the other lanes do and lands at the
+        # RIGHT END OF THE PROVIDER BARS, because providers are where fraud
+        # happens in this ledger. It used to stop on the providers / beneficiaries
+        # boundary, which read as though beneficiaries were party to it.
+        #
+        # It also stays ABOVE the HR-1 rule. Fraud is not something HR-1 takes
+        # out, and a line that dives through that zone says it is.
+        _fy = max(node_y[order[-1]] + node[order[-1]] * ys,
+                  ffs_y + ffs * ys) + 34
+        _fx0, _fx1 = xCL[0] + 6, barR
+        _fm = (_fx0 + _fx1) / 2
+        _fsy = ffs_y + ffs * ys - fh / 2
+        add(f'<path d="M{_fx0:.1f},{_fsy:.1f} C{_fm:.1f},{_fsy:.1f} '
+            f'{_fm:.1f},{_fy:.1f} {_fx1:.1f},{_fy:.1f}" fill="none" '
+            f'stroke="{FRAUD}" stroke-width="{fh:.1f}" stroke-opacity="0.95" '
+            f'stroke-linecap="round"/>')
+        rect(barR, _fy - max(fh, 5) / 2, 6, max(fh, 5), FRAUD)
+        lbg(barR - 6, _fy - 9, f"Documented fraud  ${fraud:.2f}", 12, "end")
+        txt(barR - 6, _fy - 9, f"Documented fraud  ${fraud:.2f}", 12, FRAUD, "end", "bold", halo=False)
+        lbg(barR - 6, _fy + 8, "providers receive it; it is not services delivered (not to scale)", 9.5, "end")
+        txt(barR - 6, _fy + 8, "providers receive it; it is not services delivered (not to scale)", 9.5, MUT, "end", halo=False, italic=True)
     for p in order:
         for L in ["MCO","Dual","FFS"]:
             v=comp[L][p]; h=v*ys
@@ -271,38 +294,80 @@ def render(cfg):
     # The claims-fan bite can only be placed once the fee-for-service lane
     # geometry exists, so it joins the bite list here.
     if cfg.claims_hr1>0:
-        bites.append((cfg.claims_hr1_name,xCL[0]+2,ffs_y+ffs*ys,cfg.claims_hr1))
+        # Directed payment caps come out of MANAGED CARE, not fee-for-service.
+        # A state directed payment is defined at 42 CFR 438.6(c) as a contract
+        # arrangement directing an MCO's, PIHP's or PAHP's expenditures; it has no
+        # fee-for-service counterpart, because there is no plan contract to direct.
+        # This carved the bite off the bottom of the FFS band, which told the
+        # reader the opposite of what the instrument is. It now leaves the bottom
+        # of the dual-MCO care lane, the lower edge of the managed-care block at
+        # this column. The ribbon then crosses the FFS lane on its way down, which
+        # is a body crossing and correct (S-076, STYLE_GUIDE 2.9c).
+        # It leaves the TOP edge of the managed-care block, not the bottom. The
+        # bottom edge is measured at 553.8 and the fee-for-service lane starts at
+        # exactly 553.8 — no gap — so a bite taken there sits on a shared edge and
+        # reads as either lane. The top edge has peeled-off white space above it
+        # and is unambiguous.
+        bites.append((cfg.claims_hr1_name,xCL[0]+2,mco_care_y+cfg.claims_hr1*ys,cfg.claims_hr1))
     subs = cfg.subtractions(dict(adm_med=admin+medicare,
                                  plan=mco_ret+dual_ret, fraud=fraud))
-    balances, bites_t = TR.dots(subs)
-    names = TR.named(balances, bites_t)
-    names[balances[0][0]] = cfg.cp0_label
+    anchors, marks = TR.ledger(subs, {s[4]: OF.decrement_x(s[4]) for s in subs
+                                      if s[1] > 0.004})
+    for a, b, g in TR.collisions(anchors, marks):
+        print(f"  WARNING  anchor labels overlap: {a} / {b} by {-g:.0f} units")
+    for a, b, g in TR.shape_gap(marks):
+        print(f"  NOTE     markers {a} / {b} sit {g:.0f} units apart on the line")
+    tiers = TR.mark_tiers(marks, anchors)
 
-    add(f'<line x1="{balances[0][0]:.0f}" y1="{TR.BY}" x2="{balances[-1][0]:.0f}" '
+    add(f'<line x1="{anchors[0]["x"]:.0f}" y1="{TR.BY}" x2="{anchors[-1]["x"]:.0f}" '
         f'y2="{TR.BY}" stroke="{TR.INK}" stroke-width="3.4" stroke-opacity="0.85"/>')
-    # Subtraction dots: coloured, at the left edge of the column they are charged
-    # to. Amount above, short name below, both centred on the dot.
-    # Descriptors and short names de-collide onto a second row as a GROUP, so the
-    # rows stay level rather than each label finding its own height.
-    desc_r=TR.two_rows([(x,lab,13) for x,_a,_c,_s,lab in bites_t])
-    for x,amt,cls,short,lab in bites_t:
-        c=TR.COLOUR[cls]
-        add(f'<circle cx="{x:.0f}" cy="{TR.BY}" r="11" fill="{c}"/>')
-        txt(x,TR.BY+TR.AMT_Y,f"\u2212${amt:.2f}",26,c,"middle","bold",halo=False)
-        txt(x,TR.BY+TR.AMT_LAB_Y+desc_r[x]*18,lab,13,c,"middle",halo=False,italic=True)
-        txt(x,TR.BY+TR.SHORT_Y,short,TR.SHORT_PX,c,"middle","bold",halo=False)
-    # Balance dots: always black. The running total is never coloured by the bite
-    # that produced it.
-    rows=TR.value_rows([(x,v,None) for x,v in balances])
-    for x,val in balances:
-        add(f'<circle cx="{x:.0f}" cy="{TR.BY}" r="11" fill="{TR.INK}"/>')
-        txt(x,TR.BY+rows[x],f"${val:.2f}",36,TR.INK,"middle","bold",halo=False)
-        lines=names.get(x,[])
-        for k,ln in enumerate(lines):
-            txt(x,TR.BY+TR.NAME_Y+k*TR.NAME_LEAD,ln,TR.TITLE_PX,TR.INK,"middle","bold",halo=False)
-        if val < 99.99:
-            py=TR.BY+TR.NAME_Y+max(len(lines)-1,0)*TR.NAME_LEAD+TR.PCT_Y
-            txt(x,py,f"{100-val:.2f}% lost",TR.PCT_PX,TR.INK,"middle","bold",halo=False)
+
+    # Decrement markers, reading ABOVE the line. Class carries in the SHAPE as
+    # well as the colour: rhombus HR-1, square administration, triangle fraud.
+    # Each shows only its own amount and name — every sum is at an anchor.
+    for m in marks:
+        x, r, c = m["x"], TR.MARK_R, TR.COLOUR[m["cls"]]
+        y = TR.BY
+        t = tiers[m["short"]] * TR.MARK_TIER
+        if m["cls"] == "hr1":
+            add(f'<polygon points="{x:.1f},{y-r:.1f} {x+r:.1f},{y:.1f} '
+                f'{x:.1f},{y+r:.1f} {x-r:.1f},{y:.1f}" fill="{c}"/>')
+        elif m["cls"] == "fraud":
+            add(f'<polygon points="{x:.1f},{y-r:.1f} {x+r*0.95:.1f},{y+r*0.78:.1f} '
+                f'{x-r*0.95:.1f},{y+r*0.78:.1f}" fill="{c}"/>')
+        else:
+            h = r * 0.88
+            add(f'<rect x="{x-h:.1f}" y="{y-h:.1f}" width="{h*2:.1f}" '
+                f'height="{h*2:.1f}" fill="{c}"/>')
+        if t:
+            # A stepped-down block is led back to its own marker, or the reader
+            # has to guess which shape the words belong to.
+            add(f'<line x1="{x:.1f}" y1="{y+r+4:.1f}" x2="{x:.1f}" '
+                f'y2="{y+t+TR.MARK_AMT_Y-14:.1f}" stroke="{c}" stroke-width="1.1" '
+                f'stroke-opacity="0.55"/>')
+        txt(x, y+t+TR.MARK_AMT_Y, f"\u2212${m['amount']:.2f}", TR.MARK_AMT_PX, c,
+            "middle", "bold", halo=False)
+        txt(x, y+t+TR.MARK_NAME_Y, m["short"], TR.MARK_NAME_PX, c,
+            "middle", "bold", halo=False)
+
+    # The four anchors. Same four on every diagram, always: they are what lets a
+    # reader lay two panels side by side. Value above, name below, percentage
+    # lost beneath the name — every sum on the line happens here.
+    for i, a in enumerate(anchors):
+        x = a["x"]
+        add(f'<circle cx="{x:.0f}" cy="{TR.BY}" r="{TR.ANCHOR_R}" '
+            f'fill="{TR.AGILIAN_BLUE}"/>')
+        txt(x, TR.BY+TR.ANCHOR_VAL_Y, f"${a['value']:.2f}", TR.ANCHOR_VAL_PX,
+            TR.INK, "middle", "bold", halo=False)
+        lines = cfg.cp0_label if i == 0 else a["name"]
+        for k, ln in enumerate(lines):
+            txt(x, TR.BY+TR.ANCHOR_NAME_Y+k*TR.ANCHOR_NAME_LEAD, ln,
+                TR.ANCHOR_NAME_PX, TR.INK, "middle", "bold", halo=False)
+        if a["value"] < 99.99:
+            py = (TR.BY + TR.ANCHOR_NAME_Y + (len(lines)-1)*TR.ANCHOR_NAME_LEAD
+                  + TR.ANCHOR_PCT_Y)
+            txt(x, py, f"{100-a['value']:.2f}% lost", TR.PCT_PX, TR.INK,
+                "middle", "bold", halo=False)
 
     # Keep-out boxes for the fan solver: provider bars with their labels, and the
     # fraud terminal. A tributary terminal must not land on existing furniture.
@@ -311,12 +376,17 @@ def render(cfg):
         _obs.append((barL-8, node_y[p]-26, barR+8, node_y[p]+node[p]*ys+6))
     _pin=[]
     if fraud > 0:
-        _obs.append((xPR[1]-330, _fy-22, xPR[1]+6, _fy+22))
-        _pin.append(dict(name="__fraud", xb=xCL[0]+6, xt=xPR[1]-8,
-                         th=max(fraud*ys,3.0), sub="",
-                         y_src=ffs_y+ffs*ys-max(fraud*ys,3.0)/2,
-                         fixed_y=_fy, anchor="end"))
-    return svg, _draw_hr1(cfg, bites, ys, TB, _obs, _pin)
+        # Fraud is no longer a fan participant. It sits ABOVE the HR-1 rule, so it
+        # cannot be crossed by a tributary and does not need to order against
+        # them; it is a keep-out box and nothing more. Its label is right-aligned
+        # at the bar end and reaches back about 340 units.
+        _obs.append((barR-340, _fy-24, barR+8, _fy+20))
+    # The HR-1 rule sits BELOW everything the flow draws, so it can no longer cut
+    # through the Rx drugs fan (JW, 2026-09-04). Derived, never a literal: the
+    # flow's own lowest point decides where the HR-1 zone starts.
+    _hr1_rule = max(node_y[order[-1]]+node[order[-1]]*ys, ffs_y+ffs*ys) + (
+        76 if fraud > 0 else 30)
+    return svg, _draw_hr1(cfg, bites, ys, TB, _obs, _pin, _hr1_rule)
 
 
 def _solve_pies(order, node, gt):
@@ -333,7 +403,7 @@ def _solve_pies(order, node, gt):
     return {p:[M[p][g]/sum(M[p].values()) for g in G] for p in order}
 
 # --------------------------------------------------------------------------
-def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=()):
+def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
     """HR-1 tributaries. Each leaves flush with the edge it comes from and
     terminates downstream of its own bite x (S-055, S-057). Terminal geometry
     comes from cfg.hr1_term, sourced from outflows.py, never written twice."""
@@ -345,9 +415,9 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=()):
     add('<defs><pattern id="hr1hatch" width="6" height="6" patternUnits="userSpaceOnUse" '
         'patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" '
         'stroke="#6f4747" stroke-width="2.1" stroke-opacity="0.55"/></pattern></defs>')
-    add(f'<line x1="330" y1="788" x2="1560" y2="788" stroke="{WARM}" stroke-width="1.1" '
-        f'stroke-dasharray="7 5" stroke-opacity="0.7"/>')
-    txt(336,780,"HR-1 TAKES THESE OUT",11,WARM,"start","bold",halo=False)
+    add(f'<line x1="330" y1="{rule_y:.1f}" x2="1560" y2="{rule_y:.1f}" stroke="{WARM}" '
+        f'stroke-width="1.1" stroke-dasharray="7 5" stroke-opacity="0.7"/>')
+    txt(336,rule_y-8,"HR-1 TAKES THESE OUT",11,WARM,"start","bold",halo=False)
     # Solve the fan: terminals are placed so no tributary crosses another
     # (STYLE_GUIDE 2.9). Nothing here is hand-positioned.
     items=[]
@@ -365,13 +435,17 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=()):
     from collections import defaultdict
     grp=defaultdict(list)
     for it in items: grp[round(it["xt"])].append(it)
-    STACKS={k:sorted(v,key=lambda i:i["y_src"]) for k,v in grp.items() if len(v)>1}
-    solo=[it for it in items if round(it["xt"]) not in STACKS]
-    YT, ANCH, fan_warn = fan_rows(solo + list(pinned), obstacles=obstacles)
-    for k,v in STACKS.items():
-        y=FAN_STACK_TOP
-        for it in v:
-            YT[it["name"]]=y; ANCH[it["name"]]="start"; y+=it["th"]
+    # NEVER MERGE FANNING TRIBUTARIES AT THEIR TERMINATION POINTS (JW,
+    # 2026-09-04). Tributaries sharing a terminal column used to be stacked
+    # contiguously at one point so a reader could add their thicknesses by eye
+    # and recover the column's subtraction. That reason is now served by the
+    # decrement marker on the number line, and it cost the thing the audience
+    # actually wants: each regulation's own dollars and cents, on its own
+    # terminal. Every tributary is placed by the solver, individually.
+    STACKS={}
+    solo=list(items)
+    YT, ANCH, fan_warn = fan_rows(solo + list(pinned), top=rule_y+18,
+                                  obstacles=obstacles)
     for w in fan_warn:
         print(f"  WARNING  fan layout: {w}")
     _x = fan_crossings(solo + list(pinned), YT)

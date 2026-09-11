@@ -58,8 +58,10 @@ def build_2024():
     gate(instances.AS_IS_2024, 'FY2024 as-is')
     base, over = sankey.render(instances.AS_IS_2024)
     emit("national_2024", base, over)
-    shutil.copy2(os.path.join(REF, "national_2024_combined.png"),
-                 os.path.join(REF, "national_baseline.png"))
+    # One render, one name. `national_baseline.png` was an alias of this file
+    # under its pre-refactor name; sheet.py now asks for the real one. Aliases
+    # are how a PNG and its SVG came to disagree about which build they were
+    # from, which is a defect the crossing gate cannot see through.
 
 
 def build_dc():
@@ -75,9 +77,10 @@ def build_2030(variant="mixed"):
     gate(cfg, f'FY2030 to-be [{variant}]')
     base, over = sankey.render(cfg)
     emit(f"national_2030_{variant}", base, over)
-    if variant == "mixed":
-        shutil.copy2(os.path.join(REF, "national_2030_mixed_combined.png"),
-                     os.path.join(REF, "national_2030_combined.png"))
+    # No `national_2030_combined.png` alias. sheet.py's "national_2030" panel
+    # already points at the mixed render, so the alias was consumed by nothing,
+    # and copying a PNG forward under a name whose SVG was NOT rebuilt is what
+    # left an orphan combined.svg for crossings.py to find.
 
 
 if __name__ == "__main__":

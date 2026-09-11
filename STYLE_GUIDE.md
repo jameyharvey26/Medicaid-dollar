@@ -155,9 +155,55 @@ number of bites without breaking the cadence.
 sub-column's right edge when that falls clear, and the midpoint when it does not.
 Without this the plain rule stacks a balance dot on the following bite dot.
 
-**4.7 Three rows below the line, each with one job:** phase name, then percentage
-lost beneath it, then bite short names on their own row. Sharing a row breaks as
-soon as a year has more bites in it.
+**4.7 SUPERSEDED by 4.9.** Three rows below the line, one job each, belonged to
+the running ledger. The four-anchor line has two registers instead (4.10).
+
+**4.9 The line is four anchors and a marker per decrement.** $100 Medicaid
+Dollars, Funding Disbursed, Claims Paid, Health Services Delivered, on every
+diagram, each on the LEFT EDGE of the column whose state it reports. Large filled
+circles in Agilian blue. They are visual anchors first and figures second: the
+reader finds the same four in the same four places on any two panels.
+
+Decrements are smaller markers carrying class in SHAPE as well as colour — HR-1
+rhombus, administration square, fraud triangle — placed midway between where the
+money leaves the flow and the furthest point it reaches, both read from the
+declared outflow geometry so the line stays in register with the Sankey above it.
+A bundled decrement takes the earliest origin and the furthest FORWARD
+termination; an upstream-returning leg is excluded, since its midpoint would sit
+behind its own origin. **All summing happens at the anchors.**
+
+**4.10 Two registers, two rooms.** Where the money has got to, and what was taken
+out of it, are different kinds of statement and may not share a strip of canvas.
+Anchor VALUES sit above the line — 82 units, one row, nothing competes. Everything
+else reads below, where there are 152 and two tiers. Anchor names are fixed
+furniture and take the first tier before any marker; a decrement gives way to
+them, never the reverse, and a stepped-down block is led back to its marker by a
+hairline. A second step needed means two decrements genuinely occupy the same span
+of the flow: the build reports it and the editor places them.
+
+**4.11 Never merge fanning tributaries at their termination points.** Each
+tributary gets its own terminal, its own name and its own dollars and cents. The
+column total is the decrement marker's job now.
+
+**4.8 A label below the line may not reach past the dot on either side of it.**
+Everything below the line is centred on a dot, so that dot is what a label
+belongs to; a label reaching past its neighbour's dot starts reading as that
+neighbour's label instead. The measure is the DOT, not the neighbour's label
+span: dots are the lattice and labels are not, and a rule written against label
+spans changes its answer every time a word changes.
+
+The three rows are at different heights, so a violation never overprints
+anything and an eye will pass it — `tracker.neighbour_room` is the test. At
+FY2030 density "Eligibility Rules" spanned a bite dot at 733 with balance dots at
+647 and 820 on either side: "Eligibility" sat under one and "Rules" under the
+other, and the row read as annotation on "Disbursed".
+
+A short name that does not fit **wraps**, it is never shrunk: type size is frozen
+across panels the same way scale is (1.3). A single word that still overruns
+fails the build, because at that point the fix is the name in
+`instances.py: subs_spec`, not the layout. 4.5 promises the tracker can carry any
+number of bites; each extra bite in a column narrows every sub-column, so the
+label rule has to be solved rather than eyeballed or the promise is empty.
 
 ---
 
@@ -193,6 +239,15 @@ of panel keys declared once in `sheet.py: PANELS`. Panels are pasted at native
 pixel width, because horizontal register between panels is the entire reason the
 sheet exists (1.2, 1.3, S-060). If two panels come back at different widths, that
 is a renderer defect and `sheet.py` reports it rather than resizing to hide it.
+
+**6.6 One render, one name. No aliases in `reference_renders/`.** A build never
+copies a render forward under a second name. `build.py` was aliasing PNGs to
+pre-refactor names without their SVGs, so a PNG and an SVG sharing a name came
+from different builds, and `crossings.py` spent a session reporting a crossing in
+a render nothing draws any more. Panels ask for the real filename.
+`crossings.py` derives its scan list from `sheet.py: PANELS` and fails on any
+`*_combined.svg` no panel claims, so an orphan is a build error rather than a
+phantom finding.
 
 **6.5 A refactor that changes a pixel is not a refactor.** Render before, change,
 render after, diff the PNGs, expect an empty difference bounding box.

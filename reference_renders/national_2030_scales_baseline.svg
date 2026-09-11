@@ -1,6 +1,6 @@
-<svg viewBox="0 0 2200 1240" width="100%" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 2200 1300" width="100%" xmlns="http://www.w3.org/2000/svg">
 <g id="baseline">
-<rect x="0" y="0" width="2200" height="1240" fill="#faf8f3"/>
+<rect x="0" y="0" width="2200" height="1300" fill="#faf8f3"/>
 <text x="116.0" y="58.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#272727" text-anchor="start" font-weight="bold">FEDERAL</text>
 <text x="116.0" y="77.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">money from above</text>
 <line x1="110" y1="90" x2="110" y2="1030" stroke="#e2dccf" stroke-width="1"/>
@@ -101,12 +101,12 @@
 <text x="1285.0" y="258.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#7d6f86" text-anchor="end" font-weight="bold">Dual MCO plan administration  $0.95</text>
 <rect x="1139.9" y="263.5" width="149.1" height="16.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="1285.0" y="274.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10.5" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">dual-plan administration</text>
-<path d="M1306.0,717.1 C1370.0,788.6 1440.0,876.6 1752.0,876.6" fill="none" stroke="#e8170f" stroke-width="3.0" stroke-opacity="0.95" stroke-linecap="round"/>
-<rect x="1752.0" y="874.1" width="6.0" height="5.0" rx="2" fill="#e8170f" fill-opacity="1.0"/>
-<rect x="1587.4" y="856.6" width="162.6" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1746.0" y="868.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#e8170f" text-anchor="end" font-weight="bold">Documented fraud  $0.14</text>
-<rect x="1396.2" y="876.1" width="353.8" height="15.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1746.0" y="885.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="9.5" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">providers receive it; it is not services delivered (not to scale)</text>
+<path d="M1306.0,717.1 C1370.0,788.6 1440.0,932.6 1752.0,932.6" fill="none" stroke="#e8170f" stroke-width="3.0" stroke-opacity="0.95" stroke-linecap="round"/>
+<rect x="1752.0" y="930.1" width="6.0" height="5.0" rx="2" fill="#e8170f" fill-opacity="1.0"/>
+<rect x="1587.4" y="912.6" width="162.6" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1746.0" y="924.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#e8170f" text-anchor="end" font-weight="bold">Documented fraud  $0.14</text>
+<rect x="1396.2" y="932.1" width="353.8" height="15.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1746.0" y="941.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="9.5" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">providers receive it; it is not services delivered (not to scale)</text>
 <path d="M1300.0,366.9 C1430.0,366.9 1430.0,243.4 1560.0,243.4 L1560.0,270.3 C1430.0,270.3 1430.0,393.8 1300.0,393.8 Z" fill="#3f8f8a" fill-opacity="0.62" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
 <path d="M1300.0,514.8 C1430.0,514.8 1430.0,270.3 1560.0,270.3 L1560.0,277.7 C1430.0,277.7 1430.0,522.1 1300.0,522.1 Z" fill="#9a6fa6" fill-opacity="0.62" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
 <path d="M1300.0,553.7 C1430.0,553.7 1430.0,277.7 1560.0,277.7 L1560.0,356.8 C1430.0,356.8 1430.0,632.8 1300.0,632.8 Z" fill="#5f7f96" fill-opacity="0.8" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6"/>
@@ -241,45 +241,47 @@
 <text x="2063.2" y="129.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#272727" text-anchor="start" font-weight="normal">Aged</text>
 <text x="1780.0" y="150.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">numbers = % of that node's dollars (black sits outside)</text>
 <line x1="110" y1="1030" x2="2180" y2="1030" stroke="#e2dccf" stroke-width="1.2"/>
-<line x1="205" y1="1112.0" x2="1970" y2="1112.0" stroke="#111418" stroke-width="3.4" stroke-opacity="0.85"/>
-<text x="252.5" y="996.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="26" fill="#8B5A5A" text-anchor="middle" font-weight="bold">−$1.24</text>
-<text x="294.0" y="1016.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#8B5A5A" text-anchor="end" font-weight="normal" font-style="italic">provider tax limits</text>
-<text x="495.0" y="996.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="26" fill="#5c6169" text-anchor="middle" font-weight="bold">−$6.64</text>
-<text x="495.0" y="1016.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#5c6169" text-anchor="middle" font-weight="normal" font-style="italic">administration + Medicare premiums</text>
-<text x="755.0" y="996.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="26" fill="#8B5A5A" text-anchor="middle" font-weight="bold">−$8.17</text>
-<text x="814.0" y="1034.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#8B5A5A" text-anchor="end" font-weight="normal" font-style="italic">work reporting, renewals, enrolment rules, other</text>
-<text x="1060.0" y="996.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="26" fill="#5c6169" text-anchor="middle" font-weight="bold">−$5.12</text>
-<text x="1060.0" y="1016.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#5c6169" text-anchor="middle" font-weight="normal" font-style="italic">plan administration + earnings</text>
-<text x="1430.0" y="996.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="26" fill="#8B5A5A" text-anchor="middle" font-weight="bold">−$0.85</text>
-<text x="1430.0" y="1016.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#8B5A5A" text-anchor="middle" font-weight="normal" font-style="italic">directed payment caps</text>
-<text x="1765.0" y="996.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="26" fill="#b23a32" text-anchor="middle" font-weight="bold">−$0.14</text>
-<text x="1765.0" y="1016.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#b23a32" text-anchor="middle" font-weight="normal" font-style="italic">documented fraud</text>
-<circle cx="205" cy="1112.0" r="11" fill="#111418"/>
-<text x="205.0" y="1090.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="36" fill="#111418" text-anchor="middle" font-weight="bold">$100.00</text>
-<text x="205.0" y="1182.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="25" fill="#111418" text-anchor="middle" font-weight="bold">$100 prior law</text>
-<text x="205.0" y="1212.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="25" fill="#111418" text-anchor="middle" font-weight="bold">FY2030</text>
-<circle cx="300" cy="1112.0" r="11" fill="#8B5A5A"/>
-<text x="300.0" y="1056.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="36" fill="#8B5A5A" text-anchor="middle" font-weight="bold">$98.76</text>
-<text x="300.0" y="1146.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="middle" font-weight="bold">1.24% lost</text>
-<circle cx="690" cy="1112.0" r="11" fill="#5c6169"/>
-<text x="690.0" y="1090.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="36" fill="#5c6169" text-anchor="middle" font-weight="bold">$92.12</text>
-<text x="690.0" y="1146.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#5c6169" text-anchor="middle" font-weight="bold">7.88% lost</text>
-<circle cx="820" cy="1112.0" r="11" fill="#8B5A5A"/>
-<text x="820.0" y="1056.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="36" fill="#8B5A5A" text-anchor="middle" font-weight="bold">$83.95</text>
-<text x="820.0" y="1146.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="middle" font-weight="bold">16.05% lost</text>
-<text x="820.0" y="1182.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="25" fill="#111418" text-anchor="middle" font-weight="bold">Disbursed</text>
-<circle cx="1300" cy="1112.0" r="11" fill="#5c6169"/>
-<text x="1300.0" y="1090.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="36" fill="#5c6169" text-anchor="middle" font-weight="bold">$78.83</text>
-<text x="1300.0" y="1146.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#5c6169" text-anchor="middle" font-weight="bold">21.17% lost</text>
-<circle cx="1560" cy="1112.0" r="11" fill="#8B5A5A"/>
-<text x="1560.0" y="1090.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="36" fill="#8B5A5A" text-anchor="middle" font-weight="bold">$77.99</text>
-<text x="1560.0" y="1146.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="middle" font-weight="bold">22.01% lost</text>
-<text x="1560.0" y="1182.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="25" fill="#111418" text-anchor="middle" font-weight="bold">Claims paid</text>
-<circle cx="1970" cy="1112.0" r="11" fill="#b23a32"/>
-<text x="1970.0" y="1090.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="36" fill="#b23a32" text-anchor="middle" font-weight="bold">$77.85</text>
-<text x="1970.0" y="1146.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#b23a32" text-anchor="middle" font-weight="bold">22.15% lost</text>
-<text x="1970.0" y="1182.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="25" fill="#111418" text-anchor="middle" font-weight="bold">Health Services</text>
-<text x="1970.0" y="1212.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="25" fill="#111418" text-anchor="middle" font-weight="bold">delivered</text>
+<line x1="110" y1="1112.0" x2="1760" y2="1112.0" stroke="#111418" stroke-width="3.4" stroke-opacity="0.85"/>
+<polygon points="238.0,1101.0 249.0,1112.0 238.0,1123.0 227.0,1112.0" fill="#8B5A5A"/>
+<line x1="238.0" y1="1127.0" x2="238.0" y2="1188.0" stroke="#8B5A5A" stroke-width="1.1" stroke-opacity="0.55"/>
+<text x="238.0" y="1202.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#8B5A5A" text-anchor="middle" font-weight="bold">−$1.24</text>
+<text x="238.0" y="1224.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="middle" font-weight="bold">Provider Tax</text>
+<rect x="707.8" y="1102.3" width="19.4" height="19.4" fill="#5c6169"/>
+<line x1="717.5" y1="1127.0" x2="717.5" y2="1188.0" stroke="#5c6169" stroke-width="1.1" stroke-opacity="0.55"/>
+<text x="717.5" y="1202.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#5c6169" text-anchor="middle" font-weight="bold">−$6.64</text>
+<text x="717.5" y="1224.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#5c6169" text-anchor="middle" font-weight="bold">State Admin</text>
+<polygon points="742.0,1101.0 753.0,1112.0 742.0,1123.0 731.0,1112.0" fill="#8B5A5A"/>
+<line x1="742.0" y1="1127.0" x2="742.0" y2="1244.0" stroke="#8B5A5A" stroke-width="1.1" stroke-opacity="0.55"/>
+<text x="742.0" y="1258.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#8B5A5A" text-anchor="middle" font-weight="bold">−$8.17</text>
+<text x="742.0" y="1280.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="middle" font-weight="bold">Eligibility Rules</text>
+<rect x="1170.3" y="1102.3" width="19.4" height="19.4" fill="#5c6169"/>
+<line x1="1180.0" y1="1127.0" x2="1180.0" y2="1188.0" stroke="#5c6169" stroke-width="1.1" stroke-opacity="0.55"/>
+<text x="1180.0" y="1202.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#5c6169" text-anchor="middle" font-weight="bold">−$5.12</text>
+<text x="1180.0" y="1224.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#5c6169" text-anchor="middle" font-weight="bold">MCO Admin</text>
+<polygon points="1431.0,1101.0 1442.0,1112.0 1431.0,1123.0 1420.0,1112.0" fill="#8B5A5A"/>
+<line x1="1431.0" y1="1127.0" x2="1431.0" y2="1188.0" stroke="#8B5A5A" stroke-width="1.1" stroke-opacity="0.55"/>
+<text x="1431.0" y="1202.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#8B5A5A" text-anchor="middle" font-weight="bold">−$0.85</text>
+<text x="1431.0" y="1224.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="middle" font-weight="bold">Payment Caps</text>
+<polygon points="1533.0,1101.0 1543.5,1120.6 1522.5,1120.6" fill="#b23a32"/>
+<text x="1533.0" y="1146.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#b23a32" text-anchor="middle" font-weight="bold">−$0.14</text>
+<text x="1533.0" y="1168.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#b23a32" text-anchor="middle" font-weight="bold">Fraud</text>
+<circle cx="110" cy="1112.0" r="18.0" fill="#17325c"/>
+<text x="110.0" y="1076.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$100.00</text>
+<text x="110.0" y="1152.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">$100 prior law</text>
+<text x="110.0" y="1180.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">FY2030</text>
+<circle cx="820" cy="1112.0" r="18.0" fill="#17325c"/>
+<text x="820.0" y="1076.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$83.95</text>
+<text x="820.0" y="1152.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Funding Disbursed</text>
+<text x="820.0" y="1180.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#111418" text-anchor="middle" font-weight="bold">16.05% lost</text>
+<circle cx="1300" cy="1112.0" r="18.0" fill="#17325c"/>
+<text x="1300.0" y="1076.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$78.83</text>
+<text x="1300.0" y="1152.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Claims Paid</text>
+<text x="1300.0" y="1180.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#111418" text-anchor="middle" font-weight="bold">21.17% lost</text>
+<circle cx="1760" cy="1112.0" r="18.0" fill="#17325c"/>
+<text x="1760.0" y="1076.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$77.85</text>
+<text x="1760.0" y="1152.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Health Services</text>
+<text x="1760.0" y="1180.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Delivered</text>
+<text x="1760.0" y="1208.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#111418" text-anchor="middle" font-weight="bold">22.15% lost</text>
 </g>
 <g id="overlay-hr1" display="none">
 </g>

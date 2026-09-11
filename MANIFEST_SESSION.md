@@ -175,3 +175,216 @@ Full `build.py` clean. `crossings.py` reads 0 in the margin on all five renders.
 
 OPEN, not fixed: on FY2030 the bite short names still overlap the phase names at
 that density. FY2024 is clean. Agreed with JW to fix when FY2030 is taken up.
+
+
+# Session 2026-09-04
+
+## Opening gate: crossings.py read 1, and the render was not real
+`python3 crossings.py` reported one margin crossing in `national_2030`. It was in
+`reference_renders/national_2030_combined.svg`, a file no builder writes. The
+previous manifest records that file as DELETED; it was still in the repo, because
+a deletion noted in chat is not a deletion in the working tree.
+
+Root cause, and it is not the stale file: `build.py` copied the mixed render's PNG
+forward under the old name `national_2030_combined.png` and did NOT copy its SVG,
+so a PNG and an SVG sharing a name came from different builds. `crossings.py` then
+globbed the directory for `*_combined.svg`, answering "what files are here" when
+the question is "what do we draw".
+
+- `build.py` — both PNG aliases removed (`national_2030_combined.png`,
+  `national_baseline.png`). One render, one name.
+- `sheet.py` — the `national_2024` panel asks for `national_2024_combined.png`
+  instead of the alias `national_baseline.png`.
+- `crossings.py` — scan list derived from `sheet.py: PANELS`; a `*_combined.svg`
+  no panel claims is an ORPHAN and fails the gate; a declared panel with no SVG
+  reports MISSING rather than being silently skipped.
+- STYLE_GUIDE **6.6** added. Standing note **S-079**.
+
+DELETE FROM THE REPO (will not be removed by dragging in the zip):
+    reference_renders/national_2030_combined.svg
+    reference_renders/national_2030_combined.png
+    reference_renders/national_2030_baseline.svg
+    reference_renders/national_baseline.png
+    reference_renders/national_baseline.svg
+
+`crossings.py` now reads 0 on all five renders, orphan check clean.
+
+## FY2030 tracker: bite short names
+The defect was not an overprint. The three below-line rows are at different
+heights, so nothing collided in pixels. "Eligibility Rules" spanned 634–832 around
+its bite dot at 733, with balance dots at 647 and 820 either side: "Eligibility"
+sat under one, "Rules" under the other, and the row read as annotation on
+"Disbursed". Measured, not eyeballed.
+
+Fix is geometric and keyed to DOTS, not to neighbouring label spans:
+
+- `tracker.py` — `text_w`, `neighbour_room`, `wrap_short`, `short_lines`.
+  A below-line label may not reach past the dot on either side of its own. A short
+  name that does not fit WRAPS; it is never shrunk, because type size is frozen
+  across panels the way scale is. A single word that still overruns raises and
+  fails the build, since the fix is then the name in `subs_spec`, not the layout.
+  `SHORT_LEAD = 26`.
+- `sankey.py` — short names drawn as lines; canvas `H` 1240 → 1264 to carry the
+  second line. `W` untouched: column register is frozen, panel height never was.
+- STYLE_GUIDE **4.8** added. Standing note **S-078**.
+
+Result: FY2030 wraps to "Eligibility" / "Rules", spans [669,797] and [704,762],
+both inside the 647–820 gap. Every other short name in both years is unchanged and
+already satisfied the rule. FY2024's below-line block is identical to last
+session, same x, same y, same wording.
+
+## Rebuilt
+`build.py` (2024, 2030 mixed, DC) and `build.py sensitivity` (holds, scales,
+mixed) — the sensitivities are rebuilt this once so no render is left at the old
+1240 canvas. All viewBoxes 0 0 2200 1264. `check.py` passes on every instance.
+`crossings.py` 0. Sheets regenerated: working, national_dc, overhead.
+
+## Endnote audit (S-054, standard procedure — not requested)
+Extracted every figure printed on the two national panels from the rendered SVGs
+and checked each against `ENDNOTES.md`. 23 figures were on the artifacts with no
+entry: the whole FY2024 measured spine, the three payer lanes, the six provider
+nodes, and their FY2030 counterparts. EN-20 covered them by CLASS with vintages
+but did not carry the figures, and 5.4 asks for the figures.
+
+- **EN-37 AMENDED** — the rebuilt tracker prints $92.06, which the old entry ran
+  through implicitly. No figure moved; a figure became visible.
+- **EN-42** — FY2024 spine, lanes, nodes and beneficiary shares. MACStats Feb 2026
+  Ex.16/17/21 on CMS-64 FY2024; federal share independently recomputed from the
+  four FY2024 quarters in `fmap.py`. Ex.21 is FY2023 and the mixed vintage is
+  restated on the figures rather than left at EN-20.
+- **EN-44** — the FY2030 lanes, nodes and margin as drawn, all modelled outputs of
+  the conserved ledger.
+
+Coverage re-checked programmatically after writing: every `$NN.NN` on either panel
+now resolves to an entry.
+
+## EN-43 — NEW OPEN ITEM, and it blocks the freeze
+Public-company earnings **$0.76** (FY2024) and **$0.69** (FY2030) are printed,
+labelled, and drawn with the same weight as measured figures beside them. They are
+an estimate with no primary source. `README.md` has carried "a subset of margin;
+est." and a note that a 10-K segment carve is wanted; no endnote existed and the
+artifact does not flag it.
+
+The $5.61 payer total is sound — it is the measured margin. Only the split between
+plan administration (sourced, EN-15) and earnings (not sourced) rests on the
+estimate, and nothing downstream of the payer column moves if the carve changes.
+
+Recommended: take the earnings label off for the freeze and draw the undivided
+$5.61 margin with the split declared absent on the panel (S-071), then do the 10-K
+carve afterwards. An absent split declared is honest at any vintage; the carve is
+filings work that should not gate the presentation layer. **JW's call — asked in
+chat, not actioned.**
+
+## Directed payment caps: origination and termination not visible
+JW's report. The lane was declared and drawn — the defect was terminal placement.
+`_clear_obstacles` pushed the caps terminal below the provider bars; `_place` then
+hit the PINNED fraud terminal 40 units under the last bar as a ceiling, found no
+room, took its `y = max(top, ceiling)` escape hatch, and put the terminal back on
+the Rx drugs bar with its label printed across the bar. The ribbon then ran the
+whole way hidden under the fee-for-service band because both ended at the same
+place. Neither gate saw it: `crossings.py` scans the margin, `fan_crossings`
+compares tributaries to tributaries, and neither looks at furniture.
+
+- `sankey.py` — fraud terminal drop 40 → 96, with the reasoning at the line. It is
+  a ceiling for every tributary terminating in that column, not a local nudge.
+- Standing note **S-080**.
+
+Result: caps terminates in clear space below the Rx drugs bar with a visible
+terminus, its own corridor out of the claims column, and its label no longer over
+the bar. Both gates pass — `crossings.py` 0 on all five, `check.py` clean.
+
+FY2024 changed too, as it must: same rule, same panels in register. `ImageChops`
+bbox (1543, 897, 2078, 1142) — the fraud terminal and its label, nothing else.
+Its label had been crowded under the Rx drugs bar there as well.
+
+## Directed payment caps were leaving the wrong lane
+JW, reading the corrected render: do these really subtract only from
+fee-for-service? They do not. A state directed payment is defined at 42 CFR
+438.6(c) as directing an MCO's, PIHP's or PAHP's expenditures — managed care by
+construction, no fee-for-service counterpart. The bite was carved off the bottom of
+the fee-for-service band, saying the opposite of what the instrument is.
+
+- `sankey.py` — the claims-column HR-1 bite now leaves the top edge of the
+  managed-care block. Not the bottom: that edge is measured at y=553.8 and the
+  fee-for-service lane starts at exactly 553.8, so a bite there sits on a shared
+  edge and reads as either lane.
+- **EN-45** written. Standing note **S-081**.
+
+No figure moved. $0.85 unchanged, claims subtraction unchanged, every tracker
+balance unchanged, conservation unchanged. `crossings.py` 0 on all five,
+`check.py` clean. FY2024 has no HR-1 bite and is untouched by this change.
+
+Declared limitation in EN-45: SDPs apply across MCO and dual-MCO capitation and the
+ledger does not decompose the $0.85 between them, so the ribbon leaves the combined
+block at one edge rather than split in proportion. Not filled with a share (S-068).
+
+## The number line rebuilt on four anchors (JW's sketch + rules)
+- `outflows.py` — `DECREMENT_MEMBERS`, `decrement_span`, `decrement_x`,
+  `TRACKER_ANCHORS`. Marker placement is derived from the outflow geometry
+  already declared, so the line cannot drift out of register with the Sankey.
+- `tracker.py` — `ledger`, `mark_tiers`, `shape_gap`, `collisions`, and the
+  anchor/marker geometry. The running-ledger model above it is left in place but
+  superseded.
+- `sankey.py` — new drawing block: four Agilian-blue anchors, shaped markers,
+  summing only at anchors. Canvas `H` 1264 → 1300 for the second tier.
+- `_draw_hr1` — `STACKS` removed; every tributary placed individually.
+- STYLE_GUIDE **4.9 / 4.10 / 4.11**, 4.7 superseded. Notes **S-082/083/084**.
+
+Gates: `crossings.py` 0 on all five, `check.py` clean. Sensitivities rebuilt so
+nothing is left at the old canvas.
+
+**One printed figure changes and it is not a ledger change.** FY2030 Claims Paid
+reads $78.77, not $77.93. The old line put "Claims paid" at the claims column's
+RIGHT edge, after directed payment caps; the anchor sits at its LEFT edge, where
+money enters. $78.77 is what arrives, $77.93 was what left. Same six decrements,
+same amounts, same conservation, same $77.79 delivered. EN-37 needs amending and
+`PAPER_PASSAGES.md` needs checking for $77.93.
+
+**Open, reported by the build, for JW.** `State Admin` and `Eligibility Rules` sit
+24 units apart: administration and all five eligibility tributaries terminate on
+the state agency's right edge, so their midpoints nearly coincide. Labels are
+tiered and legible, but the two shapes very nearly touch.
+
+## Presentation tweaks (JW)
+- **Column sub-labels** renamed to name the FUNCTION each column performs rather
+  than how the drawing was assembled: federal appropriation / blended cost
+  allocation / budgeted to Medicaid / payment mechanisms / MCO administration /
+  claims paid to providers / sized by spend. Beneficiaries unchanged.
+- **Footer** was a note to ourselves about register. Replaced with what the
+  artifact is: two dollars at the same scale, FY2024 and FY2030 under P.L. 119-21,
+  and what the line beneath each panel means.
+- **HR-1 rule** no longer cuts through the Rx drugs fan. It is derived from the
+  flow's own lowest point rather than the literal y=788 it had been sitting at, so
+  it drops below everything the flow draws and cannot cross a ribbon again.
+- **Documented fraud** redrawn as a ribbon in the same family as the lanes above
+  it, not a stroke swooping across the canvas. It terminates at the RIGHT END OF
+  THE PROVIDER BARS — providers are where fraud happens in this ledger — instead
+  of on the providers/beneficiaries boundary, which read as though beneficiaries
+  were party to it. It now stays ABOVE the HR-1 rule: fraud is not something HR-1
+  takes out, and a line diving through that zone said it was. It is no longer a
+  fan participant, only a keep-out box.
+- **Label overlaps** (Provider tax limits over the state band, among others) clear
+  as a consequence of the rule dropping.
+- `FAN_FLOOR` 1024 → 1100, tracker `RULE_Y` 1030 → 1106, `BY` 1112 → 1188, canvas
+  `H` 1300 → 1376. Moving the HR-1 zone down cost the fan 76 units of room and it
+  overflowed; the tracker moves down with it rather than the fan being squeezed.
+
+Cost, stated: FY2024 has no HR-1 tributaries, so the taller canvas leaves a band
+of white below its flow. Register requires both panels share column and tracker
+geometry (1.2), so that space is the price of comparability, not a defect.
+
+Gates: `crossings.py` 0 on all five, `check.py` clean.
+
+## PARKING LOT — tributaries terminating where they would have reached
+JW: the reach sub-labels ("would have reached a paid claim", "would have reached
+disbursements") suggest the tributaries should terminate THERE, showing where the
+bite hurts. This is a direct conflict with **S-075**, which put terminals on the
+tracker lattice and moved reach into the sub-label as text.
+
+Worth noting before it is taken up: it would also move the Eligibility Rules
+decrement marker. `decrement_span` takes the furthest forward termination, which
+is currently the state agency's right edge (820) for all five. If they terminated
+at their reach columns the furthest becomes the claims edge (1560) and the marker
+moves from 742 to about 1112 — which would resolve the 24-unit collision with
+State Admin the build is currently reporting. The −$8.17 total is unaffected
+either way; it is a sum of the same five figures.

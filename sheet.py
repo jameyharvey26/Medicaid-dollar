@@ -55,9 +55,12 @@ def f(sz, bold=True):
     return ImageFont.truetype(FB if bold else FR, sz)
 
 
-FOOTER = ("Columns are in register across every panel. Same column boundaries, "
-          "same tracker checkpoints, same scale: 1 dollar is the same width "
-          "everywhere.")
+# The footer talks to the READER, not to us. What the register rules buy is that
+# the two panels can be compared at all; saying so is worth more than reciting the
+# rules themselves (JW, 2026-09-04).
+FOOTER = ("Two Medicaid dollars at the same scale: the dollar as it flowed in "
+          "FY2024, and the same dollar in FY2030 with P.L. 119-21 applied. The "
+          "line beneath each panel is what reaches care.")
 
 
 # ---------------------------------------------------------------- panels
@@ -83,7 +86,7 @@ DC_2030_BLOCKED = [
 
 PANELS = {
     "national_2024": panel(
-        "national_baseline.png",
+        "national_2024_combined.png",
         "AS IS  \u00b7  NATIONAL  \u00b7  FY2024",
         "$100 of Medicaid spending, before P.L. 119-21",
         "CMS-64 FY2024 national totals. Measured, except where flagged.",

@@ -21,7 +21,7 @@ final subtraction there means the value never has to be printed twice.
 CLASSES carry colour, in the dots, the values and the amounts alike:
     hr1 brown | admin grey | fraud red
 """
-from outflows import COLS
+from outflows import COLS, TRACKER_ANCHORS
 
 # ---- palette -------------------------------------------------------------
 INK = "#111418"
@@ -33,8 +33,8 @@ SUBTLE = "#54585f"     # darkened from #6f6f6f
 COLOUR = {"hr1": HR1, "admin": ADMIN, "fraud": FRAUD}
 
 # ---- geometry ------------------------------------------------------------
-RULE_Y = 1030.0        # the hairline that closes the flow area
-BY = 1112.0            # the ledger line
+RULE_Y = 1106.0        # the hairline that closes the flow area
+BY = 1188.0            # the ledger line
 AMT_Y = -116.0         # subtraction amount, in the span it was taken in
 AMT_LAB_Y = -96.0
 AMT_LAB_Y2 = -78.0     # second label row, when two labels would collide
@@ -46,6 +46,7 @@ NAME_Y = 32.0          # balance's phase name
 NAME_LEAD = 26.0       # second line of a two-line phase name
 PCT_Y = 30.0           # percentage lost, measured from the LAST title line
 SHORT_Y = 102.0        # bite's short name, its own row
+SHORT_LEAD = 26.0      # second line of a wrapped short name
 TITLE_PX = 22
 SHORT_PX = 22
 PCT_PX = 15
@@ -163,6 +164,73 @@ def value_rows(seq):
     return rows
 
 
+def text_w(text, px):
+    """Advance width of a bold DejaVu string. One estimator, used everywhere in
+    this file, so two placers can never disagree about how wide a label is."""
+    return len(text) * px * 0.53
+
+
+def neighbour_room(x, dot_xs):
+    """How far a label centred on the dot at `x` may reach to either side before
+    it passes under the NEXT DOT along.
+
+    This is the ownership rule. Everything below the line is centred on a dot,
+    so a label reaching past its neighbour's dot stops reading as its own dot's
+    label and starts reading as that neighbour's. FY2030 'Eligibility Rules'
+    spanned 634-832 around a bite dot at 733 with balance dots at 647 and 820 on
+    either side: 'Eligibility' sat under one and 'Rules' under the other, and the
+    row read as annotation on 'Disbursed'. Nothing was overprinted -- the three
+    rows are at different heights -- which is why an eye passed it and a span
+    test catches it.
+
+    The measure is the DOT, not the neighbour's label span: dots are the lattice
+    (4.4), labels are not, and a rule written against label spans changes answer
+    every time a word changes.
+    """
+    left = [d for d in dot_xs if d < x - 0.5]
+    right = [d for d in dot_xs if d > x + 0.5]
+    room = []
+    if left:
+        room.append(x - max(left))
+    if right:
+        room.append(min(right) - x)
+    return min(room) if room else 1e9
+
+
+def wrap_short(short, room, px=SHORT_PX):
+    """Break a bite's short name onto as few lines as its dot's room allows.
+
+    Returns a list of lines. Raises if a single word still overruns: at that
+    point the name is too long for the lattice and the fix is the name, not the
+    layout, and the build should say so rather than draw it anyway (S-071).
+    """
+    lines, cur = [], ""
+    for wd in short.split():
+        trial = (cur + " " + wd).strip()
+        if cur and text_w(trial, px) / 2.0 > room:
+            lines.append(cur)
+            cur = wd
+        else:
+            cur = trial
+    if cur:
+        lines.append(cur)
+    over = [ln for ln in lines if text_w(ln, px) / 2.0 > room]
+    if over:
+        raise ValueError(
+            f"tracker: short name {short!r} does not fit its dot: "
+            f"{over!r} needs {max(text_w(ln, px) / 2.0 for ln in over):.0f} units "
+            f"of half-width and the neighbouring dots leave {room:.0f}. "
+            f"Shorten the name in instances.py:subs_spec (STYLE_GUIDE 4.8).")
+    return lines
+
+
+def short_lines(balances, bites):
+    """{bite x: [line, ...]} for every bite, wrapped to fit the lattice."""
+    dots_x = sorted({x for x, _v in balances} | {b[0] for b in bites})
+    return {x: wrap_short(short, neighbour_room(x, dots_x))
+            for x, _a, _c, short, _lab in bites}
+
+
 def two_rows(items, pad=10.0):
     """items: [(x, text, px)] -> {x: row} where row is 0 or 1. Anything that
     would overlap its neighbour on row 0 drops to row 1."""
@@ -198,3 +266,126 @@ def label_rows(placed, seq):
         spans.append((l0, l1, row))
         rows[x] = (anchor, row)
     return rows
+
+
+# ===========================================================================
+# THE FOUR-ANCHOR LEDGER  (JW, 2026-09-04)
+#
+# Supersedes the running-ledger model above: a dot wherever a number changes
+# (S-074) becomes four fixed anchors plus one marker per decrement. The anchors
+# are the same four on every diagram, so a reader can lay two panels side by
+# side and compare like with like. All summing — the running balance and the
+# percentage lost — happens at the anchors and nowhere else.
+#
+# Anchors are large filled circles. Decrement markers are smaller, and carry
+# their class in their SHAPE as well as their colour:
+#     HR-1 rhombus | administration square | fraud triangle
+# ===========================================================================
+AGILIAN_BLUE = "#17325c"
+
+ANCHOR_R = 18.0
+ANCHOR_VAL_Y = -36.0       # the running balance, above its anchor
+ANCHOR_VAL_PX = 34
+ANCHOR_NAME_Y = 40.0
+ANCHOR_NAME_LEAD = 28.0
+ANCHOR_NAME_PX = 23
+ANCHOR_PCT_Y = 28.0        # measured from the LAST name line
+
+# ANCHORS READ BELOW THE LINE, DECREMENTS READ ABOVE IT.
+# Every anchor-against-marker collision was a collision between two different
+# KINDS of statement sharing one strip of canvas: where the money has got to, and
+# what was taken out of it. Separating them by side removes the whole class at
+# once and leaves only marker-against-marker, which is a real crowding problem
+# rather than an artefact of the layout. It also means the line reads as a
+# sentence: balances underneath, deductions overhead.
+# The band ABOVE the line is 82 units deep — the rule at RULE_Y closes it — which
+# is room for exactly one row of anything, so a marker that needs to step out of
+# another's way has nowhere above to go. The band BELOW is 152 and can carry two
+# tiers, so that is where the reading happens. Only the anchors' VALUES stay
+# above, where nothing competes with them.
+MARK_R = 11.0
+MARK_AMT_Y = 34.0          # amount, below the line
+MARK_NAME_Y = 56.0         # name, beneath the amount
+MARK_TIER = 56.0           # a whole marker block steps DOWN when it would collide
+MARK_AMT_PX = 20
+MARK_NAME_PX = 17
+
+
+def ledger(subtractions, marker_x, start=100.0):
+    """(anchors, marks).
+
+    anchors: [dict(x, name=[lines], value)] — the four, always.
+    marks:   [dict(x, amount, cls, short)] — one per live decrement, placed by
+             outflows.decrement_x, which reads the Sankey's own geometry.
+
+    An anchor's value is the start less every decrement that has already been
+    taken by the time the flow reaches it. Nothing is summed anywhere else.
+    """
+    live = [s for s in subtractions if s[1] > 0.004]
+    marks = sorted(
+        [dict(x=marker_x[s[4]], amount=s[1], cls=s[2], short=s[4]) for s in live],
+        key=lambda m: m["x"])
+    anchors = []
+    for col, name in TRACKER_ANCHORS:
+        x = float(COLS[col][0])
+        anchors.append(dict(
+            x=x, name=list(name),
+            value=start - sum(m["amount"] for m in marks if m["x"] < x)))
+    return anchors, marks
+
+
+def mark_tiers(marks, anchors=(), pad=16.0):
+    """{short: tier} — 0 for the first row above the line, 1 for the next.
+
+    A marker keeps its geometric x; only its LABEL BLOCK moves, and only upward.
+    Where two decrements genuinely occupy the same span of the flow — state
+    administration and the eligibility rules both terminate on the state agency's
+    right edge — the honest answer is to stack them, not to slide one of them
+    somewhere it does not belong.
+    """
+    # The anchors' NAMES occupy the first tier before any marker does: they are
+    # fixed furniture and a decrement gives way to them, never the other way
+    # round. Seeding them here is what stops "State Admin" sliding under
+    # "Funding Disbursed" — two different kinds of statement, and the separation
+    # only works if the test knows about both.
+    tiers = {}
+    spans = [(a["x"] - max(text_w(l, ANCHOR_NAME_PX) for l in a["name"]) / 2 - 6,
+              a["x"] + max(text_w(l, ANCHOR_NAME_PX) for l in a["name"]) / 2 + 6, 0)
+             for a in anchors]
+    for m in marks:
+        w = max(text_w(m["short"], MARK_NAME_PX),
+                text_w(f"-${m['amount']:.2f}", MARK_AMT_PX))
+        l0, l1 = m["x"] - w / 2 - pad, m["x"] + w / 2 + pad
+        t = 0
+        while t < 2 and any(t == pt and not (l1 <= p0 or p1 <= l0)
+                            for p0, p1, pt in spans):
+            t += 1
+        spans.append((l0, l1, t))
+        tiers[m["short"]] = t
+    return tiers
+
+
+def shape_gap(marks, minimum=30.0):
+    """Markers whose SHAPES would touch. Reported, never silently moved."""
+    out = []
+    for a, b in zip(marks, marks[1:]):
+        if b["x"] - a["x"] < minimum:
+            out.append((a["short"], b["short"], b["x"] - a["x"]))
+    return out
+
+
+def collisions(anchors, marks, pad=14.0):
+    """Label spans on the line that overlap. The marker rule places by geometry
+    and does not negotiate, so where two markers genuinely belong in the same
+    place this REPORTS rather than silently nudging one of them somewhere it
+    does not belong."""
+    # Markers live above the line now, so they cannot collide with anchor names.
+    items = [(a["x"], max(text_w(l, ANCHOR_NAME_PX) for l in a["name"]), a["name"][0])
+             for a in anchors]
+    items.sort()
+    out = []
+    for (x0, w0, n0), (x1, w1, n1) in zip(items, items[1:]):
+        gap = (x1 - w1 / 2) - (x0 + w0 / 2)
+        if gap < pad:
+            out.append((n0, n1, gap))
+    return out

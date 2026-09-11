@@ -970,3 +970,114 @@ across whatever lies between it and the edge. That crossing is the flow working.
 described geometry in prose instead of rendering it and twice was wrong. Any claim
 about what a diagram looks like ships with the diagram, or a crop of it with the
 thing circled.
+
+**S-078 · All · A label below the tracker line belongs to the dot it can't reach past.**
+2026-09-04. The FY2030 short-name row was wrong in a way no overlap test would
+find: the three rows sit at different heights, so "Eligibility Rules" overprinted
+nothing. It simply spanned 634–832 around a bite dot at 733 with balance dots at
+647 and 820 either side, putting "Eligibility" under one and "Rules" under the
+other, and the row read as annotation on "Disbursed". The rule is now geometric
+and written against DOTS, not label spans: a below-line label may not reach past
+the dot on either side of its own (STYLE_GUIDE 4.8). Dots are the lattice; a rule
+keyed to a neighbour's label span changes its answer every time a word changes.
+The general point is that 4.5 promises the tracker carries any number of bites,
+and every extra bite in a column narrows every sub-column in it, so the label fit
+has to be SOLVED at render time — the same move as `fan_rows` for terminals. Names
+wrap; they are never shrunk, because type size is frozen across panels the way
+scale is. A single word that still overruns fails the build, since at that point
+the fix is the name and not the layout.
+
+**S-079 · All · One render, one name: an alias is how a detector goes blind.**
+2026-09-04. `crossings.py` opened the session reporting one margin crossing in
+`national_2030`. There was no crossing. `build.py` had been copying the mixed PNG
+forward under the pre-refactor name `national_2030_combined.png` without its SVG,
+so a superseded `national_2030_combined.svg` sat in `reference_renders/` from an
+older build and the gate kept reading it. The same alias pattern was live for
+`national_baseline.png`. Both are removed and the panels ask for real filenames.
+The deeper failure is that the gate globbed a DIRECTORY for its scan list, so it
+was answering "what files are here" when the question was "what do we draw"; it
+now derives the list from `sheet.py: PANELS` and treats an unclaimed
+`*_combined.svg` as a build error. Sibling of S-076: a detector pointed at the
+wrong input confirms whatever that input says, and a stale file is a wrong input.
+
+**S-080 · All · A pinned terminal's ceiling can bounce a solved terminal back onto the furniture it was just moved off.**
+2026-09-04. JW: directed payment caps showed no visible origination or
+termination. The ribbon was declared and drawn; what was wrong was where it
+landed. `_clear_obstacles` correctly pushed its terminal below the provider bars,
+and `_place` then found that the documented-fraud terminal — PINNED, and only 40
+units below the last provider bar — was a ceiling it had to stay above. With no
+room between bar and ceiling the placer took its own escape hatch, `y = max(top,
+ceiling)`, and put the terminal straight back on the Rx drugs bar with its label
+printed across it. The comment on that branch says "the crossing gate will report
+it if that is wrong"; the crossing gate checks tributary against tributary and
+never looks at furniture, so nothing reported it.
+
+Two things follow. First, the fraud terminal's drop is not a local constant: it
+sets the ceiling for every tributary terminating in that column, so it has to
+leave a fan row beneath the bars. Raised 40 → 96. Second, and more general: an
+escape hatch that abandons a constraint must not be silent. Same species as S-076
+and S-079 — a gate that does not check the thing an override breaks will confirm
+the override.
+
+The ribbon itself was never missing. When JW says he cannot see a lane, the first
+question is where its terminal landed, not whether it was declared.
+
+**S-081 · All · A lane can be geometrically clean and still say the wrong thing.**
+2026-09-04. Directed payment caps were drawn leaving the fee-for-service band.
+State directed payments are defined at 42 CFR 438.6(c) as directing an MCO's
+expenditures — managed care by construction, with no fee-for-service counterpart.
+Every gate passed throughout: conservation held, the crossing detector read zero,
+the fan solver was content. None of them knows what a lane MEANS, and the error was
+in the meaning. It survived because attention went to the placement problem
+immediately before it, and a lane that has just been made visible looks correct
+for the same reason it looks finished.
+
+The rule: when an outflow is declared, its SOURCE EDGE is a substantive claim about
+which instrument the money leaves, and it gets sourced like any other claim. Where
+an edge is shared between two lanes with no gap, the bite reads as either and the
+unambiguous edge is the one to take (here the top of the managed-care block, since
+the bottom of dual-MCO and the top of fee-for-service are the same y).
+
+More generally: the gates are geometric and the ledger is arithmetic. Neither
+checks incidence. JW caught this by looking at the picture and asking what it
+claimed — which is the check the build does not have.
+
+**S-082 · All · The number line is four anchors and a marker per decrement.**
+2026-09-04, JW. Supersedes **S-074**, the running ledger where a dot sat wherever
+a number changed. Four large Agilian-blue anchors — $100 Medicaid Dollars, Funding
+Disbursed, Claims Paid, Health Services Delivered — appear on every diagram, past
+and future, each on the LEFT EDGE of the column whose state it reports. They are
+visual anchors first and figures second: a reader lays two panels side by side and
+finds the same four in the same four places.
+
+Every decrement is a smaller marker carrying its class in its SHAPE as well as its
+colour: HR-1 rhombus, administration square, fraud triangle. A marker sits midway
+between where its money leaves the flow and the furthest point it reaches, both
+read from the declared outflow geometry, so the line cannot drift out of register
+with the Sankey it summarises. A bundled decrement takes the earliest origin and
+the furthest FORWARD termination; an upstream-returning leg is excluded, because
+its midpoint would sit behind its own origin.
+
+All summing happens at the anchors. The intermediate balances are gone.
+
+**S-083 · All · Never merge fanning tributaries at their termination points.**
+2026-09-04, JW. Tributaries sharing a terminal column were stacked contiguously at
+one point so a reader could add their thicknesses by eye and recover the column's
+subtraction. The decrement marker now carries that total, and the stack was
+costing the thing the audience actually wants: each regulation's own dollars and
+cents on its own terminal. Every tributary is placed individually by the solver.
+
+**S-084 · All · The line reads in two registers, and they need separate rooms.**
+2026-09-04. Anchor-against-marker overlaps were not a spacing problem; they were
+two different kinds of statement sharing one strip of canvas — where the money has
+got to, and what was taken out of it. The band ABOVE the line is 82 units deep,
+which is room for exactly one row, so a marker needing to step out of the way has
+nowhere to go up there: anchor VALUES sit above, everything else reads below,
+where there are 152 units and two tiers. Anchor names are fixed furniture and
+occupy the first tier before any marker does; a decrement gives way to them, never
+the reverse, and a stepped-down block is led back to its own marker by a hairline.
+
+Where a second step would be needed the build REPORTS rather than inventing an
+answer. Two decrements that genuinely occupy the same span of the flow — state
+administration and the eligibility rules both terminate on the state agency's
+right edge, 24 units apart — are a placement question for the editor.

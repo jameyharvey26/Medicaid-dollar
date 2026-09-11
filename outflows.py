@@ -134,7 +134,7 @@ FAN_LABEL_H = 45.0     # name + sub + amount
 # LABELS do not overlap in x; where labels do overlap, the 45px label block sets
 # the spacing instead. The widest gap that clears the tracker always wins.
 FAN_TIGHT_GAP = 18.0
-FAN_FLOOR = 1024.0     # tracker line sits at 1030; labels must clear it
+FAN_FLOOR = 1100.0     # tracker rule sits at 1106; labels must clear it
 
 
 def _label_w(it):
@@ -336,3 +336,71 @@ def _term_x(name):
     if not o:
         return 0
     return COLS.get(o.get("term_col"), (0, 0))[1]
+
+
+# ---------------------------------------------------------------------------
+# DECREMENT MARKER PLACEMENT (JW, 2026-09-04)
+#
+# The number line is a summary of the Sankey and must line up with it vertically.
+# A decrement marker therefore sits midway between where its money LEAVES the
+# flow and the furthest point it REACHES. Both ends are read from the geometry
+# already declared above, so the marker cannot drift away from the ribbon it
+# summarises.
+#
+# A bundled decrement takes the earliest origin of its members and the furthest
+# forward termination. A leg that returns upstream is excluded from the
+# termination: Medicare premiums goes back to the federal column, and its
+# midpoint would sit behind its own origin.
+DECREMENT_MEMBERS = {
+    "Provider Tax":      ("Provider tax limits",),
+    "State Admin":       ("Administration", "Medicare premiums"),
+    "Eligibility Rules": ("Blocked senior enrollment rule", "Work reporting",
+                          "Six-month renewals", "Blocked Medicaid enrollment rule",
+                          "Everything else"),
+    "MCO Admin":         ("MCO plan administration", "Dual MCO plan administration",
+                          "Public-company earnings"),
+    "Payment Caps":      ("Directed payment caps",),
+    "Fraud":             ("Documented fraud",),
+}
+
+
+def _origin_x(name):
+    o = OUTFLOWS[name]
+    if o.get("src_x") is not None:
+        return float(o["src_x"])
+    # No declared x: the money starts leaving at its source column's left edge.
+    return float(COLS[o["src"]][0])
+
+
+def _terminus_x(name):
+    """Where the outflow stops. HR-1 tributaries ride the tracker lattice, so
+    their terminus is the right edge of the column they are CHARGED to (S-075).
+    Ordinary outflows stop at the right edge of the column they reach."""
+    o = OUTFLOWS[name]
+    col = TRACKER_COL[name] if o["cls"] == "hr1" else o["term_col"]
+    return float(COLS[col][1])
+
+
+def decrement_span(short):
+    """(origin, terminus) for a decrement, from the declared outflow geometry."""
+    members = DECREMENT_MEMBERS[short]
+    origins = [_origin_x(n) for n in members]
+    forward = [n for n in members if not OUTFLOWS[n].get("ret")]
+    termini = [_terminus_x(n) for n in (forward or members)]
+    return min(origins), max(termini)
+
+
+def decrement_x(short):
+    a, b = decrement_span(short)
+    return (a + b) / 2.0
+
+
+# The four anchors. Identical on every diagram, past, present and future: they are
+# what lets a reader lay two panels side by side (S-060). Each sits on the LEFT
+# EDGE of the column whose state it reports, which is where that money arrives.
+TRACKER_ANCHORS = [
+    ("FEDERAL",     ["$100 Medicaid", "Dollars"]),
+    ("DISBURSE",    ["Funding Disbursed"]),
+    ("CLAIMS",      ["Claims Paid"]),
+    ("BENEFICIARY", ["Health Services", "Delivered"]),
+]
