@@ -78,7 +78,7 @@ TERMINAL = {
     "Directed payment caps":            "will not top up hospital rates",
     "Blocked senior enrollment rule":   "will not become premium help",
     "Six-month renewals":               "will not survive renewal",
-    "Blocked Medicaid enrollment rule": "will not become enrolment",
+    "Blocked Medicaid enrollment rule": "will not become enrollment",
     "Everything else":                  "will not become services",
 }
 

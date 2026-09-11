@@ -118,3 +118,36 @@ between $10.26 and $8.48 is not one thing:
 **Do not publish a "provider-borne share" figure until that decomposition is
 clean.** It is the same open item as EN-21 and EN-25 and it is now blocking prose
 as well as the diagram.
+
+## The cut is not spread evenly across services (EN-46, EN-47)
+
+*Drafted 2026-09-11, when the per-service overlay landed. Voice: national paper.*
+
+It will be tempting to read the FY2030 panel as a uniform contraction — every
+service a little smaller, the same shape at nine-tenths scale. It will not be.
+Long-term care will lose $2.78 of every $100 of Medicaid spending and hospitals
+$1.95, while prescription drugs will lose $0.33. Some of that is simply size:
+long-term care is the largest block on the diagram and the largest block loses
+the most. But not all of it is. Measured against their own prior-law totals,
+hospitals, long-term care, and physicians and clinics will fall by 10.43%, 9.73%
+and 11.14%, while wrap around services, behavioural health and prescription drugs
+will each fall by exactly 8.85%.
+
+That 8.85% is the eligibility side of the law reaching every service equally,
+because a person who does not enroll does not consume anything. The spread above it
+is §71116, which caps state directed payments and names inpatient and outpatient
+hospital services, nursing facility services, and qualified practitioner services
+at academic medical centres. Those three classes will absorb a second cut that the
+others will not, and the overlay beside each service shows it in dollars.
+
+The identical 8.85% on the other three should be read as what it is — the absence
+of a service-specific finding, not the presence of a uniform one. We do not have
+provider-level incidence beyond the three classes the statute names (EN-21).
+
+And we should say plainly what the diagram does not show. It will be asked
+immediately whether this falls hardest on children, on adults, on the disabled or
+on the aged. We do not know. The beneficiary shares on the FY2030 panel are the
+FY2024 shares carried forward, which makes every category fall by the same 9.83%
+— an artifact of that assumption and not a finding about anyone (EN-47). We have
+left the gap open rather than filled it, and this passage is where the paper says
+so, since the panel itself no longer carries the declaration.

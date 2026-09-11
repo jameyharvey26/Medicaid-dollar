@@ -2,6 +2,19 @@
 <g id="baseline" display="none">
 </g>
 <g id="overlay-hr1">
-
+<rect x="1776.0" y="127.0" width="219.1" height="19.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1780.0" y="140.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#8B5A5A" text-anchor="start" font-weight="bold">NOT SHOWN, and not estimated:</text>
+<rect x="1776.0" y="154.0" width="451.5" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1780.0" y="166.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">•  Beneficiary shares: DC group totals not in hand, column omitted</text>
+<rect x="1776.0" y="176.0" width="485.1" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1780.0" y="188.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">•  Behavioral health: folded into wrap-around services in the DC source</text>
+<rect x="1776.0" y="198.0" width="438.1" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1780.0" y="210.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">•  Public-company earnings and dual-plan retention: no DC figure</text>
+<rect x="1776.0" y="220.0" width="229.8" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1780.0" y="232.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">•  Documented fraud: no DC figure</text>
+<rect x="1776.0" y="257.0" width="340.6" height="17.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1780.0" y="268.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#6f6f6f" text-anchor="start" font-weight="None" font-style="italic">Absent data is left absent. Filling a gap with a share</text>
+<rect x="1776.0" y="273.0" width="426.9" height="17.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1780.0" y="284.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#6f6f6f" text-anchor="start" font-weight="None" font-style="italic">would produce a modelled figure wearing a measured figure's clothes.</text>
 </g>
 </svg>

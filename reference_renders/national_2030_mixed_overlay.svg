@@ -14,59 +14,54 @@
 <text x="292.0" y="964.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">federal match never drawn</text>
 <rect x="247.7" y="966.9" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="292.0" y="978.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$1.24</text>
-<path d="M598.0,749.0 C709.0,749.0 709.0,1048.6 820.0,1048.6 L820.0,1054.1 C709.0,1054.1 709.0,754.5 598.0,754.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M598.0,749.0 C709.0,749.0 709.0,1048.6 820.0,1048.6 L820.0,1054.1 C709.0,1054.1 709.0,754.5 598.0,754.5 Z" fill="url(#hr1hatch)"/>
-<rect x="820.0" y="1048.6" width="6.0" height="5.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="816.0" y="1057.1" width="209.6" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1069.1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Blocked senior enrollment rule</text>
-<rect x="816.0" y="1073.1" width="327.2" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1083.1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">duals will not enrol; would have reached the state agency</text>
-<rect x="816.0" y="1085.1" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1097.1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$1.27</text>
-<path d="M648.0,731.0 C734.0,731.0 734.0,1010.6 820.0,1010.6 L820.0,1028.6 C734.0,1028.6 734.0,749.0 648.0,749.0 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M648.0,731.0 C734.0,731.0 734.0,1010.6 820.0,1010.6 L820.0,1028.6 C734.0,1028.6 734.0,749.0 648.0,749.0 Z" fill="url(#hr1hatch)"/>
-<rect x="820.0" y="1010.6" width="6.0" height="17.9" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="713.9" y="1031.6" width="102.1" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="1043.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Work reporting</text>
-<rect x="539.2" y="1047.6" width="276.8" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="1057.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not enrol; would have reached disbursements</text>
-<rect x="767.7" y="1059.6" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="1071.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$4.08</text>
-<path d="M682.0,727.7 C751.0,727.7 751.0,986.0 820.0,986.0 L820.0,989.4 C751.0,989.4 751.0,731.1 682.0,731.1 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M682.0,727.7 C751.0,727.7 751.0,986.0 820.0,986.0 L820.0,989.4 C751.0,989.4 751.0,731.1 682.0,731.1 Z" fill="url(#hr1hatch)"/>
-<rect x="820.0" y="986.0" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="816.0" y="993.0" width="129.0" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1005.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Six-month renewals</text>
-<rect x="816.0" y="1009.0" width="310.4" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1019.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not survive renewal; would have reached the payer</text>
-<rect x="816.0" y="1021.0" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1033.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$0.75</text>
-<path d="M748.0,723.1 C784.0,723.1 784.0,955.0 820.0,955.0 L820.0,959.6 C784.0,959.6 784.0,727.7 748.0,727.7 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M748.0,723.1 C784.0,723.1 784.0,955.0 820.0,955.0 L820.0,959.6 C784.0,959.6 784.0,727.7 748.0,727.7 Z" fill="url(#hr1hatch)"/>
-<rect x="820.0" y="955.0" width="6.0" height="4.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="707.2" y="962.6" width="108.8" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="974.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Everything else</text>
-<rect x="668.0" y="978.6" width="148.0" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="988.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">mixed phases — UNRESOLVED</text>
-<rect x="767.7" y="990.6" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="1002.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$1.05</text>
-<path d="M786.0,718.6 C803.0,718.6 803.0,930.5 820.0,930.5 L820.0,935.0 C803.0,935.0 803.0,723.1 786.0,723.1 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M786.0,718.6 C803.0,718.6 803.0,930.5 820.0,930.5 L820.0,935.0 C803.0,935.0 803.0,723.1 786.0,723.1 Z" fill="url(#hr1hatch)"/>
-<rect x="820.0" y="930.5" width="6.0" height="4.5" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="816.0" y="938.0" width="223.0" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="950.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Blocked Medicaid enrollment rule</text>
-<rect x="816.0" y="954.0" width="271.2" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="964.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not enrol; would have reached a paid claim</text>
-<rect x="816.0" y="966.0" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="978.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$1.03</text>
+<path d="M664.0,749.9 C742.0,749.9 742.0,1061.6 820.0,1061.6 L820.0,1066.3 C742.0,1066.3 742.0,754.5 664.0,754.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M664.0,749.9 C742.0,749.9 742.0,1061.6 820.0,1061.6 L820.0,1066.3 C742.0,1066.3 742.0,754.5 664.0,754.5 Z" fill="url(#hr1hatch)"/>
+<rect x="820.0" y="1061.6" width="6.0" height="4.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="816.0" y="1069.3" width="95.4" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="820.0" y="1081.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Other  −$1.05</text>
+<rect x="816.0" y="1085.3" width="176.0" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="820.0" y="1095.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">e.g. home equity, cost sharing</text>
+<path d="M698.0,744.3 C759.0,744.3 759.0,1048.0 820.0,1048.0 L820.0,1053.6 C759.0,1053.6 759.0,749.9 698.0,749.9 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M698.0,744.3 C759.0,744.3 759.0,1048.0 820.0,1048.0 L820.0,1053.6 C759.0,1053.6 759.0,749.9 698.0,749.9 Z" fill="url(#hr1hatch)"/>
+<rect x="820.0" y="1048.0" width="6.0" height="5.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="586.2" y="1004.6" width="229.8" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="812.0" y="1016.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Blocked senior enrollment  −$1.27</text>
+<rect x="483.2" y="1020.6" width="332.8" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="812.0" y="1030.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">duals will not enroll; would have reached the state agency</text>
+<path d="M732.0,726.4 C896.0,726.4 896.0,1022.1 1060.0,1022.1 L1060.0,1040.0 C896.0,1040.0 896.0,744.3 732.0,744.3 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M732.0,726.4 C896.0,726.4 896.0,1022.1 1060.0,1022.1 L1060.0,1040.0 C896.0,1040.0 896.0,744.3 732.0,744.3 Z" fill="url(#hr1hatch)"/>
+<rect x="1060.0" y="1022.1" width="6.0" height="17.9" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1056.0" y="1043.0" width="155.8" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1060.0" y="1055.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Work reporting  −$4.08</text>
+<rect x="1056.0" y="1059.0" width="282.4" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1060.0" y="1069.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not enroll; would have reached disbursements</text>
+<path d="M766.0,723.1 C1033.0,723.1 1033.0,982.7 1300.0,982.7 L1300.0,986.1 C1033.0,986.1 1033.0,726.5 766.0,726.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M766.0,723.1 C1033.0,723.1 1033.0,982.7 1300.0,982.7 L1300.0,986.1 C1033.0,986.1 1033.0,726.5 766.0,726.5 Z" fill="url(#hr1hatch)"/>
+<rect x="1300.0" y="982.7" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1113.3" y="989.7" width="182.7" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1292.0" y="1001.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Six-month renewals  −$0.75</text>
+<rect x="985.6" y="1005.7" width="310.4" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1292.0" y="1015.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not survive renewal; would have reached the payer</text>
+<path d="M800.0,718.6 C1180.0,718.6 1180.0,942.2 1560.0,942.2 L1560.0,946.7 C1180.0,946.7 1180.0,723.1 800.0,723.1 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M800.0,718.6 C1180.0,718.6 1180.0,942.2 1560.0,942.2 L1560.0,946.7 C1180.0,946.7 1180.0,723.1 800.0,723.1 Z" fill="url(#hr1hatch)"/>
+<rect x="1560.0" y="942.2" width="6.0" height="4.5" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1279.2" y="949.7" width="276.8" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1552.0" y="961.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Blocked Medicaid enrollment rule  −$1.03</text>
+<rect x="1279.2" y="965.7" width="276.8" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1552.0" y="975.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not enroll; would have reached a paid claim</text>
 <path d="M1302.0,367.2 C1431.0,367.2 1431.0,930.5 1560.0,930.5 L1560.0,934.2 C1431.0,934.2 1431.0,370.9 1302.0,370.9 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
 <path d="M1302.0,367.2 C1431.0,367.2 1431.0,930.5 1560.0,930.5 L1560.0,934.2 C1431.0,934.2 1431.0,370.9 1302.0,370.9 Z" fill="url(#hr1hatch)"/>
 <rect x="1560.0" y="930.5" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="1556.0" y="937.5" width="149.1" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1560.0" y="949.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Directed payment caps</text>
-<rect x="1556.0" y="953.5" width="332.8" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1560.0" y="963.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not top up hospital, nursing facility, academic rates</text>
-<rect x="1556.0" y="965.5" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1560.0" y="977.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$0.85</text>
+<rect x="1556.0" y="907.5" width="149.1" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1560.0" y="919.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Directed payment caps</text>
+<rect x="1556.0" y="923.5" width="332.8" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1560.0" y="933.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not top up hospital, nursing facility, academic rates</text>
+<rect x="1556.0" y="935.5" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1560.0" y="947.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$0.85</text>
+<rect x="1780.0" y="936.0" width="34.0" height="10.0" rx="2" fill="#8B5A5A" fill-opacity="1.0"/>
+<rect x="1818.0" y="934.0" width="438.1" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1822.0" y="946.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">dollars out of this service under P.L. 119-21, against prior law</text>
+<rect x="1776.0" y="953.5" width="454.9" height="16.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1780.0" y="964.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">all six bars share one scale; it is not the flow's scale (bar shown = $1.00)</text>
 </g>
 </svg>

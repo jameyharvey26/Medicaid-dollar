@@ -34,23 +34,23 @@ FMAP; QI is 100% federal from a capped allotment (CMS SMD 10-003), so QI dollars
 gross up at 1.000 rather than 1.701.
 
 **The carve-out is nonetheless zero.** QI is a capped federal entitlement: states
-enrol first-come, first-served and stop when the year's allotment is exhausted.
-Blocking a rule that would have raised enrolment produces no federal QI savings,
-because the ceiling binds the spending rather than the enrolment. The pot is the same
+enroll first-come, first-served and stop when the year's allotment is exhausted.
+Blocking a rule that would have raised enrollment produces no federal QI savings,
+because the ceiling binds the spending rather than the enrollment. The pot is the same
 size either way; it just runs out sooner.
 
 Scale corroborates independently. MACRA allocated $980M for CY2016, so roughly $1B a
 year is the entire programme, against a lane scored at $66B over ten years.
 
-**Bound:** if QI were 15% of the lane (its *enrolment* share, and a hard upper bound
+**Bound:** if QI were 15% of the lane (its *enrollment* share, and a hard upper bound
 since QI pays less per person than QMB) the lane would be $105.3B rather than
 $112.3B. Six percent of one lane, under one percent of the overlay.
 
 **Footnote caveat, not modelled:** MACRA established a formula for future allotments.
-Whether that formula is responsive to enrolment is unverified. If allotments rise with
+Whether that formula is responsive to enrollment is unverified. If allotments rise with
 prior-year uptake, some QI sensitivity returns over a ten-year window.
 
-**Do not substitute MACPAC's 53/32/15 MSP split.** That is enrolment, not spending;
+**Do not substitute MACPAC's 53/32/15 MSP split.** That is enrollment, not spending;
 QMB pays premiums plus all cost sharing while SLMB and QI pay the Part B premium
 only. Using it as a spending share would be S-034 one session after writing S-034.
 

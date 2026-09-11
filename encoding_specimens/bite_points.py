@@ -31,7 +31,7 @@ MARKS = [
   (xDI[0]+90, 830, "Work reporting", "DISBURSEMENTS &#8212; the dollar never becomes a payment",
    "expansion adults leave; capitation and claims are never made", LOSS),
   (xDI[0]+90, 872, "Six-month renewals", "", "same mechanism, twice-yearly renewal churn", LOSS),
-  (xDI[0]+90, 900, "Blocked Medicaid enrollment rule", "", "enrolment lower than prior law would have produced", LOSS),
+  (xDI[0]+90, 900, "Blocked Medicaid enrollment rule", "", "enrollment lower than prior law would have produced", LOSS),
   (xCL[0]+60, 830, "Directed payment caps", "CLAIMS &#8212; payments to providers are ratcheted down",
    "two slices: provider-financed peels, general-fund slice returns state money", LOSS),
 ]
@@ -48,7 +48,7 @@ rows = [
   "Shrinks the non-federal share before the $100 assembles. Only the federal match peels as loss (D-39);",
   "the displaced general fund obligation crosses into the container, which sits in this same column."),
  (xSA[0]+118, "Blocked senior enrollment rule", "bites at STATE AGENCY",
-  "Medicare Savings Program enrolment stays lower than prior law. The loss rides the existing",
+  "Medicare Savings Program enrollment stays lower than prior law. The loss rides the existing",
   "Medicare premiums arrow ($2.90) rather than opening a new path."),
  (xDI[0]+90, "Coverage and preserved-friction lanes",
   "bite at DISBURSEMENTS",

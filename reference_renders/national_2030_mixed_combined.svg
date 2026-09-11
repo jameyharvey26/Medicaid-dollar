@@ -43,14 +43,14 @@
 <text x="330.0" y="463.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#ffffff" text-anchor="start" font-weight="bold">Federal 64.7%</text>
 <text x="330.0" y="686.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#33474f" text-anchor="start" font-weight="bold">State 35.3%</text>
 <rect x="560.0" y="320.0" width="18.0" height="434.5" rx="2" fill="#1a6b40" fill-opacity="1.0"/>
-<path d="M578.0,320.0 C588.0,320.0 588.0,320.0 598.0,320.0 L598.0,754.5 C588.0,754.5 588.0,754.5 578.0,754.5 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M598.0,320.0 C606.5,320.0 606.5,320.0 615.0,320.0 L615.0,749.0 C606.5,749.0 606.5,749.0 598.0,749.0 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M615.0,327.2 C631.5,327.2 631.5,327.2 648.0,327.2 L648.0,749.0 C631.5,749.0 631.5,749.0 615.0,749.0 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M648.0,327.2 C665.0,327.2 665.0,327.2 682.0,327.2 L682.0,731.0 C665.0,731.0 665.0,731.0 648.0,731.0 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M682.0,327.2 C698.5,327.2 698.5,327.2 715.0,327.2 L715.0,727.7 C698.5,727.7 698.5,727.7 682.0,727.7 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M715.0,349.5 C731.5,349.5 731.5,349.5 748.0,349.5 L748.0,727.7 C731.5,727.7 731.5,727.7 715.0,727.7 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M748.0,349.5 C767.0,349.5 767.0,349.5 786.0,349.5 L786.0,723.1 C767.0,723.1 767.0,723.1 748.0,723.1 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M786.0,349.5 C803.0,349.5 803.0,349.5 820.0,349.5 L820.0,718.6 C803.0,718.6 803.0,718.6 786.0,718.6 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M578.0,320.0 C596.5,320.0 596.5,320.0 615.0,320.0 L615.0,754.5 C596.5,754.5 596.5,754.5 578.0,754.5 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M615.0,327.2 C639.5,327.2 639.5,327.2 664.0,327.2 L664.0,754.5 C639.5,754.5 639.5,754.5 615.0,754.5 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M664.0,327.2 C681.0,327.2 681.0,327.2 698.0,327.2 L698.0,749.9 C681.0,749.9 681.0,749.9 664.0,749.9 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M698.0,327.2 C706.5,327.2 706.5,327.2 715.0,327.2 L715.0,744.3 C706.5,744.3 706.5,744.3 698.0,744.3 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M715.0,349.5 C723.5,349.5 723.5,349.5 732.0,349.5 L732.0,744.3 C723.5,744.3 723.5,744.3 715.0,744.3 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M732.0,349.5 C749.0,349.5 749.0,349.5 766.0,349.5 L766.0,726.4 C749.0,726.4 749.0,726.4 732.0,726.4 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M766.0,349.5 C783.0,349.5 783.0,349.5 800.0,349.5 L800.0,723.1 C783.0,723.1 783.0,723.1 766.0,723.1 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M800.0,349.5 C810.0,349.5 810.0,349.5 820.0,349.5 L820.0,718.6 C810.0,718.6 810.0,718.6 800.0,718.6 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
 <path d="M715.0,327.2 C764.5,327.2 764.5,250.0 814.0,250.0 L814.0,272.3 C764.5,272.3 764.5,349.5 715.0,349.5 Z" fill="#9a9a9a" fill-opacity="0.88" stroke="#9a9a9a" stroke-opacity="0.45" stroke-width="0.6"/>
 <rect x="814.0" y="250.0" width="5.0" height="22.3" rx="2" fill="#9a9a9a" fill-opacity="1.0"/>
 <rect x="648.1" y="232.0" width="160.9" height="19.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
@@ -168,6 +168,9 @@
 <text x="1885.0" y="204.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Long-term care</text>
 <rect x="1848.2" y="388.0" width="73.5" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="1885.0" y="407.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$25.75</text>
+<rect x="1804.2" y="422.5" width="94.4" height="10.0" rx="2" fill="#8B5A5A" fill-opacity="1.0"/>
+<rect x="1902.6" y="414.5" width="65.1" height="23.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1906.6" y="431.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$2.78</text>
 <path d="M2090.0,443.6 L2078.9,511.4 A68.7,68.7 0 0,1 2021.5,439.1 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M2090.0,443.6 L2021.5,439.1 A68.7,68.7 0 0,1 2158.5,439.1 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M2090.0,443.6 L2158.5,439.1 A68.7,68.7 0 0,1 2122.2,504.3 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
@@ -180,6 +183,9 @@
 <text x="2090.0" y="364.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Hospitals</text>
 <rect x="2053.2" y="514.8" width="73.5" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="2090.0" y="534.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$16.71</text>
+<rect x="2023.3" y="549.3" width="66.2" height="10.0" rx="2" fill="#8B5A5A" fill-opacity="1.0"/>
+<rect x="2093.5" y="541.3" width="65.1" height="23.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="2097.5" y="558.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$1.95</text>
 <path d="M1885.0,557.1 L1874.6,614.8 A58.6,58.6 0 0,1 1827.5,545.8 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M1885.0,557.1 L1827.5,545.8 A58.6,58.6 0 0,1 1942.5,545.8 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M1885.0,557.1 L1942.5,545.8 A58.6,58.6 0 0,1 1917.4,605.9 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
@@ -192,6 +198,9 @@
 <text x="1885.0" y="488.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Wrap around services*</text>
 <rect x="1848.2" y="618.2" width="73.5" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="1885.0" y="637.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$12.15</text>
+<rect x="1831.4" y="652.7" width="40.1" height="10.0" rx="2" fill="#8B5A5A" fill-opacity="1.0"/>
+<rect x="1875.5" y="644.7" width="65.1" height="23.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1879.5" y="661.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$1.18</text>
 <path d="M2090.0,658.5 L2099.0,714.1 A56.3,56.3 0 0,1 2033.9,654.2 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M2090.0,658.5 L2033.9,654.2 A56.3,56.3 0 0,1 2146.1,654.2 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M2090.0,658.5 L2146.1,654.2 A56.3,56.3 0 0,1 2127.8,700.3 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
@@ -204,6 +213,9 @@
 <text x="2090.0" y="592.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Physicians &amp; clinics</text>
 <rect x="2053.2" y="717.3" width="73.5" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="2090.0" y="736.8" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$11.22</text>
+<rect x="2032.5" y="751.8" width="47.8" height="10.0" rx="2" fill="#8B5A5A" fill-opacity="1.0"/>
+<rect x="2084.3" y="743.8" width="65.1" height="23.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="2088.3" y="760.8" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$1.41</text>
 <path d="M1885.0,752.3 L1851.9,789.0 A49.5,49.5 0 0,1 1835.7,748.8 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M1885.0,752.3 L1835.7,748.8 A49.5,49.5 0 0,1 1934.3,748.8 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M1885.0,752.3 L1934.3,748.8 A49.5,49.5 0 0,1 1869.3,799.2 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
@@ -216,6 +228,9 @@
 <text x="1885.0" y="692.8" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Behavioral health</text>
 <rect x="1853.7" y="804.3" width="62.6" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="1885.0" y="823.8" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$8.67</text>
+<rect x="1837.1" y="838.8" width="28.6" height="10.0" rx="2" fill="#8B5A5A" fill-opacity="1.0"/>
+<rect x="1869.7" y="830.8" width="65.1" height="23.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1873.7" y="847.8" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$0.84</text>
 <path d="M2090.0,828.9 L2058.9,830.3 A31.1,31.1 0 0,1 2066.4,808.7 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M2090.0,828.9 L2066.4,808.7 A31.1,31.1 0 0,1 2119.3,839.2 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M2090.0,828.9 L2119.3,839.2 A31.1,31.1 0 0,1 2074.8,856.1 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
@@ -230,6 +245,9 @@
 <text x="2090.0" y="787.8" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Rx drugs</text>
 <rect x="2058.7" y="862.5" width="62.6" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="2090.0" y="882.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$3.43</text>
+<rect x="2050.8" y="897.0" width="11.3" height="10.0" rx="2" fill="#8B5A5A" fill-opacity="1.0"/>
+<rect x="2066.1" y="889.0" width="65.1" height="23.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="2070.1" y="906.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$0.33</text>
 <text x="1780.0" y="108.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12.5" fill="#272727" text-anchor="start" font-weight="bold">Share of each service consumed by:</text>
 <rect x="1780.0" y="119.0" width="13.0" height="13.0" rx="2" fill="#6fa382" fill-opacity="1.0"/>
 <text x="1798.0" y="129.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#272727" text-anchor="start" font-weight="normal">Children</text>
@@ -296,59 +314,54 @@
 <text x="292.0" y="964.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">federal match never drawn</text>
 <rect x="247.7" y="966.9" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="292.0" y="978.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$1.24</text>
-<path d="M598.0,749.0 C709.0,749.0 709.0,1048.6 820.0,1048.6 L820.0,1054.1 C709.0,1054.1 709.0,754.5 598.0,754.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M598.0,749.0 C709.0,749.0 709.0,1048.6 820.0,1048.6 L820.0,1054.1 C709.0,1054.1 709.0,754.5 598.0,754.5 Z" fill="url(#hr1hatch)"/>
-<rect x="820.0" y="1048.6" width="6.0" height="5.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="816.0" y="1057.1" width="209.6" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1069.1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Blocked senior enrollment rule</text>
-<rect x="816.0" y="1073.1" width="327.2" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1083.1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">duals will not enrol; would have reached the state agency</text>
-<rect x="816.0" y="1085.1" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1097.1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$1.27</text>
-<path d="M648.0,731.0 C734.0,731.0 734.0,1010.6 820.0,1010.6 L820.0,1028.6 C734.0,1028.6 734.0,749.0 648.0,749.0 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M648.0,731.0 C734.0,731.0 734.0,1010.6 820.0,1010.6 L820.0,1028.6 C734.0,1028.6 734.0,749.0 648.0,749.0 Z" fill="url(#hr1hatch)"/>
-<rect x="820.0" y="1010.6" width="6.0" height="17.9" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="713.9" y="1031.6" width="102.1" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="1043.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Work reporting</text>
-<rect x="539.2" y="1047.6" width="276.8" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="1057.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not enrol; would have reached disbursements</text>
-<rect x="767.7" y="1059.6" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="1071.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$4.08</text>
-<path d="M682.0,727.7 C751.0,727.7 751.0,986.0 820.0,986.0 L820.0,989.4 C751.0,989.4 751.0,731.1 682.0,731.1 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M682.0,727.7 C751.0,727.7 751.0,986.0 820.0,986.0 L820.0,989.4 C751.0,989.4 751.0,731.1 682.0,731.1 Z" fill="url(#hr1hatch)"/>
-<rect x="820.0" y="986.0" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="816.0" y="993.0" width="129.0" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1005.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Six-month renewals</text>
-<rect x="816.0" y="1009.0" width="310.4" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1019.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not survive renewal; would have reached the payer</text>
-<rect x="816.0" y="1021.0" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="1033.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$0.75</text>
-<path d="M748.0,723.1 C784.0,723.1 784.0,955.0 820.0,955.0 L820.0,959.6 C784.0,959.6 784.0,727.7 748.0,727.7 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M748.0,723.1 C784.0,723.1 784.0,955.0 820.0,955.0 L820.0,959.6 C784.0,959.6 784.0,727.7 748.0,727.7 Z" fill="url(#hr1hatch)"/>
-<rect x="820.0" y="955.0" width="6.0" height="4.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="707.2" y="962.6" width="108.8" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="974.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Everything else</text>
-<rect x="668.0" y="978.6" width="148.0" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="988.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">mixed phases — UNRESOLVED</text>
-<rect x="767.7" y="990.6" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="812.0" y="1002.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$1.05</text>
-<path d="M786.0,718.6 C803.0,718.6 803.0,930.5 820.0,930.5 L820.0,935.0 C803.0,935.0 803.0,723.1 786.0,723.1 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M786.0,718.6 C803.0,718.6 803.0,930.5 820.0,930.5 L820.0,935.0 C803.0,935.0 803.0,723.1 786.0,723.1 Z" fill="url(#hr1hatch)"/>
-<rect x="820.0" y="930.5" width="6.0" height="4.5" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="816.0" y="938.0" width="223.0" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="950.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Blocked Medicaid enrollment rule</text>
-<rect x="816.0" y="954.0" width="271.2" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="964.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not enrol; would have reached a paid claim</text>
-<rect x="816.0" y="966.0" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="820.0" y="978.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$1.03</text>
+<path d="M664.0,749.9 C742.0,749.9 742.0,1061.6 820.0,1061.6 L820.0,1066.3 C742.0,1066.3 742.0,754.5 664.0,754.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M664.0,749.9 C742.0,749.9 742.0,1061.6 820.0,1061.6 L820.0,1066.3 C742.0,1066.3 742.0,754.5 664.0,754.5 Z" fill="url(#hr1hatch)"/>
+<rect x="820.0" y="1061.6" width="6.0" height="4.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="816.0" y="1069.3" width="95.4" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="820.0" y="1081.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Other  −$1.05</text>
+<rect x="816.0" y="1085.3" width="176.0" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="820.0" y="1095.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">e.g. home equity, cost sharing</text>
+<path d="M698.0,744.3 C759.0,744.3 759.0,1048.0 820.0,1048.0 L820.0,1053.6 C759.0,1053.6 759.0,749.9 698.0,749.9 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M698.0,744.3 C759.0,744.3 759.0,1048.0 820.0,1048.0 L820.0,1053.6 C759.0,1053.6 759.0,749.9 698.0,749.9 Z" fill="url(#hr1hatch)"/>
+<rect x="820.0" y="1048.0" width="6.0" height="5.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="586.2" y="1004.6" width="229.8" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="812.0" y="1016.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Blocked senior enrollment  −$1.27</text>
+<rect x="483.2" y="1020.6" width="332.8" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="812.0" y="1030.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">duals will not enroll; would have reached the state agency</text>
+<path d="M732.0,726.4 C896.0,726.4 896.0,1022.1 1060.0,1022.1 L1060.0,1040.0 C896.0,1040.0 896.0,744.3 732.0,744.3 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M732.0,726.4 C896.0,726.4 896.0,1022.1 1060.0,1022.1 L1060.0,1040.0 C896.0,1040.0 896.0,744.3 732.0,744.3 Z" fill="url(#hr1hatch)"/>
+<rect x="1060.0" y="1022.1" width="6.0" height="17.9" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1056.0" y="1043.0" width="155.8" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1060.0" y="1055.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Work reporting  −$4.08</text>
+<rect x="1056.0" y="1059.0" width="282.4" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1060.0" y="1069.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not enroll; would have reached disbursements</text>
+<path d="M766.0,723.1 C1033.0,723.1 1033.0,982.7 1300.0,982.7 L1300.0,986.1 C1033.0,986.1 1033.0,726.5 766.0,726.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M766.0,723.1 C1033.0,723.1 1033.0,982.7 1300.0,982.7 L1300.0,986.1 C1033.0,986.1 1033.0,726.5 766.0,726.5 Z" fill="url(#hr1hatch)"/>
+<rect x="1300.0" y="982.7" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1113.3" y="989.7" width="182.7" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1292.0" y="1001.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Six-month renewals  −$0.75</text>
+<rect x="985.6" y="1005.7" width="310.4" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1292.0" y="1015.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not survive renewal; would have reached the payer</text>
+<path d="M800.0,718.6 C1180.0,718.6 1180.0,942.2 1560.0,942.2 L1560.0,946.7 C1180.0,946.7 1180.0,723.1 800.0,723.1 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M800.0,718.6 C1180.0,718.6 1180.0,942.2 1560.0,942.2 L1560.0,946.7 C1180.0,946.7 1180.0,723.1 800.0,723.1 Z" fill="url(#hr1hatch)"/>
+<rect x="1560.0" y="942.2" width="6.0" height="4.5" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1279.2" y="949.7" width="276.8" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1552.0" y="961.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Blocked Medicaid enrollment rule  −$1.03</text>
+<rect x="1279.2" y="965.7" width="276.8" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1552.0" y="975.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not enroll; would have reached a paid claim</text>
 <path d="M1302.0,367.2 C1431.0,367.2 1431.0,930.5 1560.0,930.5 L1560.0,934.2 C1431.0,934.2 1431.0,370.9 1302.0,370.9 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6"/>
 <path d="M1302.0,367.2 C1431.0,367.2 1431.0,930.5 1560.0,930.5 L1560.0,934.2 C1431.0,934.2 1431.0,370.9 1302.0,370.9 Z" fill="url(#hr1hatch)"/>
 <rect x="1560.0" y="930.5" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
-<rect x="1556.0" y="937.5" width="149.1" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1560.0" y="949.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Directed payment caps</text>
-<rect x="1556.0" y="953.5" width="332.8" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1560.0" y="963.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not top up hospital, nursing facility, academic rates</text>
-<rect x="1556.0" y="965.5" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1560.0" y="977.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$0.85</text>
+<rect x="1556.0" y="907.5" width="149.1" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1560.0" y="919.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Directed payment caps</text>
+<rect x="1556.0" y="923.5" width="332.8" height="16.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1560.0" y="933.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not top up hospital, nursing facility, academic rates</text>
+<rect x="1556.0" y="935.5" width="48.3" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1560.0" y="947.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$0.85</text>
+<rect x="1780.0" y="936.0" width="34.0" height="10.0" rx="2" fill="#8B5A5A" fill-opacity="1.0"/>
+<rect x="1818.0" y="934.0" width="438.1" height="18.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1822.0" y="946.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">dollars out of this service under P.L. 119-21, against prior law</text>
+<rect x="1776.0" y="953.5" width="454.9" height="16.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1780.0" y="964.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">all six bars share one scale; it is not the flow's scale (bar shown = $1.00)</text>
 </g>
 </svg>

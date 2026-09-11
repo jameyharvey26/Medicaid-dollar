@@ -58,9 +58,13 @@ def f(sz, bold=True):
 # The footer talks to the READER, not to us. What the register rules buy is that
 # the two panels can be compared at all; saying so is worth more than reciting the
 # rules themselves (JW, 2026-09-04).
-FOOTER = ("Two Medicaid dollars at the same scale: the dollar as it flowed in "
-          "FY2024, and the same dollar in FY2030 with P.L. 119-21 applied. The "
-          "line beneath each panel is what reaches care.")
+# "Dollar" keeps creeping back in here. The unit of this artifact is $100.00 of
+# Medicaid spending, not a dollar, and every figure on both panels is stated per
+# $100. A footer that calls it a dollar re-bases the whole diagram in the last
+# line a reader reads (JW, 2026-09-11).
+FOOTER = ("Two $100.00 of Medicaid spending at the same scale: $100.00 as it "
+          "flowed in FY2024, and the same $100.00 in FY2030 with P.L. 119-21 "
+          "applied.")
 
 
 # ---------------------------------------------------------------- panels

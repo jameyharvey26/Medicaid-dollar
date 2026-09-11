@@ -2,7 +2,8 @@ import math
 import tracker as TR
 import outflows as OF
 FAN_STACK_TOP=806.0
-from outflows import OUTFLOWS, fan_rows, fan_crossings, resolve_bite_order
+from outflows import (OUTFLOWS, fan_rows, fan_crossings, resolve_bite_order,
+                      label_of as OUTFLOWS_label)
 # ===== Medicaid Dollar-Flow Sankey, DRAFT V.4 (Public Comment) =====
 # H was 1240, which left the short-name row 4 units from the canvas edge and no
 # room for a second line. A bite whose short name cannot fit between its
@@ -250,18 +251,69 @@ def render(cfg):
             rect(barL,yy,barW,val*ys,lc[L]); yy+=val*ys
         nm=disp.get(p,p)+("*" if p=="Other" else "")
         lbg(barL+barW/2,node_y[p]-9,f"{nm}  ${node[p]:.2f}",13.5,"middle"); txt(barL+barW/2,node_y[p]-9,f"{nm}  ${node[p]:.2f}",13.5,INK,"middle","bold",halo=False)
+    _ben_floor = {}
+    _key_at = None
     if cfg.show_beneficiaries:
         # ===== BENEFICIARIES: two staggered columns; each pie aligned to its bar's centre =====
         xLcol=1885; xRcol=2090
+        OVERLAY_PX = 34.0      # px per $, overlay bars only. See EN-46.
+        _ov_bottom = {}; _pie_geom = {}
         for i,p in enumerate(order):
             cx=xLcol if i%2==0 else xRcol
             cy=node_y[p]+node[p]*ys/2; r=16.8*math.sqrt(node[p]); a0=rot_for(pie_frac[p])
             if p=="Rx drugs": a0+=30   # nudge so the small outside labels clear the $ below
+            _prior = cfg.prior_node.get(p)
             pie(cx,cy,r,pie_frac[p],[CHILD,ADULT,DIS,AGED],a0)
             pielabels(cx,cy,r,pie_frac[p],a0)
             nm=disp.get(p,p)+("*" if p=="Other" else "")
             lbg(cx,cy-r-10,nm,19.5,"middle"); txt(cx,cy-r-10,nm,19.5,INK,"middle","bold",halo=False)
             lbg(cx,cy+r+22,f"${node[p]:.2f}",19.5,"middle"); txt(cx,cy+r+22,f"${node[p]:.2f}",19.5,INK,"middle","bold",halo=False)
+            # ---- BENEFICIARY OVERLAY (JW, this session) ----------------------
+            # Dollars and cents out of each service, on ONE scale across all six
+            # so the bars are comparable with each other by eye. Percentages are
+            # deliberately not used: the pies already carry percentages, on a
+            # different base, and two differently-based percentages on the same
+            # mark is how a reader comes to read one as the other.
+            #
+            # OVERLAY_PX is the overlay's own scale and is NOT the flow's: the
+            # decrements are an order of magnitude smaller than the nodes and
+            # would be invisible at the flow's px-per-dollar. It is declared here
+            # and stated on the artifact, because a bar on an undeclared scale is
+            # a bar that invites the wrong comparison (EN-46).
+            if _prior and _prior > node[p]:
+                _dv = _prior - node[p]
+                _bw = _dv * OVERLAY_PX
+                _d = f"\u2212${_dv:.2f}"
+                _tw = len(_d) * 17 * 0.58
+                # ONE row: bar then figure, not bar over figure. The pies are
+                # pinned to their provider bars' centres and cannot be moved to
+                # make room, so the overlay has to earn its space in height, not
+                # be given it.
+                _by = cy + r + 46
+                _x0 = cx - (_bw + 8 + _tw) / 2
+                rect(_x0, _by - 9, _bw, 10, "#8B5A5A")
+                lbg(_x0+_bw+8, _by, _d, 17, "start")
+                txt(_x0+_bw+8, _by, _d, 17, "#8B5A5A", "start", "bold", halo=False)
+                _ov_bottom[p] = _by + 6
+                _ben_floor[p] = _by + 6
+                _pie_geom[p] = (i, cx, cy, r)
+
+        # GATE. The overlay hangs below a pie that is pinned to its provider
+        # bar, and the next pie in the same staggered column is pinned too, so
+        # nothing here can be nudged: if the block does not fit, the fit is the
+        # finding and the build says so. S-078's lesson on the tracker, applied
+        # to the one other place on the canvas where furniture is pinned.
+        for p, bot in _ov_bottom.items():
+            i, _cx, _cy, _r = _pie_geom[p]
+            if i + 2 >= len(order):
+                continue
+            q = order[i + 2]
+            qy = node_y[q] + node[q]*ys/2
+            qr = 16.8*math.sqrt(node[q])
+            name_top = qy - qr - 10 - 19.5
+            if bot > name_top:
+                print(f"  WARNING  beneficiary overlay: {p} reaches y={bot:.0f}, "
+                      f"past {q}'s name at y={name_top:.0f}")
 
         # beneficiary legend (compact, horizontal)
         lx=xBE[0]+20; ly=108
@@ -271,20 +323,18 @@ def render(cfg):
             rect(gx,ly+11,13,13,c); txt(gx+18,ly+21,g,12,INK,"start",halo=False)
             gx+=40+len(g)*12*0.55
         txt(lx,ly+42,"numbers = % of that node's dollars (black sits outside)",10.5,MUT,"start",halo=False,italic=True)
+        # The overlay's key reads BELOW the pies, beside the bars it explains
+        # (JW, 2026-09-11), not at the top of the column where it sat above the
+        # thing it was describing. Its scale is declared on the artifact and not
+        # only in the endnote: the bars are an order of magnitude larger per
+        # dollar than the flow, and an undeclared scale invites exactly the
+        # wrong comparison.
+        if _ben_floor and any(v > 0 for v in cfg.prior_node.values()):
+            _key_at = (lx, max(_ben_floor.values()) + 34)
 
-    # Declared absences sit where the missing detail would have been, so the
-    # reader sees what is not here rather than inferring it (S-071).
-    if cfg.absent:
-        _ax = xBE[0]+20 if not cfg.show_beneficiaries else xBE[0]+20
-        txt(_ax,140,"NOT SHOWN, and not estimated:",13,"#8B5A5A","start","bold",halo=False)
-        for _i,_a in enumerate(cfg.absent):
-            txt(_ax,166+_i*22,"\u2022  "+_a,12,MUT,"start",halo=False)
-        txt(_ax,166+len(cfg.absent)*22+14,
-            "Absent data is left absent. Filling a state gap with a national share",
-            11,MUT,"start",halo=False,italic=True)
-        txt(_ax,166+len(cfg.absent)*22+30,
-            "would produce a modelled figure wearing a measured figure's clothes.",
-            11,MUT,"start",halo=False,italic=True)
+    # Where the declaration goes: below the last pie and its overlay, which is
+    # the only clear space in this column. Computed, not guessed.
+    _abs_y = int(max(_ben_floor.values()) + 30) if _ben_floor else 140
 
     # ===== BOTTOM TRACKER: running balance of the $100 (fonts 2x) =====
     add(f'<line x1="110" y1="{TR.RULE_Y:.0f}" x2="{W-20}" y2="{TR.RULE_Y:.0f}" stroke="{LINE}" stroke-width="1.2"/>')
@@ -311,8 +361,11 @@ def render(cfg):
         bites.append((cfg.claims_hr1_name,xCL[0]+2,mco_care_y+cfg.claims_hr1*ys,cfg.claims_hr1))
     subs = cfg.subtractions(dict(adm_med=admin+medicare,
                                  plan=mco_ret+dual_ret, fraud=fraud))
-    anchors, marks = TR.ledger(subs, {s[4]: OF.decrement_x(s[4]) for s in subs
-                                      if s[1] > 0.004})
+    _live = [s for s in subs if s[1] > 0.004]
+    anchors, marks = TR.ledger(
+        subs,
+        {s[4]: OF.decrement_x(s[4]) for s in _live},
+        {s[4]: OF.decrement_span(s[4])[0] for s in _live})
     for a, b, g in TR.collisions(anchors, marks):
         print(f"  WARNING  anchor labels overlap: {a} / {b} by {-g:.0f} units")
     for a, b, g in TR.shape_gap(marks):
@@ -386,7 +439,66 @@ def render(cfg):
     # flow's own lowest point decides where the HR-1 zone starts.
     _hr1_rule = max(node_y[order[-1]]+node[order[-1]]*ys, ffs_y+ffs*ys) + (
         76 if fraud > 0 else 30)
-    return svg, _draw_hr1(cfg, bites, ys, TB, _obs, _pin, _hr1_rule)
+    return svg, (_draw_hr1(cfg, bites, ys, TB, _obs, _pin, _hr1_rule)
+                 + _draw_ben_key(_key_at)
+                 + _draw_absent(cfg, xBE[0]+20, _abs_y))
+
+
+def _draw_ben_key(at):
+    """The beneficiary overlay's key, drawn into the OVERLAY layer.
+
+    It reads below the pies, beside the bars it explains. That puts it in the
+    x-range the HR-1 fan's sub-labels run into — directed payment caps reaches
+    x=1822 against a key starting at 1780 — and the fan is composited over the
+    base, so drawn in the base it came out with a line of the fan's text through
+    it. Same lesson as S-087: what explains the artifact draws last.
+    """
+    global svg
+    if not at:
+        return []
+    lx, ky = at
+    _saved, svg = svg, []
+    rect(lx, ky-10, 34, 10, "#8B5A5A")
+    _h = "dollars out of this service under P.L. 119-21, against prior law"
+    lbg(lx+42, ky, _h, 12, "start")
+    txt(lx+42, ky, _h, 12, "#8B5A5A", "start", "bold", halo=False)
+    _s = "all six bars share one scale; it is not the flow's scale (bar shown = $1.00)"
+    lbg(lx, ky+18, _s, 10.5, "start")
+    txt(lx, ky+18, _s, 10.5, MUT, "start", halo=False, italic=True)
+    out, svg = svg, _saved
+    return out
+
+
+def _draw_absent(cfg, ax, ay):
+    """The declared-absence block, drawn into the OVERLAY layer.
+
+    It used to sit in the base svg, where the HR-1 fan's sub-labels are
+    composited on top of it: on the FY2030 panel the directed-payment-caps
+    sub-label runs to x=1822 and struck a line through a declaration starting at
+    x=1780. A declaration another label can paint over is not a declaration, so
+    this draws last and nothing can reach it (S-071).
+    """
+    global svg
+    if not cfg.absent:
+        return []
+    _saved, svg = svg, []
+    _ax, _ay = ax, ay
+
+    def _dec(y, t, px, col, bold=False, ital=False):
+        lbg(_ax, y, t, px, "start")
+        txt(_ax, y, t, px, col, "start", "bold" if bold else None,
+            halo=False, italic=ital)
+    _dec(_ay, "NOT SHOWN, and not estimated:", 13, "#8B5A5A", bold=True)
+    for _i, _a in enumerate(cfg.absent):
+        _dec(_ay+26+_i*22, "\u2022  "+_a, 12, MUT)
+    _dec(_ay+26+len(cfg.absent)*22+14,
+         "Absent data is left absent. Filling a gap with a share",
+         11, MUT, ital=True)
+    _dec(_ay+26+len(cfg.absent)*22+30,
+         "would produce a modelled figure wearing a measured figure's clothes.",
+         11, MUT, ital=True)
+    out, svg = svg, _saved
+    return out
 
 
 def _solve_pies(order, node, gt):
@@ -425,7 +537,8 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
         xt,sub = cfg.hr1_term[name]
         assert xt > xb, f"{name}: terminal {xt} is upstream of its bite {xb} (S-057)"
         th=max(v*ys,3.4)
-        items.append(dict(name=name, xb=xb, xt=xt, th=th, sub=sub,
+        items.append(dict(name=name, label=OUTFLOWS_label(name), amt=v,
+                          xb=xb, xt=xt, th=th, sub=sub,
                           y_src=(yb-v*ys)+th/2,
                           anchor=OUTFLOWS.get(name,{}).get("label_side")))
     # Tributaries that share a terminal column stack CONTIGUOUSLY there, so the
@@ -444,8 +557,8 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
     # terminal. Every tributary is placed by the solver, individually.
     STACKS={}
     solo=list(items)
-    YT, ANCH, fan_warn = fan_rows(solo + list(pinned), top=rule_y+18,
-                                  obstacles=obstacles)
+    YT, ANCH, fan_warn, COMPACT = fan_rows(solo + list(pinned), top=rule_y+18,
+                                           obstacles=obstacles)
     for w in fan_warn:
         print(f"  WARNING  fan layout: {w}")
     _x = fan_crossings(solo + list(pinned), YT)
@@ -465,11 +578,28 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
             continue                      # stacked group is labelled as a list below
         rect(xt,yt,6,max(th,4),WARMD)
         an=ANCH[name]; lx=xt-8 if an=="end" else xt
-        ly=yt+max(th,4)+15
-        lbg(lx,ly,name,12,an);   txt(lx,ly,name,12,WARMD,an,"bold",halo=False)
-        lbg(lx,ly+14,sub,10,an); txt(lx,ly+14,sub,10,MUT,an,halo=False,italic=True)
-        lbg(lx,ly+28,f"\u2212${v:.2f}",12,an)
-        txt(lx,ly+28,f"\u2212${v:.2f}",12,WARM,an,"bold",halo=False)
+        # A declared vertical nudge for a label block, in the rare case where two
+        # tributaries terminate close enough that their blocks read as one. It
+        # moves the WORDS only: the terminal, the ribbon and the marker on the
+        # number line all stay where the geometry put them.
+        ly=yt+max(th,4)+15+float(OUTFLOWS.get(name,{}).get("label_dy",0))
+        _lab = it["label"]
+        # The amount rides the name's line where the solver folded this row, and
+        # sits under the sub-label where it did not. Either way it stays inside
+        # this tributary's own block, under this tributary's own terminal, so it
+        # cannot read as belonging to the row beneath.
+        _amt = f"\u2212${v:.2f}"
+        if name in COMPACT:
+            _head = f"{_lab}  {_amt}"
+            lbg(lx,ly,_head,12,an)
+            txt(lx,ly,_head,12,WARMD,an,"bold",halo=False)
+            lbg(lx,ly+14,sub,10,an)
+            txt(lx,ly+14,sub,10,MUT,an,halo=False,italic=True)
+        else:
+            lbg(lx,ly,_lab,12,an);   txt(lx,ly,_lab,12,WARMD,an,"bold",halo=False)
+            lbg(lx,ly+14,sub,10,an); txt(lx,ly+14,sub,10,MUT,an,halo=False,italic=True)
+            lbg(lx,ly+28,_amt,12,an)
+            txt(lx,ly+28,_amt,12,WARM,an,"bold",halo=False)
     # keyed list beside each contiguous stack
     for k,v in STACKS.items():
         y0=YT[v[0]["name"]]; tot=sum(i["th"] for i in v)

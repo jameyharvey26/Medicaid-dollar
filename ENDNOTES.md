@@ -257,16 +257,16 @@ CBO scored. **UNDERSTATED:** CBO's $182.7B is federal only and D-39 gives this l
 no gross-up, so the state's own lost tax revenue is not in the $1.24. Every other
 lane on the combined ledger is grossed up. **OPEN**, see EN-13.
 
-**EN-26 · Four enrolment levers leave at the state agency. | D**
+**EN-26 · Four enrollment levers leave at the state agency. | D**
 Work reporting, six-month renewals, the blocked Medicaid enrollment rule and the
-blocked senior enrollment rule all operate by preventing or ending enrolment. A
+blocked senior enrollment rule all operate by preventing or ending enrollment. A
 person not enrolled generates no capitation payment and no claim, so the dollar
 never reaches a payer lane. Drawing these at disbursement, as the first render did,
 showed money leaving a lane it had never entered. Corrected.
 
 **EN-27 · The blocked senior enrollment rule is borne by beneficiaries, not
 providers. | D**
-This lane is entirely dual eligibles. CBO estimates Medicaid enrolment among duals
+This lane is entirely dual eligibles. CBO estimates Medicaid enrollment among duals
 will be about 800,000 lower in 2034 and that the number of people without health
 insurance does not change, because those people keep Medicare. The $1.27 therefore
 never reaches a Medicaid provider; it lands on dual-eligible beneficiaries as
@@ -309,8 +309,16 @@ Medicaid costs, prohibited entities, the FMAP incentive sunset, the uniform tax
 waiver requirement, demonstration budget neutrality, cost sharing, and adjustments
 to home and community-based services, plus CBO's netting of interactions across the
 whole chapter. Some run opposite to others. CBO publishes one net figure for all of
-it. Currently drawn as a single ribbon at the state agency and labelled UNRESOLVED
-on the artifact.
+it. Drawn as a single ribbon at the state agency, labelled "Other" and carrying
+three of the basket's contents as examples: *e.g. home equity, cost sharing*
+(JW, 2026-09-11, replacing "mixed phases — UNRESOLVED"). It declares no reach, so
+it terminates at its own column's edge rather than claiming a destination it
+cannot support, and it peels first.
+
+The examples are illustrative and the ribbon does not say so on its face. Until
+the basket is decomposed, this endnote is the only place a reader can learn that
+"Other" is a net of at least eleven provisions biting in at least four phases,
+some of them running opposite to each other.
 
 **EN-32 · Bottom tracker separates ordinary leakage from HR-1. | D**
 Grey figures above the line are leakage that exists under prior law. Warm figures
@@ -355,12 +363,12 @@ providers" on the tracker. To scale. Never netted into the $100.
 
 **EN-30 AMENDED AGAIN · Medical cost growth is WITHDRAWN from the artifact. OPEN**
 Raised by JW, 2026-08-29: if CBO and CMS project absolute dollars that rise even as
-enrolment falls, have they already priced medical cost growth upstream, and is
+enrollment falls, have they already priced medical cost growth upstream, and is
 subtracting it at the end a double count?
 
 **Finding, and it is not the double count.** CBO's January 2025 baseline runs
 federal Medicaid from $656B in FY2025 to $837B in FY2030, 5.0 percent a year
-compound, and prior-law enrolment is roughly flat across that window, so the
+compound, and prior-law enrollment is roughly flat across that window, so the
 denominator is a fully inflated FY2030 dollar. But normalising to $100 puts
 inflation in the numerator and the denominator equally, and it cancels. It is not
 concealed in the federal, state or state agency columns; it has been divided out
@@ -478,7 +486,7 @@ Refines EN-37, which ran the state agency column together as "less $6.70 ordinar
 and $8.17 HR-1". The rebuilt tracker (S-074) puts a dot wherever a number changes,
 so that column now reads as two bites with a balance between them: $98.76 less
 $6.70 administration and Medicare premiums gives **$92.06**, and $92.06 less $8.17
-work reporting, renewals, enrolment rules and other gives $83.89 disbursed. No
+work reporting, renewals, enrollment rules and other gives $83.89 disbursed. No
 figure moved; a figure that was previously implicit is now printed, and it is
 listed here because it is printed. Added 2026-09-04.
 
@@ -635,3 +643,58 @@ $77.93 was what left it after directed payment caps. **No ledger figure moved.**
 The same six decrements at the same amounts, conservation unchanged, and
 $77.79 delivered. $92.06, $98.76 and $77.93 no longer appear on the artifact,
 since the line now sums only at its four anchors. Added 2026-09-04.
+
+**EN-46 · The beneficiary overlay: dollars out of each service. | M**
+Beside each service's beneficiary pie on any panel carrying decrements, a bar and
+a figure give the fall in that service's delivered dollars against prior law:
+long-term care −$2.78, hospitals −$1.95, wrap around services −$1.18, physicians
+and clinics −$1.41, behavioural health −$0.84, prescription drugs −$0.33. The six
+sum to $8.49, which is the fall in health services delivered from $86.27 to
+$77.79 less rounding at the second decimal.
+
+*Basis.* Each figure is the FY2024 node less the FY2030 node, both read live from
+the build; `instances.to_be_2030` takes its prior-law totals by reference from
+`AS_IS_2024.node` rather than by transcription, so the overlay and the FY2024
+panel cannot disagree (S-073).
+
+*Scale, declared.* The bars carry their own scale, 34px per dollar, and it is NOT
+the flow's scale. The decrements are an order of magnitude smaller than the nodes
+and are invisible at the flow's px-per-dollar. All six share one scale and the
+legend prints a $1.00 reference bar, because a bar on an undeclared scale invites
+the comparison it is least able to support.
+
+*Why dollars and not percentages (JW).* The pies already carry percentages, based
+on each service's own dollars. A second percentage on the same mark, based on a
+different quantity, is how a reader comes to read one as the other.
+
+*Limitation, declared.* Only three of the six fall at a statute-specific rate.
+§71116 names inpatient and outpatient hospital, nursing facility, and qualified
+practitioner services at academic medical centres, so the directed-payment bite
+lands on hospitals, long-term care, and physicians and clinics: those fall at
+9.73%, 10.43% and 11.14% of their prior-law totals. Wrap around services,
+behavioural health and prescription drugs all fall at exactly 8.85%, which is the
+undifferentiated eligibility-side rate and carries no service-specific finding.
+This is EN-21's limit made visible; the overlay does not claim otherwise and the
+three residual bars should not be read as a result. Added 2026-09-11.
+
+**EN-47 · FY2030 beneficiary-class shares are carried forward, not modelled. | M**
+`instances.to_be_2030` builds the FY2030 beneficiary-class split by taking the
+FY2024 split — children $13.48, adults $29.56, disabled $24.98, aged $18.41 — and
+scaling all four by the ratio of total provider spend. One multiplier, four
+classes. Every class therefore falls by exactly 9.83%, which is an artifact of the
+scaling and not a finding about incidence.
+
+This is why the beneficiary overlay is per SERVICE and not per beneficiary class:
+drawn per class it would produce four identical bars and invite the reader to
+conclude that P.L. 119-21 falls evenly across children, adults, the disabled and
+the aged. There is no basis for that claim either way.
+
+*Status.* Declared modelled and added to the acquisition list. HR-1 incidence by
+eligibility category is not currently sourced and must not be derived from the
+national lane vector or from any share (S-068, S-071).
+
+*Not on the artifact.* The FY2030 panel briefly carried a NOT SHOWN block naming
+this gap and EN-31's; JW removed it, 2026-09-11. So the only warning a reader gets
+that the four beneficiary pies do not carry HR-1 incidence is this endnote. Worth
+re-raising before the paper ships, because the pies are the part of the panel a
+reader is most likely to read incidence off. Added 2026-09-11.

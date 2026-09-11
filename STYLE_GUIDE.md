@@ -255,3 +255,69 @@ render after, diff the PNGs, expect an empty difference bounding box.
 **6.4 Nothing is added to a per-$100 artifact without asking whether it scales the
 numerator and denominator together.** If it does, it is already absent and cannot
 be put back. (S-058)
+
+---
+
+## 4.12 A tributary terminates where its dollar would have arrived.
+
+Amends 4.9's reading of termination, and S-075's answer, not its principle
+(S-085). Where a tributary declares a sourced `reach`, its TERMINAL on the canvas
+sits there, and the fan's peel order sorts by it. Where no reach is sourced the
+tributary declares none and keeps the column it is charged to; that is a declared
+absence, not a default.
+
+The number line does NOT read the reach. A decrement marker's span runs from
+where the money leaves the flow to the end of the segment it is CHARGED to, which
+is what it has always been and what it stays (S-091). The canvas answers "where
+would this dollar have arrived"; the line answers "over what stretch was this
+money taken out". Routing one key into both sent the eligibility rhombus past the
+anchor that had already subtracted it.
+
+A decrement marker's midpoint follows from this and may move a long way. It does
+not carry the arithmetic with it: an anchor sums the decrements whose ORIGIN lies
+upstream of it, never the decrements whose MARKER does (S-086).
+
+## 7. The beneficiary overlay
+
+**7.1 It appears only where the diagram carries decrements.** An as-is panel has
+nothing to overlay. The switch is `Instance.prior_node` being empty, so no panel
+can acquire an overlay by accident.
+
+**7.2 Dollars and cents, never percentages (JW).** The pies already carry
+percentages, based on each service's own dollars. A second percentage on the same
+mark, based on a different quantity, is how a reader comes to read one as the
+other.
+
+**7.3 One scale across all six bars, declared on the artifact.** The overlay's
+px-per-dollar is not the flow's and cannot be: the decrements are an order of
+magnitude smaller than the nodes. The legend prints a $1.00 reference bar. A bar
+on an undeclared scale invites the comparison it is least able to support.
+
+**7.4 Prior-law figures come by reference, never by transcription.** `prior_node`
+is taken from the as-is instance directly, so the overlay and the FY2024 panel
+cannot drift apart (S-073).
+
+**7.5 The pies are pinned to their provider bars, so the overlay earns its space
+in height.** Nothing in this column can be nudged to make room. The build gates
+the clearance between an overlay block and the next pie's name in its own
+staggered column and reports rather than overlapping — the S-078 move, applied to
+the other place on the canvas where the furniture is pinned.
+
+**7.6 Declarations draw last.** A declared absence is composited after everything
+that could reach it (S-087).
+
+## 2.11 The fan gives in two stages, spacing before legibility.
+
+A tributary's amount may share the name's line or sit beneath the sub-label. Which
+one is solved per tributary and never set by hand (S-089). Row spacing relaxes
+first; only when that is exhausted does the solver begin folding amounts onto
+names, deepest row first, and it keeps the shallowest arrangement it found rather
+than the last one it tried. Either form keeps the amount inside its own block,
+under its own terminal, so it can never read as belonging to the row beneath.
+
+## 2.12 One ruler for text.
+
+Anything that measures a label measures it with `outflows._text_w`, including the
+background box the renderer paints (S-088). What collides on the canvas is the
+box, not the glyphs, and a solver working from a narrower estimate than the box
+drawn will hand back a layout that overlaps and a gate that says it does not.

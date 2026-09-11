@@ -388,3 +388,92 @@ at their reach columns the furthest becomes the claims edge (1560) and the marke
 moves from 742 to about 1112 — which would resolve the 24-unit collision with
 State Admin the build is currently reporting. The −$8.17 total is unaffected
 either way; it is a sum of the same five figures.
+
+---
+
+# SESSION 2026-09-11 — reach terminals, the beneficiary overlay, the fan fit
+
+## Settled: the parking-lot item above
+Tributaries now terminate at the reach they declare (S-085). The prediction in the
+parking-lot note was half right. It did move the Eligibility Rules marker from 742
+to 1112 and did dissolve the 24-unit collision — but 1112 sits DOWNSTREAM of
+Funding Disbursed, the anchor that has already subtracted the $8.17, so the line
+stopped adding up on its face. JW called it: the rule had been over-engineered.
+
+The resolution is that the canvas and the line answer different questions and read
+different keys (S-091). `_canvas_term_x` is the reach and sets the terminal and the
+fan's peel order. `_terminus_x` is the charged column and sets the marker's span,
+exactly as before S-085. **All six markers are back to their pre-session values:
+238.0, 717.5, 742.0, 1180.0, 1431.0, 1533.0.** The 24-unit collision is back with
+them and remains open.
+
+## The tracker bug this exposed
+`tracker.ledger` summed each anchor by comparing the anchor's x to the MARKER's x.
+Correct only for as long as every marker's midpoint fell before its own anchor.
+The first render after S-085 reported **Funding Disbursed $92.06, 7.94% lost** on a
+panel whose trunk narrows to $83.89, with every gate passing. Anchors now sum by
+each decrement's ORIGIN (S-086).
+
+## Beneficiary overlay (EN-46)
+Per provider class, dollars and cents, on any panel carrying decrements. LTC
+−$2.78, hospitals −$1.95, physicians −$1.41, wrap around −$1.18, behavioural
+−$0.84, Rx −$0.33; sum $8.49. One scale across all six, declared on the artifact
+with a $1.00 reference bar, and NOT the flow's scale. `prior_node` comes by
+reference from `AS_IS_2024.node`, never transcribed (S-073).
+
+Per beneficiary class was rejected, not deferred: the FY2030 split is the FY2024
+split times one multiplier, so all four classes fall by exactly 9.83%. Drawn, it
+would have published an assumption as a finding (EN-47).
+
+## Fan geometry
+- Peel order left to right, fixed by JW: Other, Blocked senior enrollment, Work
+  reporting, Six-month renewals, Blocked Medicaid enrollment rule. Declaration
+  order is now the EXPLICIT tie-break where two tributaries reach the same column
+  (S-090) — it had been falling out of a stable sort, and I reported that accident
+  to JW as a geometric constraint.
+- A tributary's amount rides its name or sits below its sub-label, SOLVED per
+  tributary, deepest row first, spacing giving before legibility (S-089).
+- One text metric, `outflows._text_w`, including the background box the renderer
+  paints (S-088). The old estimate was narrower than the box drawn; correcting it
+  cost 20 units of fan depth that were never really there.
+- `FAN_LABEL_H_TIGHT` 30, `FAN_TIGHT_GAP` 40 → 8. Fan now fits the 1100 floor with
+  no warnings.
+- "Everything else" prints as **Other** via a declared `label`. The key stays
+  distinct because "Other" is already the wrap-around-services provider key.
+- `label_dy`: directed payment caps lifted 30 (was reading as a clause of the
+  Blocked Medicaid enrollment rule); Blocked senior enrollment lifted 52 to sit
+  above its terminal, crossing a ribbon, accepted by JW.
+
+## Editorial
+- `enrol`/`enrolment` → `enroll`/`enrollment` across nine files, three live on the
+  artifact. Every rendered string checked; nothing else misspelled.
+- Footer re-based: "Two $100.00 of Medicaid spending at the same scale…". The
+  "dollar" framing had crept back into the last line a reader reads. "The line
+  beneath each panel is what reaches care" deleted.
+- "Other" sub-label: "mixed phases — UNRESOLVED" → "e.g. home equity, cost
+  sharing". EN-31 updated; it is now the only place the basket's contents are
+  described.
+- NOT SHOWN block added, then removed by JW. EN-47 and EN-31 carry both gaps.
+- The beneficiary key moved below the pies and, like the declarations, draws LAST
+  (S-087): the fan composites over the base and was printing through it.
+
+## Deleted — these need removing by hand, a zip will not do it
+`build_pair.py`, `COMMIT_INSTRUCTIONS.md`,
+`reference_renders/national_2030_{baseline,combined,overlay}.svg`,
+`reference_renders/national_2030_combined.png`,
+`reference_renders/national_baseline.{svg,png}`.
+The `national_2030_*` set was the ORPHAN the crossing gate reported at session
+open, and it still carried the pre-fix `enrol` spelling.
+
+## Gates at close
+`crossings.py` 0 on all five panels. `check.py` clean. `build.py` reports one NOTE,
+the 24-unit marker collision. FY2024 panel pixel-identical to session open.
+
+## Open, carried forward
+- State Admin / Eligibility Rules 24 units apart. Unchanged by this session.
+- **STYLE_GUIDE 4.8 has no gate on the four-anchor line.** `neighbour_room` is
+  only reachable from `short_lines`, the superseded running-ledger path, so the
+  rule has been binding and untested since S-082. Measured: both State Admin and
+  Eligibility Rules currently violate it. JW's to schedule.
+- Endnote keys vs artifact labels now diverge in one place ("Everything else" /
+  "Other"). Fine while it is one, worth a convention if it becomes two.

@@ -1,7 +1,7 @@
 # ledger_2030.py — the FY2030 post-HR-1 ledger, per $100 of prior-law spending.
 #
 # Bite phases (D-64): provider tax limits leave the FEDERAL band; the four
-# enrolment levers leave at the STATE AGENCY, because a person never enrolled
+# enrollment levers leave at the STATE AGENCY, because a person never enrolled
 # generates no capitation and no claim; directed payment caps hit the CLAIMS fan
 # on the capitated leg, against the three provider classes the statute names.
 # Overhead is split (D-63): plan administration scales with capitation under the
@@ -38,7 +38,7 @@ def ledger(variant):
       PT   leaves the FEDERAL band before the merge. Federal match never drawn.
       MSP  leaves at the STATE AGENCY, reducing the Medicare-premium lane.
       WORK, RENEW, BLOCKED, ELSE leave at the STATE AGENCY. They stop
-           enrolment, so the dollar never reaches a payer lane.
+           enrollment, so the dollar never reaches a payer lane.
       SDP  hits the CLAIMS fan, on the capitated leg, against the three
            provider classes the statute names.
     """

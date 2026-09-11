@@ -15,8 +15,22 @@ from typing import Dict, List, Tuple
 from outflows import COLS, col_right
 import tracker as _T
 
-# Tributary terminals ride the tracker lattice (STYLE_GUIDE 2.10).
-T_SLOT = {c: _T.edge(c) for c in ('FEDERAL','STATE_AGENCY','PAYER','CLAIMS')}
+# Tributary terminals ride the tracker lattice (STYLE_GUIDE 2.10). WHICH slot a
+# tributary takes is the reach it declares in outflows.OUTFLOWS, falling back to
+# the column it is charged to where no reach is sourced (S-085).
+T_SLOT = {c: _T.edge(c) for c in ('FEDERAL','STATE_AGENCY','DISBURSE','PAYER','CLAIMS')}
+
+
+def _reach_slot(name, default):
+    """Terminal x for an HR-1 tributary: its declared reach, or `default`.
+
+    One source of truth with the marker on the number line, which reads the same
+    key. Terminals and the tracker answer the same question (S-075); S-085
+    changed the question from where the money left to where it would have got to.
+    """
+    from outflows import OUTFLOWS
+    r = OUTFLOWS.get(name, {}).get("reach")
+    return T_SLOT[r] if r else default
 
 ORDER = ["Long-term care", "Hospitals", "Other", "Physicians & clinics",
          "Behavioral health", "Rx drugs"]
@@ -60,6 +74,10 @@ class Instance:
     disp: Dict[str, str] = field(default_factory=lambda: {"Other": "Wrap around services"})
     show_beneficiaries: bool = True
     absent: List[str] = field(default_factory=list)   # declared, never estimated
+    # Prior-law provider-class totals, for the beneficiary overlay. Set by
+    # reference to the as-is instance, never typed in (S-073). Empty on a
+    # diagram that carries no decrements, which is what switches the overlay off.
+    prior_node: Dict[str, float] = field(default_factory=dict)
     centre: Tuple[str,str] = ("100 Dollars of","Medicaid Spending")
     # Subtraction ledger: (label, amount, class, charged column) in flow order.
     # The tracker's slots and the tributaries' terminals both come from this, so
@@ -110,11 +128,16 @@ AS_IS_2024 = Instance(
 def to_be_2030(L, per100):
     """Build the FY2030 instance from the computed ledger and lane values."""
     PT = per100["Provider tax limits"]
-    sa = [("Blocked senior enrollment rule", 598),
-          ("Work reporting", 648),
-          ("Six-month renewals", 682),
-          ("Blocked Medicaid enrollment rule", 748),
-          ("Everything else", 786)]
+    # Bite x comes from outflows.OUTFLOWS, which already declares where each
+    # tributary leaves the trunk. It used to be declared here too, at different
+    # values (598/648/682/748/786 against 664/698/732/766/800), so the marker on
+    # the number line read one origin and the ribbon left at another. Two
+    # declarations of one geometry is the S-073 failure mode with coordinates
+    # instead of dollars. Order follows the declaration order, which is now
+    # source order (S-085).
+    from outflows import OUTFLOWS as _OF
+    sa = [(n, _OF[n]["src_x"]) for n, o in _OF.items()
+          if o["cls"] == "hr1" and o["src"] == "STATE_AGENCY"]
     steps = [(n, "bot", per100[n], x) for n, x in sa]
     steps += [("admin", "top", L["admin"], 615),
               ("medicare", "top", L["medicare"], 715)]
@@ -132,6 +155,11 @@ def to_be_2030(L, per100):
         gt={k: v * sum(L["node"].values()) / 86.43
             for k, v in {"Children": 13.48, "Adults": 29.56,
                          "Disabled": 24.98, "Aged": 18.41}.items()},
+        # By reference, so the overlay's arithmetic and the FY2024 panel can
+        # never disagree. EN-46.
+        prior_node=dict(AS_IS_2024.node),
+        # No NOT SHOWN block on the national panel (JW, 2026-09-11). Both gaps
+        # stay declared in EN-47 and EN-31; DC's own block is untouched.
         steps=steps,
         fed_bite=PT,
         # Terminal X is NOT a free choice. It is the tracker slot of the
@@ -140,16 +168,20 @@ def to_be_2030(L, per100):
         # now rides in the sub-label, where it is actually legible.
         hr1_term={
             "Provider tax limits": (T_SLOT["FEDERAL"], "federal match never drawn"),
-            "Blocked senior enrollment rule": (T_SLOT["STATE_AGENCY"],
-                "duals will not enrol; would have reached the state agency"),
-            "Work reporting": (T_SLOT["STATE_AGENCY"],
-                "will not enrol; would have reached disbursements"),
-            "Six-month renewals": (T_SLOT["STATE_AGENCY"],
+            "Blocked senior enrollment rule": (_reach_slot("Blocked senior enrollment rule", T_SLOT["STATE_AGENCY"]),
+                "duals will not enroll; would have reached the state agency"),
+            "Work reporting": (_reach_slot("Work reporting", T_SLOT["STATE_AGENCY"]),
+                "will not enroll; would have reached disbursements"),
+            "Six-month renewals": (_reach_slot("Six-month renewals", T_SLOT["STATE_AGENCY"]),
                 "will not survive renewal; would have reached the payer"),
-            "Blocked Medicaid enrollment rule": (T_SLOT["STATE_AGENCY"],
-                "will not enrol; would have reached a paid claim"),
+            "Blocked Medicaid enrollment rule": (_reach_slot("Blocked Medicaid enrollment rule", T_SLOT["STATE_AGENCY"]),
+                "will not enroll; would have reached a paid claim"),
+            # JW: name it, give examples, and let it take the top row where it
+            # costs almost no height. The basket's status stays declared, in the
+            # NOT SHOWN block below and in EN-31, rather than in a one-word
+            # shout on the ribbon.
             "Everything else": (T_SLOT["STATE_AGENCY"],
-                "mixed phases \u2014 UNRESOLVED"),
+                "e.g. home equity, cost sharing"),
             "Directed payment caps": (T_SLOT["CLAIMS"],
                 "will not top up hospital, nursing facility, academic rates"),
         },
@@ -158,7 +190,7 @@ def to_be_2030(L, per100):
         subs_spec=[
             ("provider tax limits", PT, "hr1", "STATE_GOVT", "Provider Tax"),
             ("administration + Medicare premiums", "adm_med", "admin", "STATE_AGENCY", "State Admin"),
-            ("work reporting, renewals, enrolment rules, other",
+            ("work reporting, renewals, enrollment rules, other",
              sum(per100[n] for n, _ in sa), "hr1", "STATE_AGENCY", "Eligibility Rules"),
             ("plan administration + earnings", "plan", "admin", "PAYER", "MCO Admin"),
             ("directed payment caps", per100["Directed payment caps"], "hr1", "CLAIMS", "Payment Caps"),

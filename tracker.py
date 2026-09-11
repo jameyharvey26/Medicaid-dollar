@@ -311,7 +311,7 @@ MARK_AMT_PX = 20
 MARK_NAME_PX = 17
 
 
-def ledger(subtractions, marker_x, start=100.0):
+def ledger(subtractions, marker_x, marker_origin=None, start=100.0):
     """(anchors, marks).
 
     anchors: [dict(x, name=[lines], value)] — the four, always.
@@ -320,17 +320,28 @@ def ledger(subtractions, marker_x, start=100.0):
 
     An anchor's value is the start less every decrement that has already been
     taken by the time the flow reaches it. Nothing is summed anywhere else.
+
+    WHICH decrements those are is read from each decrement's ORIGIN — the point
+    at which the money leaves the flow — and never from its marker's x. The two
+    were the same thing until S-085 moved the eligibility terminals out to the
+    reach each blocked dollar declares, which pushed that marker's midpoint past
+    the Funding Disbursed anchor and made the line report $92.06 disbursed on a
+    panel whose trunk narrows to $83.89. Position is a claim about the flow's
+    geometry; attribution is a claim about the ledger. A marker may move anywhere
+    the geometry sends it and the arithmetic must not follow it.
     """
     live = [s for s in subtractions if s[1] > 0.004]
     marks = sorted(
         [dict(x=marker_x[s[4]], amount=s[1], cls=s[2], short=s[4]) for s in live],
         key=lambda m: m["x"])
+    origin = dict(marker_origin or {})
     anchors = []
     for col, name in TRACKER_ANCHORS:
         x = float(COLS[col][0])
         anchors.append(dict(
             x=x, name=list(name),
-            value=start - sum(m["amount"] for m in marks if m["x"] < x)))
+            value=start - sum(m["amount"] for m in marks
+                              if origin.get(m["short"], m["x"]) < x)))
     return anchors, marks
 
 

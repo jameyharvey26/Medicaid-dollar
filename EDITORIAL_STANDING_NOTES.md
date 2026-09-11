@@ -1081,3 +1081,141 @@ Where a second step would be needed the build REPORTS rather than inventing an
 answer. Two decrements that genuinely occupy the same span of the flow — state
 administration and the eligibility rules both terminate on the state agency's
 right edge, 24 units apart — are a placement question for the editor.
+
+**S-085 · All · Terminals answer where the dollar would have ARRIVED, not where it left.**
+2026-09-11, JW. Amends the ANSWER in **S-075**, not its principle. S-075's rule —
+terminals and the tracker must answer the same question — stands and is why this
+had to be changed in both places at once. What it got wrong was the question. It
+chose "where did the money leave the flow", which is true of every outflow and
+therefore looked safe; but a blocked dollar is not spent at the state agency, it
+fails to arrive somewhere downstream, and that is the entire subject of the
+artifact. The reach had been sitting in each sub-label as prose for a week,
+telling the reader something the geometry contradicted.
+
+A tributary now declares a `reach` in `outflows.OUTFLOWS` and terminates there;
+terminal x on the canvas and the fan's peel order read the same key. **AMENDED
+2026-09-11 by S-091:** the number line does not. Its span runs to the end of the
+charged segment, as it did before this note.
+A tributary with no SOURCED reach declares none and keeps its charged column:
+"Everything else" bites in at least four phases (EN-31), and directed payment caps
+cap a rate rather than block a dollar. That is S-071 rather than a fallback, and
+the scoping is load-bearing — extending the rule to directed payment caps would
+have put its marker two units from Fraud.
+
+S-083's consequence stands: the five levers no longer stack, so each one's own
+dollars and cents sit on its own terminal, and the column total is the marker's job.
+
+**S-086 · All · A marker's POSITION and a decrement's ATTRIBUTION are two different claims.**
+2026-09-11. `tracker.ledger` summed each anchor by comparing the anchor's x to the
+MARKER's x. That was correct for as long as every marker's midpoint happened to
+fall before its own anchor, which was true until S-085 moved the eligibility
+terminals downstream. The first render after that change reported **Funding
+Disbursed $92.06, 7.94% lost** — $8.17 stopped counting because its marker had
+crossed the anchor — on a panel whose trunk visibly narrows to $83.89. Every gate
+passed. Conservation held, `check.py` was clean, delivered was still $77.79 and
+22.21%: the money was all there, attributed to the wrong side of an anchor.
+
+Position is a claim about the flow's geometry and may go anywhere the geometry
+sends it. Attribution is a claim about the ledger and is read from each
+decrement's ORIGIN, the point at which the money leaves the flow. The arithmetic
+does not follow the marker. Sibling of S-081, and the same shape: two quantities
+that had always been equal turned out to be two quantities.
+
+**S-087 · All · A declaration that another label can paint over is not a declaration.**
+2026-09-11. The declared-absence block was drawn into the base svg. The HR-1 fan
+is composited over the base, and on FY2030 the directed-payment-caps sub-label
+runs to x=1822 against a declaration starting at x=1780, so it struck a line
+through it. Backing the text did not help, because the problem was layer order and
+not z-order within a layer. Declarations now draw LAST, after everything that
+could reach them. What is not in the data is the one thing on the artifact that
+must not be made hard to read.
+
+**S-088 · All · The solver and the renderer must measure text with the same ruler.**
+2026-09-11. `outflows._label_w` estimated label widths at 0.55 and 0.50 per
+character while `sankey.lbg` painted its background at 0.56 plus eight units of
+padding. The solver therefore believed every label was narrower than the box the
+renderer actually drew for it. This was harmless for months because the sub-label
+was always the widest line in a block and the slack absorbed the error.
+
+It stopped being harmless the moment amounts could be folded onto names (S-089):
+the head became the widest line, and the six-month renewals amount was painted
+over by the background of Blocked Medicaid's sub-label — greyed out and
+unreadable — while the solver reported the two labels twenty-five units clear of
+each other. The gate said clean because the gate was measuring the wrong string.
+
+There is now one metric, `outflows._text_w`, and it includes the background box,
+because what collides on the canvas is the box and not the glyphs. Sibling of
+S-076 and S-079: a detector fed the wrong input agrees with itself.
+
+Correcting it cost twenty units of fan depth that were never really there. That is
+the point — the fit that the underestimate reported was not a fit.
+
+**S-089 · All · A tributary's amount may ride its name or sit below its sub-label, and which is SOLVED.**
+2026-09-11, JW. Flexibility granted on the condition that nothing overlaps and no
+amount reads as disconnected from its tributary. So the fold is not a style
+setting: the compact form buys eleven units of height and costs width, and the
+solver spends it deepest row first, one tributary at a time, only where the stack
+would otherwise run past the floor. Row spacing gives first, because respacing
+changes nothing about how a label reads and folding does.
+
+Two things fell out of building it. **More compaction is not monotonically
+better** — a folded label is wider, so past a point folding one more row creates a
+fresh x-overlap and the stack gets DEEPER. Measured: four folded rows bottom out
+at 1116 and seven at 1138. Every attempt is scored and the shallowest kept, rather
+than the last one tried, which is what the first implementation did. **Either form
+keeps the amount inside its own block under its own terminal**, which is the
+condition JW set, and it is a property of the block rather than of the solver.
+
+**S-090 · All · A tie is not a constraint, and reporting one as a constraint is worse than getting it wrong.**
+2026-09-11. JW asked for "Other" to peel first. I answered that the fan's order was
+forced by the no-crossing rule and could not be moved. Half of that was true: the
+ROW order is forced, because the shortest-reaching tributary leaves lowest on the
+trunk and must stay lowest, so it can never take the top row under the HR-1 rule.
+The PEEL order was not forced at all. "Other" and "Blocked senior enrollment" both
+terminate at 820, so the slot sort was a tie, and the tie was being settled by
+which line of `outflows.py` the two declarations happened to sit on. I had put
+senior first without ever choosing to, then described the result as geometry.
+
+JW's question — what rule would it break — is the one that found it, because the
+answer was none.
+
+Two corrections stand. Declaration order is now the EXPLICIT tie-break in
+`resolve_bite_order`, so moving a tributary in the file moves it on the canvas and
+nothing else does. And when two facts about a layout are entangled — here "where
+does it peel" and "which row does it land in" — they get answered separately, even
+when a single change happens to move both. An answer that bundles a real
+constraint with an accidental one immunises the accident against exactly the
+question that would have caught it.
+
+Peel order, left to right, fixed by JW: Other, Blocked senior enrollment, Work
+reporting, Six-month renewals, Blocked Medicaid enrollment rule.
+
+**S-091 · All · The canvas terminal and the ledger span are two facts. One function answering both is a bug waiting for a reason.**
+2026-09-11, JW. S-085 gave tributaries a declared `reach` and routed it into
+`_terminus_x`, which three things read: the tributary's terminal on the canvas,
+the peel order of the fan, and the span of the decrement marker on the number
+line. Only the first two wanted it. The marker's span had always run from where
+the money leaves the flow to the end of the segment it is CHARGED to, and that is
+the right answer whatever the fan does — so sending the reach into it walked the
+eligibility rhombus from 742 out to 1112, past the anchor that had already
+subtracted the money, and the line stopped adding up on its face.
+
+The repair I reached for first was a clamp: keep the reach in the span, then pull
+the result back to the charging anchor. That is two mechanisms to undo one wrong
+answer, and it is what JW called over-engineering. The rule was not too weak, it
+was pointed at the wrong question.
+
+There are now two functions. `_canvas_term_x` is where the terminal goes and what
+peel order sorts by — the reach. `_terminus_x` is how far the marker's span runs —
+the charged column, exactly as before S-085. Pointing them back at one function to
+"simplify" put six crossings in the fan, which is the same error in the other
+direction and is why both are written out.
+
+All six markers are back to their pre-session values: 238.0, 717.5, 742.0, 1180.0,
+1431.0, 1533.0.
+
+**Also backed out:** a `tracker.label_room` gate for STYLE_GUIDE 4.8 that I built
+without a decision, reporting the same State Admin / Eligibility Rules collision
+the existing NOTE already reports. 4.8 is genuinely unenforced on the four-anchor
+line, and that is a real finding — but it is an open item for JW's list, not
+something to fix in the middle of a different repair.
