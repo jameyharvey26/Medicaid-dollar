@@ -2,7 +2,7 @@
 
 **Working title:** $100 Medicaid Dollars — The National View and the Impact of HR-1
 **Executive Producer:** JW
-**Byline:** Jamey Harvey, Erin Henderson
+**Byline:** Jamey Harvey, Sheila Yahyazadeh  *(amended 2026-09-11, D-67)*
 **Kickoff:** 2026-08-18
 **Status:** structure approved, research in progress, no drafting started
 
@@ -158,30 +158,52 @@ not. **Build toward a finished PDF, not a designer handoff package.** Designer d
 optimise for what renders reliably in print CSS.
 
 ### D-17 · Byline and author bios
-Jamey Harvey and Erin Henderson.
+**AMENDED 2026-09-11 by D-67. The co-author is Sheila Yahyazadeh.**
+Jamey Harvey and Sheila Yahyazadeh.
 
-**Erin Henderson (as supplied by JW, verbatim):**
-> Erin Henderson is a Ward Five resident and served as the CEO of Fidelis Care New Jersey,
-> a Medicaid MCO covering 300,000 lives. Prior to turning around that health plan for
-> Centene she served as the market executive for United HealthCare's Dual Choice program in
-> the District of Columbia. Erin got her Bachelor's degree at Columbia University and her
-> Master's in Public Administration at the University of Missouri-Columbia. Erin is on the
-> board of Community of Hope, an FQHC in the District and a proud mom.
+**Sheila Yahyazadeh (as supplied by JW; one typo fix marked):**
+> Sheila Yahyazadeh is the Chief External Operations Officer for CareFirst BlueCross
+> BlueShield Community Health Plan Maryland. She has over a decade of experience working
+> with government health programs including Marketplace, Medicaid, and Medicare. She
+> specializes in business strategy, growth operations, innovation, and partnership building.
+> Sheila is passionate about elevating the voice of consumers and the community to improve
+> equitable access to care. Through partnerships with providers, community stakeholders,
+> startups, and the state, she has built pathways to care access [for] historically
+> underserved and disadvantaged communities. Prior to joining CareFirst BCBS, Sheila led
+> strategic campaigns and CX initiatives for Fortune 100 healthcare clients. She also
+> spearheaded a health innovation team that brought together cross functional expertise in
+> AI/machine learning, creative services, and UX/UI to reimagine how healthcare is
+> delivered. Sheila is committed to innovation as an advisor to start-up founders. She has a
+> bachelor's in Human and Global Security as well as a Master's degree in Public
+> Administration and Health Policy from American University. She is first generation
+> American, daughter to Peruvian and Iranian parents. She is also a certified Health Coach,
+> Yoga Instructor, and an avid traveler.
 
-**Editorial note — two variants, same facts.** The bio is DC-framed (Ward Five, Community
-of Hope). Ideal for the DC edition; on a national paper a reader in Ohio does not know what
-Ward Five signals.
-- *National edition:* lead with Fidelis Care New Jersey and the UnitedHealthcare Dual Choice
-  market role. DC residency closes rather than opens.
-- *DC edition:* run as written, Ward Five first.
-This pattern carries through the state series — each edition foregrounds whatever local tie
-the authors have.
+*Copy Editor: "pathways to care access or historically underserved" reads as a typo for
+"for"; inserted. "creatives services" closed to "creative services". Nothing else touched.*
 
-**Two substantive hooks in her background:**
-1. She ran a D-SNP market in DC. The DC diagram carries a carved D-SNP band. That is a real
-   credibility asset in Section IV, and she is a primary source on how those dollars move.
-2. Community of Hope board seat connects directly to the FQHC sidecar flagged for Section
-   VI. If we pursue it, interview her rather than desk-research it.
+**Editorial note — the bio needs no regional variant, which is a change from the previous
+co-author.** It opens on a current operating role at a Medicaid managed care organisation
+and never depends on a local signal a reader outside the region would have to decode. It
+runs as written in the national edition and in every state edition.
+
+**Two substantive hooks in her background, replacing the two D-17 previously carried:**
+1. She sits inside a Medicaid plan today, in external operations. The payer column and the
+   plan checklist in Section V are the parts of this paper most exposed to being wrong about
+   how a plan actually behaves, and she is a primary source on both.
+2. Partnership building with providers, community stakeholders and the state speaks directly
+   to Section VII, where the paper has to say what a contraction does to access without
+   a sourced routing model behind it.
+
+**One layout consequence.** The bio runs roughly twice the length of Jamey's. Either trim
+for the national edition or extend Jamey's to match; the decision belongs at layout and the
+bio is carried verbatim until then.
+
+**Superseded, recorded rather than deleted (S-032).** Erin Henderson was co-author from
+kickoff on 2026-08-18 until 2026-09-11. Her bio, the Ward Four / Ward Five DC framing, the
+D-SNP credibility hook for Section IV and the Community of Hope FQHC hook for the provider
+sections all came off the board with her and must not be relied on anywhere downstream. The
+closed interview (see the 2026-08-27 appends) is now moot rather than closed.
 
 **Jamey Harvey (as supplied by JW; two typo fixes marked):**
 > Jamey Harvey is a Ward Four resident and the CEO of Agilian LLC, a boutique CBE firm
@@ -194,9 +216,9 @@ the authors have.
 
 *Copy Editor: inserted "he" after "when"; closed the space in "seven- time".*
 
-**Ward Four / Ward Five is an asset — use it deliberately in the DC edition.** Two authors,
-two wards, both residents. For a paper about DC Medicaid written for a DC audience, that is
-the credential that lands hardest, and it cannot be manufactured later.
+**WITHDRAWN 2026-09-11 by D-67.** The Ward Four / Ward Five pairing was an asset of the
+previous byline and cannot be reconstructed. The DC edition now has one resident author, and
+the local credential it leans on has to be found somewhere other than the bios.
 
 **Raised once, JW's call:** *Wired for White* in the byline is authentic and on-brand for a
 justice-driven firm, and hiding it would be its own kind of tell. It also signals something
@@ -205,8 +227,33 @@ framing on motive (S-003) and travels to plans across many political geographies
 **Recommendation: keep it.** A variant without it is a two-minute change if a particular
 edition calls for one.
 
-**Both bios close on family** (proud mom / two kids in college). Keep that parallel; it is
-doing real work, humanising a technical document without sentimentality.
+**AMENDED 2026-09-11 by D-67.** The bios no longer close in parallel: Jamey's ends on two
+kids in college, Sheila's on parentage, a health coaching certification and travel. The
+humanising function survives and the symmetry does not. Do not manufacture the symmetry by
+editing either bio.
+
+### D-67 · The co-author is Sheila Yahyazadeh
+JW, 2026-09-11. Recorded here because five places in the brief and the appends cite
+D-67 as the superseding decision and none of them stated it. A reference with no
+definition is the same defect as a stale in-place entry (S-044), read from the other
+end: the next person to follow the citation finds nothing.
+
+Erin Henderson was co-author from kickoff on 2026-08-18. The byline is now Jamey
+Harvey and Sheila Yahyazadeh, Jamey leading, on the cover and on the author page. Bio
+supplied verbatim by JW and amended into D-17. The interview closure recorded in the
+2026-08-27 appends is moot rather than closed, and the two credibility hooks it left
+standing are withdrawn and replaced; see D-17 as amended.
+
+**Disclosure, added by the Author and open for JW's ruling.** A sitting officer of a
+Medicaid managed care organisation is now a co-author of a paper that prints a plan
+administration band and a public-company earnings band. The rendered author page
+carries four lines stating the role, that CareFirst BlueCross BlueShield Community
+Health Plan Maryland is a nonprofit and therefore outside the $0.76 public-company
+earnings figure (EN-43 as amended), and that the plan administration band is a
+national aggregate from CMS-64 and MACStats containing no plan-specific figure. All
+three statements check against the build. Two open questions belong to JW: whether the
+disclosure sits at the foot of the author page or on the cover, and whether the
+co-author reviews the wording before it ships. It should not ship unreviewed.
 
 ### D-18 · Fork 1 utilization drop: 26% central case
 Source: Oregon Health Insurance Experiment (Finkelstein et al., NEJM 2013). Medicaid
@@ -285,7 +332,6 @@ numbers swapped. **Section V will be returned if it reads as Section III with re
 | # | Item | Owner | Blocking |
 |---|---|---|---|
 
-| O-11 | Interview Erin on D-SNP flows + FQHC sidecar | Author | Sections IV & VI |
 | O-6 | Claude disclosure — needs marketing/legal routing? | JW | Section IX |
 | O-7 | Vertical phase-slice render mode does not exist yet | Designer | Sections III & V |
 | O-9 | Provision-level 2028 split — CBO gives 10-yr totals by provision, FY totals in aggregate | Research | Section IV root-cause bars |

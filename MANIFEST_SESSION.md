@@ -477,3 +477,89 @@ the 24-unit marker collision. FY2024 panel pixel-identical to session open.
   Eligibility Rules currently violate it. JW's to schedule.
 - Endnote keys vs artifact labels now diverge in one place ("Everything else" /
   "Other"). Fine while it is one, worth a convention if it becomes two.
+
+## QUEUED FOR THE COMMENT PASS — do not apply before JW's notes arrive
+JW, 2026-09-11. Held deliberately so the whole set of edits lands in one rebuild.
+
+- **Q-01 · Gloss the bill number at first use, twice.** The law is cited throughout as
+  P.L. 119-21. Medicaid practitioners say "H.R. 1". Bind the two once on the cover and
+  once at first use in Section I, then let the public law number carry the rest of the
+  paper alone. Same treatment the house rules already give capitation and the medical
+  loss ratio: the term stays and gets one clean gloss.
+  Reason for the formal citation: H.R. 1 is the majority's first bill of every Congress
+  and will name something else in 2027; every statutory section cited in Section IV
+  (§71101 through §71119) is a section of the enacted law, not of the bill.
+  Files: `paper_national.html`, cover block and the Section I opening.
+
+---
+
+# SESSION 2026-09-14 — the national manuscript, the charter, and two gates
+
+## What shipped
+**`Medicaid_Dollars_National_DRAFT_v4.pdf`** is the live draft. Eighteen pages, landscape
+letter, two columns, Jost and Nunito embedded. Twelve figures, every one a crop of the two
+master panels at native resolution, cut by `make_figs.py` and never redrawn. Body prose is
+about 4,700 words against 11,400 at first draft, which is 41% and inside the charter band.
+
+Source is `paper_national_v4.html`, rendered by `render_v4.py`. `paper_national_v3.html`
+and its PDF are kept for one cycle as the comparison; text is identical between them.
+
+## The editorial charter (new, authoritative)
+`EDITORIAL_CHARTER.md` sits **above** `EDITORIAL_STANDING_NOTES.md`. Where a standing note
+conflicts, the charter wins and the note is marked superseded in place. C-00 through C-11
+plus C-09A and C-10A. Origin: JW's reader-first instruction, two redlines totalling 103
+comments, and seven techniques from the firm's editorial expert.
+
+Superseded in place: S-071 as applied to prose (limits now live in footnotes, the artifact
+rule is unchanged), S-002 in part (the firm still takes a position, it no longer announces
+that it is taking one), S-033 in part. D-33 withdrawn: the state, plan and provider
+checklists are cut from every edition.
+
+## Two gates, both wired into `render_v4.py`
+**`whitespace.py`** rasterises each page and reports dead space per column in text lines.
+Cover pages, plates, section-final pages and the last page are exempt by design. It also
+measures horizontal slack beside a page-spanning figure.
+
+**`figurefit.py`** reads label coordinates out of the panel SVGs, the crop box each figure
+cuts from `paper_figs/crops.json`, and the captions opening on each page, then reports any
+subject the page treats as its own whose label sits outside every crop on that page.
+
+*Four detector bugs found and fixed this session, all the same class: a gate pointed at the
+wrong input agrees with itself.* Whitespace first scanned PDF objects and counted the
+renderer's full-page white rectangle as content, reporting zero on every page. The
+horizontal check first measured the image rather than the frame, so a portrait crop centred
+in a full-width band read as a column figure. The section-end test keyed on the literal
+string "SECTION" and went blind the moment the Roman numerals were removed. And figurefit
+counted "Detail from Figure 5" as the whole panel being present, which contains everything,
+so every check passed. Recorded at C-10A.0.
+
+## Renderer
+Ported the manuscript to Typst (`html2typst.py`, `paper_national.typ`, `render_typst.py`)
+to get real float placement: 15 pages against 19 and one whitespace failure against four,
+with the same content. **JW rejected it on appearance and the port is parked, not deleted.**
+Both gates run against either PDF, so the comparison stays cheap. The four-page saving is
+what proper float placement buys, and the stranded columns that remain in the HTML build
+are that limitation.
+
+## Endnote maintenance
+EN-46's three statute-specific rates were paired with the wrong services; corrected in
+place with the amendment noted. The ordering was right in `PAPER_PASSAGES.md` and wrong in
+the endnote, which is S-073 in its purest form: the figures were correct and the mapping
+was carried by hand.
+
+## Open, for JW
+1. **The repo is public and the draft is now substantially complete.** Per the standing
+   instruction this is the flag.
+2. **S-092 is live.** At the start of the next chat following this commit, ask whether
+   Sheila has seen the disclosure wording on the author page.
+3. **EN-43 re-scope, not yet ruled on.** 10-K segment disclosures cannot produce a measured
+   Medicaid earnings figure; they give revenue, not line-of-business profit, so the carve
+   stays an allocation however much work is done. NAIC statutory filings do break out a
+   Medicaid line with underwriting gain. JW's proposed structure is to take the total from
+   NAIC and carve the public-company share from SEC ownership mapping. That moves nonprofit
+   retention out of the $4.85 administration band and changes both panels, so it is a
+   rebuild rather than a wording fix.
+4. **Four whitespace strandings remain**, pages 6, 9, 10 and 15 of v4. Three are a figure
+   that cannot fit its column and jumps. Not fixable in this renderer.
+5. **The pie cell percentages are still fit from an unsourced seed** at `sankey.py:505`.
+   Ruled "deal with it when we get to that part of the document" and still open.

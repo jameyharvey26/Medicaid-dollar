@@ -124,7 +124,12 @@ finished five years ago, and today that difference is invisible. Note that IT mo
 Size the systems slice from the CMS-64 before drawing; if it is a few tenths of a dollar it
 needs the same not-to-scale treatment as the immigrant eligibility lane.
 
-**D-33 · Section V carries three short checklists**
+**D-33 · Section V carries three short checklists** — **WITHDRAWN 2026-09-11, JW.**
+The state, plan and provider checklists are cut from the paper and from the approved
+outline, for every edition including the state series. They told the reader what to
+conclude, where the charter makes the paper's job to equip the reader to conclude for
+themselves, and they were the longest stretch of prose in the document carrying no
+figure. Superseded text retained below per S-032.
 States, plans, providers — one short list each. Per S-018, a dollar means something different
 depending on who holds it, and the checklist is where that gets concrete.
 
@@ -154,6 +159,7 @@ unchanged.
 ### Closed items
 
 **Erin Henderson interview — not planned. Closed 2026-08-27.**
+*(MOOT 2026-09-11, D-67: co-author changed to Sheila Yahyazadeh.)*
 Previously carried as an open item. Closed at the Executive Producer's direction: an interview
 is unlikely to be available, and no source can supply what the placeholder in D-30 stands in
 for. Nobody knows how plans and states will respond, and they will respond differently from
@@ -163,7 +169,9 @@ awaiting better information.
 This is a closure, not a deferral. Do not resurface it as an open item.
 
 Two consequences to carry:
-- **D-17 is unaffected.** Erin remains co-author. Co-authorship does not depend on an
+- **SUPERSEDED 2026-09-11 by D-67.** ~~D-17 is unaffected. Erin remains co-author.~~
+  The byline is now Jamey Harvey and Sheila Yahyazadeh. D-17 amended in place.
+- *(original text, for the record)* D-17 is unaffected. Erin remains co-author. Co-authorship does not depend on an
   interview and the byline stands unless separately revisited.
 - **D-19 needs a source check.** If Section VI's human-impact sourcing was leaning on her
   first-hand plan-side and FQHC experience, that section needs an alternative source. Verify

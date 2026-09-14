@@ -240,6 +240,7 @@ updated for D-46.
 ## Closed, do not reopen
 
 - Erin Henderson interview. Not planned.
+*(MOOT 2026-09-11, D-67: co-author changed to Sheila Yahyazadeh.)*
 - Immigrant eligibility lane. Footnote, not a lane.
 - Provider tax versus IGT split, nationally. D-46; state editions only.
 - Push-to-GitHub workflow. `SAVE TO GITHUB.command` is in the repo and working.

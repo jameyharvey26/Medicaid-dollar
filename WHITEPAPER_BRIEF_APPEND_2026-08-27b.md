@@ -195,6 +195,7 @@ break it out; footnote rather than adjust.
 ## Closed, do not reopen
 
 - **Erin Henderson interview.** Closed 2026-08-27, first session. Not resurfaced.
+*(MOOT 2026-09-11, D-67: co-author changed to Sheila Yahyazadeh.)*
 - **Immigrant eligibility lane.** Footnote, not a lane. D-24 as amended.
 
 ## Open, in priority order

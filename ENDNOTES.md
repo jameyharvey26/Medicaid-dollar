@@ -670,8 +670,13 @@ different quantity, is how a reader comes to read one as the other.
 *Limitation, declared.* Only three of the six fall at a statute-specific rate.
 §71116 names inpatient and outpatient hospital, nursing facility, and qualified
 practitioner services at academic medical centres, so the directed-payment bite
-lands on hospitals, long-term care, and physicians and clinics: those fall at
-9.73%, 10.43% and 11.14% of their prior-law totals. Wrap around services,
+lands on hospitals, long-term care, and physicians and clinics. **AMENDED
+2026-09-11: the three rates were listed in the wrong order.** Read live from the
+build, the falls are long-term care 9.73%, hospitals 10.43%, and physicians and
+clinics 11.14% of their prior-law totals. The original text paired 9.73% with
+hospitals and 10.43% with long-term care. `PAPER_PASSAGES.md` had the ordering
+right and this note had it wrong, which is the S-073 failure in its purest form:
+the figures were correct and the mapping was carried by hand. Wrap around services,
 behavioural health and prescription drugs all fall at exactly 8.85%, which is the
 undifferentiated eligibility-side rate and carries no service-specific finding.
 This is EN-21's limit made visible; the overlay does not claim otherwise and the

@@ -99,6 +99,8 @@ class Instance:
 # ============================ FY2024 AS-IS ================================
 AS_IS_2024 = Instance(
     name="national_2024",
+    # JW, 2026-09-11. The first anchor names what the $100 divides and its basis.
+    cp0_label=["Medicaid Dollars", "(2024 actuals)"],
     fed=64.70, state=35.30,
     admin=5.07, medicare=2.90,
     mco=40.06, dual=10.89, ffs=41.08,
@@ -196,7 +198,7 @@ def to_be_2030(L, per100):
             ("directed payment caps", per100["Directed payment caps"], "hr1", "CLAIMS", "Payment Caps"),
             ("documented fraud", "fraud", "fraud", "PROVIDERS", "Fraud"),
         ],
-        cp0_label=["$100 prior law", "FY2030"],
+        cp0_label=["Medicaid Dollars", "(2030 projected", "under prior law)"],
         kicker="TO BE  \u00b7  FY2030 PROJECTION",
         title="$100 of Medicaid spending under prior law, with P.L. 119-21 applied",
         strap="Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.",

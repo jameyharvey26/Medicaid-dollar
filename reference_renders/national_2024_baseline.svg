@@ -249,8 +249,8 @@
 <text x="1533.0" y="1244.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#b23a32" text-anchor="middle" font-weight="bold">Fraud</text>
 <circle cx="110" cy="1188.0" r="18.0" fill="#17325c"/>
 <text x="110.0" y="1152.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$100.00</text>
-<text x="110.0" y="1228.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">$100 Medicaid</text>
-<text x="110.0" y="1256.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Dollars</text>
+<text x="110.0" y="1228.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Medicaid Dollars</text>
+<text x="110.0" y="1256.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">(2024 actuals)</text>
 <circle cx="820" cy="1188.0" r="18.0" fill="#17325c"/>
 <text x="820.0" y="1152.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$92.03</text>
 <text x="820.0" y="1228.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Funding Disbursed</text>
