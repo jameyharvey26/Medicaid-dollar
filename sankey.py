@@ -172,23 +172,31 @@ def render(cfg):
     txt((xSA[0]+xSA[1])/2+6,cY+16,cfg.centre[1],15,"#ffffff","middle","bold",halo=False)
 
     # ===== Disbursements =====
+    # A collapsed lane is drawn as nothing at all. Its width is already zero,
+    # so the stacking below is unaffected; what has to go is the label, the
+    # node bar and the peel, because a $0.00 label is a claim that the lane
+    # exists and is empty, which is a different statement from absent.
+    _off=set(getattr(cfg,'collapsed',()))
+    on=lambda k: k not in _off
     mco_y=top3; dual_y=mco_y+mco*ys; ffs_y=dual_y+dual*ys
     peelx=1150
-    band(xSA[1]+bw,peelx,mco_y,mco_y,mco*ys,mco*ys,MCO,0.82)
-    band(xSA[1]+bw,peelx,dual_y,dual_y,dual*ys,dual*ys,DUAL,0.82)
-    band(xSA[1]+bw,xCL[0],ffs_y,ffs_y,ffs*ys,ffs*ys,FFS,0.82)
-    rect(xDI[0],mco_y,bw,mco*ys,MCO); rect(xDI[0],dual_y,bw,dual*ys,DUAL); rect(xDI[0],ffs_y,bw,ffs*ys,FFS)
-    lbg(xDI[0]+24,mco_y+mco*ys/2+5,f"MCO capitation  ${mco:.2f}",13); txt(xDI[0]+24,mco_y+mco*ys/2+5,f"MCO capitation  ${mco:.2f}",13,"#1f5b57","start","bold",halo=False)
-    lbg(xDI[0]+24,dual_y+dual*ys/2+5,f"Dual MCO capitation  ${dual:.2f}",13); txt(xDI[0]+24,dual_y+dual*ys/2+5,f"Dual MCO capitation  ${dual:.2f}",13,"#5a3d63","start","bold",halo=False)
-    lbg(xDI[0]+24,ffs_y+ffs*ys/2+5,f"Fee-for-service  ${ffs:.2f}",13); txt(xDI[0]+24,ffs_y+ffs*ys/2+5,f"Fee-for-service  ${ffs:.2f}",13,"#36505f","start","bold",halo=False)
+    if on('mco'):  band(xSA[1]+bw,peelx,mco_y,mco_y,mco*ys,mco*ys,MCO,0.82)
+    if on('dual'): band(xSA[1]+bw,peelx,dual_y,dual_y,dual*ys,dual*ys,DUAL,0.82)
+    if on('ffs'):  band(xSA[1]+bw,xCL[0],ffs_y,ffs_y,ffs*ys,ffs*ys,FFS,0.82)
+    if on('mco'):  rect(xDI[0],mco_y,bw,mco*ys,MCO)
+    if on('dual'): rect(xDI[0],dual_y,bw,dual*ys,DUAL)
+    if on('ffs'):  rect(xDI[0],ffs_y,bw,ffs*ys,FFS)
+    if on('mco'): lbg(xDI[0]+24,mco_y+mco*ys/2+5,f"MCO capitation  ${mco:.2f}",13); txt(xDI[0]+24,mco_y+mco*ys/2+5,f"MCO capitation  ${mco:.2f}",13,"#1f5b57","start","bold",halo=False)
+    if on('dual'): lbg(xDI[0]+24,dual_y+dual*ys/2+5,f"Dual MCO capitation  ${dual:.2f}",13); txt(xDI[0]+24,dual_y+dual*ys/2+5,f"Dual MCO capitation  ${dual:.2f}",13,"#5a3d63","start","bold",halo=False)
+    if on('ffs'): lbg(xDI[0]+24,ffs_y+ffs*ys/2+5,f"Fee-for-service  ${ffs:.2f}",13); txt(xDI[0]+24,ffs_y+ffs*ys/2+5,f"Fee-for-service  ${ffs:.2f}",13,"#36505f","start","bold",halo=False)
 
     # ===== Payer: peel administration, fork into earnings + MCO admin + dual-MCO admin =====
     mco_care_y=mco_y+mco_ret*ys; dual_care_y=dual_y+dual_ret*ys
-    band(peelx,xCL[0],mco_care_y,mco_care_y,mco_care*ys,mco_care*ys,MCO,0.82)
-    band(peelx,xCL[0],dual_care_y,dual_care_y,dual_care*ys,dual_care*ys,DUAL,0.82)
+    if on('mco'):  band(peelx,xCL[0],mco_care_y,mco_care_y,mco_care*ys,mco_care*ys,MCO,0.82)
+    if on('dual'): band(peelx,xCL[0],dual_care_y,dual_care_y,dual_care*ys,dual_care*ys,DUAL,0.82)
     plx=1235; planY=250
-    band(peelx,plx,mco_y,planY,mco_ret*ys,mco_ret*ys,RETAIN,0.88)
-    band(peelx,plx,dual_y,planY+mco_ret*ys,dual_ret*ys,dual_ret*ys,RETAIN,0.88)
+    if on('mco'):  band(peelx,plx,mco_y,planY,mco_ret*ys,mco_ret*ys,RETAIN,0.88)
+    if on('dual'): band(peelx,plx,dual_y,planY+mco_ret*ys,dual_ret*ys,dual_ret*ys,RETAIN,0.88)
     yk=planY
     if earnings > 0:
         band(plx,xPA[1]-6,yk,136,earnings*ys,earnings*ys,EARN,0.9); yk+=earnings*ys
@@ -196,20 +204,24 @@ def render(cfg):
         lbg(xPA[1]-15,132,f"Public-company earnings  ${earnings:.2f}",13,"end"); txt(xPA[1]-15,132,f"Public-company earnings  ${earnings:.2f}",13,EARN,"end","bold",halo=False)
     if earnings > 0:
         lbg(xPA[1]-15,148,"subset of margin (est.)",10.5,"end"); txt(xPA[1]-15,148,"subset of margin (est.)",10.5,MUT,"end",halo=False,italic=True)
-    band(plx,xPA[1]-6,yk,198,mco_adm*ys,mco_adm*ys,RETAIN,0.9); yk+=mco_adm*ys
-    rect(xPA[1]-6,198,5,mco_adm*ys,RETAIN)
-    lbg(xPA[1]-15,194,f"MCO plan administration  ${mco_adm:.2f}",13,"end"); txt(xPA[1]-15,194,f"MCO plan administration  ${mco_adm:.2f}",13,RETAIN,"end","bold",halo=False)
-    lbg(xPA[1]-15,210,"non-dual MCO administration",10.5,"end"); txt(xPA[1]-15,210,"non-dual MCO administration",10.5,MUT,"end",halo=False,italic=True)
-    band(plx,xPA[1]-6,yk,262,dual_adm*ys,dual_adm*ys,DUALADM,0.92); yk+=dual_adm*ys
-    rect(xPA[1]-6,262,5,max(dual_adm*ys,4),DUALADM)
-    lbg(xPA[1]-15,258,f"Dual MCO plan administration  ${dual_adm:.2f}",13,"end"); txt(xPA[1]-15,258,f"Dual MCO plan administration  ${dual_adm:.2f}",13,DUALADM,"end","bold",halo=False)
-    lbg(xPA[1]-15,274,"dual-plan administration",10.5,"end"); txt(xPA[1]-15,274,"dual-plan administration",10.5,MUT,"end",halo=False,italic=True)
+    if on('mco'):
+     band(plx,xPA[1]-6,yk,198,mco_adm*ys,mco_adm*ys,RETAIN,0.9); yk+=mco_adm*ys
+     rect(xPA[1]-6,198,5,mco_adm*ys,RETAIN)
+     lbg(xPA[1]-15,194,f"MCO plan administration  ${mco_adm:.2f}",13,"end"); txt(xPA[1]-15,194,f"MCO plan administration  ${mco_adm:.2f}",13,RETAIN,"end","bold",halo=False)
+     lbg(xPA[1]-15,210,"non-dual MCO administration",10.5,"end"); txt(xPA[1]-15,210,"non-dual MCO administration",10.5,MUT,"end",halo=False,italic=True)
+    if on('dual'):
+     band(plx,xPA[1]-6,yk,262,dual_adm*ys,dual_adm*ys,DUALADM,0.92); yk+=dual_adm*ys
+     rect(xPA[1]-6,262,5,max(dual_adm*ys,4),DUALADM)
+     lbg(xPA[1]-15,258,f"Dual MCO plan administration  ${dual_adm:.2f}",13,"end"); txt(xPA[1]-15,258,f"Dual MCO plan administration  ${dual_adm:.2f}",13,DUALADM,"end","bold",halo=False)
+     lbg(xPA[1]-15,274,"dual-plan administration",10.5,"end"); txt(xPA[1]-15,274,"dual-plan administration",10.5,MUT,"end",halo=False,italic=True)
 
     # ===== CLAIMS: 3 care lanes fan into 6 provider bars =====
     gg=50; htot=sum(node[p] for p in order)*ys+(len(order)-1)*gg; ntop=cY-htot/2
     node_y={}; y=ntop
     for p in order: node_y[p]=y; y+=node[p]*ys+gg
     barL=xPR[0]; barW=140; barR=barL+barW
+    _LK={"MCO":"mco","Dual":"dual","FFS":"ffs"}
+    LANES=[L for L in ("MCO","Dual","FFS") if on(_LK[L])]
     lane_src={"MCO":mco_care_y,"Dual":dual_care_y,"FFS":ffs_y}
     comp={"MCO":mcoc_n,"Dual":dualc_n,"FFS":ffs_n}; lc={"MCO":MCO,"Dual":DUAL,"FFS":FFS}
     ncur={p:node_y[p] for p in order}
@@ -247,7 +259,7 @@ def render(cfg):
         # ===== PROVIDERS =====
     for p in order:
         yy=node_y[p]
-        for L,val in [("MCO",mcoc_n[p]),("Dual",dualc_n[p]),("FFS",ffs_n[p])]:
+        for L,val in [(L,comp[L][p]) for L in LANES]:
             rect(barL,yy,barW,val*ys,lc[L]); yy+=val*ys
         nm=disp.get(p,p)+("*" if p=="Other" else "")
         lbg(barL+barW/2,node_y[p]-9,f"{nm}  ${node[p]:.2f}",13.5,"middle"); txt(barL+barW/2,node_y[p]-9,f"{nm}  ${node[p]:.2f}",13.5,INK,"middle","bold",halo=False)

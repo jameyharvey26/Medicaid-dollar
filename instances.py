@@ -74,6 +74,11 @@ class Instance:
     disp: Dict[str, str] = field(default_factory=lambda: {"Other": "Wrap around services"})
     show_beneficiaries: bool = True
     absent: List[str] = field(default_factory=list)   # declared, never estimated
+    # Lanes the ledger says are not there. A zero lane must DISAPPEAR, taking
+    # its label, its node contribution and its tracker row with it, rather than
+    # rendering as a hairline band with a $0.00 label (ARCHITECTURE 3, S-071).
+    # Set by the composer from the Ledger; never typed in.
+    collapsed: List[str] = field(default_factory=list)
     # Prior-law provider-class totals, for the beneficiary overlay. Set by
     # reference to the as-is instance, never typed in (S-073). Empty on a
     # diagram that carries no decrements, which is what switches the overlay off.

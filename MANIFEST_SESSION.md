@@ -626,3 +626,162 @@ note asks specifically whether she has seen the disclosure wording on the author
    `build_sankey_dc.py` are the starting points. Scope not yet set.
 3. Carried forward unresolved: EN-43 re-scope, the pie cell seed at `sankey.py:505`, the
    renderer choice, and the four whitespace strandings.
+
+---
+
+# SESSION 2026-09-15b — the seam, cut and proved
+
+## What shipped
+The Ledger / View / Layout seam from `ARCHITECTURE.md`, with the national as-is
+and DC as-is rendering through it byte-identically. No artifact changed. The
+national presentation layer was not touched.
+
+New: `ledger.py`, `view.py`, `compose.py`, `views.py`, `coverage.py`,
+`ledger_national_2024.py`, `ledger_dc_2024.py`, `ACQUISITION.md`,
+`NAIC_ROUTE.md`, `prove.py`, `byteproof.py`, `synth.py`.
+Changed: `build.py` (gate wiring), `sankey.py` (absent-lane collapse),
+`instances.py` (`Instance.collapsed`).
+
+## Phase 0, against JW's four items
+1. **`Fig` with provenance — done.** Value, source, vintage, basis, status,
+   note, and a signature. Endnotes generate from the ledger. A figure without
+   provenance fails the build.
+2. **`check(ledger)` as a real gate — done and wired.** `build.py` runs it
+   before emitting. Verified it refuses, not merely that it exists.
+3. **Absent-lane collapse — done.** A collapsed lane disappears with its label,
+   its bar, its peels and its tracker row. Proved on a synthetic
+   fee-for-service-only jurisdiction.
+4. **The expand flag — done.** `View(expand=["mco","dual"])` opens DC into six
+   named payers off the same ledger. Not a second graph.
+
+**Remaining before Phase 0 closes: the FY2030 to-be through the new path.**
+
+## Byte identity
+```
+national_2024      IDENTICAL   40,406 bytes
+dc_2024 (legacy)   IDENTICAL   24,341 bytes
+```
+DC is proved on `build(legacy_mix=True)`, which reproduces exactly what
+`ledger_dc.py` carried. `build.py` calls it with that flag, so the flag is the
+visible record that DC still carries the national service mix. The correction
+is then a diff against a baseline known clean rather than a change hidden
+inside a rewrite (S-064).
+
+## Two defects the byte proof caught
+**Published totals are not the sum of their parts.** Provider node totals were
+being derived by summing components. The components are rounded to the cent and
+the totals are published, so long-term care is 28.53 where its parts add to
+28.54. The conservation tolerance absorbs a hundredth; the renderer does not,
+and it moved a band by a tenth of a unit. Node totals are now carried as
+measured figures in their own right. **Standing note candidate: a published
+figure is measured, and recomputing it from its parts substitutes our
+arithmetic for the source's.**
+
+**A gate matching on prose goes blind when the prose is reworded.** The
+declaration check was grepping `declarations` for a substring. Declarations are
+now two fields: `declarations` is prose for the artifact, `declared` is keys the
+gate matches. The break-test failed to fail until it was pointed at the right
+field.
+
+## coverage.py — the acquisition instrument
+`check` asks whether the numbers are consistent. It cannot ask whether they
+exist, because **absence conserves**: nothing plus nothing balances. DC passes
+`check` cleanly and is 26 figures short.
+
+`coverage.py <territory>` walks a ledger left to right and reports every figure
+the baseline needs as verified, modelled, unverified, lapsed or missing, with
+its source named. Exits non-zero while anything is open. Process written up in
+`ACQUISITION.md`.
+
+## Verification, strict (JW ruling, 2026-09-15)
+`verified` means a person opened the source and agreed with the number. A
+redline does not earn it; shipping does not earn it.
+
+It attaches to a **vintage** and to a **value**, not to the calendar. A figure
+signed against FY2024 stays signed until the ledger is re-anchored. Three things
+end it, each detected rather than remembered: a new vintage (reports STALE), an
+edit after signing (reports LAPSED and **fails the build**), and a corrected
+source (cleared by hand). Run `coverage` every build and expect the answer not
+to change; when it changes, something happened that should have.
+
+**JW signed the national baseline, 2026-09-15**, on the strength of the endnote
+register, two redlines and a shipped draft.
+
+```
+national FY2024:  22 verified   2 modelled   2 unverified   3 missing   of 29
+DC FY2024:         0 verified   0 modelled  15 unverified  26 missing   of 41
+```
+
+**One exclusion from the signature, taken deliberately and flagged.** The
+public-company earnings carve is left unsigned on both capitated lanes. EN-43 is
+OPEN and states in terms that $0.76 has no primary source. Signing it would
+assert that someone opened a source the register says does not exist.
+
+Also open on national: the beneficiary matrix interior, and plan-level detail
+under both capitated lanes.
+
+## NAIC — route established, not executed
+`NAIC_ROUTE.md`. Health annual statement blank, **Page 7, Analysis of Operations
+by Lines of Business**, Title XIX Medicaid column: premium, incurred claims,
+administrative expense, net underwriting gain, per licensed entity, filed 1
+March for the prior calendar year.
+
+Access: InsData sells Annual Key Statement Pages at **$13.00 per
+company-statement**, no refunds. **DISB publishes DC-domiciled health entity
+statements free**, so the DC half costs nothing.
+
+**The finding that changes the shape of the job.** Schedule Y Part 1, the
+organizational chart, and Schedule T, premiums by state, are both inside the
+same $13 Key package as Page 7. The brief scoped the NAIC pull and the SEC
+ownership mapping as separate work. They are not — the parent-to-entity chart
+ships with the Medicaid column it has to be applied to. SEC filings become the
+check on the mapping, not its source.
+
+Expected to bite, reported not worked around: the Title XIX column may carry
+state-only programs (DC has exactly this with Alliance and ICP), and statutory
+filings are calendar-year incurred against a federal-fiscal-year total
+computable spine, which needs a stated bridge.
+
+Sora Shin has been asked to pull the four DC statements from DISB by hand; the
+site refuses automated requests. Purchasing and account creation are JW's.
+
+## Naming rule (JW, 2026-09-15)
+A plan carries its **present-day name with the former name in parentheses** —
+"Wellpoint DC (formerly Amerigroup)" — so a reader recognises it whatever year
+the ledger is anchored to. The licensed entity name is unchanged and is what
+NAIC and SEC filings are found under. Applied to the DC ledger. Belongs in
+`STYLE_GUIDE.md`.
+
+## DC facts established
+FY2024 comprehensive plans: AmeriHealth Caritas DC, MedStar Family Choice DC,
+Amerigroup DC. Amerigroup became Wellpoint DC on 1 July 2025. HSCSN is the
+separately contracted CASSIP plan. DHCF selected UnitedHealthcare for District
+Dual Choice from 1 February 2022.
+
+**Unconfirmed and material:** DHCF's current managed care page lists two
+comprehensive plans, and a transition transmittal moves enrollees off Wellpoint
+with prescriptions honoured through 31 October 2026. If that holds, a DC edition
+on FY2024 draws four plans, one of which is leaving while the reader reads it.
+Not verified.
+
+## Flagged, not fixed, per instruction
+1. **The tracker's State Admin marker holds two different events.** On the
+   national panel `−$7.97 State Admin` is $5.07 of administration plus $2.90 of
+   Medicare premiums returning to the federal government. Different
+   destinations, one label. JW found this on the synthetic panel. National
+   tracker is frozen.
+2. **Column headings do not come from the View.** The PAYER heading is
+   hardcoded "MCO administration" and is false on a jurisdiction with no
+   managed care.
+3. **Tiny-payer label collision.** At $1.00 lane width the MCO capitation label
+   sits behind the dual label (S-089).
+4. **Two undeclared allocations removed from the DC ledger**, both recorded as
+   absences rather than deleted: the national managed-care service mix, and an
+   uncited 75/25 split of the dual and PACE capitation into long-term care and
+   wrap-around, which was not on the declared-absent list.
+
+## Carried forward, unresolved
+- **S-092 remains open.** Asked at session open; not answered.
+- EN-43, the pie cell seed at `sankey.py:505`, the four whitespace strandings.
+- Repo privacy: both triggers fired, still unruled. Not raised again per
+  instruction.

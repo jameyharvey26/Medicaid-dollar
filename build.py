@@ -11,6 +11,9 @@ import os, re, shutil, subprocess, sys
 
 import sankey
 import instances
+import ledger as LD
+import views
+from compose import compose
 from check import gate
 from tobe2030 import per100
 from ledger_2030 import ledger
@@ -55,8 +58,15 @@ def emit(tag, base, over):
 
 
 def build_2024():
-    gate(instances.AS_IS_2024, 'FY2024 as-is')
-    base, over = sankey.render(instances.AS_IS_2024)
+    # Two gates, and they assert different things. LD.gate is the conserved
+    # ledger with its provenance; gate() is the Instance the renderer receives.
+    # ARCHITECTURE 2: build.py refuses to emit a ledger that does not balance.
+    import ledger_national_2024 as NAT
+    L = NAT.build()
+    LD.gate(L, "FY2024 as-is ledger")
+    cfg = compose(L, views.V_NAT)
+    gate(cfg, 'FY2024 as-is')
+    base, over = sankey.render(cfg)
     emit("national_2024", base, over)
     # One render, one name. `national_baseline.png` was an alias of this file
     # under its pre-refactor name; sheet.py now asks for the real one. Aliases
@@ -65,7 +75,12 @@ def build_2024():
 
 
 def build_dc():
-    cfg = instances.as_is_dc()
+    # legacy_mix=True until the correction is taken. The flag is the visible
+    # record that DC is still carrying the national service mix.
+    import ledger_dc_2024 as DC
+    L = DC.build(legacy_mix=True)
+    LD.gate(L, "DC FY2024 as-is ledger")
+    cfg = compose(L, views.V_DC)
     gate(cfg, "DC FY2024 as-is")
     base, over = sankey.render(cfg)
     emit("dc_2024", base, over)
