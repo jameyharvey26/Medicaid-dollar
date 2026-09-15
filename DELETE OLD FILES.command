@@ -15,19 +15,9 @@ cd "$(dirname "$0")" || exit 1
 
 # ---- the list. Edit this line group when a commit supersedes something. -----
 FILES=(
-  "Medicaid_Dollars_National_DRAFT.pdf"
-  "Medicaid_Dollars_National_DRAFT_v2.pdf"
-  "Medicaid_Dollars_Sections_I_II_DRAFT.pdf"
-  "Medicaid_Dollars_Sections_I_II_DRAFT_landscape.pdf"
-  "paper_national.html"
-  "paper_national_v2.html"
-  "paper_sec1_2.html"
-  "paper_sec1_2_landscape.html"
-  "render_national.py"
-  "render_pdf.py"
-  "render_pdf_landscape.py"
-  "render_v2.py"
-  "WHITEPAPER_DRAFT.md"
+  "Medicaid_Dollars_National_DRAFT_v3.pdf"
+  "paper_national_v3.html"
+  "render_v3.py"
 )
 # ----------------------------------------------------------------------------
 

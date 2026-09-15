@@ -563,3 +563,66 @@ was carried by hand.
    that cannot fit its column and jumps. Not fixable in this renderer.
 5. **The pie cell percentages are still fit from an unsourced seed** at `sankey.py:505`.
    Ruled "deal with it when we get to that part of the document" and still open.
+
+---
+
+# SESSION 2026-09-15 — v4.1, the dark gate, and a scale error
+
+## What shipped
+**`Medicaid_Dollars_National_DRAFT_v4.1.pdf`** is the live draft. Eighteen pages, same
+figures, same panels. Source is `paper_national_v4_1.html`, rendered by `render_v4_1.py`.
+`paper_national_v4.html` and its PDF are kept for one cycle as the comparison. v3 goes on
+the delete list.
+
+## The figurefit gate was never running
+`render_v4.py` line 20 read `exit(call(whitespace) or call(figurefit))`. Whitespace exits 1
+on the four accepted strandings, so the `or` short-circuited and figurefit never executed.
+It had been dark since the day it was wired in, and would have stayed dark for as long as
+the strandings are the accepted state. Split into two captured return codes; both gates now
+run and the render still fails if either fails. Applied to `render_v4.py` and `render_v4_1.py`.
+
+Same class as the four recorded at C-10A.0, with a new variant: a gate pointed at the wrong
+input agrees with itself, and a gate that never fires agrees with nothing. **Verify gate
+execution, not just the exit code.**
+
+## A scale error behind a style violation
+C-07.2's live instance read "Forty-one cents of every Medicaid dollar still moves this way."
+The banned phrase was the visible defect. The arithmetic underneath it was the real one: the
+fee-for-service lane is $41.08 of $100, so on the base the paper actually uses this is
+forty-one dollars per hundred, not forty-one cents per dollar. The ratio is the same; the
+base is not, and the page it sits on shows a hundred-dollar diagram. The redline's proposed
+fix, "forty-one cents of every $100," was wrong in the other direction by two orders of
+magnitude. Written as **"Forty-one dollars of every hundred still moves this way."**
+
+Standing note candidate: a quantity restated on a base other than $100 is a defect even when
+the ratio is right, because every figure in the paper is read against the hundred.
+
+C-07.2 scan: 29 instances across 17 files at session start, up from 24 across 15. The growth
+is the charter, `ENDNOTES.md` and `PAPER_PASSAGES.md` quoting the phrase in order to ban it.
+Zero remain in the live manuscript; 28 remain in code and retired documents.
+
+## Twelve edits applied from JW's redline
+Nine prose corrections, the bio rewrite, the arithmetic fix and the draft date. Applied and
+verified one at a time with a per-edit result printed, then verified again independently by
+searching for both the superseded and the replacement text. Twelve of twelve landed.
+
+Two calls made and flagged rather than assumed: the cover stamp is dated for v4.1 rather than
+carrying 11 September, and "Everything else" stayed lowercase against the redline, because
+capitalizing it in one sentence would have left it inconsistent with the provision table, the
+heading above it and the endnote register.
+
+## Author page
+JW's biography generalized for a national readership. Ward Four, the residency claim, the CBE
+designation and the Williams Administration reference are out. The District of Columbia
+survives as the place the work happened, because it carries the credential.
+
+**S-092 remains open.** The draft has been shared with Sheila. Sharing is not review, and the
+note asks specifically whether she has seen the disclosure wording on the author page.
+
+## Open, for JW
+1. **The repo is public and a link is now outside the firm.** Both trigger conditions for the
+   standing privacy reminder have fired.
+2. **DC is next.** JW has turned to the DC model, data and whitepaper. `STATE_PLAYBOOK.md` and
+   `build_sankey_dc.py` are the starting points. Scope not yet set.
+3. Carried forward unresolved: EN-43 re-scope, the pie cell seed at `sankey.py:505`, the
+   renderer choice, and the four whitespace strandings.
