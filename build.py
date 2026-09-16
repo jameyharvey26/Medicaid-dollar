@@ -87,8 +87,20 @@ def build_dc():
 
 
 def build_2030(variant="mixed"):
-    L = ledger(variant)
-    cfg = instances.to_be_2030(L, per100)
+    # Through the seam, as the two as-is panels are. Three gates and they
+    # assert different things: LD.gate is the conserved ledger with its
+    # provenance, agreement() is the reach declared here against the reach
+    # outflows draws with, and gate() is the Instance the renderer receives.
+    import ledger_national_2024 as NAT
+    import ledger_national_2030 as N30
+    drift = N30.agreement()
+    if drift:
+        raise LD.LedgerError("HR-1 reach is declared in the ledger and in "
+                             "outflows and they disagree:\n  "
+                             + "\n  ".join(drift))
+    L = N30.build(variant)
+    LD.gate(L, f"FY2030 to-be ledger [{variant}]")
+    cfg = compose(L, views.V_2030, prior=NAT.build())
     gate(cfg, f'FY2030 to-be [{variant}]')
     base, over = sankey.render(cfg)
     emit(f"national_2030_{variant}", base, over)

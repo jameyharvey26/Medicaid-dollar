@@ -18,6 +18,7 @@ way crossings.py gates a render.
 """
 import sys
 
+import ledger as LD
 from ledger import ABSENT, MEASURED, MODELLED, CLIENT, DERIVED, UNALLOCATED
 
 # Three states, not two. A figure with a source nobody has opened this cycle
@@ -27,7 +28,7 @@ HELD, STALE, MODEL, MISS = "HELD", "STALE", "MODELLED", "MISSING"
 LAPSED = "LAPSED"
 
 
-def _state(fig, cycle=None):
+def _state(fig, cycle=None, key=None, named=None):
     if fig is None:
         return MISS, ""
     if fig.lapsed:
@@ -41,16 +42,29 @@ def _state(fig, cycle=None):
         src = f"{fig.source} {fig.vintage}".strip()
         return (HELD, f"{src}  [{fig.verified}]") if fig.verified else (STALE, src)
     if fig.status == DERIVED:
-        return HELD, "derived from " + ", ".join(fig.parents)
+        # A derived figure used to be graded HELD on sight. Arithmetic does
+        # not add confidence to its inputs, so it now inherits: verified when
+        # everything it was computed from is, and unverified otherwise, with
+        # the first unsigned ancestor named so the reader knows what to go and
+        # check rather than being told a sum is fine.
+        chain = "derived from " + ", ".join(fig.parents or ("nothing named",))
+        if named is None:
+            return STALE, chain
+        good, why = LD.verification(key, named)
+        return (HELD, f"{chain}  [{why}]") if good else (STALE, f"{chain} — {why}")
     return (MODEL if fig.verified else STALE), fig.note
 
 
 def rows(L):
     """Every figure the baseline needs, in lifecycle order."""
     out = []
+    # Identity, not equality: two figures can carry the same value and the
+    # same provenance and still be different figures in different phases.
+    named = L.figures()
+    bykey = {id(f): k for k, f in named.items()}
 
     def add(phase, item, fig):
-        st, why = _state(fig)
+        st, why = _state(fig, key=bykey.get(id(fig)), named=named)
         out.append((phase, item, st, why))
 
     add("FEDERAL", "federal share", L.sources.get("federal"))

@@ -1231,3 +1231,62 @@ in place rather than deleting it, so the record shows when the check was retired
 
 Phrase it as one line and move on. It is a standing check, not a negotiation, and it
 does not consume the session's one question.
+
+---
+
+## 2026-09-16 — integrity standing notes
+
+**S-093 · No signature without a picture.** JW's ruling, 16 September. A figure
+is not signed until a stacked before-and-after of every panel the change touches
+has been rendered at full width, with the changed figures named above it, and
+JW has looked at it. The comparison sheet goes in `reference_renders/`.
+Rationale in JW's words: problems in numbers show up better in visualisations
+than in tables. The tracker line being pixel-identical across both halves is a
+claim about conservation that no table states and the eye reads in a second.
+
+**S-094 · A signature is a written fact, not a stamp.** `signatures.py` holds
+the key, the exact agreed value and who agreed it. `_sign` matches the ledger
+against the register; a figure that has moved is not signed, `check` reports it
+LAPSED and the build fails. The previous mechanism re-applied the signature at
+build time and so could only ever detect a figure edited inside one run. It
+could not detect a source constant changing between sessions, and on
+16 September it carried JW's 15 September signature onto four node totals he had
+never seen while every gate passed. Correcting a figure now costs a deliberate
+line in the register. That cost is the feature.
+
+**S-095 · Arithmetic adds no confidence to its inputs.** A derived figure is
+verified only when every figure it was computed from is verified, and it must
+name parents that actually exist in the ledger. `check` fails a parent that does
+not resolve; `verification()` walks the chain and names the first unsigned
+ancestor. When this was switched on, 38 parent references across three ledgers
+pointed at nothing — no derived figure in the project had a walkable chain.
+
+**S-096 · One fact, one declaration — including phase names.** An HR-1
+tributary's `reach` was declared both in the ledger and in `outflows.OUTFLOWS`.
+`agreement()` asserts they match and the build refuses to emit if they drift.
+This is S-073 with a phase name instead of a dollar.
+
+**S-097 · Do not let a lattice coordinate masquerade as a finding.** Directed
+payment caps reach PROVIDERS; the terminal rides the CLAIMS edge only because
+the tracker lattice has no PROVIDERS edge. The Ledger holds the reach, the View
+holds the slot. Writing the slot into the ledger to make the two agree is moving
+geometry to settle an arithmetic question.
+
+**S-098 · Conservation is not correctness.** `check` cannot see a wrong ledger
+if the wrongness sums to zero. On 16 September administration was high by 0.75
+and the two payer lanes low by 1.57 combined; the errors offset and the ledger
+landed on exactly 100.00 with every gate green. Companion to the older rule that
+absence conserves. A balanced ledger has earned no presumption.
+
+**S-099 · A residual must be named for what is in it.** The $5.07 "state
+administration" figure is total Medicaid less total benefits, which is
+administration $4.32 *plus* the Vaccines for Children program $0.76 — a fully
+federally funded vaccine purchase that is neither state money nor overhead.
+Fifteen percent of the first decrement the reader meets was labelled as
+something it is not. Whenever a figure is struck as a residual, the residual's
+contents get enumerated before it is given a name.
+
+**S-100 · Declare a netting.** The payer lanes are net of $15.2B of collections
+spread pro rata across capitation and fee-for-service. Recoveries fall on
+fee-for-service far more than on capitation, so this is a modelling choice and
+not an identity. It was undeclared for the life of the paper.

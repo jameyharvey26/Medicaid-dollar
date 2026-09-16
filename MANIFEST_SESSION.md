@@ -785,3 +785,79 @@ Not verified.
 - EN-43, the pie cell seed at `sankey.py:505`, the four whitespace strandings.
 - Repo privacy: both triggers fired, still unruled. Not raised again per
   instruction.
+
+# SESSION 2026-09-16 — Phase 0 closed, and the instrument audited
+
+## Phase 0, closed
+FY2030 to-be moved onto Ledger + View + compose, byte-identical on all three
+overhead variants. Proved all three rather than only the one that ships: they
+exercise different arithmetic and differ from each other, so the proof is not
+passing trivially. HR-1 split three ways — amount and reach to the Ledger,
+terminal sub-label and declaration order to the View, `src_x` left in
+`outflows.py`. `fed_bite`, `sa_hr1` and `claims_hr1` were three hand-kept totals
+on the instance; they now sum from the peels. S-096, S-097 recorded.
+
+## What the audit found
+JW asked whether the national figures were sourced or merely typed into an early
+script. Both, as it turned out. Tested against MACStats February 2026:
+
+- Medicare premiums $2.90 — exact against Exhibit 17.
+- Federal share $64.70 — sound, and better documented than expected: recomputed
+  from the four FY2024 CMS-64 quarters in `fmap.py` as 0.6472.
+- Administration $5.07 — right arithmetic, wrong name. It is total Medicaid less
+  total benefits, so administration $4.32 *plus* Vaccines for Children $0.76.
+  S-099. **Not yet relabelled on the artifact.**
+- Payer lanes — right, and net of $15.2B of collections spread pro rata.
+  Undeclared. S-100. **Not yet declared on the artifact.**
+- Provider nodes — cited Exhibit 17, which cannot produce them. Method found in
+  `build_xlsx.py`: CMS-64 FFS mix plus an HMA T-MSIS key at CY2021 plus a
+  five-number behavioral health carve with no source at all.
+- The ledger summed to exactly 100.00 throughout. S-098.
+
+## Corrections made
+`provider_mix.py` computes the provider phase from three declared inputs.
+MACPAC March 2026 ch.2 adopted for the behavioral health carve (JW, 16 Sep).
+Wrap-around $13.33 → $15.33, physicians and clinics $12.63 → $10.79, long-term
+care $28.53 → $28.91, hospitals $18.66 → $17.77, Rx $3.76 → $4.11. The
+underlying categories did not move; the old carve had compressed two of them to
+near-parity. EN-48 written.
+
+## Instrument repairs
+- Derived figures inherit verification and must name parents that resolve. 38
+  dangling parent references found and fixed. S-095.
+- `signatures.py`: signing is a lookup against a written register. The previous
+  stamp could not detect a figure changing between sessions and had carried JW's
+  15 September signature onto four node totals he had never seen. S-094.
+- `agreement()` gates the duplicate `reach` declaration.
+- Break tests now nine, all caught.
+
+## Signed
+`REVIEW = "2026-09-16 JW"`, 33 figures, on the stacked FY2024 and FY2030
+comparison sheets. EN-43 earnings margins still deliberately unsigned.
+S-093 established: no signature without a picture.
+
+## DC
+Phase 1 opened. Cost allocation re-acquired from Exhibit 16 FY2024 — federal
+73.17 / non-federal 26.83, scale $43.72M, administration $5.35 — all reconciling
+exactly with what the panel already carried, now with the exhibit named and the
+Exhibit 16 dollars lifted into ledger anchors. DC figures remain unsigned.
+
+NAIC: three of four entities in hand, HSCSN absent (a CASSIP contractor
+predating MCO regulation; it files no health blank — JW). MedStar Family Choice
+Inc is Maryland-domiciled and its Page 7 Title XIX column is Maryland and DC
+combined, so DC premium is recoverable from Schedule T and DC claims, admin and
+gain are not. Amerigroup's CY2023 filing booked Alliance and ICP inside Title XIX
+until DISB made them refile; the amendment is the page to use. Plan-level
+underwriting gain dropped from scope (JW). Administrative expense acquired for
+AmeriHealth Caritas DC and Wellpoint DC, both years.
+
+## Open, not acted on
+- Administration relabel and the collections declaration.
+- DC ledger's plan revenues ($425.3M Wellpoint, $411.2M MedStar) trace to an
+  uncited constant in `build_sankey_dc.py`. Possible swap, possible older
+  vintage; the DHCF report settles it and nobody has opened it.
+- `scale` means two things across ledgers; `coverage.py` prints STALE for two
+  conditions; the EN-43 cascade is live in the ledger but invisible in coverage.
+- New FY2030 label collision: wrap-around pie reaches y=674, two units past the
+  behavioral health label. Consequence of the node resize. Presentation, frozen.
+- S-092: Sheila has not yet seen the author-page disclosure wording.

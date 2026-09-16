@@ -9,6 +9,7 @@
 #
 # Now: one renderer, many instances. A new state edition is a config, not a fork.
 
+import provider_mix as _PM
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple
 
@@ -112,15 +113,12 @@ AS_IS_2024 = Instance(
     mco_ret=4.41, dual_ret=1.20, earnings=0.76, adm_marg=4.85,
     mco_adm=3.81, dual_adm=1.04,
     mco_care=35.65, dual_care=9.69,
-    node={"Long-term care": 28.53, "Hospitals": 18.66, "Other": 13.33,
-          "Physicians & clinics": 12.63, "Behavioral health": 9.51, "Rx drugs": 3.76},
-    fraud=0.15,
-    ffs_n={"Long-term care": 19.72, "Hospitals": 8.68, "Other": 4.95,
-           "Physicians & clinics": 2.87, "Behavioral health": 3.48, "Rx drugs": 1.38},
-    mcoc_n={"Long-term care": 6.93, "Hospitals": 7.84, "Other": 6.59,
-            "Physicians & clinics": 7.68, "Behavioral health": 4.74, "Rx drugs": 1.87},
-    dualc_n={"Long-term care": 1.89, "Hospitals": 2.14, "Other": 1.79,
-             "Physicians & clinics": 2.08, "Behavioral health": 1.29, "Rx drugs": 0.51},
+    # The provider phase comes from provider_mix.py, which is the one place
+    # it is computed. It used to be pasted here as well as in the ledger, so
+    # the seam proof was comparing two copies of the same numbers and would
+    # have gone on passing after one of them was corrected.
+    node=_PM.NODE, fraud=0.15,
+    ffs_n=_PM.FFS_N, mcoc_n=_PM.MCO_N, dualc_n=_PM.DUAL_N,
     gt={"Children": 13.48, "Adults": 29.56, "Disabled": 24.98, "Aged": 18.41},
     steps=[("admin", "top", 5.07, 615), ("medicare", "top", 2.90, 715)],
     subs_spec=[("administration + Medicare premiums", "adm_med", "admin", "STATE_AGENCY", "State Admin"),

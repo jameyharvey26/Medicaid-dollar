@@ -13,12 +13,9 @@ from tobe2030 import per100
 B = dict(admin=5.07, medicare=2.90, mco=40.06, dual=10.89, ffs=41.08,
          mco_ret=4.41, dual_ret=1.20, earnings=0.76, mco_adm=3.81,
          dual_adm=1.04, fraud=0.15)
-B_ffs_n  = {"Long-term care":19.72,"Hospitals":8.68,"Other":4.95,
-            "Physicians & clinics":2.87,"Behavioral health":3.48,"Rx drugs":1.38}
-B_mcoc_n = {"Long-term care":6.93,"Hospitals":7.84,"Other":6.59,
-            "Physicians & clinics":7.68,"Behavioral health":4.74,"Rx drugs":1.87}
-B_dualc_n= {"Long-term care":1.89,"Hospitals":2.14,"Other":1.79,
-            "Physicians & clinics":2.08,"Behavioral health":1.29,"Rx drugs":0.51}
+import provider_mix as PM
+
+B_ffs_n, B_mcoc_n, B_dualc_n = PM.FFS_N, PM.MCO_N, PM.DUAL_N
 ORDER = ["Long-term care","Hospitals","Other","Physicians & clinics",
          "Behavioral health","Rx drugs"]
 

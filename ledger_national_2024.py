@@ -10,6 +10,9 @@
 # example: the $0.76 earnings carve has no primary source, and it now says so
 # in the ledger instead of in a document beside it.
 
+from dataclasses import replace
+
+import provider_mix as PM
 from ledger import (ABSENT, CLIENT, DERIVED, Fig, Ledger, MEASURED, MODELLED,
                     Matrix, Payer, Peel)
 
@@ -20,45 +23,34 @@ B = "total computable"
 NODES = ["Long-term care", "Hospitals", "Other", "Physicians & clinics",
          "Behavioral health", "Rx drugs"]
 
-_ffs = {"Long-term care": 19.72, "Hospitals": 8.68, "Other": 4.95,
-        "Physicians & clinics": 2.87, "Behavioral health": 3.48, "Rx drugs": 1.38}
-_mco = {"Long-term care": 6.93, "Hospitals": 7.84, "Other": 6.59,
-        "Physicians & clinics": 7.68, "Behavioral health": 4.74, "Rx drugs": 1.87}
-_dual = {"Long-term care": 1.89, "Hospitals": 2.14, "Other": 1.79,
-         "Physicians & clinics": 2.08, "Behavioral health": 1.29, "Rx drugs": 0.51}
-# Published node totals. NOT the sum of the three components: the components
-# are rounded to the cent and the totals are published, so long-term care is
-# 28.53 where its parts add to 28.54. Deriving the total from the parts moved a
-# band by a tenth of a unit and the byte-identity proof caught it. The gate's
-# tolerance absorbs the difference; the renderer does not.
-_node = {"Long-term care": 28.53, "Hospitals": 18.66, "Other": 13.33,
-         "Physicians & clinics": 12.63, "Behavioral health": 9.51,
-         "Rx drugs": 3.76}
+# The provider phase is computed, not pasted. See provider_mix.py for the
+# three sources, their three vintages, and the behavioral health mapping.
+_ffs, _mco, _dual, _node = PM.FFS_N, PM.MCO_N, PM.DUAL_N, PM.NODE
 
 
 def _m(v, note=""):
     return Fig(v, source=CMS64, vintage=V, basis=B, status=MEASURED, note=note)
 
 
-# JW, 2026-09-15: the national baseline has been through the endnote register,
-# two redlines and a shipped draft. Signed as verified against the FY2024
-# vintage. Re-anchoring to a later vintage, or editing any figure, ends the
-# signature automatically.
-#
-# ONE EXCLUSION, and it is deliberate. The public-company earnings carve is
-# EN-43, which is OPEN and which states in terms that $0.76 has no primary
-# source behind it. Signing it would assert that someone opened a source that
-# the endnote register says does not exist. It stays unsigned until the NAIC
-# and 10-K work closes it.
-REVIEW = "2026-09-15 JW"
-UNSIGNED = {"payer.mco.margin", "payer.dual.margin"}
+# Signing is a lookup, not a stamp. See signatures.py for why. The register
+# holds the exact value each figure was agreed at; a figure that has moved
+# since is not signed, and `check` fails the build rather than letting a
+# signature travel onto a number nobody has seen.
+from signatures import REVIEW, SIGNED, UNSIGNED
 
 
 def _sign(L: Ledger) -> Ledger:
-    """Sign every measured and modelled figure except the EN-43 carve."""
+    """Attach the register's signature to every figure still at its signed value."""
     def s(f, key):
         if key in UNSIGNED or f.status not in (MEASURED, MODELLED):
             return f
+        if key not in SIGNED:
+            return f                      # never signed; coverage reports it
+        signed_at = SIGNED[key]
+        if f.value is None or abs(f.value - signed_at) > 1e-9:
+            # Moved since it was agreed. Record the signature AND the old
+            # value so `lapsed` fires and names both numbers.
+            return replace(f, verified=REVIEW, verified_value=signed_at)
         return f.sign(REVIEW)
 
     for k in L.sources:
@@ -82,7 +74,8 @@ def _sign(L: Ledger) -> Ledger:
 def build() -> Ledger:
     payers = [
         Payer("mco", "MCO capitation", "mco",
-              capitation=_m(40.06), care=Fig.derived(35.65, ("mco.capitation", "mco.retention")),
+              capitation=_m(40.06), care=Fig.derived(35.65, ("payer.mco.capitation", "payer.mco.admin",
+                                       "payer.mco.margin")),
               admin=Fig(3.81, source="EN-15", vintage=V, basis=B, status=MEASURED),
               margin=Fig(0.60, status=MODELLED,
                          note="EN-43. Public-company earnings $0.76 in total, carved "
@@ -92,7 +85,8 @@ def build() -> Ledger:
                               "from the Medicaid segments of the publicly traded "
                               "plans' 10-K filings, and that work is open.")),
         Payer("dual", "Dual MCO capitation", "dual",
-              capitation=_m(10.89), care=Fig.derived(9.69, ("dual.capitation", "dual.retention")),
+              capitation=_m(10.89), care=Fig.derived(9.69, ("payer.dual.capitation", "payer.dual.admin",
+                                      "payer.dual.margin")),
               admin=Fig(1.04, source="EN-15", vintage=V, basis=B, status=MEASURED),
               margin=Fig(0.16, status=MODELLED, note="EN-43, as above.")),
         Payer("ffs", "Fee-for-service", "ffs",
@@ -110,11 +104,20 @@ def build() -> Ledger:
         row_margin={"mco": Fig.derived(35.65, ("payer.mco.care",)),
                     "dual": Fig.derived(9.69, ("payer.dual.care",)),
                     "ffs": Fig.derived(41.08, ("payer.ffs.care",))},
-        col_margin={k: _m(v, "published node total") for k, v in _node.items()},
+        # Derived, and modelled all the way down: no one publishes a
+        # national split of capitation by service, so a node total cannot be
+        # measured. The cent on long-term care is a rounding residue, not a
+        # published figure disagreeing with its parts.
+        col_margin={k: Fig.derived(
+            v, tuple(f"claims.cell.{r}.{k}" for r in ("mco", "dual", "ffs")),
+            note="Rounded node totals forced to the money arriving; the "
+                 "residue falls on the largest upward rounding.")
+            for k, v in _node.items()},
         cell={**{("ffs", k): _m(v) for k, v in _ffs.items()},
               **{("mco", k): Fig(v, status=MODELLED,
-                                 note="Managed-care service mix. Carried from the "
-                                      "national managed-care allocation.")
+                                 note="HMA T-MSIS managed-care key, CY2021, "
+                                      "less the MACPAC behavioral health "
+                                      "carve, CY2023. provider_mix.py.")
                  for k, v in _mco.items()},
               **{("dual", k): Fig(v, status=MODELLED,
                                   note="Dual-plan service mix, same basis.")
@@ -129,7 +132,7 @@ def build() -> Ledger:
         row_margin={g: Fig(v, source="MACStats Exhibit 21", vintage="FY2023",
                            basis="eligibility group totals", status=MEASURED)
                     for g, v in groups.items()},
-        col_margin={k: Fig.derived(_node[k], ("claims.cols",)) for k in NODES},
+        col_margin={k: Fig.derived(_node[k], (f"claims.col.{k}",)) for k in NODES},
         cell={},   # interior not carried here: see note
         note="Interior unallocated in this ledger. The rendered pies are fit by "
              "iterative proportional fitting to both margins from a seed pattern "

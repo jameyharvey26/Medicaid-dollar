@@ -146,3 +146,31 @@ status, or it does not enter. `check` refuses a figure without provenance and
 `coverage` refuses to call the baseline complete while anything is missing. The
 process above is what those two gates are checking; it is written down so the
 gates are not the only place it lives.
+
+
+---
+
+## Signing (added 2026-09-16)
+
+Signing is the last step of a phase, not a formality at the end of a session.
+
+1. **Acquire.** Open the source. Record the figure with the exhibit named, the
+   vintage given, and the publisher's own units. Where the source publishes
+   dollars and we need a share, the dollars become anchors in the ledger and the
+   share derives from them (S-095); never record our division as the source's
+   figure.
+2. **Build and render.** Run every gate. A green build proves internal
+   consistency and nothing else (S-098).
+3. **Stack the panels.** Render every panel the change touches, before and
+   after, full width, one above the other, with the changed figures named above
+   the sheet. Put it in `reference_renders/`.
+4. **Look at it.** This is the step (S-093). The eye catches a ribbon that moved
+   when it should not have, and catches a phase that did not move when it
+   should have, faster than any table.
+5. **Sign.** Add the key and the agreed value to `signatures.py` with the date
+   and initials of whoever looked (S-094). A figure absent from the register is
+   unsigned and `coverage.py` says so.
+
+Correcting a signed figure means editing the register. That is deliberate. The
+cost of the edit is what stops a signature travelling onto a number nobody has
+seen.

@@ -10,9 +10,26 @@
 # — a plan president's own hundred dollars — is the other axis and is not this.
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from ledger import Ledger, UNALLOCATED
+
+
+@dataclass(frozen=True)
+class PeelSum:
+    """A subtraction amount named rather than typed.
+
+    A View holds no numbers, but the tracker's subtraction ledger needs
+    amounts. The View names the peels; the composer reads them out of the
+    Ledger. This is how "work reporting, renewals, enrollment rules, other"
+    gets one figure on the number line without that figure being written down
+    anywhere except in the ledger it came from.
+    """
+    keys: Tuple[str, ...]
+
+    def resolve(self, L: Ledger) -> float:
+        by = {p.key: p for p in L.peels}
+        return sum(by[k].amount.n for k in self.keys)
 
 
 @dataclass
@@ -39,6 +56,12 @@ class View:
     step_x: Dict[str, int] = field(default_factory=dict)   # peel key -> trunk x
     subs_spec: List[tuple] = field(default_factory=list)
     hr1_term: Dict[str, tuple] = field(default_factory=dict)
+    # HR-1 terminals, split from the Ledger's `reach`. The Ledger says how far
+    # the dollar would have got; this says where that lands on the tracker
+    # lattice and what the terminal reads. `hr1_sub` is also the declaration
+    # ORDER of the tributaries, which the fan's row packing depends on.
+    hr1_sub: Dict[str, str] = field(default_factory=dict)
+    reach_slot: Dict[str, float] = field(default_factory=dict)
 
     # ---- what the layout is actually asked to draw ----------------------
     def payer_rows(self, L: Ledger):

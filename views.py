@@ -41,3 +41,66 @@ V_DC = View(
 )
 
 
+# --------------------------------------------------------------------------
+# FY2030 to-be. The HR-1 tributaries split three ways: the amount and the reach
+# are in `ledger_national_2030.py`, the terminal sub-label and the declaration
+# order are here, and `src_x` stays in `outflows.py`. Nothing below is a number
+# except a lattice coordinate.
+
+from instances import T_SLOT
+from outflows import OUTFLOWS as _OF
+from view import PeelSum
+
+# The tracker lattice has five edges and the reach vocabulary has six phases.
+# Directed payment caps would have reached a provider; there is no PROVIDERS
+# edge, so the terminal rides the last one before it. A lattice fact, kept
+# where lattice facts belong.
+REACH_SLOT = dict(T_SLOT, PROVIDERS=T_SLOT["CLAIMS"])
+
+# Declaration order. The fan packs its rows in it (S-085).
+SUB_2030 = {
+    "Provider tax limits": "federal match never drawn",
+    "Blocked senior enrollment rule":
+        "duals will not enroll; would have reached the state agency",
+    "Work reporting": "will not enroll; would have reached disbursements",
+    "Six-month renewals": "will not survive renewal; would have reached the payer",
+    "Blocked Medicaid enrollment rule": "will not enroll; would have reached a paid claim",
+    # JW: name it, give examples, and let it take the top row where it costs
+    # almost no height.
+    "Everything else": "e.g. home equity, cost sharing",
+    "Directed payment caps": "will not top up hospital, nursing facility, academic rates",
+}
+
+SA_LEVERS = ("Work reporting", "Six-month renewals",
+             "Blocked Medicaid enrollment rule", "Everything else",
+             "Blocked senior enrollment rule")
+
+V_2030 = View(
+    root="state_agency",
+    cp0_label=["Medicaid Dollars", "(2030 projected", "under prior law)"],
+    centre=("100 Dollars of", "Medicaid Spending"),
+    disp={"Other": "Wrap around services"},
+    # The five levers take their trunk x from outflows.OUTFLOWS, which is the
+    # one declaration of where a tributary leaves the trunk. Administration and
+    # Medicare premiums stay pinned at 615 and 715 in every instance.
+    step_x={**{n: _OF[n]["src_x"] for n in SA_LEVERS},
+            "admin": 615, "medicare": 715},
+    subs_spec=[
+        ("provider tax limits", PeelSum(("Provider tax limits",)), "hr1",
+         "STATE_GOVT", "Provider Tax"),
+        ("administration + Medicare premiums", "adm_med", "admin",
+         "STATE_AGENCY", "State Admin"),
+        ("work reporting, renewals, enrollment rules, other",
+         PeelSum(SA_LEVERS), "hr1", "STATE_AGENCY", "Eligibility Rules"),
+        ("plan administration + earnings", "plan", "admin", "PAYER", "MCO Admin"),
+        ("directed payment caps", PeelSum(("Directed payment caps",)), "hr1",
+         "CLAIMS", "Payment Caps"),
+        ("documented fraud", "fraud", "fraud", "PROVIDERS", "Fraud"),
+    ],
+    hr1_sub=SUB_2030,
+    reach_slot=REACH_SLOT,
+    show_beneficiaries=True,
+    kicker="TO BE  \u00b7  FY2030 PROJECTION",
+    title="$100 of Medicaid spending under prior law, with P.L. 119-21 applied",
+    strap="Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.",
+)

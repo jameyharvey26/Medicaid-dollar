@@ -27,6 +27,29 @@ from ledger import (Fig, Ledger, MEASURED, MODELLED, Matrix, Payer, Peel,
 
 SCALE = 43.72                # $M per $1 of the DC hundred
 SPINE = "CMS-64 / MACStats FY2024 DC"
+# RE-ACQUIRED 2026-09-15. Phase 1 and the first half of Phase 2 of
+# ACQUISITION.md. The exhibit publishes dollars, not shares, so DC's cost
+# allocation is DERIVED from two measured dollar figures rather than read off
+# the page. Recording it as measured would credit the source with a number it
+# does not print.
+#
+#   Total Medicaid, DC, FY 2024   $4,372M   ->  SCALE 43.72
+#     federal                     $3,199M   ->  73.17 per $100
+#     state                       $1,173M   ->  26.83 per $100
+#   State program administration    $234M   ->   5.35 per $100
+#
+# The exhibit's own note: figures may change if a state revises its
+# expenditure data after 29 May 2024.
+EX16 = ("MACPAC, MACStats: Medicaid and CHIP Data Book, Exhibit 16, Medicaid "
+        "Spending by State, Category, and Source of Funds, FY 2024, published "
+        "February 2026; MACPAC analysis of CMS-64 FMR net expenditure data as "
+        "of 3 June 2025")
+DC_TOTAL_M, DC_FED_M, DC_STATE_M, DC_ADMIN_M = 4372.0, 3199.0, 1173.0, 234.0
+
+
+def _x(v, note=""):
+    """A figure re-acquired from Exhibit 16. Carries no STALE note."""
+    return Fig(v, source=EX16, vintage=V, basis=B, status=MEASURED, note=note)
 MCR = "DHCF managed care performance report"
 V = "FY2024"
 VMC = "CY2023"
@@ -127,7 +150,9 @@ def _cols(ffs_n, legacy):
     if not legacy:
         return {}
     mco_n, dual_n = _legacy_alloc()
-    return {k: Fig.derived(ffs_n[k] + mco_n[k] + dual_n[k], ("cells",))
+    return {k: Fig.derived(
+                ffs_n[k] + mco_n[k] + dual_n[k],
+                tuple(f"claims.cell.{r}.{k}" for r in ("mco", "dual", "ffs")))
             for k in NODES}
 
 
@@ -142,7 +167,8 @@ def build(legacy_mix: bool = False) -> Ledger:
     payers.append(Payer(
         "mco", "MCO capitation", "mco",
         capitation=_s(mco_cap, "Managed-care lump less PACE and the D-SNP wrap."),
-        care=Fig.derived(sum(_care.values()), ("plan care",)),
+        care=Fig.derived(sum(_care.values()),
+                         tuple(f"payer.{k}.care" for k in _care)),
         admin=(Fig(mco_cap - sum(_care.values()), status=MODELLED,
                    note="legacy: whole retention labelled plan administration")
                if legacy_mix else
@@ -223,14 +249,39 @@ def build(legacy_mix: bool = False) -> Ledger:
         geography="District of Columbia",
         year="FY2024",
         scenario="as_is",
-        scale=Fig(SCALE, source=SPINE, vintage=V,
+        scale=Fig(SCALE, source=EX16, vintage=V,
                   basis="$M of total computable DC Medicaid per $1",
-                  status=MEASURED, note=STALE),
-        sources={"federal": _s(73.17, "blended, including expansion"),
-                 "state": _s(26.83, "local share")},
+                  status=MEASURED,
+                  note="Total Medicaid, DC, FY 2024: $4,372M."),
+        anchors={
+            "ex16.total": _x(DC_TOTAL_M,
+                             "Total Medicaid, DC, FY 2024, $M."),
+            "ex16.federal": _x(DC_FED_M,
+                               "Federal share of total Medicaid, DC, "
+                               "FY 2024, $M."),
+            "ex16.state": _x(DC_STATE_M,
+                             "Non-federal share of total Medicaid, DC, "
+                             "FY 2024, $M."),
+        },
+        sources={"federal": Fig.derived(
+                     73.17, ("anchor.ex16.federal", "anchor.ex16.total"),
+                     basis="blended, including expansion",
+                     note="$3,199M federal of $4,372M total Medicaid, "
+                          "Exhibit 16. Not the FMAP: DC's statutory rate and "
+                          "its expansion rate both sit inside this blend."),
+                 "state": Fig.derived(
+                     26.83, ("anchor.ex16.state", "anchor.ex16.total"),
+                     basis="non-federal share",
+                     note="$1,173M non-federal of $4,372M total Medicaid, "
+                          "Exhibit 16.")},
         peels=[
-            Peel("admin", "Administration", _s(234 / SCALE), "STATE_AGENCY",
-                 reach="STATE_AGENCY", kind="admin"),
+            Peel("admin", "Administration",
+                 _x(DC_ADMIN_M / SCALE,
+                    "State program administration, Exhibit 16. Federal $145M, "
+                    "non-federal $89M, a 62/38 split against the 73/27 blend "
+                    "on benefits: administration is the least-matched money in "
+                    "the program."),
+                 "STATE_AGENCY", reach="STATE_AGENCY", kind="admin"),
             Peel("medicare", "Medicare premiums", _s(86 / SCALE), "STATE_AGENCY",
                  reach="STATE_AGENCY", kind="return"),
         ],

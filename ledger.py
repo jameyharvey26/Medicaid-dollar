@@ -100,6 +100,17 @@ class Fig:
 
     @staticmethod
     def derived(value: float, parents, basis: str = "", note: str = "") -> "Fig":
+        """A figure computed from others. `parents` are KEYS into
+        `Ledger.figures()`, not prose.
+
+        They used to be prose, which meant a derived figure could name a
+        parent that did not exist and nothing would notice. `coverage.py`
+        graded every derived figure as verified on sight, so a chain that
+        terminated in nothing read the same as one that terminated in a signed
+        source. Both halves of that are now checked: `check` refuses a parent
+        that does not resolve, and a derived figure inherits verification from
+        its parents rather than being granted it.
+        """
         return Fig(value, status=DERIVED, basis=basis, note=note,
                    parents=tuple(parents))
 
@@ -159,6 +170,61 @@ def provenance_failures(named: Dict[str, Fig]) -> List[str]:
         if f.status != ABSENT and f.value is None:
             out.append(f"{key}: no value but not declared absent")
     return out
+
+
+def derivation_failures(named: Dict[str, Fig]) -> List[str]:
+    """A derived figure must name parents that exist.
+
+    Without this the parent list is decoration: it reads as a provenance
+    chain, it is printed in the register as one, and nothing ever walks it.
+    """
+    out = []
+    # Two different faults, and only one of them is a broken claim. A figure
+    # that names a parent which is not there is asserting a chain that does not
+    # exist, and that fails the build. A figure that names no parent at all is
+    # merely undocumented: it asserts nothing false, so it does not fail, but
+    # `verification` will never call it verified, which is where it surfaces.
+    for key, f in named.items():
+        if f.status != DERIVED:
+            continue
+        for p in f.parents:
+            if p not in named:
+                out.append(f"{key}: derived from {p!r}, which is not a figure "
+                           f"in this ledger")
+    return out
+
+
+def verification(key: str, named: Dict[str, Fig], _seen=None):
+    """Whether a figure is verified, and if not, what is missing.
+
+    A measured figure is verified when someone signed it. A DERIVED figure is
+    verified when everything it was computed from is, because arithmetic does
+    not add confidence to its inputs. Returns (bool, reason).
+    """
+    _seen = _seen or set()
+    f = named.get(key)
+    if f is None:
+        return False, f"{key} is not in the ledger"
+    if key in _seen:
+        return False, f"{key} derives from itself"
+    if f.status == ABSENT:
+        return False, "absent"
+    if f.status != DERIVED:
+        return (True, f.verified) if f.verified else (False, "unsigned")
+    if not f.parents:
+        return False, "derived from nothing named"
+    _seen = _seen | {key}
+    for p in f.parents:
+        ok, why = verification(p, named, _seen)
+        if not ok:
+            # Name the whole path, not just the immediate parent. The first
+            # version said "mco.care is mco.margin is unsigned", which is the
+            # right fact in a shape nobody can read.
+            return False, (why if why.startswith(p) else
+                           (f"{p} \u2192 {why}" if " \u2192 " in why or
+                            not why.startswith(("unsigned", "absent", "derived"))
+                            else f"{p} is {why}"))
+    return True, "every parent signed"
 
 
 # ================================= Payer ==================================
@@ -276,6 +342,14 @@ class Ledger:
     nodes: List[str]                # provider node keys, in reading order
     claims: Matrix                  # payer x provider node
     beneficiaries: Optional[Matrix] = None      # group x provider node
+    # Published figures on the SOURCE's own basis, in the source's own units,
+    # which other figures in this ledger derive from. DC's cost allocation is
+    # the case that forced them: Exhibit 16 publishes dollars and we divide to
+    # get a share, so the share's parents are two dollar amounts that were
+    # constants in a module and therefore outside every sweep, every gate and
+    # every signature. An anchor is a figure like any other: it carries
+    # provenance, it appears in the register, and it can be signed.
+    anchors: Dict[str, Fig] = field(default_factory=dict)
     declarations: List[str] = field(default_factory=list)   # prose, for the artifact
     # Machine-checkable declarations. The gate matches on these keys rather than
     # grepping the prose, because a substring match makes the gate depend on how
@@ -311,6 +385,8 @@ class Ledger:
         for endnote generation. One place, so nothing is exempt by being
         forgotten."""
         out: Dict[str, Fig] = {"scale": self.scale}
+        for k, f in self.anchors.items():
+            out[f"anchor.{k}"] = f
         for k, f in self.sources.items():
             out[f"source.{k}"] = f
         for x in self.peels:
@@ -351,7 +427,9 @@ def check(L: Ledger) -> List[str]:
             f.append(f"{name}: {a:.4f} != {b:.4f}  (off by {a-b:+.4f})")
 
     # ---- 1. provenance. A figure without it fails the build. -------------
-    f += provenance_failures(L.figures())
+    figs = L.figures()
+    f += provenance_failures(figs)
+    f += derivation_failures(figs)
 
     # ---- 2. sources ------------------------------------------------------
     s, gone = total(L.sources.values())

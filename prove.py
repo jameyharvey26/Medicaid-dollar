@@ -12,6 +12,7 @@ import copy
 import ledger as LD
 import ledger_national_2024 as NAT
 import ledger_dc_2024 as DC
+import ledger_national_2030 as N30
 from view import View
 
 
@@ -20,7 +21,8 @@ def band(t):
 
 
 band("1. conservation")
-for mod, name in ((NAT, "national FY2024 as-is"), (DC, "DC FY2024 as-is")):
+for mod, name in ((NAT, "national FY2024 as-is"), (DC, "DC FY2024 as-is"),
+                  (N30, "national FY2030 to-be")):
     L = mod.build()
     fails = LD.check(L)
     print(f"{name:26} {'CONSERVES' if not fails else 'FAILS'}"
@@ -47,6 +49,21 @@ L = NAT.build()
 L.payers[0].margin = LD.Fig(0.60, status=LD.MODELLED)      # method stripped
 cases["a modelled figure with no method stated"] = L
 
+# The two breaks that only exist on the to-be. A tributary's amount and its
+# reach are different facts and each has its own way of going wrong: the first
+# stops the ledger conserving, the second does not and would render a terminal
+# in the wrong place with every sum still balancing.
+L = N30.build()
+L.peels[0].amount = LD.Fig(L.peels[0].amount.n + 1.0, status=LD.MODELLED,
+                           note="moved")
+cases["an HR-1 tributary moved by $1.00"] = L
+
+# The hole this was written to close: a derived figure used to be graded
+# verified on sight, with no check that the figures it names even exist.
+L = NAT.build()
+L.claims.row_margin["ffs"] = LD.Fig.derived(41.08, ("payer.ffs.nonesuch",))
+cases["a derived figure naming a parent that is not there"] = L
+
 L = DC.build()
 L.declared = []
 cases["DC with its declarations removed"] = L
@@ -62,7 +79,45 @@ for name, L in cases.items():
     for x in fails[:2]:
         print("      " + x)
 
-band("3. generated endnote register, DC")
+band("3. a signature must not travel onto a figure that has moved")
+import signatures as _SG
+_was = _SG.SIGNED["claims.cell.mco.Hospitals"]
+_SG.SIGNED["claims.cell.mco.Hospitals"] = _was + 0.37     # the pre-MACPAC value
+_L = NAT.build()
+_hits = [x for x in LD.check(_L) if "verified at" in x]
+print(f"{'a figure edited since it was agreed':42} "
+      f"{'CAUGHT' if _hits else '*** PASSED, GATE IS BLIND ***'}")
+for _x in _hits:
+    print("      " + _x)
+_SG.SIGNED["claims.cell.mco.Hospitals"] = _was
+
+
+band("4. a derived figure inherits verification, never assumes it")
+_n = NAT.build().figures()
+for _k, _want in (("payer.ffs.care", True),
+                  ("beneficiaries.col.Hospitals", True),
+                  ("payer.mco.care", False),
+                  ("claims.row.mco", False),
+                  ("scale", False)):
+    _got, _why = LD.verification(_k, _n)
+    print(f"  {_k:32} {'verified' if _got else 'not verified':13} "
+          f"{'ok' if _got == _want else '*** WRONG ***'}   {_why}")
+
+
+band("5. reach declared twice must agree")
+_saved = None
+import outflows as _OF
+_saved = _OF.OUTFLOWS["Six-month renewals"].get("reach")
+_OF.OUTFLOWS["Six-month renewals"]["reach"] = "CLAIMS"
+_d = N30.agreement()
+print(f"{'outflows reach edited behind the ledger':42} "
+      f"{'CAUGHT' if _d else '*** PASSED, GATE IS BLIND ***'}")
+for x in _d:
+    print("      " + x)
+_OF.OUTFLOWS["Six-month renewals"]["reach"] = _saved
+
+
+band("6. generated endnote register, DC")
 for line in LD.endnotes(DC.build())[:14]:
     print(line)
 print("  ... " + str(len(LD.endnotes(DC.build()))) + " lines total")

@@ -16,8 +16,11 @@ from compose import compose
 from view import View
 import ledger_national_2024 as NAT
 import ledger_dc_2024 as DC
+import ledger_national_2030 as N30
+from ledger_2030 import ledger as arith
+from tobe2030 import per100
 
-from views import V_NAT, V_DC
+from views import V_NAT, V_DC, V_2030
 
 
 def svg(cfg):
@@ -47,4 +50,19 @@ if __name__ == "__main__":
     ok.append(compare("dc_2024 (legacy)",
                       instances.as_is_dc(),
                       compose(DC.build(legacy_mix=True), V_DC)))
+    # All three overhead variants. They exercise different arithmetic — the
+    # lane scaling, the retention carve and the fraud lane each move — so
+    # proving only the one that ships would leave two thirds of the ledger
+    # untested through the new path.
+    prior = NAT.build()
+    for v in ("mixed", "holds", "scales"):
+        ok.append(compare(f"national_2030 [{v}]",
+                          instances.to_be_2030(arith(v), per100),
+                          compose(N30.build(v), V_2030, prior=prior)))
+    drift = N30.agreement()
+    if drift:
+        ok.append(False)
+        print("\nreach declared twice and the two disagree:")
+        for d in drift:
+            print("  " + d)
     print("\n" + ("seam is a no-op" if all(ok) else "SEAM CHANGES OUTPUT"))

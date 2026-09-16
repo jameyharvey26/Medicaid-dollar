@@ -27,7 +27,41 @@ def _peel(L: Ledger, key: str) -> float:
     return 0.0
 
 
-def compose(L: Ledger, V: View) -> Instance:
+def _hr1(L: Ledger, V: View):
+    """The overlay's four numbers and its terminals, off the ledger's peels.
+
+    `fed_bite`, `sa_hr1` and `claims_hr1` are sums of HR-1 peels grouped by the
+    phase each is charged to. They were three hand-kept totals on the instance,
+    which is three chances for the number line and the ribbons to disagree with
+    the ledger they both claim to draw.
+
+    The terminal is the join. Its x is the tracker slot of the REACH the ledger
+    declares; its sub-label and its declaration order come from the View. The
+    reach is a claim about the world and the slot is a lattice coordinate, and
+    keeping the two in one table is what let a geometry fallback read as a
+    finding about how far a dollar would have travelled.
+    """
+    hr = {p.key: p for p in L.peels if p.kind == "hr1"}
+    term = {}
+    for name, sub in V.hr1_sub.items():
+        p = hr.get(name)
+        if p is None:
+            raise KeyError(f"view declares HR-1 terminal {name!r}, "
+                           f"ledger has no such peel")
+        term[name] = (V.reach_slot[p.reach], sub)
+    missing = set(hr) - set(V.hr1_sub)
+    if missing:
+        raise KeyError(f"ledger carries HR-1 peels the view does not place: "
+                       f"{sorted(missing)}")
+
+    def at(*phases):
+        return sum(p.amount.n for p in hr.values() if p.charged in phases)
+
+    return dict(hr1_term=term, fed_bite=at("FEDERAL"),
+                sa_hr1=at("STATE_AGENCY"), claims_hr1=at("CLAIMS"))
+
+
+def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
     M = L.claims
     lane = {p.key: p for p in L.lanes()}
 
@@ -43,6 +77,20 @@ def compose(L: Ledger, V: View) -> Instance:
             steps.append((p.key, side, p.amount.n, V.step_x[p.key]))
 
     node = {c: M.col_margin[c].n for c in L.nodes}
+
+    # A View names its subtraction amounts; it never holds one. Resolve the
+    # named ones here, against this ledger.
+    from view import PeelSum
+    subs = [(lab, (amt.resolve(L) if isinstance(amt, PeelSum) else amt),
+             cls, col, short) for lab, amt, cls, col, short in V.subs_spec]
+
+    hr1 = _hr1(L, V) if V.hr1_sub else {}
+
+    # Prior-law provider totals for the beneficiary overlay, by reference to
+    # the as-is ledger rather than copied (S-073, EN-46). Empty on a diagram
+    # that carries no decrements, which is what switches the overlay off.
+    prior_node = ({c: prior.claims.col_margin[c].n for c in prior.nodes}
+                  if prior else {})
 
     # A lane collapses when the ledger says there is nothing in it. Two
     # different facts both produce that: a MEASURED zero, which is a state with
@@ -70,8 +118,9 @@ def compose(L: Ledger, V: View) -> Instance:
         gt=({g: f.n for g, f in L.beneficiaries.row_margin.items()}
             if (L.beneficiaries and V.show_beneficiaries) else {}),
         steps=steps,
-        subs_spec=V.subs_spec,
-        hr1_term=dict(V.hr1_term),
+        subs_spec=subs,
+        prior_node=prior_node,
+        **hr1,
         order=list(L.nodes),
         disp=dict(V.disp),
         show_beneficiaries=bool(V.show_beneficiaries and L.beneficiaries),

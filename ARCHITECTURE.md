@@ -224,3 +224,24 @@ into `<instance>.graffle`. One direction only. The SVG stays authoritative; the
 .graffle is a markup surface, and any change it prompts is made in `sankey.py` or
 `instances.py` and re-rendered. Reading figures back out of a drawing tool would
 create a second source of truth for numbers that already have one (S-073).
+
+
+---
+
+## provider_mix.py (added 2026-09-16)
+
+The provider phase is computed here and nowhere else. It was previously pasted
+into `ledger_national_2024.py`, `ledger_2030.py` and `instances.py` — three
+copies of one allocation, which meant the seam proof was comparing two copies of
+the same numbers and would have gone on passing after one of them was corrected.
+Correcting two of the three is how the third was found.
+
+The module carries its three inputs with their three separate vintages, the
+documented direction of the HMA hospital-versus-physician bias, and the mapping
+from MACPAC's care settings to this diagram's categories. See EN-48.
+
+DC is untouched by it. `ledger_dc_2024._NATMIX` is DC's own frozen copy of the
+legacy allocation, reproduced for the byte-identity proof and for nothing else,
+and `legacy_mix=True` remains the visible record that DC still borrows a
+national mix. JW's ruling, 16 September: leave it borrowing until DC's own
+figures land, then turn the flag off in one move.

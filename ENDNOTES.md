@@ -508,12 +508,14 @@ computable ledger, not of benefits alone.
 $41.08. Sum $92.03, which is the disbursed balance at EN-37. **Derived** from
 MACStats February 2026 Exhibit 17, FY2024.
 
-*Provider nodes.* Long-term care $28.53, hospitals $18.66, wrap-around services
-$13.33, physicians and clinics $12.63, behavioral health $9.51, prescription drugs
-$3.76. Sum $86.42, which is the claims-paid balance at EN-37 before documented
-fraud. **Derived** from MACStats February 2026 Exhibit 17, FY2024. "Wrap-around
-services" is the plain-language label for the residual category (S-033); it is a
-residual by construction and conserves the column.
+*Provider nodes.* Long-term care $28.91, hospitals $17.77, wrap-around services
+$15.33, physicians and clinics $10.79, behavioral health $9.51, prescription drugs
+$4.11. Sum $86.42, which is the claims-paid balance at EN-37 before documented
+fraud. **Modelled**, and see EN-48: no source publishes a national split of
+capitation by service category, so a node total cannot be measured. Exhibit 17
+sources the fee-for-service half only. "Wrap-around services" is the
+plain-language label for the residual category (S-033); it is a residual by
+construction and conserves the column.
 
 *Beneficiary shares.* The pie splits by eligibility group and dual status are
 MACStats February 2026 Exhibit 21, **FY2023** — a year older than the rest of the
@@ -569,7 +571,7 @@ none is measured**, which is why the panel strap reads "Every figure modelled"
 rather than flagging them individually (S-012).
 
 The node values are the figures a reader will take personally — a health system
-reads its own bar falling $18.66 → $16.71 — and the incidence behind that fall is
+reads its own bar falling $17.77 → $15.90 — and the incidence behind that fall is
 the open item at EN-21 and EN-24. The figure is sound as a share of the conserved
 ledger; what it does not yet say is which lever took it.
 
@@ -703,3 +705,60 @@ this gap and EN-31's; JW removed it, 2026-09-11. So the only warning a reader ge
 that the four beneficiary pies do not carry HR-1 incidence is this endnote. Worth
 re-raising before the paper ships, because the pies are the part of the panel a
 reader is most likely to read incidence off. Added 2026-09-11.
+
+
+**EN-48 · The provider phase is modelled, and here is the model. | D**
+Added 2026-09-16, replacing an allocation that was carried in the workbook
+builder and cited nowhere the reader could see it.
+
+No source publishes national Medicaid spending by service category with
+capitation distributed across services. MACStats Exhibit 17 reports managed care
+as a single $496.1 billion line; Exhibit 18 also treats it as its own category.
+So the six provider nodes are modelled, three inputs at three vintages, and the
+model lives in `provider_mix.py`.
+
+*Fee-for-service half.* CMS-64 service categories, FY2024. These sum to
+$400,002 million, which is Exhibit 17's gross fee-for-service total to the
+dollar. **Measured.**
+
+*Capitated half.* Health Management Associates, "New Insights on Medicaid
+Spending", a T-MSIS service mix at **CY2021**, three years older than the rest of
+the ledger. It prices managed-care encounters at fee-for-service and Medicare
+rates. **Modelled.** Direction of its known bias, stated rather than buried:
+HMA's professional category unbundles hospital-based physician work that CMS-64
+bundles into hospital, so physicians and clinics is overstated and hospitals
+understated against CMS-64 convention.
+
+*Behavioral health.* MACPAC, March 2026 Report to Congress, Chapter 2, Table 2-8
+and Figure 2-1, CY2023 T-MSIS — the first national claims-based estimate of
+Medicaid behavioral health spending since 2015. MACPAC publishes a split by care
+setting, not by the categories this diagram uses; the mapping is ours and is
+written out in `provider_mix.py` so a reader can disagree with it. Four
+differences of basis, none resolvable by arithmetic: MACPAC counts any claim
+carrying a behavioral health diagnosis in any position, which overstates; it
+covers non-dually-eligible enrollees only, which understates; it is CY2023; and
+its denominator is service-related spending of $642.3 billion rather than this
+ledger's $957.4 billion total computable. For the last reason the carve's total
+is held at this ledger's basis and only its distribution is taken from MACPAC.
+MACPAC's own total is $95.3 billion against this ledger's $91.0 billion —
+agreement to about five percent across two bases, which is the most the source
+can be asked to say.
+
+Long-term care takes no carve. MACPAC's care settings do not identify long-term
+care, so there is no basis for one. **That is an absence, not a zero.**
+
+*What this changed.* Behavioral health was previously carved mostly out of
+wrap-around services. MACPAC finds that nearly half of behavioral health spending
+occurs in non-hospital outpatient settings, with community mental health centers
+and federally qualified health centers on top — all clinician settings. The carve
+therefore reverses, and wrap-around services and physicians and clinics change
+places. **The underlying categories did not move.** Before behavioral health is
+removed from anything, wrap-around is $16.95 and physicians and clinics $14.72;
+the previous carve compressed them to near-parity and the correction stops doing
+so. The state of the world did not change. Our description of it did.
+
+*Rounding.* The six exact node values sum to $86.4200, which is the money
+arriving from the payer phase. Rounded individually they sum to $86.43, so one
+cent is returned by trimming the node with the largest upward rounding. Earlier
+editions described this as published totals disagreeing with rounded parts. That
+was wrong: nothing here is published.
