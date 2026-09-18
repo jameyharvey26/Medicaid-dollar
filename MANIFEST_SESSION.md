@@ -861,3 +861,14 @@ AmeriHealth Caritas DC and Wellpoint DC, both years.
 - New FY2030 label collision: wrap-around pie reaches y=674, two units past the
   behavioral health label. Consequence of the node resize. Presentation, frozen.
 - S-092: Sheila has not yet seen the author-page disclosure wording.
+
+## Session handoff streamlined (2026-09-16, JW)
+`SESSION_START.md` holds everything stable between sessions; the per-session
+brief carries only what changed. `gates.py` replaces seven commands and a table
+of expected numbers written in prose — the expectations live next to the gates
+and a gate that prints nothing now fails. `standing_index.py` generates
+`STANDING_INDEX.md`, one line per standing note, so a session reads a page
+instead of 1,292 lines and opens the full note only where it bears. The notes
+file stays append-only. `NEXT_SESSION_PROMPT_3.md` retired; prompt 5 supersedes
+the unused prompt 4. Read cost at session start falls from about 4,550 lines to
+about 800.
