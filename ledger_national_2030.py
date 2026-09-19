@@ -33,7 +33,11 @@
 # ledger holds is those two anchors put through a ramp, a gross-up and a set of
 # bite phases, and none of that is published by anybody.
 
+from dataclasses import replace
+
 from ledger import (DERIVED, Fig, Ledger, MODELLED, Matrix, Payer, Peel)
+from ledger_national_2024 import (RESCALE, PER_DOLLAR, VFC_M, FED_M, ST_M,
+                                  HUNDRED_M, ADMIN_M, MFCU_M, SNC_M)
 
 from ledger_2030 import ledger as _arith, B, B_ffs_n, B_mcoc_n, B_dualc_n, ORDER
 from tobe2030 import per100, FY30_DEFICIT, FED_OUTLAYS_30, TOTAL_30
@@ -192,13 +196,34 @@ def build(variant: str = "mixed") -> Ledger:
         return Peel(name, name, _mod(per100[name], METHOD), charged,
                     reach=reach, kind="hr1")
 
-    peels = [hr1(n) for n in SA_ORDER]
+    # D-70/D-71/D-72. The inherited administration peel is an FY2024 $5.07
+    # figure, which was administration plus federal oversight plus a vaccine
+    # purchase. It splits three ways on the FY2024 proportions before anything
+    # else happens, so the vaccine money leaves the state agency here exactly as
+    # it leaves it on the as-is panel. CBO does not project VFC separately;
+    # holding the FY2024 proportion is the same convention already used for the
+    # federal share (D-10, D-11).
+    _A = L["admin"]
+    _WHOLE = ADMIN_M + MFCU_M + SNC_M + VFC_M
+    _adm, _ovs, _vfc = (_A * ADMIN_M / _WHOLE, _A * (MFCU_M + SNC_M) / _WHOLE,
+                        _A * VFC_M / _WHOLE)
+
+    peels = [Peel("vfc", "Vaccines for Children",
+                  _mod(_vfc, "FY2024 Vaccines for Children share of the "
+                             "inherited administration figure, held to FY2030 "
+                             "(D-71). Peels before the blend, terminates at CDC."),
+                  "FEDERAL", reach="FEDERAL", kind="return", outside=True)]
+    peels += [hr1(n) for n in SA_ORDER]
     peels += [
         Peel("admin", "Administration",
-             _mod(L["admin"], "State administration held at FY2024 dollars "
-                              "(D-63)." if variant in ("holds", "mixed")
-                              else "State administration scales with the trunk "
-                                   "(D-63)."),
+             _mod(_adm, "State programme administration only, held at FY2024 "
+                        "dollars (D-63)." if variant in ("holds", "mixed")
+                        else "State programme administration only, scaling with "
+                             "the trunk (D-63)."),
+             "STATE_AGENCY", reach="STATE_AGENCY", kind="admin"),
+        Peel("oversight", "Federal oversight",
+             _mod(_ovs, "EN-50. Fraud Control Units and survey and "
+                        "certification, carried on the FY2024 proportion."),
              "STATE_AGENCY", reach="STATE_AGENCY", kind="admin"),
         Peel("medicare", "Medicare premiums",
              _mod(L["medicare"], "FY2024 Medicare premium lane less the blocked "
@@ -214,19 +239,49 @@ def build(variant: str = "mixed") -> Ledger:
              "PROVIDERS", reach="PROVIDERS", kind="fraud"),
     ]
 
-    return Ledger(
+    def _rebase(L):
+        """D-70 moved the normalization point on the as-is panel. The to-be
+        panel has to follow or the pair is not a comparison. Same factor, same
+        reason: a change of units, not of measurement."""
+        def r(f):
+            return f if f.value is None else replace(f, value=f.value * RESCALE)
+        for x in L.peels:
+            if not x.outside:
+                x.amount = r(x.amount)
+        # Everything below the agency is scaled to the money that actually
+        # arrives there, not by the raw factor. Scaling lanes by RESCALE would
+        # scale the 100 as well and leave the vaccine amount unaccounted.
+        disb, _ = L.disbursed()
+        lanes = sum(pr.capitation.n for pr in L.lanes())
+        g = disb / lanes
+        def r2(f):
+            return f if f.value is None else replace(f, value=f.value * g)
+        for pr in L.payers:
+            for fld in ("capitation", "care", "admin", "margin"):
+                setattr(pr, fld, r2(getattr(pr, fld)))
+        for m in [L.claims] + ([L.beneficiaries] if L.beneficiaries else []):
+            for d in (m.row_margin, m.col_margin, m.cell):
+                for k in list(d):
+                    d[k] = r2(d[k])
+        return L
+
+    return _rebase(Ledger(
         geography="United States", year="FY2030", scenario="to_be",
-        scale=Fig(1.0, status=DERIVED,
-                  basis="normalised to $100 of FY2030 total computable Medicaid "
-                        "spending under prior law"),
-        sources={"federal": _mod(64.70, "FY2024 blended federal share held "
-                                        "constant to FY2030 (D-10, D-11)."),
-                 "state": _mod(35.30, "Residual of the blended federal share.")},
+        scale=Fig(PER_DOLLAR, status=DERIVED,
+                  basis="$M per $1 of the FY2030 hundred budgeted to Medicaid "
+                        "under prior law"),
+        sources={"federal": _mod(FED_M / (HUNDRED_M / 100.0),
+                                 "FY2024 federal appropriation share held "
+                                 "constant to FY2030 (D-10, D-11). This is what "
+                                 "enters, not what the agency holds: 100.76 "
+                                 "enters and 100.00 is budgeted (D-70)."),
+                 "state": _mod(ST_M / (HUNDRED_M / 100.0),
+                               "Residual of the appropriation share.")},
         peels=peels, payers=payers, nodes=NODES, claims=claims,
         beneficiaries=ben,
         declarations=[],
         note=CBO,
-    )
+    ))
 
 
 MIX_NOTE = {

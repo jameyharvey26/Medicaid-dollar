@@ -872,3 +872,64 @@ instead of 1,292 lines and opens the full note only where it bears. The notes
 file stays append-only. `NEXT_SESSION_PROMPT_3.md` retired; prompt 5 supersedes
 the unused prompt 4. Read cost at session start falls from about 4,550 lines to
 about 800.
+
+---
+
+# Session, 18 September 2026
+
+Closed with all seven gates as expected. The national baseline was re-defined,
+rebuilt and re-signed; the manuscript was not touched.
+
+## Gate EXPECT changes, and why
+
+- **`build.py`** — a third frozen advisory. Vaccines for Children and the
+  provider tax limits leave the flow within eight units of each other, so their
+  markers land four apart on the FY2030 line. Geometry telling the truth, not a
+  placement fault; the two are stacked rather than moved. The regex count went
+  from 2 to 3.
+- **`coverage.py national`** — 21/2/3/3 became 24/2/2/3. Better attested than
+  before D-70, not worse: `scale` was signable for the first time.
+- **`byteproof.py` RETIRED, `renderproof.py` added.** Byteproof proved the
+  Ledger path rendered identically to the old `instances.py` path — migration
+  scaffolding, and its premise expired the moment D-70 moved the baseline.
+  Keeping it would have meant hand-editing a second copy of every constant so
+  it could agree with the first. Replaced by a golden-render register over every
+  panel the build emits. S-104.
+
+## Gate defects found and fixed
+
+- `prove.py` addressed peels by list index. When Vaccines for Children became
+  `peels[0]`, two of the ten deliberate breaks silently began breaking a
+  different peel than the one they named, while still reporting CAUGHT. Now
+  addressed by key.
+- `prove.py` sections 3 and 4 read the live signature register, so they stopped
+  working the moment D-70 legitimately emptied it. Both now plant their own
+  fixtures and remove them.
+- `prove.py` section 4 expected `scale` to be unverifiable. That was a defect
+  encoded as an expectation: `scale` was carried as DERIVED with no parents, so
+  it reported "derived from nothing named" and could never be signed. It is
+  MEASURED from Exhibit 16 and is now signed.
+- The oversight peel stepped the trunk and drew no exit — ten cents left the
+  diagram with nothing on the page to say where it went. Caught by eye, not by
+  a gate.
+- The oversight exit then crossed the administration arrow, caught by
+  `crossings.py`. Cause: `resolve_bite_order` deals x slots in terminal-height
+  order from `OUTFLOWS`, and the peel had been added to the view without an
+  outflow declaration, so it had no terminal to sort on. Fixed by declaring it.
+- `build.py` does not rebuild the FY2030 `holds` and `scales` variants in a
+  working session, so three panels sat in `reference_renders` on the pre-D-70
+  baseline and were blessed into the register as if live. Rebuilt with
+  `build.py sensitivity`. The hole in the build is not fixed.
+
+## Own errors, recorded because the pattern matters
+
+Three times in one session a string operation keyed on `SIGNED` also matched
+inside `UNSIGNED`, destroying `signatures.py` and requiring a restore from the
+tarball. Once with `str.split`, once with `re.sub`. The register is now edited
+by locating blocks at line starts. Also invented five decision numbers (D-68 to
+D-72) before checking the register, which stood at D-67.
+
+## Not done
+
+The manuscript. It is two rounds behind — the 16 September carve was never
+applied to it — and the change map is `CHANGE_MAP_2026-09-18.md`.

@@ -84,6 +84,7 @@ def render(cfg):
     """Draw one instance. cfg is an Instance from instances.py."""
     global svg
     svg = []
+    oversight, fo = cfg.oversight, cfg.fed_outside
     fed, state, admin, medicare, mco, dual, ffs, mco_ret, dual_ret, earnings, adm_marg, mco_adm, dual_adm, mco_care, dual_care, node, fraud, ffs_n, mcoc_n, dualc_n, gt = (
         cfg.fed, cfg.state, cfg.admin, cfg.medicare, cfg.mco, cfg.dual, cfg.ffs, cfg.mco_ret, cfg.dual_ret, cfg.earnings, cfg.adm_marg, cfg.mco_adm, cfg.dual_adm, cfg.mco_care, cfg.dual_care, cfg.node, cfg.fraud, cfg.ffs_n, cfg.mcoc_n, cfg.dualc_n, cfg.gt)
     order = cfg.order
@@ -113,33 +114,72 @@ def render(cfg):
     lbg(150,fed_top-9,f"Federal  ${fed:.2f}",14); txt(150,fed_top-9,f"Federal  ${fed:.2f}",14,FED,"start","bold",halo=False)
     lbg(150,st_top+state*ys+18,f"State  ${state:.2f}",14); txt(150,st_top+state*ys+18,f"State  ${state:.2f}",14,"#5f7f8c","start","bold",halo=False)
     # trunk geometry
-    T0=cY-100*ys/2; TB=cY+100*ys/2
+    # The trunk is what arrives at the state agency: everything that entered,
+    # less anything that peeled before the hundred was struck. D-70. This used
+    # to read the literal 100, which asserted that the sources sum to 100.
+    _ENTER=fed+state; _ARRIVE=_ENTER-fo
+    T0=cY-_ARRIVE*ys/2; TB=cY+_ARRIVE*ys/2
     # A federal-slope bite (provider tax limits) narrows the federal band halfway
     # down its descent and leaves the gap open. cfg.fed_bite is 0 on the as-is.
     fb=cfg.fed_bite
     bites=[]
-    fed_lane=(T0,T0+(fed-fb)*ys)
-    st_lane=(T0+fed*ys,TB)
-    if fb>0:
+    fed_lane=(T0,T0+(fed-fb-fo)*ys)
+    st_lane=(T0+(fed-fo)*ys,TB)
+    if fb+fo>0:
         _fm=(150+bw+xSG[0])/2; _fmy=(fed_top+fed_lane[0])/2
-        band(150+bw,_fm,fed_top,_fmy,fed*ys,fed*ys,FED,0.8)
-        band(_fm,xSG[0],_fmy,fed_lane[0],fed*ys,(fed-fb)*ys,FED,0.8)
-        bites.append((cfg.fed_bite_name,_fm,_fmy+fed*ys,fb))
+        # The vaccine money comes off the TOP edge at the earliest point there
+        # is — the moment the appropriation leaves its own bar — so the band
+        # that crosses the page is already the blended dollar. D-71.
+        band(150+bw,_fm,fed_top+fo*ys,_fmy,(fed-fo)*ys,(fed-fo)*ys,FED,0.8)
+        band(_fm,xSG[0],_fmy,fed_lane[0],(fed-fo)*ys,(fed-fb-fo)*ys,FED,0.8)
+        if fb>0:
+            bites.append((cfg.fed_bite_name,_fm,_fmy+fed*ys,fb))
+        if fo>0:
+            # Not a bite. Money doing its job elsewhere, so it gets a plain grey
+            # label on the federal slope and no terminal below the rule. D-71.
+            # Drawn like the Medicare premiums return, not like an HR-1 bite:
+            # a grey band that leaves the federal slope, turns back and
+            # terminates with an arrowhead. The money is not lost, it is doing
+            # its job somewhere this diagram does not go. D-71.
+            # Out along the top, one fold, back to a terminal. One doubling
+            # back and no swirl: two reversals would suggest the money went
+            # somewhere and came back, and it does not.
+            _vh=max(fo*ys,2.4); _vk=150+bw+96; _vt=fed_top-26
+            band(150+bw,_vk,fed_top,fed_top-12,fo*ys,fo*ys,MEDI,0.72)
+            _vm=fed_top-12+fo*ys/2
+            add(f'<path d="M{_vk:.1f},{_vm:.1f} C{_vk+86:.1f},{_vm:.1f} '
+                f'{_vk+86:.1f},{_vt:.1f} 246,{_vt:.1f}" fill="none" '
+                f'stroke="{MEDI}" stroke-width="{_vh:.1f}" stroke-opacity="0.72" '
+                f'stroke-linecap="round"/>')
+            add(f'<path d="M236,{_vt:.1f} l16,-6 l0,12 Z" fill="{MEDI}"/>')
+            # The label cannot sit to the RIGHT of the arrowhead the way the
+            # Medicare one does: at this height the state government band is
+            # already there. It goes left, into the white column, on two short
+            # lines. The rest of the story is EN-49.
+            # One line, not two: the Medicare label sits 26 units below and a
+            # second line would close the gap to nothing.
+            _ol=f"{cfg.fed_outside_name}  ${fo:.2f}   never blended, terminates at CDC"
+            lbg(252,_vt-3,_ol,10.5,"start")
+            txt(252,_vt-3,_ol,10.5,"#5f6166","start","bold",halo=False)
     else:
-        band(150+bw,xSG[0],fed_top,fed_lane[0],fed*ys,fed*ys,FED,0.8)
+        band(150+bw,xSG[0],fed_top,fed_lane[0],fed*ys,fed*ys,FED,0.8)  # no bite
     band(150+bw,xSG[0],st_top,st_lane[0],state*ys,state*ys,STATE,0.8)
-    band(xSG[0],xSG[1],fed_lane[0],fed_lane[0],(fed-fb)*ys,(fed-fb)*ys,FED,0.82)
+    band(xSG[0],xSG[1],fed_lane[0],fed_lane[0],(fed-fb-fo)*ys,(fed-fb-fo)*ys,FED,0.82)
     band(xSG[0],xSG[1],st_lane[0],st_lane[0],state*ys,state*ys,STATE,0.82)
-    rect(xSG[0],fed_lane[0],bw,(fed-fb)*ys,FED); rect(xSG[0],st_lane[0],bw,state*ys,STATE)
-    txt(xSG[0]+30,fed_lane[0]+(fed-fb)*ys/2+4,f"Federal {fed:.1f}%",13,"#ffffff","start","bold",halo=False)
-    txt(xSG[0]+30,st_lane[0]+state*ys/2+4,f"State {state:.1f}%",13,"#33474f","start","bold",halo=False)
+    rect(xSG[0],fed_lane[0],bw,(fed-fb-fo)*ys,FED); rect(xSG[0],st_lane[0],bw,state*ys,STATE)
+    # The blended share, not the appropriation share. They differ once anything
+    # 100 percent federal peels before the blend, and that difference is the
+    # finding D-70 exposes.
+    _blend=(fed-fo)/_ARRIVE*100 if _ARRIVE else 0.0
+    txt(xSG[0]+30,fed_lane[0]+(fed-fb-fo)*ys/2+4,f"Federal {_blend:.1f}%",13,"#ffffff","start","bold",halo=False)
+    txt(xSG[0]+30,st_lane[0]+state*ys/2+4,f"State {state/_ARRIVE*100 if _ARRIVE else 0:.1f}%",13,"#33474f","start","bold",halo=False)
     # SA combined trunk, sequential peels
     # The trunk steps once per outflow, at that outflow's own x, in ledger order.
     # Ordinary leakage steps the TOP edge down; HR-1 steps the BOTTOM edge up
     # (S-056). cfg.steps is [(name, "top"|"bot", value, x)], sorted by x.
-    _T=100-fb
+    _T=_ARRIVE-fb
     rect(xSA[0],T0,bw,_T*ys,DOLLAR)
-    ax=mx=None; top3=T0; origin={}
+    ax=mx=ox=None; top3=T0; origin={}
     _top=T0; _thk=_T; _x=xSA[0]+bw
     # Bite order for the ordinary peels is SOLVED, not declared: whichever
     # terminates higher peels first, so the two never swap places (STYLE_GUIDE 2.9).
@@ -150,6 +190,7 @@ def render(cfg):
             # another's step is what made the order un-swappable before.
             origin[_nm]=_top
             if _nm=="admin": ax=_sx
+            elif _nm=="oversight": ox=_sx
             else: mx=_sx
             _top+=_v*ys
         else:
@@ -158,15 +199,29 @@ def render(cfg):
     band(_x,xSA[1],_top,_top,_thk*ys,_thk*ys,DOLLAR,0.82)
     top3=_top
     fexit(ax,origin["admin"],admin*ys,xSA[1]-6,250,ADMIN,f"Administration  ${admin:.2f}","state / program overhead")
+    # D-72 split the old $5.07 three ways, but only two of the three were ever
+    # drawn: the trunk narrowed by this $0.10 with nothing on the page to say
+    # where it went. A peel that steps the trunk and draws no exit is money
+    # leaving the diagram unexplained.
+    if ox is not None and oversight > 0.004:
+        fexit(ox,origin["oversight"],oversight*ys,xSA[1]-6,206,ADMIN,
+              f"Federal oversight  ${oversight:.2f}",
+              "fraud control units, survey and certification")
     # Medicare premiums peels flush off the TOP edge like any ordinary outflow, then
     # returns to the federal lane. The return is the one sanctioned exception to the
     # downstream rule (S-055), because the money genuinely goes back (S-062).
     _mh=medicare*ys; _mk=mx+64; _mky=origin["medicare"]-48
     band(mx,_mk,origin["medicare"],_mky,_mh,_mh,MEDI,0.72)
-    add(f'<path d="M{_mk:.1f},{_mky+_mh/2:.1f} C{_mk-200:.1f},{_mky+_mh/2-80:.1f} 470,130 236,136" fill="none" stroke="{MEDI}" stroke-width="{_mh:.1f}" stroke-opacity="0.72" stroke-linecap="round"/>')
-    add(f'<path d="M226,136 l16,-6 l0,12 Z" fill="{MEDI}"/>')
-    lbg(252,112,f"Medicare premiums  ${medicare:.2f}",12,"start"); txt(252,112,f"Medicare premiums  ${medicare:.2f}",12,"#5f6166","start","bold",halo=False)
-    lbg(252,127,"returns to the federal government (Medicaid \u2192 Medicare)",10,"start"); txt(252,127,"returns to the federal government (Medicaid \u2192 Medicare)",10,MUT,"start",halo=False,italic=True)
+    # The return used to terminate at y=136, hard against the top of the plot,
+    # for no reason except that nothing had ever been drawn above it. The
+    # federal band's top edge at this x is y=223, so there are 87 units of
+    # clear space underneath. It sits in that space now, which leaves the top
+    # line for the vaccine peel. Nothing about the arithmetic changes.
+    _my=205
+    add(f'<path d="M{_mk:.1f},{_mky+_mh/2:.1f} C{_mk-200:.1f},{_mky+_mh/2-80:.1f} 470,{_my-6} 236,{_my}" fill="none" stroke="{MEDI}" stroke-width="{_mh:.1f}" stroke-opacity="0.72" stroke-linecap="round"/>')
+    add(f'<path d="M226,{_my} l16,-6 l0,12 Z" fill="{MEDI}"/>')
+    lbg(252,_my-24,f"Medicare premiums  ${medicare:.2f}",12,"start"); txt(252,_my-24,f"Medicare premiums  ${medicare:.2f}",12,"#5f6166","start","bold",halo=False)
+    lbg(252,_my-9,"returns to the federal government (Medicaid \u2192 Medicare)",10,"start"); txt(252,_my-9,"returns to the federal government (Medicaid \u2192 Medicare)",10,MUT,"start",halo=False,italic=True)
     rect(xSA[1],top3,bw,(mco+dual+ffs)*ys,DOLLAR)
     txt((xSA[0]+xSA[1])/2+6,cY-4,cfg.centre[0],15,"#ffffff","middle","bold",halo=False)
     txt((xSA[0]+xSA[1])/2+6,cY+16,cfg.centre[1],15,"#ffffff","middle","bold",halo=False)
@@ -371,13 +426,16 @@ def render(cfg):
         # reads as either lane. The top edge has peeled-off white space above it
         # and is unambiguous.
         bites.append((cfg.claims_hr1_name,xCL[0]+2,mco_care_y+cfg.claims_hr1*ys,cfg.claims_hr1))
-    subs = cfg.subtractions(dict(adm_med=admin+medicare,
+    subs = cfg.subtractions(dict(vfc=fo, adm_med=admin+oversight+medicare,
                                  plan=mco_ret+dual_ret, fraud=fraud))
     _live = [s for s in subs if s[1] > 0.004]
+    # D-73. The line measures the whole run, so it starts where the diagram
+    # starts — at what enters, not at the hundred. S-102.
     anchors, marks = TR.ledger(
         subs,
         {s[4]: OF.decrement_x(s[4]) for s in _live},
-        {s[4]: OF.decrement_span(s[4])[0] for s in _live})
+        {s[4]: OF.decrement_span(s[4])[0] for s in _live},
+        start=fed+state)
     for a, b, g in TR.collisions(anchors, marks):
         print(f"  WARNING  anchor labels overlap: {a} / {b} by {-g:.0f} units")
     for a, b, g in TR.shape_gap(marks):
@@ -431,6 +489,11 @@ def render(cfg):
         if a["value"] < 99.99:
             py = (TR.BY + TR.ANCHOR_NAME_Y + (len(lines)-1)*TR.ANCHOR_NAME_LEAD
                   + TR.ANCHOR_PCT_Y)
+            # Measured from the HUNDRED, which is struck at the state agency,
+            # not from what enters. D-75, JW 18 September: the vaccine money is
+            # not subtracted from the model, it was never part of it, so it must
+            # not read as a loss. The provider tax limits must, and do — in
+            # FY2030 the agency anchor is 98.76 and reports 1.24% lost.
             txt(x, py, f"{100-a['value']:.2f}% lost", TR.PCT_PX, TR.INK,
                 "middle", "bold", halo=False)
 

@@ -71,7 +71,7 @@
       #v(4mm)
       #text(size: 14pt, weight: 300)[The national view, and what P.L. 119-21 will do to it by fiscal year 2030]
       #v(10mm)
-      #text(font: "Jost", size: 11.5pt, weight: 500)[Jamey Harvey and Sheila Yahyazadeh] \\
+      #text(font: "Jost", size: 11.5pt, weight: 500)[Jamey Harvey] \\
       #text(font: "Jost", size: 9.5pt, weight: 300, fill: mut)[Agilian LLC]
     ],
     [
@@ -419,7 +419,7 @@ Corrections and challenges are welcome and will be answered in print.
   inset: (x: 1.6mm, y: 1.3mm),
   [Provider tax], [The \$1.24 blends two mechanisms and carries no gross-up. It understates.],
   [Everything else], [A residual of at least eleven provisions across four phases, some running opposite to each other.],
-  [Earnings carve], [The \$5.61 payer margin is measured. The \$0.76 earnings split inside it is estimated.],
+  [Earnings carve], [The \$5.61 payer margin is measured. The \$0.76 earnings split inside it is estimated, and counts investor-owned plans only; nonprofit plans fall outside it.],
   [Class incidence], [The FY2030 beneficiary shares are the FY2024 shares scaled by one multiplier. All four fall by the same 9.83 percent as an artifact of that scaling, which carries no information about who bears the law.],
   [Service incidence], [Only §71116 names providers. For the other six provisions, the fall at a given bar is the sum of several mechanisms in proportions nobody has published.],
   [Price growth], [Withdrawn from the diagrams by construction. It cannot be recovered by differencing two spending projections.],
@@ -437,24 +437,12 @@ No figure here was supplied by a language model from memory. Statutory dates and
 
 #sechead[Who wrote this]
 
-#grid(columns: (1fr, 1fr), gutter: 11mm,
+#grid(columns: (1fr,), gutter: 0mm,
   [#text(font: "Jost", size: 11pt, weight: 600, fill: blue)[Jamey Harvey] \
 #text(font: "Jost", size: 8.6pt, fill: mut)[Chief Executive Officer, Agilian LLC]
 
 #set text(size: 8.8pt)
-Jamey Harvey is a Ward Four resident and the CEO of Agilian LLC, a boutique CBE firm helping Medicaid beneficiaries stay enrolled. Jamey got into Medicaid when he led the technology implementation of Obamacare in the District. Previous to starting Agilian, Jamey was the Deputy Chief Technology Officer for software and data during the Williams Administration. Jamey is a seven-time entrepreneur and the author of "Wired for White: Confessions from Silicon Valley on the technology of racism," scheduled to be published in 2028. Jamey has a degree in political theory from UC Santa Cruz and two kids in college.],
-  [#text(font: "Jost", size: 11pt, weight: 600, fill: blue)[Sheila Yahyazadeh] \
-#text(font: "Jost", size: 8.6pt, fill: mut)[Chief External Operations Officer, CareFirst BlueCross BlueShield Community Health Plan Maryland]
-
-#set text(size: 8.8pt)
-Sheila Yahyazadeh is the Chief External Operations Officer for CareFirst BlueCross BlueShield Community Health Plan Maryland. She has over a decade of experience working with government health programs including Marketplace, Medicaid, and Medicare. She specializes in business strategy, growth operations, innovation, and partnership building. Sheila is passionate about elevating the voice of consumers and the community to improve equitable access to care. Through partnerships with providers, community stakeholders, startups, and the state, she has built pathways to care access for historically underserved and disadvantaged communities. Prior to joining CareFirst BCBS, Sheila led strategic campaigns and CX initiatives for Fortune 100 healthcare clients. She also spearheaded a health innovation team that brought together cross-functional expertise in AI/machine learning, creative services, and UX/UI to reimagine how healthcare is delivered. Sheila is committed to innovation as an advisor to start-up founders. She has a bachelor's in Human and Global Security as well as a Master's degree in Public Administration and Health Policy from American University. She is first generation American, daughter to Peruvian and Iranian parents. She is also a certified Health Coach, Yoga Instructor, and an avid traveler.])
-
-#block(above: 3mm)[
-#line(length: 100%, stroke: 0.5pt + rule)
-#v(2mm)
-#set par(justify: false)
-#text(size: 8pt, fill: mut)[*Disclosure.* Sheila Yahyazadeh is an officer of a Medicaid managed care organization. CareFirst BlueCross BlueShield Community Health Plan Maryland is a nonprofit plan and is therefore not counted in the public-company earnings figure on either diagram. The plan administration band on both panels is a national aggregate derived from CMS-64 and MACStats and contains no plan-specific figure.]
-]
+Jamey Harvey is a Ward Four resident and the CEO of Agilian LLC, a boutique CBE firm helping Medicaid beneficiaries stay enrolled. Jamey got into Medicaid when he led the technology implementation of Obamacare in the District. Previous to starting Agilian, Jamey was the Deputy Chief Technology Officer for software and data during the Williams Administration. Jamey is a seven-time entrepreneur and the author of "Wired for White: Confessions from Silicon Valley on the technology of racism," scheduled to be published in 2028. Jamey has a degree in political theory from UC Santa Cruz and two kids in college.])
 
 #sechead[Notes]
 

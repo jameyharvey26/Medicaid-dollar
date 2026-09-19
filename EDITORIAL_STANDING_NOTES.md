@@ -1290,3 +1290,45 @@ contents get enumerated before it is given a name.
 spread pro rata across capitation and fee-for-service. Recoveries fall on
 fee-for-service far more than on capitation, so this is a modelling choice and
 not an identity. It was undeclared for the life of the paper.
+
+**S-101 · The normalization point is a choice, so strike it where the quantity
+means something.** The $100 was struck at appropriation by default, never by
+decision. Struck there it has to carry every dollar Congress appropriates under
+the Medicaid statute, including a vaccine purchase no state ever sees. Struck at
+the state agency it means "money budgeted to Medicaid," which is what the paper
+is about, and everything the paper measures happens downstream of it. JW,
+18 September: the $100 is not real, it is a standard for apples to apples, so
+the federal column may carry more than $100 as long as $100 arrives at the
+agency.
+
+**S-102 · The tracker and the node measure different things.** The node is the
+normalization point and must read exactly $100. The tracker measures the whole
+run and starts at $100.76. A figure upstream of the node is inside the tracker
+and outside the hundred. These do not have to agree and the artifact must not
+force them to.
+
+**S-103 · Goods are not claims.** A line into the providers column asserts that a
+provider received money. Vaccines for Children providers receive doses, cannot be
+paid for the product at all, and bill Medicaid only for administering the shot —
+which is already counted in physicians and clinics. Routing the purchase to
+providers would have put money in a column where none is received and
+double-counted the encounter. Before drawing any line to a terminal, establish
+that the terminal receives money and not a thing.
+
+**S-104 · Nothing protects the picture, so something must.** `check` protects
+the arithmetic, `coverage` the provenance, signatures a figure's value, and
+`crossings` one named geometric fault. None of them notices a label detaching
+from its band, a terminal sliding behind a column rule, or a pie losing a
+slice. Those are eye failures, and the eye stops scaling at about five panels.
+At the fifty-three a full state edition implies, eyeballing is sampling.
+`renderproof.py` hashes every panel the build emits and fails by name when one
+moves, with a difference image and a bounding box so the change can be looked
+at rather than guessed at. Demonstrated 18 September: nudging one Medicare
+terminal six units moved six panels, two of them DC, which nobody editing a
+national label would have thought to re-check. JW, 18 September: cover every
+panel, not only the signed ones — "I'd rather know before I sign."
+
+A blessing is deliberate and carries a reason, like a signature. The gate says
+a panel moved; it never says the movement was wrong. It belongs at session
+close rather than on every build, because a gate people re-bless without
+looking is worse than no gate at all.

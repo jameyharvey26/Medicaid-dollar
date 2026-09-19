@@ -30,6 +30,13 @@ OUTFLOWS = {
     "Administration": dict(
         cls="ordinary", src="STATE_AGENCY", edge="top", src_x=615,
         term_col="STATE_AGENCY", term_y=250, ret=False),
+    # D-72. Terminates between Medicare's return at 134 and administration's
+    # at 250, so resolve_bite_order deals it the middle slot and none of the
+    # three cross. Without a declaration here it had no terminal height to sort
+    # on and the solver put it wherever, which crossings.py caught at once.
+    "Federal oversight": dict(
+        cls="ordinary", src="STATE_AGENCY", edge="top", src_x=665,
+        term_col="STATE_AGENCY", term_y=206, ret=False),
     "Medicare premiums": dict(
         cls="ordinary", src="STATE_AGENCY", edge="top", src_x=715,
         term_col="FEDERAL", term_y=134, ret=True),
@@ -42,6 +49,14 @@ OUTFLOWS = {
     "Public-company earnings": dict(
         cls="ordinary", src="PAYER", edge="top", src_x=None,
         term_col="PAYER", term_y=None, ret=False),
+    # D-71. Leaves the federal slope before the hundred is struck, and returns
+    # in the sense that it never joins: it terminates at CDC. Declared here
+    # because the tracker reads every decrement's origin from this table, and a
+    # decrement with no declaration cannot be placed on the line.
+    "Vaccines for Children": dict(
+        cls="ordinary", src="FEDERAL", edge="top", src_x=168,
+        term_col="FEDERAL", term_y=None, ret=True),
+
     "Documented fraud": dict(
         cls="ordinary", src="CLAIMS", edge="bottom", src_x=1306,
         term_col="PROVIDERS", term_y=880, ret=False),
@@ -105,6 +120,8 @@ OUTFLOWS = {
 TRACKER_COL = {
     "Administration": "STATE_AGENCY",
     "Medicare premiums": "STATE_AGENCY",
+    "Federal oversight": "STATE_AGENCY",
+    "Vaccines for Children": "FEDERAL",
     "MCO plan administration": "PAYER",
     "Dual MCO plan administration": "PAYER",
     "Public-company earnings": "PAYER",
@@ -402,7 +419,8 @@ def fan_crossings(items, y_of):
 
 
 # Step names on the trunk map to their declared outflow.
-STEP_OUTFLOW = {"admin": "Administration", "medicare": "Medicare premiums"}
+STEP_OUTFLOW = {"admin": "Administration", "medicare": "Medicare premiums",
+                "oversight": "Federal oversight"}
 
 
 def resolve_bite_order(steps):
@@ -488,8 +506,10 @@ def label_of(name):
 # termination: Medicare premiums goes back to the federal column, and its
 # midpoint would sit behind its own origin.
 DECREMENT_MEMBERS = {
+    "Vaccines":          ("Vaccines for Children",),
     "Provider Tax":      ("Provider tax limits",),
-    "State Admin":       ("Administration", "Medicare premiums"),
+    "State Admin":       ("Administration", "Federal oversight",
+                          "Medicare premiums"),
     "Eligibility Rules": ("Blocked senior enrollment rule", "Work reporting",
                           "Six-month renewals", "Blocked Medicaid enrollment rule",
                           "Everything else"),
@@ -561,6 +581,12 @@ def decrement_x(short):
 # EDGE of the column whose state it reports, which is where that money arrives.
 TRACKER_ANCHORS = [
     ("FEDERAL",     ["$100 Medicaid", "Dollars"]),
+    # D-74. Once more enters than is budgeted (D-70), the hundred is no longer
+    # the first anchor and has to be marked where it is actually struck. On the
+    # as-is panel this reads exactly $100.00. On the to-be it does not, because
+    # HR-1 takes the provider tax before the money is budgeted, and that gap is
+    # the point rather than something to correct.
+    ("STATE_AGENCY", ["Budgeted to Medicaid"]),
     ("DISBURSE",    ["Funding Disbursed"]),
     ("CLAIMS",      ["Claims Paid"]),
     ("BENEFICIARY", ["Health Services", "Delivered"]),

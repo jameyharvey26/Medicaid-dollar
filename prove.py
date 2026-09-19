@@ -41,8 +41,17 @@ L = NAT.build()
 L.claims.cell[("ffs", "Hospitals")] = LD.Fig(9.68, source="x", vintage="y", basis="z")
 cases["a filled cell moved by $1.00"] = L
 
+
+def _peel(L, key):
+    """Address a peel by key. It used to be addressed by index, which made the
+    detector depend on declaration order: when Vaccines for Children was added
+    ahead of administration (D-71), two of these cases silently started
+    breaking a different peel than the one they name."""
+    return next(x for x in L.peels if x.key == key)
+
+
 L = NAT.build()
-L.peels[0].amount = LD.Fig(6.07, source="x", vintage="y", basis="z")
+_peel(L, "admin").amount = LD.Fig(6.07, source="x", vintage="y", basis="z")
 cases["administration raised by $1.00"] = L
 
 L = NAT.build()
@@ -54,8 +63,8 @@ cases["a modelled figure with no method stated"] = L
 # stops the ledger conserving, the second does not and would render a terminal
 # in the wrong place with every sum still balancing.
 L = N30.build()
-L.peels[0].amount = LD.Fig(L.peels[0].amount.n + 1.0, status=LD.MODELLED,
-                           note="moved")
+_t = _peel(L, "Work reporting")
+_t.amount = LD.Fig(_t.amount.n + 1.0, status=LD.MODELLED, note="moved")
 cases["an HR-1 tributary moved by $1.00"] = L
 
 # The hole this was written to close: a derived figure used to be graded
@@ -80,28 +89,57 @@ for name, L in cases.items():
         print("      " + x)
 
 band("3. a signature must not travel onto a figure that has moved")
+# This test used to read the live register, which meant it stopped working the
+# moment the register was legitimately emptied (D-70 lapsed all 33). A detector
+# must not depend on production state: it plants its own signature at a value
+# it knows is wrong, and takes it out again.
 import signatures as _SG
-_was = _SG.SIGNED["claims.cell.mco.Hospitals"]
-_SG.SIGNED["claims.cell.mco.Hospitals"] = _was + 0.37     # the pre-MACPAC value
+_KEY = "claims.cell.mco.Hospitals"
+_had = _KEY in _SG.SIGNED
+_was = _SG.SIGNED.get(_KEY, NAT.build().figures()[_KEY].n)
+_SG.SIGNED[_KEY] = _was + 0.37
 _L = NAT.build()
 _hits = [x for x in LD.check(_L) if "verified at" in x]
 print(f"{'a figure edited since it was agreed':42} "
       f"{'CAUGHT' if _hits else '*** PASSED, GATE IS BLIND ***'}")
 for _x in _hits:
     print("      " + _x)
-_SG.SIGNED["claims.cell.mco.Hospitals"] = _was
+if _had:
+    _SG.SIGNED[_KEY] = _was
+else:
+    del _SG.SIGNED[_KEY]
 
 
 band("4. a derived figure inherits verification, never assumes it")
+# Like section 3, this used to read the live register, so it could only
+# demonstrate inheritance while something happened to be signed. D-70 emptied
+# the register and the test started reporting WRONG on figures that are fine.
+# It now signs its own parents for the length of the test and unsigns them.
+import signatures as _S4
+_n0 = NAT.build().figures()
+# Sign every LEAF — every figure that names no parents — and nothing else.
+# That is the cleanest fixture for this question: if the leaves are agreed,
+# a derived figure is verified exactly when its own chain resolves to them.
+_planted = [k for k, f in _n0.items()
+            if not getattr(f, "parents", None) and k not in _S4.SIGNED]
+for _k in _planted:
+    _S4.SIGNED[_k] = _n0[_k].n
 _n = NAT.build().figures()
 for _k, _want in (("payer.ffs.care", True),
                   ("beneficiaries.col.Hospitals", True),
                   ("payer.mco.care", False),
                   ("claims.row.mco", False),
-                  ("scale", False)):
+                  # scale was False here because it was carried as DERIVED with
+                  # no parents, so it reported "derived from nothing named" and
+                  # could never be verified. That was a defect encoded as an
+                  # expectation. It is MEASURED from Exhibit 16 and signed
+                  # 2026-09-18.
+                  ("scale", True)):
     _got, _why = LD.verification(_k, _n)
     print(f"  {_k:32} {'verified' if _got else 'not verified':13} "
           f"{'ok' if _got == _want else '*** WRONG ***'}   {_why}")
+for _k in _planted:
+    del _S4.SIGNED[_k]
 
 
 band("5. reach declared twice must agree")

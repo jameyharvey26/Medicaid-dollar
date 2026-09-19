@@ -104,6 +104,10 @@ def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
         name=L.geography.lower().replace(" ", "_") + "_" + L.year,
         fed=L.sources["federal"].n, state=L.sources["state"].n,
         admin=_peel(L, "admin"), medicare=_peel(L, "medicare"),
+        oversight=_peel(L, "oversight"),
+        fed_outside=sum(p.amount.n for p in L.outside_peels()),
+        fed_outside_name=(L.outside_peels()[0].label
+                          if L.outside_peels() else ""),
         mco=mco.capitation.n, dual=dual.capitation.n, ffs=ffs.capitation.n,
         mco_ret=mco.capitation.n - mco.care.n,
         dual_ret=dual.capitation.n - dual.care.n,

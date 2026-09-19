@@ -15,10 +15,22 @@ cd "$(dirname "$0")" || exit 1
 
 # ---- the list. Edit this line group when a commit supersedes something. -----
 FILES=(
-  "Medicaid_Dollars_National_DRAFT_v3.pdf"
-  "paper_national_v3.html"
-  "render_v3.py"
+  # 2026-09-18. byteproof.py proved the Ledger path rendered identically to the
+  # old instances.py path — migration scaffolding, and its premise expired when
+  # D-70 moved the national baseline. renderproof.py replaces it.
+  "byteproof.py"
+  # The two PDFs carry Sheila Yahyazadeh's name and employer on the cover and
+  # the author page. D-68 took her off every artifact; these were deleted rather
+  # than re-rendered. Do not regenerate them.
+  "Medicaid_Dollars_National_DRAFT_v4.pdf"
+  "Medicaid_Dollars_National_TYPST.pdf"
 )
+
+# Superseded earlier and already gone; kept so the script is idempotent if an
+# old checkout turns up.
+#   Medicaid_Dollars_National_DRAFT_v3.pdf
+#   paper_national_v3.html
+#   render_v3.py
 # ----------------------------------------------------------------------------
 
 echo

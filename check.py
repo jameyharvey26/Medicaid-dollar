@@ -25,11 +25,15 @@ def check(cfg, label=""):
             f.append(f"{name}: {a:.4f} != {b:.4f}  (off by {a-b:+.4f})")
 
     # sources
-    eq("sources sum to 100", L.fed + L.state, 100.0)
+    # The sources sum to the hundred PLUS whatever peels before the hundred is
+    # struck. D-70: the normalization point is the state agency, not the
+    # appropriation, so more may enter than is budgeted. S-102.
+    eq("sources sum to the hundred plus what peels before it",
+       L.fed + L.state, 100.0 + L.fed_outside)
 
     # trunk: what enters the state agency, less what peels, is what disburses
-    trunk = 100.0 - L.fed_bite
-    disbursed = trunk - L.admin - L.medicare - L.sa_hr1
+    trunk = (L.fed + L.state) - L.fed_outside - L.fed_bite
+    disbursed = trunk - L.admin - L.oversight - L.medicare - L.sa_hr1
     eq("payer lanes sum to disbursed", L.mco + L.dual + L.ffs, disbursed)
 
     # payer column

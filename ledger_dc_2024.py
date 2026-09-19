@@ -46,10 +46,35 @@ EX16 = ("MACPAC, MACStats: Medicaid and CHIP Data Book, Exhibit 16, Medicaid "
         "of 3 June 2025")
 DC_TOTAL_M, DC_FED_M, DC_STATE_M, DC_ADMIN_M = 4372.0, 3199.0, 1173.0, 234.0
 
+# RE-ACQUIRED 2026-09-18. Second half of Phase 2 of ACQUISITION.md. Exhibit 17
+# is the benefit-category companion to Exhibit 16: same CMS-64 FMR pull, same
+# certification date of 3 June 2025, same FY2024 vintage. DC's row reconciles
+# to the dollar against Exhibit 16.
+#
+#   Fee-for-service, nine columns        $2,260M
+#   Managed care and premium assistance  $1,802M
+#   Medicare premiums and coinsurance       $86M   ->  1.97 per $100
+#   Collections                            -$10M
+#   Total spending on benefits           $4,138M
+#   plus state program administration      $234M
+#   = total computable, Exhibit 16       $4,372M
+#
+# The category is "Medicare premiums and coinsurance," not premiums alone.
+EX17 = ("MACPAC, MACStats: Medicaid and CHIP Data Book, Exhibit 17, Total "
+        "Medicaid Benefit Spending by State and Category, FY 2024, published "
+        "February 2026; MACPAC analysis of CMS-64 FMR net expenditure data as "
+        "of 3 June 2025")
+DC_MEDICARE_M = 86.0
+
 
 def _x(v, note=""):
     """A figure re-acquired from Exhibit 16. Carries no STALE note."""
     return Fig(v, source=EX16, vintage=V, basis=B, status=MEASURED, note=note)
+
+
+def _x17(v, note=""):
+    """A figure re-acquired from Exhibit 17. Carries no STALE note."""
+    return Fig(v, source=EX17, vintage=V, basis=B, status=MEASURED, note=note)
 MCR = "DHCF managed care performance report"
 V = "FY2024"
 VMC = "CY2023"
@@ -111,6 +136,9 @@ RENAME = ("Amerigroup DC was renamed Wellpoint DC on 1 July 2025. A plan carries
           "suggests a consolidation after the ledger year; not yet confirmed.")
 
 LEGACY_ABSENT = [
+    "Federal oversight: fraud control units and survey and certification are "
+    "reported nationally only, so the national panel's $0.10 has no DC "
+    "counterpart and this hundred contains none of it",
     "Beneficiary shares: DC group totals not in hand, column omitted",
     "Behavioral health: folded into wrap-around services in the DC source",
     "Public-company earnings and dual-plan retention: no DC figure",
@@ -282,7 +310,13 @@ def build(legacy_mix: bool = False) -> Ledger:
                     "on benefits: administration is the least-matched money in "
                     "the program."),
                  "STATE_AGENCY", reach="STATE_AGENCY", kind="admin"),
-            Peel("medicare", "Medicare premiums", _s(86 / SCALE), "STATE_AGENCY",
+            Peel("medicare", "Medicare premiums",
+                 _x17(DC_MEDICARE_M / SCALE,
+                      "Medicare premiums and coinsurance, Exhibit 17. DC pays "
+                      "Part A and Part B premiums for its dual enrollees; the "
+                      "money returns to the federal government and buys no "
+                      "Medicaid service."),
+                 "STATE_AGENCY",
                  reach="STATE_AGENCY", kind="return"),
         ],
         payers=payers,

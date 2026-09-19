@@ -6,7 +6,8 @@
 
 from view import View
 
-SUBS_NAT = [("administration + Medicare premiums", "adm_med", "admin",
+SUBS_NAT = [("vaccines for children", "vfc", "admin", "FEDERAL", "Vaccines"),
+            ("administration, oversight and Medicare premiums", "adm_med", "admin",
              "STATE_AGENCY", "State Admin"),
             ("plan administration + earnings", "plan", "admin", "PAYER",
              "MCO Admin"),
@@ -17,7 +18,7 @@ V_NAT = View(
     cp0_label=["Medicaid Dollars", "(2024 actuals)"],
     centre=("100 Dollars of", "Medicaid Spending"),
     disp={"Other": "Wrap around services"},
-    step_x={"admin": 615, "medicare": 715},
+    step_x={"admin": 615, "oversight": 665, "medicare": 715},
     subs_spec=SUBS_NAT,
     show_beneficiaries=True,
     kicker="AS IS  \u00b7  FY2024 ACTUAL",
@@ -27,7 +28,12 @@ V_NAT = View(
 
 V_DC = View(
     root="state_agency",
-    cp0_label=["$100 DC Medicaid", "Dollars"],
+    # Not "$100 DC Medicaid Dollars" any more. D-70 strikes the hundred at the
+    # state agency, and the first anchor reports what enters. On this panel the
+    # two coincide, because DC has nothing that peels before the hundred — but
+    # that is a fact about DC, not a definition, and the label must not assert
+    # the hundred one column early.
+    cp0_label=["DC Medicaid Dollars", "(2024 actuals)"],
     centre=("100 Dollars of", "DC Medicaid Spending"),
     disp={},
     step_x={"admin": 615, "medicare": 715},
@@ -84,11 +90,12 @@ V_2030 = View(
     # one declaration of where a tributary leaves the trunk. Administration and
     # Medicare premiums stay pinned at 615 and 715 in every instance.
     step_x={**{n: _OF[n]["src_x"] for n in SA_LEVERS},
-            "admin": 615, "medicare": 715},
+            "admin": 615, "oversight": 665, "medicare": 715},
     subs_spec=[
         ("provider tax limits", PeelSum(("Provider tax limits",)), "hr1",
          "STATE_GOVT", "Provider Tax"),
-        ("administration + Medicare premiums", "adm_med", "admin",
+        ("vaccines for children", "vfc", "admin", "FEDERAL", "Vaccines"),
+        ("administration, oversight and Medicare premiums", "adm_med", "admin",
          "STATE_AGENCY", "State Admin"),
         ("work reporting, renewals, enrollment rules, other",
          PeelSum(SA_LEVERS), "hr1", "STATE_AGENCY", "Eligibility Rules"),

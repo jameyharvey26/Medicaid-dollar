@@ -1,0 +1,77 @@
+{
+  "dc_2024_baseline": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "14141f9825317d53"
+  },
+  "dc_2024_combined": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "43585fe41fa7bf1c"
+  },
+  "dc_2024_overlay": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "92fbfe89c927fe5e"
+  },
+  "national_2024_baseline": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "4419ab664799cfe6"
+  },
+  "national_2024_combined": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "0f24ca4f9263dba8"
+  },
+  "national_2024_overlay": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "1c5966498692549f"
+  },
+  "national_2030_holds_baseline": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "a51033b8e7524b6a"
+  },
+  "national_2030_holds_combined": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "60dc21846054954f"
+  },
+  "national_2030_holds_overlay": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "718ea31366b8c237"
+  },
+  "national_2030_mixed_baseline": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "1cb61d5a85b03ddf"
+  },
+  "national_2030_mixed_combined": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "e0bb99f4562ed3be"
+  },
+  "national_2030_mixed_overlay": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "2dbd519f53991220"
+  },
+  "national_2030_scales_baseline": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "466a92e8f51bc347"
+  },
+  "national_2030_scales_combined": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "dbb1ef834980852f"
+  },
+  "national_2030_scales_overlay": {
+    "blessed": "2026-09-18",
+    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "sha": "386f78f99d7142c7"
+  }
+}

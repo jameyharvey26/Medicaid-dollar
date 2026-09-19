@@ -762,3 +762,27 @@ arriving from the payer phase. Rounded individually they sum to $86.43, so one
 cent is returned by trimming the node with the largest upward rounding. Earlier
 editions described this as published totals disagreeing with rounded parts. That
 was wrong: nothing here is published.
+
+**EN-49 · Vaccines for Children.** The programme is authorised in the Medicaid
+statute at section 1928 of the Social Security Act and is financed entirely by
+the federal government; Exhibit 16 reports $7,239M for FY2024 with a dash in the
+state column. OMB allocates the funds through CMS to CDC, CDC purchases the doses
+at contract prices and distributes them free to enrolled providers through the
+63 state, local and territorial immunisation programmes. A provider cannot be
+paid for the vaccine product and cannot charge a patient for it. The only
+Medicaid payment in the transaction is the fee for administering the shot, which
+is a claim and is counted in physicians and clinics. The dose is outside the
+hundred; the shot is inside it. Sources: MACPAC, MACStats Exhibit 16, February
+2026; CDC, About the Vaccines for Children Program; CMS, Coverage and Payment of
+Vaccines and Vaccine Administration under Medicaid, CHIP and BHP.
+
+**EN-50 · Federal oversight.** The $0.10 peel is two published lines of Exhibit
+16 drawn as one arrow: state Medicaid Fraud Control Units, $497M, and survey and
+certification of nursing and intermediate care facilities, $468M. Both are
+matched at 75 percent federal, so both sit inside the blended dollar and peel
+where administration peels. MACPAC reports them nationally only; the exhibit
+notes that state-level estimates exist but are not shown. They are therefore
+absent from every state panel rather than apportioned, and a state panel's
+administration figure excludes them. The FY2024 Fraud Control Unit figure is
+itself an estimate carried forward from the FY2025 CMS budget justification,
+because the FY2026 justification does not report actual FY2024 spending.

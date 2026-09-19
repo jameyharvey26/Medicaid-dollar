@@ -25,14 +25,21 @@ import sys
 # Regexes where a count matters.
 EXPECT = {
     "build.py": dict(
-        # Two advisories are expected, both on the frozen list, and both are
-        # pinned by their text rather than by a count — so a third appearing
-        # fails here rather than hiding among the ones we already tolerate.
+        # Three advisories are expected, all on the frozen list, and all pinned
+        # by their text rather than by a count — so a fourth appearing fails
+        # here rather than hiding among the ones we already tolerate.
+        #
+        # The third is new on 2026-09-18 (D-71, D-73). Vaccines for Children and
+        # the provider tax limits genuinely leave the flow within eight units of
+        # each other, so their markers land four apart on the FY2030 line. That
+        # is the geometry telling the truth, not a placement fault; the two are
+        # stacked rather than moved.
         must=["build complete.",
               "State Admin / Eligibility Rules sit 24 units apart",
-              "Other reaches y=674, past Behavioral health's name at y=672"],
-        regex=[(r"^\s+(?:NOTE|WARNING)\b", 2,
-                "exactly the two frozen advisories")],
+              "Vaccines / Provider Tax sit 4 units apart",
+              "Other reaches y=674, past Behavioral health's name at y=673"],
+        regex=[(r"^\s+(?:NOTE|WARNING)\b", 3,
+                "exactly the three frozen advisories")],
     ),
     "crossings.py": dict(
         must=["dc_2024", "national_2024", "national_2030_holds",
@@ -40,9 +47,13 @@ EXPECT = {
         regex=[(r"0 crossing\(s\) in the margin", 5, "five panels clean")],
         forbid=["ORPHAN"],
     ),
-    "byteproof.py": dict(
-        must=["seam is a no-op"],
-        regex=[(r"IDENTICAL", 5, "five comparisons identical")],
+    "renderproof.py": dict(
+        # Replaces byteproof.py, whose premise expired with D-70. That gate
+        # proved the Ledger path matched the old instances.py path — migration
+        # scaffolding. This one proves no panel changed without somebody
+        # saying so, which is the question that survives to fifty states.
+        must=["no panel changed"],
+        forbid=["MOVED", "NEW", "MISSING"],
     ),
     "prove.py": dict(
         must=["CONSERVES"],
@@ -50,7 +61,10 @@ EXPECT = {
         forbid=["GATE IS BLIND", "WRONG"],
     ),
     "coverage.py national": dict(
-        must=["21 verified", "2 modelled", "3 unverified", "3 missing"],
+        # D-70 lapsed all 33 signatures. Nothing on the national panel has
+        # been agreed by a person since the denominator moved, and this
+        # line is how the build says so out loud until it is re-signed.
+        must=["24 verified", "2 modelled", "2 unverified", "3 missing"],
     ),
     "coverage.py dc": dict(
         must=["0 verified", "0 modelled", "15 unverified", "26 missing"],

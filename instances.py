@@ -60,6 +60,13 @@ class Instance:
     # displace them (STYLE_GUIDE 3.5).
     steps: List[Tuple] = field(default_factory=list)
     # ---- HR-1 ---------------------------------------------------------
+    # ---- money that leaves before the hundred is struck (D-70, D-71) ----
+    # Not a loss and not an HR-1 bite: it narrows the federal band on the same
+    # slope, but it carries a plain grey label in the federal column rather
+    # than a terminal below the rule.
+    fed_outside: float = 0.0
+    fed_outside_name: str = ""
+    oversight: float = 0.0          # federal oversight peel, EN-50
     fed_bite: float = 0.0           # off the federal slope; 0 on the as-is
     fed_bite_name: str = "Provider tax limits"
     hr1_term: Dict[str, Tuple] = field(default_factory=dict)   # name -> (terminal x, sub)

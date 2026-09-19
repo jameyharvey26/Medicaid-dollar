@@ -317,6 +317,12 @@ class Peel:
     label: str
     amount: Fig
     charged: str                    # FEDERAL | STATE_AGENCY | DISBURSE | PAYER | CLAIMS
+    # True when the peel fires BEFORE the normalization point, so the money
+    # is inside the tracker and outside the hundred. S-102. The sources then
+    # sum to 100 plus these, not to 100. Vaccines for Children is the case
+    # that forced it: 100 percent federal, never cost-allocated, so it can
+    # never come off blended money. D-70, D-71.
+    outside: bool = False
     reach: str = ""
     kind: str = "admin"             # admin | return | fraud | hr1
 
@@ -375,8 +381,18 @@ class Ledger:
     def peels_at(self, *phases) -> List[Peel]:
         return [x for x in self.peels if x.charged in phases]
 
+    def outside_peels(self) -> List[Peel]:
+        """Peels that fire before the normalization point. See S-102."""
+        return [x for x in self.peels if x.outside]
+
+    def entering(self) -> Tuple[Optional[float], List[Fig]]:
+        """What the sources must sum to: the hundred plus whatever leaves
+        before the hundred is struck."""
+        s, gone = total([x.amount for x in self.outside_peels()], allow_absent=False)
+        return (None if s is None else 100.0 + s), gone
+
     def disbursed(self) -> Tuple[Optional[float], List[Fig]]:
-        pre = [x.amount for x in self.peels_at(*PRE_DISBURSE)]
+        pre = [x.amount for x in self.peels_at(*PRE_DISBURSE) if not x.outside]
         s, gone = total(pre, allow_absent=False)
         return (None if s is None else 100.0 - s), gone
 
@@ -433,7 +449,15 @@ def check(L: Ledger) -> List[str]:
 
     # ---- 2. sources ------------------------------------------------------
     s, gone = total(L.sources.values())
-    eq("sources sum to 100", s, 100.0)
+    want, want_gone = L.entering()
+    if want_gone:
+        f.append("what enters cannot be struck: absent outside peels "
+                 + ", ".join(g.note for g in want_gone))
+    elif abs(want - 100.0) <= TOL:
+        eq("sources sum to 100", s, want)
+    else:
+        eq(f"sources sum to 100 plus {want - 100.0:.2f} peeling before the node",
+           s, want)
 
     # ---- 3. lanes sum to what was disbursed ------------------------------
     disb, gone = L.disbursed()
