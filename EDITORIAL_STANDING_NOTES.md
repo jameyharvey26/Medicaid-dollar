@@ -1332,3 +1332,29 @@ A blessing is deliberate and carries a reason, like a signature. The gate says
 a panel moved; it never says the movement was wrong. It belongs at session
 close rather than on every build, because a gate people re-bless without
 looking is worse than no gate at all.
+
+**S-105 · Derive in code. Never type an output.** JW, 19 September. A figure
+that the build computes must not also be typed anywhere — not in a basis line,
+not in a note, not in a comment, not as a constant standing in for arithmetic.
+A typed output is a second declaration of the same fact, and unlike a real
+second declaration it has no `agreement()` behind it (S-096). It does not
+participate in the build, so nothing makes it move when the figure moves. It
+goes quietly wrong and stays wrong.
+
+Two live examples on the day it was written. `SCALE = 43.72` in the DC ledger
+was the DC total divided by a hundred, typed; a revised Exhibit 16 would have
+moved every dollar figure on the DC panel and left the scale behind. It is now
+`DC_TOTAL_M / 100.0`, which is byte-identical and cannot drift. And the FY2030
+federal source's basis line quoted "$100.0061" as a literal — the very number
+whose absence the correction was about. It is now an f-string over the same
+intermediates the value is built from, so the prose recomputes itself.
+
+`typedfigures.py` is the instrument. It reports every number inside a string or
+a comment in the Python sources that equals something a ledger derives. It is
+deliberately not a gate: many matches are correct and deliberate, a note saying
+what a figure is in the same breath as declaring it. The question to ask of each
+is the one that matters — would it still be right if the figure moved?
+
+The rule generalises past this codebase. Source dollars are typed, because a
+source is a fact somebody published. Everything downstream of them is an
+expression.

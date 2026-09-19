@@ -493,8 +493,10 @@ def render(cfg):
             # not from what enters. D-75, JW 18 September: the vaccine money is
             # not subtracted from the model, it was never part of it, so it must
             # not read as a loss. The provider tax limits must, and do — in
-            # FY2030 the agency anchor is 98.76 and reports 1.24% lost.
-            txt(x, py, f"{100-a['value']:.2f}% lost", TR.PCT_PX, TR.INK,
+            # FY2030 the agency anchor sits below the hundred and reports the
+            # provider tax limit as a loss, because that money is taken from
+            # inside the hundred rather than peeled before it.
+            txt(x, py, f"{100-a['value']:.2f}% less", TR.PCT_PX, TR.INK,
                 "middle", "bold", halo=False)
 
     # Keep-out boxes for the fan solver: provider bars with their labels, and the

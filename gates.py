@@ -69,8 +69,11 @@ EXPECT = {
     "coverage.py dc": dict(
         must=["0 verified", "0 modelled", "15 unverified", "26 missing"],
     ),
-    "render_v4_1.py": dict(
-        must=["page 6", "page 9", "page 10", "page 15",
+    "render_v5_0.py": dict(
+        # Page 6's 22-line stranding closed on 2026-09-19: the Vaccines for
+        # Children and federal oversight paragraphs filled the section. Four
+        # strandings remain, 9, 10, 15 and 16.
+        must=["page 9", "page 10", "page 15", "page 16",
               "every subject named in prose appears in a figure on its own page"],
         slow=True,
     ),

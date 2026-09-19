@@ -933,3 +933,132 @@ D-72) before checking the register, which stood at D-67.
 
 The manuscript. It is two rounds behind — the 16 September carve was never
 applied to it — and the change map is `CHANGE_MAP_2026-09-18.md`.
+
+# Session manifest — 2026-09-19
+
+## What this session was for
+
+The manuscript. It was two rounds behind and is now current, and ships as
+v5.0 (JW, 19 September: whole number, because it goes to early readers).
+
+## Found before anything was changed
+
+**`paper_figs/crops.json` was never committed.** `figurefit` crashes on a clean
+pull and `render_v4_1.py` fails. Regenerating with `make_figs.py` returned all
+eighteen PNGs byte-identical, so only the crops index was missing. It is in this
+commit.
+
+**The FY2030 sources were the FY2024 sources.** `source.federal` was
+`FED_M / (HUNDRED_M/100)`, which is sized to the FY2024 vaccine peel of
+$0.7619. The FY2030 peel is $0.7557, so $100.0061 arrived at the state agency
+instead of $100.00, against D-70. The cent rode the whole tracker: Budgeted
+$98.76, Claims Paid $79.38, Delivered $78.39, 21.61 percent. `check` does not
+catch it — TOL is $0.02 and the gap is $0.006. **D-76, JW 19 September:
+correct the sources.** `source.federal` is now the state residual plus the
+FY2030 vaccine peel. The hundred is struck exactly. The line reads $98.75,
+$79.37, $78.38 and 21.62 percent. `FED_M` is now imported and unused at line 39
+of `ledger_national_2030.py`.
+
+**Six errors in `CHANGE_MAP_2026-09-18.md`, and one omission.** The map rescaled
+old rounded values by 0.76 percent instead of re-reading the ledger, which
+agrees wherever rounding falls the same way and invents a cent where it does
+not. Directed payment caps stay $0.85, not $0.86. Six-month renewals stay $0.75,
+not $0.76. Fee-for-service fall is $3.66, not $3.67. FY2030 plan administration
+is $4.45, not $4.46. FY2030 claims paid is $79.37. FY2030 public-company
+earnings, $0.69 to $0.70, was absent from the map entirely. Proof independent of
+the ledger: with the map's $0.86 and $0.76 the seven provision rows sum to
+$10.36 against the $10.34 the map itself specifies two rows later.
+
+**The behavioral health / prescription drugs fall rates are an allocation
+artifact.** 8.95 and 8.63 percent against the undifferentiated 8.85. Each node's
+claims cells miss its column margin by a hundredth in opposite directions,
+inside TOL. Not fixed. Declared in note 8.
+
+**DC has no Vaccines for Children peel and no federal oversight peel, and
+neither absence is declared.** DC declares nine absences; these are not among
+them, and `coverage.py dc` does not list either as a figure the DC baseline
+needs, because that list predates D-70/D-71/D-72. The two as-is panels are built
+to two different definitions of a complete baseline. Not fixed. DC Phase 1,
+scale-and-peels step. DC does pay Medicare premiums, $1.97 measured; it is
+invisible only because the State Admin marker still holds two flows.
+
+## Done
+
+- **D-76.** FY2030 sources rebased. Above.
+- **D-77, JW 19 September.** Tracker anchor subtitles read "x.xx% less", not
+  "% lost". One point in `sankey.py`; every panel goes through it. Zero "% lost"
+  and forty-nine "% less" across the thirty SVGs the build emits. Decimals
+  unchanged. EN-41 revised.
+- **The manuscript, v4.1 to v5.0.** 129 numeric replacements applied by line
+  with a printed result per edit, zero missed, seven colliding tokens handled
+  positionally. Six prose items written: the vaccine peel and the federal
+  oversight peel introduced in section 2, "two things come off the top" now
+  three, the lede no longer says the money is followed from the appropriation,
+  four captions claiming four anchors say five, Figure 8's caption corrected and
+  a paragraph added making the point that the provider tax limit is the only
+  provision that takes money before the state has it, and note 2a saying that
+  22.21 percent became 21.62 because the definition changed and not the law.
+- **Note 8 rewritten** for the three no-longer-identical fall rates and for both
+  penny discrepancies.
+- **Every figure in the paper is now the figure printed on the diagram.** This
+  is a choice: the services table reads $87.07 against its own rows summing to
+  $87.08 and its shares to 100.1 percent. One headline was preferred to one
+  column adding up. Both cents are in note 8. **Reversible — JW has not ruled.**
+- **Page 6's 22-line stranding closed** when the new prose filled it. `EXPECT`
+  in `gates.py` updated with the reason. Four strandings remain: 9, 10, 15, 16.
+- **Wrap around services paragraph rewritten** (JW, 19 September): heading is
+  now "Wrap around services is a catch all category", the comparison with
+  physicians and clinics is dropped, and the contents are listed largest first
+  with the full composition in new note 5a. The $55.1B / $6.2B split that
+  carries the ordering lives in `build_xlsx.py`, not the ledger. It reconciles
+  exactly to the ledger's $61,284M, but it is a hand-carried figure and the
+  ordering claim rests on it. **S-073 exposure, open.**
+- **`DELETE_CANDIDATES_2026-09-19.md`.** Reachability walked from the seven
+  gates, not eyeballed. Nine recommended, ten held. **JW, 19 September: every
+  whole-number release of the manuscript is kept. Point releases may go.**
+  `build_sankey_dc.py` is imported by both DC ledgers and cannot go: the live DC
+  panel still reads its constants, including the uncited plan revenues.
+- **15 panels re-blessed** with a reason. `build.py sensitivity` was run first so
+  the `holds` and `scales` variants were live and not blessed stale.
+
+## Added after the first package
+
+**S-105, JW 19 September: derive in code, never type an output.** Raised against
+the FY2030 sources basis line, which quoted "$100.0061" as a literal — the
+number whose absence the correction was about.
+
+- `ledger_national_2030.py`. The federal source is now built from four named
+  intermediates — `_state_share`, `_fed_share`, `_fed_enters`, and `_superseded`
+  carrying the pre-D-76 derivation — and the basis line is an f-string over
+  them. Every figure it quotes is recomputed each build, including the
+  superseded one. Value bit-identical.
+- `ledger_dc_2024.py`. `SCALE = 43.72` was the DC total over a hundred, typed.
+  It is now `DC_TOTAL_M / 100.0`. Bit-identical, and `renderproof` confirms it:
+  no panel moved. A revised Exhibit 16 would previously have moved every dollar
+  on the DC panel and left the scale behind.
+- `sankey.py`. The tracker comment quoted 98.75 and 1.25 percent, which the
+  source correction had already invalidated once. Reworded to say what the
+  anchor means rather than what it currently reads.
+- **`typedfigures.py`**, new. Reports every number inside a string or comment in
+  the Python sources that equals a figure a ledger derives. Deliberately not a
+  gate — a match is not a fault, and SVG opacities are filtered out — but it is
+  the instrument for the convention. It reports thirty remaining. The ones worth
+  reading are the DC derivation comments at `ledger_dc_2024.py:36-56`, which
+  show worked arithmetic in a comment that nothing recomputes.
+
+## Not done, and deliberately
+
+The DHCF report is unopened and the $425.3M / $411.2M question is untouched. DC
+Phase 2 signing. DC Phase 1. The collections netting. `legacy_mix=True`. The
+author page.
+
+**S-092 is closed.** JW, 19 September: Sheila saw the author-page disclosure
+wording and it has been deleted for now. It does not come back as an open item.
+The plain-language sentence about plan administration that came out of it is
+still unhomed, and still matters once the DC payer lane names actual plans.
+
+**Renamed for the early readers.** `paper_national_v4_1.html` ->
+`paper_national_v5_0.html`, `render_v4_1.py` -> `render_v5_0.py`, output
+`Medicaid_Dollars_National_DRAFT_v5.0.pdf`. `gates.py` follows. The v4.1 PDF is
+untouched and stays; under the 19 September rule the whole-number releases are
+the ones kept.

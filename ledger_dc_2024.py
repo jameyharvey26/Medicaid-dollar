@@ -25,7 +25,6 @@
 from ledger import (Fig, Ledger, MEASURED, MODELLED, Matrix, Payer, Peel,
                     DERIVED)
 
-SCALE = 43.72                # $M per $1 of the DC hundred
 SPINE = "CMS-64 / MACStats FY2024 DC"
 # RE-ACQUIRED 2026-09-15. Phase 1 and the first half of Phase 2 of
 # ACQUISITION.md. The exhibit publishes dollars, not shares, so DC's cost
@@ -33,7 +32,7 @@ SPINE = "CMS-64 / MACStats FY2024 DC"
 # the page. Recording it as measured would credit the source with a number it
 # does not print.
 #
-#   Total Medicaid, DC, FY 2024   $4,372M   ->  SCALE 43.72
+#   Total Medicaid, DC, FY 2024   $4,372M   ->  SCALE, below
 #     federal                     $3,199M   ->  73.17 per $100
 #     state                       $1,173M   ->  26.83 per $100
 #   State program administration    $234M   ->   5.35 per $100
@@ -45,6 +44,12 @@ EX16 = ("MACPAC, MACStats: Medicaid and CHIP Data Book, Exhibit 16, Medicaid "
         "February 2026; MACPAC analysis of CMS-64 FMR net expenditure data as "
         "of 3 June 2025")
 DC_TOTAL_M, DC_FED_M, DC_STATE_M, DC_ADMIN_M = 4372.0, 3199.0, 1173.0, 234.0
+
+# $M per $1 of the DC hundred. Derived from the measured total, not typed:
+# a revised Exhibit 16 moves every per-$100 figure on the DC panel through
+# this one line. Convention 2026-09-19, JW: derive in code, never type an
+# output. See typedfigures.py.
+SCALE = DC_TOTAL_M / 100.0
 
 # RE-ACQUIRED 2026-09-18. Second half of Phase 2 of ACQUISITION.md. Exhibit 17
 # is the benefit-category companion to Exhibit 16: same CMS-64 FMR pull, same

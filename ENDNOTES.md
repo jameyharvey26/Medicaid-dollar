@@ -474,12 +474,14 @@ printed in it (S-072).
 
 
 **EN-41 · Running loss percentages on the tracker. | P**
-The "% lost" under each balance dot is 100 minus that balance. On a $100 ledger
-the percentage lost and the dollars lost are the same number, so this row restates
+The "% less" under each balance dot is 100 minus that balance. On a $100 ledger
+the percentage and the dollars are the same number, so this row restates
 the balance rather than adding a fact; it is carried because it is the form the
-finding is quoted in. FY2024 ends at 13.73%; FY2030 under P.L. 119-21 at 22.21%.
+finding is quoted in. It read "% lost" until 2026-09-19; "less" is the plainer
+word and does not assert that the money went missing. FY2024 ends at 13.08%;
+FY2030 under P.L. 119-21 at 21.62%.
 Both derive from the ledgers already sourced at EN-01 through EN-17. No new
-vintage. Added 2026-09-03.
+vintage. Added 2026-09-03. Revised 2026-09-19.
 
 **EN-37 AMENDED · The FY2030 tracker lights an intermediate balance at $92.06. | D**
 Refines EN-37, which ran the state agency column together as "less $6.70 ordinary

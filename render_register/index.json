@@ -1,77 +1,77 @@
 {
   "dc_2024_baseline": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "14141f9825317d53"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "ac5dc6ba6fde970f"
   },
   "dc_2024_combined": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "43585fe41fa7bf1c"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "9103d868a0b980bb"
   },
   "dc_2024_overlay": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
     "sha": "92fbfe89c927fe5e"
   },
   "national_2024_baseline": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "4419ab664799cfe6"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "dea7ea87a2d30e59"
   },
   "national_2024_combined": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "0f24ca4f9263dba8"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "4ebee0760ae75b13"
   },
   "national_2024_overlay": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
     "sha": "1c5966498692549f"
   },
   "national_2030_holds_baseline": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "a51033b8e7524b6a"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "4ea9626654ec12b5"
   },
   "national_2030_holds_combined": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "60dc21846054954f"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "7432eeaa7a65943c"
   },
   "national_2030_holds_overlay": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "718ea31366b8c237"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "c46254220e749c09"
   },
   "national_2030_mixed_baseline": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "1cb61d5a85b03ddf"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "771ee7ac3c033eed"
   },
   "national_2030_mixed_combined": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "e0bb99f4562ed3be"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "c8833f21bd10631c"
   },
   "national_2030_mixed_overlay": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "2dbd519f53991220"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "969e4cc0a7ca8492"
   },
   "national_2030_scales_baseline": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "466a92e8f51bc347"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "fd5378c1bcd8f4d6"
   },
   "national_2030_scales_combined": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "dbb1ef834980852f"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "b4a9c8e106b480ed"
   },
   "national_2030_scales_overlay": {
-    "blessed": "2026-09-18",
-    "reason": "D-70 to D-75. Hundred struck at the state agency; vaccine peel at the top of the federal column; administration split into administration and federal oversight with its own exit; fifth tracker anchor; losses measured from the hundred so the vaccine is not a loss and the FY2030 provider tax is; DC first anchor relabelled and the oversight absence declared. Unsigned.",
-    "sha": "386f78f99d7142c7"
+    "blessed": "2026-09-19",
+    "reason": "FY2030 sources rebased to the FY2030 vaccine peel so the hundred is struck exactly at the state agency (D-70); tracker anchor subtitles read '% less' instead of '% lost'. FY2030 holds/scales variants rebuilt with build.py sensitivity before blessing.",
+    "sha": "f7613c3608fbca30"
   }
 }

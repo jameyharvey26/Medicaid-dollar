@@ -265,17 +265,51 @@ def build(variant: str = "mixed") -> Ledger:
                     d[k] = r2(d[k])
         return L
 
+    # ------------------------------------------------------------------
+    # The federal source, derived backward from the hundred (D-76).
+    #
+    # D-70 strikes the hundred at the state agency. D-71 peels the Vaccines
+    # for Children purchase off the federal column before the blend. So what
+    # ENTERS the federal column is its share of the hundred plus that peel,
+    # and the share of the hundred is whatever the state residual leaves.
+    #
+    # Deriving it forward instead, from FED_M — the FY2024 federal dollar
+    # total — silently carries FY2024's vaccine purchase onto the FY2030
+    # panel, because FED_M is sized to the FY2024 peel and the FY2030 peel is
+    # smaller. The agency then holds more than the hundred. That was the state
+    # of this file until 2026-09-19. `check` does not catch it: TOL is $0.02
+    # and the gap is under a cent.
+    #
+    # _superseded and _agency_was are computed, not typed, so the basis line
+    # cannot drift away from the code that produced it. They exist only to be
+    # quoted in that line; nothing downstream reads them.
+    # ------------------------------------------------------------------
+    _state_share  = ST_M / (HUNDRED_M / 100.0)      # state share OF THE HUNDRED
+    _fed_share    = 100.0 - _state_share            # federal share OF THE HUNDRED
+    _fed_enters   = _fed_share + _vfc               # what enters the federal column
+    _superseded   = FED_M / (HUNDRED_M / 100.0)     # the pre-D-76 derivation
+    _agency_was   = _superseded + _state_share - _vfc
+
+    _FED_BASIS = (
+        "FY2024 federal appropriation share of the hundred held constant to "
+        "FY2030 (D-10, D-11), plus the FY2030 Vaccines for Children purchase, "
+        "which is wholly federal and peels before the blend (D-71). Derived "
+        f"backward from the hundred: {_fed_share:.4f} of the hundred is "
+        f"federal once the state residual of {_state_share:.4f} is taken, and "
+        f"the {_vfc:.4f} vaccine peel is added on top, so {_fed_enters:.4f} "
+        f"enters and {_fed_enters + _state_share - _vfc:.4f} is budgeted "
+        "(D-70). Deriving it forward from the FY2024 federal dollar total "
+        f"instead gives {_superseded:.4f}, which carries the FY2024 vaccine "
+        f"purchase onto the FY2030 panel and leaves {_agency_was:.4f} at the "
+        "agency. Corrected 2026-09-19, D-76.")
+
     return _rebase(Ledger(
         geography="United States", year="FY2030", scenario="to_be",
         scale=Fig(PER_DOLLAR, status=DERIVED,
                   basis="$M per $1 of the FY2030 hundred budgeted to Medicaid "
                         "under prior law"),
-        sources={"federal": _mod(FED_M / (HUNDRED_M / 100.0),
-                                 "FY2024 federal appropriation share held "
-                                 "constant to FY2030 (D-10, D-11). This is what "
-                                 "enters, not what the agency holds: 100.76 "
-                                 "enters and 100.00 is budgeted (D-70)."),
-                 "state": _mod(ST_M / (HUNDRED_M / 100.0),
+        sources={"federal": _mod(_fed_enters, _FED_BASIS),
+                 "state": _mod(_state_share,
                                "Residual of the appropriation share.")},
         peels=peels, payers=payers, nodes=NODES, claims=claims,
         beneficiaries=ben,
