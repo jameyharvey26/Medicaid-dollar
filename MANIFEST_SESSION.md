@@ -1062,3 +1062,182 @@ still unhomed, and still matters once the DC payer lane names actual plans.
 `Medicaid_Dollars_National_DRAFT_v5.0.pdf`. `gates.py` follows. The v4.1 PDF is
 untouched and stays; under the 19 September rule the whole-number releases are
 the ones kept.
+
+---
+
+# Session — 2026-09-21 · DC sources and the plan question
+
+The DHCF question was answered, and the answer invalidated more than the one
+figure it was about. Nothing was drawn. The DC render is byte-identical to the
+one this session opened with: `ImageChops.difference` returns an empty bbox and
+all seven gates pass.
+
+## The plan figures
+
+**D-78. The $425.3M "Wellpoint DC" lane is a two-plan composite.** Not a swap
+and not CY2022. Three of the four constants in `build_sankey_dc.py:21-22` are
+exact DHCF CY2023 figures. The fourth is Amerigroup ($317.9M / $260.8M, nine
+months) plus CareFirst ($107.4M / $87.7M, three months) summed and given the
+successor plan's name. CareFirst's administration is a full year of wind-down
+against one quarter of revenue, so the lane's retention — $76.8M on $425.3M —
+belongs to neither plan. The claims ratio survived the merge almost untouched
+(81.9% composite against Amerigroup's 82.0%), which is why no ratio check
+caught it.
+
+**D-79. The named-plan block rebases on DHCF CY2024, agreed, not executed.**
+DHCF published CY2024 in June 2026, after the last session. Four clean
+full-year lines, no composite: Wellpoint $385.8M / $303.9M / $22.2M admin,
+AmeriHealth $786.2M / $720.9M / $44.2M, MedStar $403.7M / $374.4M / $24.6M,
+HSCSN $180.4M / $180.4M / $20.7M. MedStar's line is District-only, which
+retires the Schedule T workaround. **The ledger still carries the CY2023
+composite.**
+
+**HSCSN runs a 100% MLR in CY2024.** Claims equal revenue exactly; $20.7M of
+administration is funded from reserves. JW: plans take risk with their
+capitation revenue, and 2024 was a weird year. It is drawn as measured — no
+retention peel, care equal to capitation — and the reserve draw is declared.
+`care + adm = cap` does not hold for HSCSN and must not be smoothed.
+
+## Non-Medicaid money inside the plan figures
+
+**D-80. DHCF plan revenue is not Medicaid.** It covers the DCHFP and the
+Non-Medicaid MCPs together, and excludes premium tax and risk-share amounts.
+Alliance and ICP are locally funded, no federal match, and their money sits
+inside every plan figure. FY2024 actual, from the DHCF budget chapter:
+Alliance $147.4M, Immigrant Children $19.1M — $166.6M, or $3.81 per $100.
+
+A PMPM-times-enrollment derivation of the same thing gave $121.7M to $143.6M,
+16% to 27% low. Discarded. The budget carries both as line items; do not derive
+what is appropriated.
+
+**The lane migration is in the chart of accounts.** Both MCO lines go to zero
+in FY2026 and an Indigent Care line appears at $121.4M, described as
+fee-for-service serving Alliance beneficiaries, falling to $91.9M in FY2027.
+Same funder, different lane.
+
+**FY2030 for these programs.** FY2027 enacted restores the Alliance: $38.3M to
+remove the age moratorium, enrollment to 133% FPL, full benefits less NEMT —
+explicitly one fiscal year, after which adults 21+ are no longer eligible to
+enroll. The January 2026 performance testimony's 24% FPL grind-down is
+superseded. By FY2030 the Health Care Alliance is a children's programme with
+an adult residue. DCFPI reports 19% FPL and an explicit sunset; DHCF's own
+testimony says 24% and a closing cohort. Unreconciled; use DHCF's.
+
+**No DC count exists for the §71109 population.** CMS SHO #26-001, 8 April
+2026, stops federal match for lawfully present noncitizens from 1 October 2026.
+CBO's 100,000 is national. The $2.5M / 250 / 575 figures in the FY2027 budget
+are marketplace premium-tax-credit losses, a different population, and will be
+misread as the Medicaid count if placed near it.
+
+## The claims allocation
+
+**D-81. DC MCOs pay no long-term care. Hard zero, program design.** All DC
+long-term care claims are fee-for-service; non-dual, non-SSI long-term care
+does not run through the plans. `legacy_mix=True` currently draws $7.05 per
+$100 of MCO long-term care off the national mix — the largest single modelled
+flow in the payer column, and it cannot exist. Removing it takes the long-term
+care bar from $36.09 to about $28.96.
+
+**Two of four plans yield a measured service split.** AmeriHealth and Wellpoint
+are DC-domiciled single-state entities, so their NAIC Statement of Revenue and
+Expenses is DC Medicaid and nothing else. MedStar's blank is the combined
+Maryland and District book ($960.6M premium against $403.7M of DC revenue) and
+Schedule T allocates premium by state, not expense by service by state. HSCSN
+files no blank. Coverage: $1,172.0M of $1,756.1M, 67%.
+
+Measured, AmeriHealth + Wellpoint CY2024, against the national mix as applied:
+long-term care 0% against 19.4%; prescription drugs 14.21% against 5.2%;
+hospital, physician and ER as one block 84.67% against 56.8%.
+
+**The NAIC lines are not comparable across plans.** AmeriHealth books 46.8% to
+hospital/medical and 30.2% to other professional; Wellpoint 68.2% and 7.8%.
+Combined, 77.05% and 76.04%. Same money, two booking conventions. Only the
+combined block is usable, which collapses the hospital / physician separation
+at plan resolution. The 1.07% wrap figure is not real: DC covers behavioral
+health through the DCHFP at under 10% of medical cost, and the blanks have no
+behavioral line, so it hides inside other professional services.
+
+**Encounter data is not public.** It lives in DHCF's MMIS. The performance
+report publishes PMPM trends across five service categories — inpatient,
+outpatient, emergency, behavioral health, pharmacy — as percentages only. No
+levels. Access needs a data request and a use agreement.
+
+## The source column
+
+**D-82. The non-federal share is decomposed, not replaced.** DC's appropriation
+splits it across four funds. Dedicated Taxes are provider assessments: a
+hospital inpatient provider fee on net patient revenue, a hospital outpatient
+provider fee on gross patient revenue, the Healthcare Provider Tax on nursing
+facilities, and the ICF-IDD assessment funding the Stevie Sellows Quality
+Improvement Fund. The statutes tie them to Medicaid rates — the inpatient fee
+exists to hold fee-for-service at 98% of cost. FY2024 $114.647M, doubling in
+FY2025 when D.C. Code §44-665 takes effect with amounts owed from 1 October
+2024.
+
+Rejected: rebuilding the hundred on the appropriation. It moves the denominator
+from $4,372.0M to $4,401.5M, a 0.67% scale shift that moves every figure on the
+panel and puts DC on a different denominator from national. The federal FPR
+grant ($0.05) and special purpose revenue ($0.09) are sub-pixel and both belong
+outside Exhibit 16 anyway.
+
+Adopted: one rule inside the existing State bar. $26.83 = local appropriation
+$24.2075 + provider assessments $2.6223. Denominator, scale and federal
+untouched.
+
+**Not drawn as a loop.** The assessment base is total patient revenue, not
+Medicaid patient revenue, so most of the assessed dollar comes from outside the
+hundred. An arrow from Providers back to the source band would assert
+circulation that mostly is not there.
+
+**Special purpose revenue is already in the panel.** It is chiefly the Medicaid
+Collections–Third Party Liability fund, and Exhibit 16's total is net of the
+−$10M collections Exhibit 17 reports. A source band for it would count the
+money twice in opposite directions.
+
+## The collections item, reframed
+
+Not a state-variation question. Exhibit 17 carries collections as a standalone
+line and declines to place them. The DC ledger nets the $10M onto
+fee-for-service anyway — its five FFS nodes sum to $2,250M against Exhibit 17's
+$2,260M — and the national pro-rata fold lives in `build_xlsx.py`, outside the
+ledger, in a comment reading "collections folded proportionally." Two
+undeclared assumptions about a figure both sources report as unallocated. Not a
+finding until we establish where recoveries actually come from.
+
+## Changed in the repo
+
+| file | change |
+|---|---|
+| `ledger_dc_2024.py` | `anchor.budget.dedtax` $114.647M measured; `anchor.state.provider_assessments` and `anchor.state.local_appropriation` derived, parents named, basis warning carried |
+| `ledger_dc_2024.py` | four S-105 offenders corrected at the Exhibit 16 and Exhibit 17 derivation comments — the dollars stay typed, the per-$100 shares now point at figure keys |
+| `STATE_INTERROGATION.md` | new. Standing questions per phase, seven-rung source ladder, eight traps, all paid for in this session |
+
+## Open, and named so they are not quietly closed
+
+1. **The DC ledger still carries the CY2023 composite** under Wellpoint's name.
+   Known wrong, not yet corrected. Highest-priority DC item.
+2. **`legacy_mix=True` draws $7.05 of MCO long-term care that cannot exist.**
+   Known wrong, not yet corrected. Second highest.
+3. **The dedicated tax is in the ledger and nothing draws it.** `compose.py`
+   reads exactly `L.sources["federal"]` and `L.sources["state"]` into an
+   `Instance` with one `fed` and one `state` field. A third `sources` key would
+   pass `check` and be silently dropped by `compose`. `subs_spec` drives tracker
+   markers, not source decompositions. Drawing it means widening `Instance`,
+   `compose.py` and the source-column code in `sankey.py`.
+4. **One S-105 offender remains in `ledger_dc_2024.py`**: `LEGACY_ABSENT` types
+   the national oversight peel as $0.10. A real fault — if the national figure
+   moves the DC declaration lies. The fix changes rendered text and needs a
+   bless, so it was not made at session close.
+5. **Vaccines for Children is absent from the DC panel and not declared.**
+   Federal oversight *is* declared, contrary to the session brief. One gap, not
+   two. The panel declares five absences; reconcile against the nine the brief
+   claims.
+6. The two-plans-versus-four question on DHCF's current managed care page.
+7. Alliance and ICP band treatment: parallel declared band outside the hundred,
+   or three sources inside a redefined hundred. Decision not taken.
+8. Everything carried in from the 19 September list that this session did not
+   touch: DC Phase 2 signing, `build.py sensitivity` before `--bless`, the
+   author page, EN-43, the services table cents, the `build_xlsx.py` wrap-around
+   split, two DC ledger files and two FY2030 ledger files.
+9. **The repo is public and v5.0 has gone to outside readers.** Raised 19
+   September, raised again 21 September, not decided.

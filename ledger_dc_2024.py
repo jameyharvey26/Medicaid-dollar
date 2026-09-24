@@ -33,9 +33,13 @@ SPINE = "CMS-64 / MACStats FY2024 DC"
 # does not print.
 #
 #   Total Medicaid, DC, FY 2024   $4,372M   ->  SCALE, below
-#     federal                     $3,199M   ->  73.17 per $100
-#     state                       $1,173M   ->  26.83 per $100
-#   State program administration    $234M   ->   5.35 per $100
+#     federal                     $3,199M   ->  source.federal
+#     state                       $1,173M   ->  source.state
+#   State program administration    $234M   ->  peel.admin
+#
+# The dollars above are measured and are typed. The per-$100 figures are not
+# typed anywhere: each is divided by SCALE at the point of use, so a revision
+# to a dollar moves the share with it. S-105.
 #
 # The exhibit's own note: figures may change if a state revises its
 # expenditure data after 29 May 2024.
@@ -58,7 +62,7 @@ SCALE = DC_TOTAL_M / 100.0
 #
 #   Fee-for-service, nine columns        $2,260M
 #   Managed care and premium assistance  $1,802M
-#   Medicare premiums and coinsurance       $86M   ->  1.97 per $100
+#   Medicare premiums and coinsurance       $86M   ->  peel.medicare
 #   Collections                            -$10M
 #   Total spending on benefits           $4,138M
 #   plus state program administration      $234M
@@ -70,6 +74,32 @@ EX17 = ("MACPAC, MACStats: Medicaid and CHIP Data Book, Exhibit 17, Total "
         "February 2026; MACPAC analysis of CMS-64 FMR net expenditure data as "
         "of 3 June 2025")
 DC_MEDICARE_M = 86.0
+
+# ---- the non-federal share is not one kind of money -----------------------
+# Exhibit 16 reports a single non-federal share. DC's own appropriation splits
+# it across four funds, and one of them is not a general-fund appropriation at
+# all: Dedicated Taxes are provider assessments, levied on the hospitals and
+# nursing facilities that sit at the right-hand end of this diagram, used as
+# the non-federal share, matched, and paid back to those same provider classes.
+# D.C. Code sets them out as four instruments: a hospital inpatient provider
+# fee on net patient revenue, a hospital outpatient provider fee on gross
+# patient revenue, the Healthcare Provider Tax on nursing facilities, and the
+# ICF-IDD assessment that funds the Stevie Sellows Quality Improvement Fund.
+# The statutes tie them to Medicaid rates explicitly - the inpatient fee exists
+# to hold fee-for-service at 98 percent of cost.
+#
+# Not itemised: no FY2024 breakdown has been found that sums across the four
+# instruments, so the band is named in kind and not line by line.
+#
+# Basis warning. The dedicated-tax figure is an appropriation and the state
+# share is CMS-64, so the local-appropriation residual has parents in two
+# accountings and is DERIVED, not measured. Cross-checked two ways: dedicated
+# taxes are 9.81% of the budget's local funds, which applied to the state share
+# agrees with direct division to the cent.
+DHCF_BUDGET = ("Government of the District of Columbia, FY2027 Proposed Budget "
+               "and Financial Plan, Department of Health Care Finance (HT0), "
+               "agency financial summary, FY2024 actual")
+DC_DEDTAX_M = 114.647
 
 
 def _x(v, note=""):
@@ -295,6 +325,35 @@ def build(legacy_mix: bool = False) -> Ledger:
             "ex16.state": _x(DC_STATE_M,
                              "Non-federal share of total Medicaid, DC, "
                              "FY 2024, $M."),
+            "budget.dedtax": Fig(
+                DC_DEDTAX_M, source=DHCF_BUDGET, vintage=V,
+                basis="dedicated taxes, appropriated, $M",
+                status=MEASURED,
+                note="Provider assessments earmarked to Medicaid: hospital "
+                     "inpatient and outpatient provider fees, the Healthcare "
+                     "Provider Tax on nursing facilities, and the ICF-IDD "
+                     "assessment. Doubles in FY2025 when D.C. Code sec. 44-665 "
+                     "takes effect with amounts owed from 1 October 2024."),
+            "state.provider_assessments": Fig.derived(
+                DC_DEDTAX_M / SCALE,
+                ("anchor.budget.dedtax", "anchor.ex16.total"),
+                basis="non-federal share, provider assessments",
+                note="The part of the non-federal share raised by assessing "
+                     "providers rather than appropriated from the general "
+                     "fund. Enters the hundred at the source column and "
+                     "returns to the same provider classes at the claims "
+                     "column, but the assessment base is total patient "
+                     "revenue, not Medicaid patient revenue, so most of the "
+                     "assessed dollar comes from outside this hundred. Not "
+                     "drawn as a loop for that reason."),
+            "state.local_appropriation": Fig.derived(
+                (DC_STATE_M - DC_DEDTAX_M) / SCALE,
+                ("anchor.ex16.state", "anchor.budget.dedtax",
+                 "anchor.ex16.total"),
+                basis="non-federal share, general fund",
+                note="Residual. Parents sit in two accountings - a CMS-64 "
+                     "state share less an appropriated dedicated-tax figure - "
+                     "so this is derived and may not be signed as measured."),
         },
         sources={"federal": Fig.derived(
                      73.17, ("anchor.ex16.federal", "anchor.ex16.total"),
