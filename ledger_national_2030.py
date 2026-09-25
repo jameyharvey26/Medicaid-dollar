@@ -196,22 +196,31 @@ def build(variant: str = "mixed") -> Ledger:
         return Peel(name, name, _mod(per100[name], METHOD), charged,
                     reach=reach, kind="hr1")
 
-    # D-70/D-71/D-72. The inherited administration peel is an FY2024 $5.07
-    # figure, which was administration plus federal oversight plus a vaccine
-    # purchase. It splits three ways on the FY2024 proportions before anything
-    # else happens, so the vaccine money leaves the state agency here exactly as
-    # it leaves it on the as-is panel. CBO does not project VFC separately;
-    # holding the FY2024 proportion is the same convention already used for the
-    # federal share (D-10, D-11).
+    # D-70/D-71/D-72, completed by D-78. This used to take the inherited FY2024
+    # $5.07 overhead figure - administration plus federal oversight plus a
+    # vaccine purchase, bundled - and split it three ways on FY2024
+    # proportions. That was a patch, not the D-70 correction: the as-is panel
+    # was re-derived from Exhibit 16 dollars while the to-be panel went on
+    # carrying the pre-D-70 bundle and carving the vaccine back out of it. The
+    # two panels were struck against different definitions of overhead, and
+    # because the baseline was also typed on the old hundred the discrepancy
+    # cancelled and nothing reported it.
+    #
+    # The vaccine purchase is now derived from Exhibit 16 dollars exactly as it
+    # is on the as-is panel, so the same $0.76 leaves the federal column on both
+    # and the pair is a comparison. CBO does not project VFC separately, so it
+    # is held at FY2024 dollars (D-71), the convention already used for the
+    # federal share (D-10, D-11). What is left splits two ways.
     _A = L["admin"]
-    _WHOLE = ADMIN_M + MFCU_M + SNC_M + VFC_M
-    _adm, _ovs, _vfc = (_A * ADMIN_M / _WHOLE, _A * (MFCU_M + SNC_M) / _WHOLE,
-                        _A * VFC_M / _WHOLE)
+    _OVERHEAD = ADMIN_M + MFCU_M + SNC_M
+    _adm, _ovs = _A * ADMIN_M / _OVERHEAD, _A * (MFCU_M + SNC_M) / _OVERHEAD
+    _vfc = VFC_M / PER_DOLLAR
 
     peels = [Peel("vfc", "Vaccines for Children",
-                  _mod(_vfc, "FY2024 Vaccines for Children share of the "
-                             "inherited administration figure, held to FY2030 "
-                             "(D-71). Peels before the blend, terminates at CDC."),
+                  _mod(_vfc, "Vaccines for Children, $7,239M, held at FY2024 "
+                             "dollars to FY2030 (D-71, D-78). The same figure "
+                             "the as-is panel peels. Before the blend, "
+                             "terminates at CDC."),
                   "FEDERAL", reach="FEDERAL", kind="return", outside=True)]
     peels += [hr1(n) for n in SA_ORDER]
     peels += [

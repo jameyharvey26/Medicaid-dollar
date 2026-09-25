@@ -10,10 +10,27 @@
 from tobe2030 import per100
 
 # --- baseline ledger, prior law, per $100 ----------------------------------
-B = dict(admin=5.07, medicare=2.90, mco=40.06, dual=10.89, ffs=41.08,
-         mco_ret=4.41, dual_ret=1.20, earnings=0.76, mco_adm=3.81,
-         dual_adm=1.04, fraud=0.15)
+# D-78. This baseline used to be typed at two decimals on the OLD hundred
+# (admin 5.07, medicare 2.90, mco 40.06, dual 10.89, ffs 41.08) while the node
+# dictionaries beneath it came from provider_mix on the current one. Two bases
+# in one function: the lanes summed to 92.03 and the cells were struck against
+# 92.73, and the 0.76 percent gap was multiplied through every FY2030 figure.
+# It did not show because the lane rescale at the end of ledger_national_2030
+# forces the lanes to the money arriving and hid the discrepancy inside the
+# cells. The to-be panel has to share the as-is panel's basis or the pair is
+# not a comparison, so the baseline is read from the one place the as-is lanes
+# are derived.
+import basis_national as _BN
 import provider_mix as PM
+
+B = dict(admin=_BN.per100(_BN.ADMIN_M + _BN.MFCU_M + _BN.SNC_M),
+         medicare=_BN.per100(_BN.MEDICARE_M),
+         mco=_BN.MCO_100, dual=_BN.DUAL_100, ffs=_BN.FFS_100,
+         mco_ret=_BN.MCO_ADM + _BN.MCO_MARGIN,
+         dual_ret=_BN.DUAL_ADM + _BN.DUAL_MARGIN,
+         earnings=0.76 * _BN.RESCALE,
+         mco_adm=_BN.MCO_ADM, dual_adm=_BN.DUAL_ADM,
+         fraud=0.15 * _BN.RESCALE)
 
 B_ffs_n, B_mcoc_n, B_dualc_n = PM.FFS_N, PM.MCO_N, PM.DUAL_N
 ORDER = ["Long-term care","Hospitals","Other","Physicians & clinics",

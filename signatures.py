@@ -72,44 +72,55 @@ LAPSED_2026_09_16 = {
     'source.state': 35.3,
 }
 
-# AGREED 2026-09-18 JW on the stacked sheets reference_renders/sign_2024.png
-# and sign_2030.png, per S-093. 36 figures: the 33 that lapsed under
-# D-70, re-agreed at their new values, plus three never signed before —
-# `peel.vfc`, `peel.oversight`, and `scale`, which was carried as DERIVED
-# with no parents and so could not be verified at all until today.
+# AGREED 2026-09-25 JW on reference_renders/sign_2026-09-25.png, per S-093
+# and S-107: the FY2024 and FY2030 panels, each as the complete artifact with
+# its tracker line in register, v5.0 stacked over proposed.
 #
-# Two things were agreed, not one: that each number is right, and that the
-# denominator it is struck against — $950,164M, the money budgeted to
-# Medicaid at the state agency — is the right denominator.
+# Three things were agreed, not one.
+#
+# That each figure below is right.
+#
+# That the collections convention is right (D-78). Exhibit 17 reports
+# collections - third-party liability, estate and other recoveries, NOT drug
+# rebates - as a single unallocated negative of $15,201M, $1.60 per $100. The
+# source declines to say which lane recovered the money, so it is folded pro
+# rata across the capitated and fee-for-service lanes by each lane's share of
+# gross. The pro-rata key is ours; the dollars are measured.
+#
+# That when a printed line cannot close, the anchor holds and the decrement
+# gives way (S-106).
+#
+# The 26 figures that lapsed under D-78 are re-agreed here at their new
+# values, together with the 10 that never moved.
 SIGNED = {
-    'beneficiaries.row.Adults': 29.785208321931794,
-    'beneficiaries.row.Aged': 18.550259986697036,
-    'beneficiaries.row.Children': 13.582699870759155,
-    'beneficiaries.row.Disabled': 25.17031474566496,
-    'claims.cell.dual.Behavioral health': 1.3602852244454644,
-    'claims.cell.dual.Hospitals': 2.0454659300920683,
-    'claims.cell.dual.Long-term care': 1.9245516879191382,
-    'claims.cell.dual.Other': 2.075694490635301,
-    'claims.cell.dual.Physicians & clinics': 1.793561258898464,
-    'claims.cell.dual.Rx drugs': 0.5642664634736742,
-    'claims.cell.ffs.Behavioral health': 3.2042274175826493,
-    'claims.cell.ffs.Hospitals': 8.333006523084435,
-    'claims.cell.ffs.Long-term care': 20.132221321792873,
-    'claims.cell.ffs.Other': 5.7333503163664385,
-    'claims.cell.ffs.Physicians & clinics': 2.468665777697324,
-    'claims.cell.ffs.Rx drugs': 1.521504214009371,
-    'claims.cell.mco.Behavioral health': 5.007864863328857,
-    'claims.cell.mco.Hospitals': 7.526911575264902,
-    'claims.cell.mco.Long-term care': 7.073483167116414,
-    'claims.cell.mco.Other': 7.637749630590088,
-    'claims.cell.mco.Physicians & clinics': 6.609978572120181,
-    'claims.cell.mco.Rx drugs': 2.0656183037875566,
+    'beneficiaries.row.Adults': 29.78057501122407,
+    'beneficiaries.row.Aged': 18.5473743557725,
+    'beneficiaries.row.Children': 13.58058698076118,
+    'beneficiaries.row.Disabled': 25.166399315980286,
+    'claims.cell.dual.Behavioral health': 1.36,
+    'claims.cell.dual.Hospitals': 2.04,
+    'claims.cell.dual.Long-term care': 1.92,
+    'claims.cell.dual.Other': 2.07,
+    'claims.cell.dual.Physicians & clinics': 1.8,
+    'claims.cell.dual.Rx drugs': 0.56,
+    'claims.cell.ffs.Behavioral health': 3.21,
+    'claims.cell.ffs.Hospitals': 8.33,
+    'claims.cell.ffs.Long-term care': 20.13,
+    'claims.cell.ffs.Other': 5.74,
+    'claims.cell.ffs.Physicians & clinics': 2.47,
+    'claims.cell.ffs.Rx drugs': 1.52,
+    'claims.cell.mco.Behavioral health': 5.01,
+    'claims.cell.mco.Hospitals': 7.53,
+    'claims.cell.mco.Long-term care': 7.08,
+    'claims.cell.mco.Other': 7.63,
+    'claims.cell.mco.Physicians & clinics': 6.61,
+    'claims.cell.mco.Rx drugs': 2.06,
     'payer.dual.admin': 1.0479234321653947,
-    'payer.dual.capitation': 10.972967477193412,
-    'payer.ffs.capitation': 41.39297557053309,
-    'payer.ffs.care': 41.39297557053309,
+    'payer.dual.capitation': 10.968803343653088,
+    'payer.ffs.capitation': 41.39191768932002,
+    'payer.ffs.care': 41.39191768932002,
     'payer.mco.admin': 3.8390271889905323,
-    'payer.mco.capitation': 40.36520451206319,
+    'payer.mco.capitation': 40.36695545234942,
     'peel.admin': 4.2476877675853855,
     'peel.fraud': 0.15114280271616268,
     'peel.medicare': 2.923074332431033,

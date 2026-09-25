@@ -67,10 +67,10 @@ REACH_SLOT = dict(T_SLOT, PROVIDERS=T_SLOT["CLAIMS"])
 SUB_2030 = {
     "Provider tax limits": "federal match never drawn",
     "Blocked senior enrollment rule":
-        "duals will not enroll; would have reached the state agency",
+        "2023 rule; would have paid Medicare premiums",
     "Work reporting": "will not enroll; would have reached disbursements",
     "Six-month renewals": "will not survive renewal; would have reached the payer",
-    "Blocked Medicaid enrollment rule": "will not enroll; would have reached a paid claim",
+    "Blocked Medicaid enrollment rule": "2024 rule; would have reached a paid claim",
     # JW: name it, give examples, and let it take the top row where it costs
     # almost no height.
     "Everything else": "e.g. home equity, cost sharing",

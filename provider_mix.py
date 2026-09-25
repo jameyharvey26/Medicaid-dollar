@@ -63,11 +63,19 @@
 # not a zero, and it is declared rather than assumed.
 
 # 1. fee-for-service, $M, CMS-64 FY2024 (= Exhibit 17 gross FFS)
-FFS_MIX = {"Long-term care": 194_580,     # institutional + home and community
-           "Hospitals": 91_443,
-           "Other": 61_284,               # dental + other practitioner + other acute
-           "Physicians & clinics": 32_489,  # physician + clinic; FQHC merged in
-           "Rx drugs": 20_206}
+# D-78. These five used to be typed here. They are now derived from the nine
+# published Exhibit 17 columns in basis_national.py, where the mapping from
+# column to node is written out. The old comment on "Other" was wrong: other
+# practitioner sits in physicians and clinics, not in the wrap-around node.
+# The arithmetic was right and the description was not, which is exactly what
+# a typed total hides. S-073.
+import basis_national as _BN
+
+FFS_MIX = {"Long-term care": _BN.LTC_FFS_M,
+           "Hospitals": _BN.HOSPITAL_M,
+           "Other": _BN.WRAP_FFS_M,            # other acute + dental
+           "Physicians & clinics": _BN.PHYS_FFS_M,
+           "Rx drugs": _BN.DRUGS_M}
 
 # 2. capitated half, HMA T-MSIS key, CY2021
 HMA_KEY = {"Long-term care": .197, "Hospitals": .238, "Other": .235,
@@ -92,6 +100,12 @@ BH_SETTING = {
 BH_SERVICES = 79_800     # $M, Table 2-8, excluding drugs
 BH_DRUGS = 15_500        # $M, Figure 2-1, mapped whole to Rx drugs
 BH_TOTAL = 9.51          # per $100, this ledger's own basis. See header.
+
+# BH_TOTAL was struck against a claims total of $86.42, the figure the panel
+# carried before D-70 moved the denominator. That is a BASIS, not an output:
+# it names the base the 9.51 was measured against, so it is typed here and
+# named rather than appearing bare inside an expression. S-105.
+BH_BASIS = 86.42
 
 CATS = ["Long-term care", "Hospitals", "Other", "Physicians & clinics",
         "Rx drugs"]
@@ -128,7 +142,7 @@ def allocate(ffs: float, mco_care: float, dual_care: float):
     m = {c: mco_care * HMA_KEY[c] for c in CATS}
     d = {c: dual_care * HMA_KEY[c] for c in CATS}
 
-    carve = {c: BH_TOTAL * (capcare + ffs) / 86.42 * s
+    carve = {c: BH_TOTAL * (capcare + ffs) / BH_BASIS * s
              for c, s in carve_shares().items()}
 
     BHf = BHm = BHd = 0.0
@@ -151,7 +165,13 @@ def allocate(ffs: float, mco_care: float, dual_care: float):
     return r2(f), r2(m), r2(d), node
 
 
-FFS_N, MCO_N, DUAL_N, NODE = allocate(41.08, 35.65, 9.69)
+# D-78. These three used to be typed here at two decimals on the old hundred,
+# duplicating figures the ledger also carried. They are now read from the one
+# place the lanes are derived, so a change to the denominator or to the
+# collections fold promulgates into the provider phase instead of leaving two
+# copies to drift. S-073.
+FFS_N, MCO_N, DUAL_N, NODE = allocate(_BN.FFS_CARE, _BN.MCO_CARE,
+                                      _BN.DUAL_CARE)
 
 if __name__ == "__main__":
     print("behavioral health carve, share of itself:")

@@ -1358,3 +1358,54 @@ is the one that matters — would it still be right if the figure moved?
 The rule generalises past this codebase. Source dollars are typed, because a
 source is a fact somebody published. Everything downstream of them is an
 expression.
+
+## 2026-09-25 — the tracker line, and how a change is shown
+
+**S-106 · A printed line must add up as a reader adds it up.** JW, 25 September.
+The tracker line is arithmetic in public. A reader with a calculator goes left
+to right: an anchor, less the decrements drawn between it and the next one,
+equals the next anchor. Internally that arithmetic was exact and every figure
+was then rounded to the cent on its own, so the printed line could disagree
+with itself by a penny while every underlying figure was right.
+
+It did. On the FY2030 panels, $98.75 less $6.05 less $8.24 printed an anchor of
+$84.47 against a reader's $84.46. On the FY2024 panel, $92.73 less $5.65
+printed $87.08 against an anchor of $87.07. All four national panels shipped in
+v5.0 with a line that did not close, and the thing that caught it was JW and a
+calculator, which is not an instrument.
+
+The rule when a printed line cannot close: **the anchor holds and the decrement
+gives way.** Anchors are the published figures that let a reader lay two panels
+side by side; decrements are smaller and carry less. Each decrement now has a
+`display` value allocated by largest remainder within its own segment, so the
+printed decrements sum to the printed fall between the two anchors bracketing
+them. A decrement's display never departs from its own value by more than a
+cent — if it would have to, that is not rounding, and the build raises rather
+than adjusting it.
+
+`tracker.unreconciled()` is the instrument and it is a **gate, not an
+advisory**: `build.py` raises. A diagram whose own numbers disagree is not
+publishable and must not reach a sheet. It reads the same two structures the
+renderer draws from, so it asserts what the reader sees rather than what the
+ledger holds, and it attributes decrements by origin, never by marker x — the
+same rule the anchors use, and for the same reason (S-085). `gates.py` pins the
+count, so a panel that silently stops reporting fails rather than passing.
+
+The general form: wherever the panel prints arithmetic, something must check
+the printed figures. Being right in the ledger is not being right on the page.
+
+**S-107 · A comparison sheet shows whole artifacts, stacked, and nothing
+else.** JW, 25 September. When a change is put up for signature, the sheet is
+one image per panel: the current published version above, the proposed version
+below, each as the **complete artifact — Sankey and tracker line together, in
+register.** The line is part of the panel, not a separate thing that happens to
+sit beneath it, and cropping them apart destroys the only view in which a
+diagram and its line drifting out of sync is visible at a glance.
+
+Two panels means two images. Not eight, not a contact sheet, not variants
+stacked into a column. Sensitivity variants are shown when asked for and
+separately. A reviewer reads a comparison by looking for what moved, and every
+extra panel on the sheet is something to scan past before the looking starts.
+
+Labels are `v5.0` and `PROPOSED`, not prose. What moved goes in the message,
+not on the image.

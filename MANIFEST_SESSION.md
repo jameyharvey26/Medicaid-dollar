@@ -1241,3 +1241,79 @@ finding until we establish where recoveries actually come from.
    split, two DC ledger files and two FY2030 ledger files.
 9. **The repo is public and v5.0 has gone to outside readers.** Raised 19
    September, raised again 21 September, not decided.
+
+---
+
+## 2026-09-25 — D-78 through D-81, S-106, S-107; Brent's review applied
+
+**Decisions**
+
+- **D-78 · The payer lanes are derived from Exhibit 17 dollars.** They were
+  typed at two decimals on the old hundred (40.06 / 10.89 / 41.08) and
+  multiplied through when D-70 moved the denominator, while the peels were
+  re-derived from Exhibit 16 dollars. Exact figures on one side, twice-rounded
+  on the other; the $0.0035 residue sat under `check()`'s $0.02 tolerance and
+  surfaced as a services table whose rows summed to $87.08 against a printed
+  total of $87.07. Same class as D-76. Collections ($15,201M, $1.60 per $100 —
+  third-party liability and estate recoveries, NOT drug rebates) are folded pro
+  rata across the capitated and fee-for-service lanes by share of gross, the
+  convention the workbook always used and never declared. New module
+  `basis_national.py` is the single home for the dollars, the denominator and
+  the lane derivation; `provider_mix.py` and `ledger_2030.py` read it instead
+  of carrying typed copies. No printed figure moves at two decimals on FY2024.
+
+- **D-79 · Provenance is stamped, not typed.** `release.py` derives the version,
+  date and a six-character build id from the content of the figure-bearing
+  modules. Cannot come from git: the working copy is a tarball with no `.git`.
+  Replaces two typed strings that disagreed with each other by eight days.
+
+- **D-80 · The cover figure is cut.** It was the same file as Figure 1, one page
+  later, at a third the size. New cover graphic pending.
+
+- **D-81 · The moratorium labels are renamed.** "Blocked senior enrollment" and
+  "Blocked Medicaid enrollment" described people being blocked. The statute
+  suspends CMS rules that would have made enrolling easier. Now "Medicare
+  Savings rule suspended" and "Medicaid enrollment rule suspended", which is
+  what KFF and CRS call them, and what `ramp.py` has called them internally all
+  along. Internal keys unchanged — the label string is the join key across ten
+  modules; only display strings moved (`outflows.py`, `views.py`).
+
+**Also fixed, no decision number**
+
+- The FY2030 panel never received the D-70 correction. It carried the pre-D-70
+  $5.07 overhead bundle and carved the vaccine purchase back out of it three
+  ways. The two panels were struck against different definitions of overhead
+  and the discrepancy cancelled invisibly. Vaccines now derived from dollars on
+  all three variants, so all four panels agree at $100.76 (the "scales" variant
+  printed $100.75). Tracker anchors moved: $84.53→$84.47, $79.37→$79.32,
+  $78.38→$78.33; headline fall 21.62%→21.67%.
+
+**Standing notes**
+
+- **S-106 · A printed line must add up as a reader adds it up.** All four
+  national panels shipped in v5.0 with a tracker line that did not close.
+  Caught by JW with a calculator, which is not an instrument. Anchors hold,
+  decrements give way, allocated by largest remainder within each segment;
+  `build.py` raises rather than warns. `gates.py` pins the count.
+
+- **S-107 · A comparison sheet shows whole artifacts, stacked, and nothing
+  else.** Sankey and tracker line together, in register. Two panels means two
+  images. Labels `v5.0` and `PROPOSED`.
+
+**Signatures** — 26 of 36 lapsed under D-78, re-signed 2026-09-25 on
+`reference_renders/sign_2026-09-25.png`. Three agreements, not one: each figure,
+the collections convention, and S-106's anchor-holds rule. Coverage moved 24/2
+verified/modelled to 21/5 — the three payer lanes are now MODELLED because the
+pro-rata key is ours. The count falling is the honest direction.
+
+**Gate expectations updated** — coverage national counts; `render_v5_0.py`
+renamed to `render_v6_0.py`; tracker-line reconciliation pinned at 3.
+
+**Manuscript** — `paper_national_v6_0.html`. Twenty-six review items from Brent
+applied. All four whitespace strandings closed by the reflow, with no prose
+written to fill them.
+
+**Open at close** — figure placement mismatches on pages 4, 9 and 16 (new, from
+the reflow); item 32 (year label, line geometry); gate 31 (caption counts);
+item 28 (cover graphic); two E&E caveats to draft; landing-page URL and
+repository path are non-functional placeholders and must be real before ship.

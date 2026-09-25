@@ -84,8 +84,8 @@
 <text x="844.0" y="445.8" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#1f5b57" text-anchor="start" font-weight="bold">MCO capitation  $40.37</text>
 <rect x="840.0" y="545.7" width="204.6" height="19.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="844.0" y="558.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#5a3d63" text-anchor="start" font-weight="bold">Dual MCO capitation  $10.97</text>
-<rect x="840.0" y="661.0" width="175.4" height="19.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="844.0" y="674.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#36505f" text-anchor="start" font-weight="bold">Fee-for-service  $41.39</text>
+<rect x="840.0" y="660.9" width="175.4" height="19.0" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="844.0" y="673.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#36505f" text-anchor="start" font-weight="bold">Fee-for-service  $41.39</text>
 <path d="M1150.0,371.6 C1225.0,371.6 1225.0,371.6 1300.0,371.6 L1300.0,529.6 C1225.0,529.6 1225.0,529.6 1150.0,529.6 Z" fill="#3f8f8a" fill-opacity="0.82" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6"/>
 <path d="M1150.0,534.9 C1225.0,534.9 1225.0,534.9 1300.0,534.9 L1300.0,577.9 C1225.0,577.9 1225.0,577.9 1150.0,577.9 Z" fill="#9a6fa6" fill-opacity="0.82" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6"/>
 <path d="M1150.0,352.0 C1192.5,352.0 1192.5,250.0 1235.0,250.0 L1235.0,269.6 C1192.5,269.6 1192.5,371.6 1150.0,371.6 Z" fill="#5e5e5e" fill-opacity="0.88" stroke="#5e5e5e" stroke-opacity="0.45" stroke-width="0.6"/>
@@ -116,40 +116,40 @@
 <text x="1694.0" y="898.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="9.5" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">providers receive it; it is not services delivered (not to scale)</text>
 <path d="M1300.0,371.6 C1430.0,371.6 1430.0,223.4 1560.0,223.4 L1560.0,254.6 C1430.0,254.6 1430.0,402.7 1300.0,402.7 Z" fill="#3f8f8a" fill-opacity="0.62" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
 <path d="M1300.0,534.9 C1430.0,534.9 1430.0,254.6 1560.0,254.6 L1560.0,263.0 C1430.0,263.0 1430.0,543.4 1300.0,543.4 Z" fill="#9a6fa6" fill-opacity="0.62" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
-<path d="M1300.0,577.9 C1430.0,577.9 1430.0,263.0 1560.0,263.0 L1560.0,351.6 C1430.0,351.6 1430.0,666.5 1300.0,666.5 Z" fill="#5f7f96" fill-opacity="0.8" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M1300.0,402.7 C1430.0,402.7 1430.0,401.6 1560.0,401.6 L1560.0,434.7 C1430.0,434.7 1430.0,435.8 1300.0,435.8 Z" fill="#3f8f8a" fill-opacity="0.62" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
-<path d="M1300.0,543.4 C1430.0,543.4 1430.0,434.7 1560.0,434.7 L1560.0,443.7 C1430.0,443.7 1430.0,552.4 1300.0,552.4 Z" fill="#9a6fa6" fill-opacity="0.62" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
-<path d="M1300.0,666.5 C1430.0,666.5 1430.0,443.7 1560.0,443.7 L1560.0,480.4 C1430.0,480.4 1430.0,703.1 1300.0,703.1 Z" fill="#5f7f96" fill-opacity="0.8" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M1300.0,577.9 C1430.0,577.9 1430.0,263.0 1560.0,263.0 L1560.0,351.6 C1430.0,351.6 1430.0,666.4 1300.0,666.4 Z" fill="#5f7f96" fill-opacity="0.8" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M1300.0,402.7 C1430.0,402.7 1430.0,401.7 1560.0,401.7 L1560.0,434.8 C1430.0,434.8 1430.0,435.8 1300.0,435.8 Z" fill="#3f8f8a" fill-opacity="0.62" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
+<path d="M1300.0,543.4 C1430.0,543.4 1430.0,434.8 1560.0,434.8 L1560.0,443.8 C1430.0,443.8 1430.0,552.4 1300.0,552.4 Z" fill="#9a6fa6" fill-opacity="0.62" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
+<path d="M1300.0,666.4 C1430.0,666.4 1430.0,443.8 1560.0,443.8 L1560.0,480.4 C1430.0,480.4 1430.0,703.1 1300.0,703.1 Z" fill="#5f7f96" fill-opacity="0.8" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6"/>
 <path d="M1300.0,435.8 C1430.0,435.8 1430.0,530.4 1560.0,530.4 L1560.0,564.0 C1430.0,564.0 1430.0,469.4 1300.0,469.4 Z" fill="#3f8f8a" fill-opacity="0.62" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
 <path d="M1300.0,552.4 C1430.0,552.4 1430.0,564.0 1560.0,564.0 L1560.0,573.1 C1430.0,573.1 1430.0,561.5 1300.0,561.5 Z" fill="#9a6fa6" fill-opacity="0.62" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
 <path d="M1300.0,703.1 C1430.0,703.1 1430.0,573.1 1560.0,573.1 L1560.0,598.4 C1430.0,598.4 1430.0,728.4 1300.0,728.4 Z" fill="#5f7f96" fill-opacity="0.8" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6"/>
 <path d="M1300.0,469.4 C1430.0,469.4 1430.0,648.4 1560.0,648.4 L1560.0,677.4 C1430.0,677.4 1430.0,498.5 1300.0,498.5 Z" fill="#3f8f8a" fill-opacity="0.62" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
-<path d="M1300.0,561.5 C1430.0,561.5 1430.0,677.4 1560.0,677.4 L1560.0,685.3 C1430.0,685.3 1430.0,569.4 1300.0,569.4 Z" fill="#9a6fa6" fill-opacity="0.62" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
-<path d="M1300.0,728.4 C1430.0,728.4 1430.0,685.3 1560.0,685.3 L1560.0,696.2 C1430.0,696.2 1430.0,739.2 1300.0,739.2 Z" fill="#5f7f96" fill-opacity="0.8" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M1300.0,561.5 C1430.0,561.5 1430.0,677.4 1560.0,677.4 L1560.0,685.4 C1430.0,685.4 1430.0,569.4 1300.0,569.4 Z" fill="#9a6fa6" fill-opacity="0.62" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
+<path d="M1300.0,728.4 C1430.0,728.4 1430.0,685.4 1560.0,685.4 L1560.0,696.2 C1430.0,696.2 1430.0,739.2 1300.0,739.2 Z" fill="#5f7f96" fill-opacity="0.8" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6"/>
 <path d="M1300.0,498.5 C1430.0,498.5 1430.0,746.2 1560.0,746.2 L1560.0,768.2 C1430.0,768.2 1430.0,520.5 1300.0,520.5 Z" fill="#3f8f8a" fill-opacity="0.62" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
 <path d="M1300.0,569.4 C1430.0,569.4 1430.0,768.2 1560.0,768.2 L1560.0,774.2 C1430.0,774.2 1430.0,575.4 1300.0,575.4 Z" fill="#9a6fa6" fill-opacity="0.62" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
 <path d="M1300.0,739.2 C1430.0,739.2 1430.0,774.2 1560.0,774.2 L1560.0,788.3 C1430.0,788.3 1430.0,753.3 1300.0,753.3 Z" fill="#5f7f96" fill-opacity="0.8" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6"/>
-<path d="M1300.0,520.5 C1430.0,520.5 1430.0,838.4 1560.0,838.4 L1560.0,847.4 C1430.0,847.4 1430.0,529.6 1300.0,529.6 Z" fill="#3f8f8a" fill-opacity="0.62" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
-<path d="M1300.0,575.4 C1430.0,575.4 1430.0,847.4 1560.0,847.4 L1560.0,849.9 C1430.0,849.9 1430.0,577.9 1300.0,577.9 Z" fill="#9a6fa6" fill-opacity="0.62" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
+<path d="M1300.0,520.5 C1430.0,520.5 1430.0,838.3 1560.0,838.3 L1560.0,847.4 C1430.0,847.4 1430.0,529.6 1300.0,529.6 Z" fill="#3f8f8a" fill-opacity="0.62" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
+<path d="M1300.0,575.4 C1430.0,575.4 1430.0,847.4 1560.0,847.4 L1560.0,849.9 C1430.0,849.9 1430.0,577.8 1300.0,577.8 Z" fill="#9a6fa6" fill-opacity="0.62" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" stroke-dasharray="5 3"/>
 <path d="M1300.0,753.3 C1430.0,753.3 1430.0,849.9 1560.0,849.9 L1560.0,856.6 C1430.0,856.6 1430.0,760.0 1300.0,760.0 Z" fill="#5f7f96" fill-opacity="0.8" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6"/>
-<rect x="1560.0" y="223.4" width="140.0" height="31.1" rx="2" fill="#3f8f8a" fill-opacity="1.0"/>
-<rect x="1560.0" y="254.6" width="140.0" height="8.5" rx="2" fill="#9a6fa6" fill-opacity="1.0"/>
+<rect x="1560.0" y="223.4" width="140.0" height="31.2" rx="2" fill="#3f8f8a" fill-opacity="1.0"/>
+<rect x="1560.0" y="254.6" width="140.0" height="8.4" rx="2" fill="#9a6fa6" fill-opacity="1.0"/>
 <rect x="1560.0" y="263.0" width="140.0" height="88.6" rx="2" fill="#5f7f96" fill-opacity="1.0"/>
 <rect x="1542.8" y="200.9" width="174.3" height="19.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1630.0" y="214.4" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" fill="#272727" text-anchor="middle" font-weight="bold">Long-term care  $29.13</text>
-<rect x="1560.0" y="401.6" width="140.0" height="33.1" rx="2" fill="#3f8f8a" fill-opacity="1.0"/>
-<rect x="1560.0" y="434.7" width="140.0" height="9.0" rx="2" fill="#9a6fa6" fill-opacity="1.0"/>
-<rect x="1560.0" y="443.7" width="140.0" height="36.7" rx="2" fill="#5f7f96" fill-opacity="1.0"/>
-<rect x="1561.7" y="379.1" width="136.5" height="19.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1630.0" y="392.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" fill="#272727" text-anchor="middle" font-weight="bold">Hospitals  $17.91</text>
+<text x="1630.0" y="214.4" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" fill="#272727" text-anchor="middle" font-weight="bold">Long-term care  $29.14</text>
+<rect x="1560.0" y="401.7" width="140.0" height="33.1" rx="2" fill="#3f8f8a" fill-opacity="1.0"/>
+<rect x="1560.0" y="434.8" width="140.0" height="9.0" rx="2" fill="#9a6fa6" fill-opacity="1.0"/>
+<rect x="1560.0" y="443.8" width="140.0" height="36.7" rx="2" fill="#5f7f96" fill-opacity="1.0"/>
+<rect x="1561.7" y="379.2" width="136.5" height="19.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1630.0" y="392.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" fill="#272727" text-anchor="middle" font-weight="bold">Hospitals  $17.90</text>
 <rect x="1560.0" y="530.4" width="140.0" height="33.6" rx="2" fill="#3f8f8a" fill-opacity="1.0"/>
 <rect x="1560.0" y="564.0" width="140.0" height="9.1" rx="2" fill="#9a6fa6" fill-opacity="1.0"/>
-<rect x="1560.0" y="573.1" width="140.0" height="25.2" rx="2" fill="#5f7f96" fill-opacity="1.0"/>
+<rect x="1560.0" y="573.1" width="140.0" height="25.3" rx="2" fill="#5f7f96" fill-opacity="1.0"/>
 <rect x="1516.4" y="507.9" width="227.2" height="19.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1630.0" y="521.4" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" fill="#272727" text-anchor="middle" font-weight="bold">Wrap around services*  $15.45</text>
+<text x="1630.0" y="521.4" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" fill="#272727" text-anchor="middle" font-weight="bold">Wrap around services*  $15.44</text>
 <rect x="1560.0" y="648.4" width="140.0" height="29.1" rx="2" fill="#3f8f8a" fill-opacity="1.0"/>
 <rect x="1560.0" y="677.4" width="140.0" height="7.9" rx="2" fill="#9a6fa6" fill-opacity="1.0"/>
-<rect x="1560.0" y="685.3" width="140.0" height="10.9" rx="2" fill="#5f7f96" fill-opacity="1.0"/>
+<rect x="1560.0" y="685.4" width="140.0" height="10.9" rx="2" fill="#5f7f96" fill-opacity="1.0"/>
 <rect x="1520.2" y="625.9" width="219.7" height="19.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="1630.0" y="639.4" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" fill="#272727" text-anchor="middle" font-weight="bold">Physicians &amp; clinics  $10.87</text>
 <rect x="1560.0" y="746.2" width="140.0" height="22.0" rx="2" fill="#3f8f8a" fill-opacity="1.0"/>
@@ -157,51 +157,51 @@
 <rect x="1560.0" y="774.2" width="140.0" height="14.1" rx="2" fill="#5f7f96" fill-opacity="1.0"/>
 <rect x="1535.3" y="723.7" width="189.4" height="19.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="1630.0" y="737.2" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" fill="#272727" text-anchor="middle" font-weight="bold">Behavioral health  $9.58</text>
-<rect x="1560.0" y="838.4" width="140.0" height="9.1" rx="2" fill="#3f8f8a" fill-opacity="1.0"/>
+<rect x="1560.0" y="838.3" width="140.0" height="9.1" rx="2" fill="#3f8f8a" fill-opacity="1.0"/>
 <rect x="1560.0" y="847.4" width="140.0" height="2.5" rx="2" fill="#9a6fa6" fill-opacity="1.0"/>
 <rect x="1560.0" y="849.9" width="140.0" height="6.7" rx="2" fill="#5f7f96" fill-opacity="1.0"/>
-<rect x="1569.3" y="815.9" width="121.4" height="19.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1630.0" y="829.4" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" fill="#272727" text-anchor="middle" font-weight="bold">Rx drugs  $4.14</text>
-<path d="M1885.0,287.5 L1806.9,333.5 A90.7,90.7 0 0,1 1803.9,328.2 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M1885.0,287.5 L1803.9,328.2 A90.7,90.7 0 0,1 1795.0,276.8 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M1885.0,287.5 L1795.0,276.8 A90.7,90.7 0 0,1 1975.0,276.8 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M1885.0,287.5 L1975.0,276.8 A90.7,90.7 0 0,1 1806.9,333.5 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
+<rect x="1569.3" y="815.8" width="121.4" height="19.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1630.0" y="829.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" fill="#272727" text-anchor="middle" font-weight="bold">Rx drugs  $4.14</text>
+<path d="M1885.0,287.6 L1806.9,333.6 A90.7,90.7 0 0,1 1803.9,328.2 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M1885.0,287.6 L1803.9,328.2 A90.7,90.7 0 0,1 1795.0,276.8 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M1885.0,287.6 L1795.0,276.8 A90.7,90.7 0 0,1 1975.0,276.8 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M1885.0,287.6 L1975.0,276.8 A90.7,90.7 0 0,1 1806.9,333.6 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
 <line x1="1804.5" y1="331.4" x2="1796.6" y2="335.7" stroke="#555555" stroke-width="1.2"/>
 <text x="1792.2" y="342.1" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#faf8f3" stroke-width="2.8" stroke-linejoin="round" fill="#000000">1%</text>
 <text x="1831.4" y="301.3" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">9%</text>
 <text x="1885.0" y="237.5" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">46%</text>
 <text x="1902.4" y="343.5" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">43%</text>
-<rect x="1804.6" y="167.3" width="160.9" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1885.0" y="186.8" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Long-term care</text>
+<rect x="1804.6" y="167.4" width="160.9" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1885.0" y="186.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Long-term care</text>
 <rect x="1848.2" y="380.7" width="73.5" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1885.0" y="400.2" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$29.13</text>
-<path d="M2090.0,441.0 L2080.3,511.4 A71.1,71.1 0 0,1 2019.0,436.9 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
+<text x="1885.0" y="400.2" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$29.14</text>
+<path d="M2090.0,441.0 L2080.3,511.5 A71.1,71.1 0 0,1 2019.0,436.9 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M2090.0,441.0 L2019.0,436.9 A71.1,71.1 0 0,1 2161.0,436.9 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M2090.0,441.0 L2161.0,436.9 A71.1,71.1 0 0,1 2124.1,503.4 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M2090.0,441.0 L2124.1,503.4 A71.1,71.1 0 0,1 2080.3,511.4 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M2090.0,441.0 L2124.1,503.4 A71.1,71.1 0 0,1 2080.3,511.5 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
 <text x="2057.1" y="472.5" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">24%</text>
-<text x="2090.0" y="402.7" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">48%</text>
+<text x="2090.0" y="402.8" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">48%</text>
 <text x="2127.3" y="466.1" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">18%</text>
-<text x="2097.7" y="487.3" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">10%</text>
-<rect x="2036.9" y="340.4" width="106.3" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="2090.0" y="359.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Hospitals</text>
+<text x="2097.7" y="487.4" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">10%</text>
+<rect x="2036.9" y="340.5" width="106.3" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="2090.0" y="360.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Hospitals</text>
 <rect x="2053.2" y="514.6" width="73.5" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="2090.0" y="534.1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$17.91</text>
-<path d="M1885.0,564.4 L1875.0,629.6 A66.0,66.0 0 0,1 1820.1,552.1 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
+<text x="2090.0" y="534.1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$17.90</text>
+<path d="M1885.0,564.4 L1875.1,629.7 A66.0,66.0 0 0,1 1820.1,552.1 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M1885.0,564.4 L1820.1,552.1 A66.0,66.0 0 0,1 1949.9,552.1 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M1885.0,564.4 L1949.9,552.1 A66.0,66.0 0 0,1 1922.1,619.0 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M1885.0,564.4 L1922.1,619.0 A66.0,66.0 0 0,1 1875.0,629.6 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M1885.0,564.4 L1949.9,552.1 A66.0,66.0 0 0,1 1922.2,619.0 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M1885.0,564.4 L1922.2,619.0 A66.0,66.0 0 0,1 1875.1,629.7 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
 <text x="1852.7" y="591.7" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">26%</text>
 <text x="1885.0" y="529.2" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">44%</text>
-<text x="1921.6" y="583.9" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">18%</text>
+<text x="1921.6" y="584.0" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">18%</text>
 <text x="1893.8" y="607.4" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">12%</text>
-<rect x="1766.3" y="468.8" width="237.3" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1885.0" y="488.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Wrap around services*</text>
+<rect x="1766.3" y="468.9" width="237.3" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
+<text x="1885.0" y="488.4" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Wrap around services*</text>
 <rect x="1848.2" y="632.9" width="73.5" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
-<text x="1885.0" y="652.4" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$15.45</text>
-<path d="M2090.0,672.3 L2100.2,726.7 A55.4,55.4 0 0,1 2034.7,668.3 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M2090.0,672.3 L2034.7,668.3 A55.4,55.4 0 0,1 2145.3,668.3 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M2090.0,672.3 L2145.3,668.3 A55.4,55.4 0 0,1 2127.6,712.9 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
+<text x="1885.0" y="652.4" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$15.44</text>
+<path d="M2090.0,672.3 L2100.2,726.7 A55.4,55.4 0 0,1 2034.7,668.4 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M2090.0,672.3 L2034.7,668.4 A55.4,55.4 0 0,1 2145.3,668.4 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M2090.0,672.3 L2145.3,668.4 A55.4,55.4 0 0,1 2127.6,712.9 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M2090.0,672.3 L2127.6,712.9 A55.4,55.4 0 0,1 2100.2,726.7 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
 <text x="2067.9" y="701.5" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">29%</text>
 <text x="2090.0" y="643.4" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">48%</text>
@@ -213,8 +213,8 @@
 <text x="2090.0" y="749.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$10.87</text>
 <path d="M1885.0,767.3 L1851.1,806.7 A52.0,52.0 0 0,1 1833.1,764.2 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
 <path d="M1885.0,767.3 L1833.1,764.2 A52.0,52.0 0 0,1 1936.9,764.2 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M1885.0,767.3 L1936.9,764.2 A52.0,52.0 0 0,1 1869.3,816.9 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M1885.0,767.3 L1869.3,816.9 A52.0,52.0 0 0,1 1851.1,806.7 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M1885.0,767.3 L1936.9,764.2 A52.0,52.0 0 0,1 1869.4,816.8 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M1885.0,767.3 L1869.4,816.8 A52.0,52.0 0 0,1 1851.1,806.7 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
 <text x="1856.3" y="783.9" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">15%</text>
 <text x="1885.0" y="740.5" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">48%</text>
 <text x="1904.2" y="796.3" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">31%</text>
@@ -223,10 +223,10 @@
 <text x="1885.0" y="705.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">Behavioral health</text>
 <rect x="1853.7" y="821.8" width="62.6" height="25.5" rx="3" fill="#faf8f3" fill-opacity="0.82"/>
 <text x="1885.0" y="841.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19.5" fill="#272727" text-anchor="middle" font-weight="bold">$9.58</text>
-<path d="M2090.0,847.5 L2055.9,849.8 A34.2,34.2 0 0,1 2063.7,825.6 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M2090.0,847.5 L2063.7,825.6 A34.2,34.2 0 0,1 2122.1,859.3 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M2090.0,847.5 L2122.1,859.3 A34.2,34.2 0 0,1 2073.6,877.4 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
-<path d="M2090.0,847.5 L2073.6,877.4 A34.2,34.2 0 0,1 2055.9,849.8 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M2090.0,847.4 L2055.9,849.8 A34.2,34.2 0 0,1 2063.7,825.6 Z" fill="#6fa382" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M2090.0,847.4 L2063.7,825.6 A34.2,34.2 0 0,1 2122.1,859.2 Z" fill="#d8a24a" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M2090.0,847.4 L2122.1,859.2 A34.2,34.2 0 0,1 2073.6,877.4 Z" fill="#cf7d4f" stroke="#faf8f3" stroke-width="1.2"/>
+<path d="M2090.0,847.4 L2073.6,877.4 A34.2,34.2 0 0,1 2055.9,849.8 Z" fill="#6f6f9e" stroke="#faf8f3" stroke-width="1.2"/>
 <line x1="2056.5" y1="836.6" x2="2048.0" y2="833.9" stroke="#555555" stroke-width="1.2"/>
 <text x="2043.2" y="836.3" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#faf8f3" stroke-width="2.8" stroke-linejoin="round" fill="#000000">12%</text>
 <text x="2100.3" y="834.1" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="14" text-anchor="middle" font-weight="bold" paint-order="stroke" stroke="#3a3a3a" stroke-width="3.0" stroke-linejoin="round" fill="#ffffff">45%</text>
@@ -259,7 +259,7 @@
 <text x="717.5" y="1300.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#5c6169" text-anchor="middle" font-weight="bold">State Admin</text>
 <rect x="1170.3" y="1178.3" width="19.4" height="19.4" fill="#5c6169"/>
 <line x1="1180.0" y1="1203.0" x2="1180.0" y2="1264.0" stroke="#5c6169" stroke-width="1.1" stroke-opacity="0.55"/>
-<text x="1180.0" y="1278.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#5c6169" text-anchor="middle" font-weight="bold">−$5.65</text>
+<text x="1180.0" y="1278.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#5c6169" text-anchor="middle" font-weight="bold">−$5.66</text>
 <text x="1180.0" y="1300.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#5c6169" text-anchor="middle" font-weight="bold">MCO Admin</text>
 <polygon points="1533.0,1177.0 1543.5,1196.6 1522.5,1196.6" fill="#b23a32"/>
 <text x="1533.0" y="1222.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#b23a32" text-anchor="middle" font-weight="bold">−$0.15</text>

@@ -91,14 +91,14 @@ OUTFLOWS = {
     "Blocked Medicaid enrollment rule": dict(
         cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=732,
         term_col="CLAIMS", term_y=None, ret=False,
-        reach="CLAIMS"),
+        reach="CLAIMS", label="Medicaid enrollment rule suspended"),
     "Everything else": dict(
         cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=766,
         term_col="STATE_AGENCY", term_y=None, ret=False, label="Other"),
     "Blocked senior enrollment rule": dict(
         cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=800,
         term_col="STATE_AGENCY", term_y=None, ret=False,
-        reach="STATE_AGENCY", label="Blocked senior enrollment",
+        reach="STATE_AGENCY", label="Medicare Savings rule suspended",
         # Above its own terminal rather than below it (JW, 2026-09-11). It and
         # "Other" both stop at the state agency edge, so their blocks sat one on
         # top of the other at the bottom of the fan; lifting this one over its

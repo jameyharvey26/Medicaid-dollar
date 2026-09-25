@@ -44,17 +44,17 @@ EX17 = ("MACPAC, MACStats: Medicaid and CHIP Data Book, Exhibit 17, Total "
 #
 # The old hundred was the bottom line. Fifteen percent of the first decrement
 # the reader met was a vaccine purchase wearing the word overhead. S-099.
-BENEFITS_M   = 908839.0
-ADMIN_M      = 40360.0
-MFCU_M, SNC_M = 497.0, 468.0
-VFC_M        = 7239.0
-MEDICARE_M   = 27774.0            # Exhibit 17, Medicare premiums and coinsurance
-FED_M, ST_M  = 620355.0, 337048.0 # Exhibit 16, total row, both columns
-
-HUNDRED_M = BENEFITS_M + ADMIN_M + MFCU_M + SNC_M     # 950,164
-PER_DOLLAR = HUNDRED_M / 100.0                        # $M per $1 of the hundred
-OLD_HUNDRED_M = HUNDRED_M + VFC_M                     # what the panel used to be
-RESCALE = OLD_HUNDRED_M / HUNDRED_M                   # x1.00762
+# The dollars, the denominator and the lane derivation live in
+# basis_national.py so that this ledger and provider_mix.py read one copy.
+# See that module for D-78 and the collections fold.
+from basis_national import (BENEFITS_M, ADMIN_M, MFCU_M, SNC_M, VFC_M,
+                            MEDICARE_M, FED_M, ST_M, CAP_M, FFS_M, COLL_M,
+                            DUAL_CAP_M, OTHER_ACUTE_M, DENTAL_M, WRAP_FFS_M,
+                            HUNDRED_M, PER_DOLLAR, OLD_HUNDRED_M, RESCALE,
+                            REACHES_PAYERS, COLL_100, CAP_100, FFS_100,
+                            DUAL_100, MCO_100, MCO_ADM, DUAL_ADM, MCO_MARGIN,
+                            DUAL_MARGIN, MCO_CARE, DUAL_CARE, FFS_CARE,
+                            CLAIMS_100)
 
 
 def _per100(m: float) -> float:
@@ -65,19 +65,31 @@ def _rebase(L):
     """Every figure below the state agency was struck against the old hundred.
     Changing the denominator is a change of units, not of measurement, so each
     one moves by the same factor. Sources and peels are not touched here: they
-    are re-derived from Exhibit 16 dollars above."""
+    are re-derived from Exhibit 16 dollars above.
+
+    D-78: the payer lanes and everything derived from them are no longer
+    rebased. They are computed from Exhibit 17 dollars on the current
+    denominator in basis_national.py, so multiplying them here would move them
+    twice. What is left on the old hundred is documented fraud and the
+    eligibility-group totals.
+
+    The eligibility groups are a decomposition of claims, so they are scaled to
+    the claims total rather than by the raw factor. Scaling by RESCALE would
+    leave them summing to $87.09 against claims of $87.07 - the same class of
+    defect this decision exists to remove."""
     def r(f):
         return f if f.value is None else replace(f, value=f.value * RESCALE)
-    for p in L.payers:
-        for fld in ("capitation", "care", "admin", "margin"):
-            setattr(p, fld, r(getattr(p, fld)))
-    for m in [L.claims] + ([L.beneficiaries] if L.beneficiaries else []):
-        for d in (m.row_margin, m.col_margin, m.cell):
-            for k in list(d):
-                d[k] = r(d[k])
     for x in L.peels:
         if x.key == "fraud":
             x.amount = r(x.amount)
+    if L.beneficiaries:
+        rm = L.beneficiaries.row_margin
+        raw = sum(f.value for f in rm.values() if f.value is not None)
+        k = CLAIMS_100 / raw
+        for key in list(rm):
+            f = rm[key]
+            if f.value is not None:
+                rm[key] = replace(f, value=f.value * k)
     return L
 
 
@@ -135,10 +147,17 @@ def _sign(L: Ledger) -> Ledger:
 def build() -> Ledger:
     payers = [
         Payer("mco", "MCO capitation", "mco",
-              capitation=_m(40.06), care=Fig.derived(35.65, ("payer.mco.capitation", "payer.mco.admin",
+              capitation=Fig(MCO_100, source=EX17, vintage=V, basis=B,
+                             status=MODELLED,
+                             note="D-78. Exhibit 17 capitation of $496,097M "
+                                  "less the dual lane, both net of the "
+                                  "collections fold. MODELLED because the "
+                                  "pro-rata key for collections and the dual "
+                                  "split are ours; the dollars are measured."),
+              care=Fig.derived(MCO_CARE, ("payer.mco.capitation", "payer.mco.admin",
                                        "payer.mco.margin")),
-              admin=Fig(3.81, source="EN-15", vintage=V, basis=B, status=MEASURED),
-              margin=Fig(0.60, status=MODELLED,
+              admin=Fig(MCO_ADM, source="EN-15", vintage=V, basis=B, status=MEASURED),
+              margin=Fig(MCO_MARGIN, status=MODELLED,
                          note="EN-43. Public-company earnings $0.76 in total, carved "
                               "across the two capitated lanes in proportion to plan "
                               "administration. The $0.76 itself has no primary source; "
@@ -146,12 +165,23 @@ def build() -> Ledger:
                               "from the Medicaid segments of the publicly traded "
                               "plans' 10-K filings, and that work is open.")),
         Payer("dual", "Dual MCO capitation", "dual",
-              capitation=_m(10.89), care=Fig.derived(9.69, ("payer.dual.capitation", "payer.dual.admin",
+              capitation=Fig(DUAL_100, source=EX17, vintage=V, basis=B,
+                             status=MODELLED,
+                             note="D-78. $106,000M of Exhibit 17 capitation, "
+                                  "triangulated and the softest figure in the "
+                                  "model, net of the collections fold."),
+              care=Fig.derived(DUAL_CARE, ("payer.dual.capitation", "payer.dual.admin",
                                       "payer.dual.margin")),
-              admin=Fig(1.04, source="EN-15", vintage=V, basis=B, status=MEASURED),
-              margin=Fig(0.16, status=MODELLED, note="EN-43, as above.")),
+              admin=Fig(DUAL_ADM, source="EN-15", vintage=V, basis=B, status=MEASURED),
+              margin=Fig(DUAL_MARGIN, status=MODELLED, note="EN-43, as above.")),
         Payer("ffs", "Fee-for-service", "ffs",
-              capitation=_m(41.08), care=_m(41.08,
+              capitation=Fig(FFS_100, source=EX17, vintage=V, basis=B,
+                             status=MODELLED,
+                             note="D-78. Exhibit 17 fee-for-service of "
+                                  "$400,002M, net of the collections fold. The "
+                                  "dollars are measured; the fold is ours."),
+              care=Fig(FFS_CARE, source=EX17, vintage=V, basis=B, status=MODELLED,
+                       note=
                   "Rule A: fee-for-service has no payer and no retention. It runs "
                   "through the payer phase unchanged."),
               admin=Fig.absent("fee-for-service has no plan administration"),
@@ -162,9 +192,9 @@ def build() -> Ledger:
         name="claims",
         rows=["mco", "dual", "ffs"],
         cols=NODES,
-        row_margin={"mco": Fig.derived(35.65, ("payer.mco.care",)),
-                    "dual": Fig.derived(9.69, ("payer.dual.care",)),
-                    "ffs": Fig.derived(41.08, ("payer.ffs.care",))},
+        row_margin={"mco": Fig.derived(MCO_CARE, ("payer.mco.care",)),
+                    "dual": Fig.derived(DUAL_CARE, ("payer.dual.care",)),
+                    "ffs": Fig.derived(FFS_CARE, ("payer.ffs.care",))},
         # Derived, and modelled all the way down: no one publishes a
         # national split of capitation by service, so a node total cannot be
         # measured. The cent on long-term care is a rounding residue, not a

@@ -440,6 +440,16 @@ def render(cfg):
         print(f"  WARNING  anchor labels overlap: {a} / {b} by {-g:.0f} units")
     for a, b, g in TR.shape_gap(marks):
         print(f"  NOTE     markers {a} / {b} sit {g:.0f} units apart on the line")
+    # S-106. The line must add up as a reader adds it up, on the printed
+    # figures. This is a gate, not an advisory: a diagram whose own numbers
+    # disagree is not publishable and must not reach a sheet.
+    _bad = TR.unreconciled(anchors, marks,
+                           {s[4]: OF.decrement_span(s[4])[0] for s in _live},
+                           start=fed+state)
+    if _bad:
+        raise ValueError("tracker line does not add up as printed:\n  "
+                         + "\n  ".join(_bad))
+    print("  ok   tracker line adds up as printed")
     tiers = TR.mark_tiers(marks, anchors)
 
     add(f'<line x1="{anchors[0]["x"]:.0f}" y1="{TR.BY}" x2="{anchors[-1]["x"]:.0f}" '
@@ -468,7 +478,7 @@ def render(cfg):
             add(f'<line x1="{x:.1f}" y1="{y+r+4:.1f}" x2="{x:.1f}" '
                 f'y2="{y+t+TR.MARK_AMT_Y-14:.1f}" stroke="{c}" stroke-width="1.1" '
                 f'stroke-opacity="0.55"/>')
-        txt(x, y+t+TR.MARK_AMT_Y, f"\u2212${m['amount']:.2f}", TR.MARK_AMT_PX, c,
+        txt(x, y+t+TR.MARK_AMT_Y, f"\u2212${m['display']:.2f}", TR.MARK_AMT_PX, c,
             "middle", "bold", halo=False)
         txt(x, y+t+TR.MARK_NAME_Y, m["short"], TR.MARK_NAME_PX, c,
             "middle", "bold", halo=False)

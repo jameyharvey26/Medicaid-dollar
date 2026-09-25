@@ -342,7 +342,77 @@ def ledger(subtractions, marker_x, marker_origin=None, start=100.0):
             x=x, name=list(name),
             value=start - sum(m["amount"] for m in marks
                               if origin.get(m["short"], m["x"]) < x)))
+    _reconcile(anchors, marks, origin, start)
     return anchors, marks
+
+
+# S-106, JW 25 September. A reader with a calculator reads the tracker line
+# left to right: an anchor, less the decrements drawn between it and the next
+# one, equals the next anchor. The arithmetic above is exact and every figure
+# was then rounded to the cent on its own, so the printed line could disagree
+# with itself by a penny while every underlying figure was right. It did, on
+# the FY2030 panels: $98.75 less $6.05 less $8.24 printed an anchor of $84.47
+# against a reader's $84.46.
+#
+# The ANCHORS are the published figures and do not move. Each decrement
+# carries a `display` value, allocated by largest remainder within its own
+# segment so the printed decrements sum to the printed fall between the two
+# anchors that bracket them. A decrement's display never departs from its own
+# value by more than a cent; if it would, that is not rounding and the build
+# says so rather than adjusting it.
+#
+# Attribution is by ORIGIN, never by marker x — the same rule the anchors use,
+# and for the same reason (S-085).
+def _reconcile(anchors, marks, origin, start):
+    bounds = [None] + [a["x"] for a in anchors]
+    prev_val, prev_x = start, None
+    for a in anchors:
+        seg = [m for m in marks
+               if (prev_x is None or origin.get(m["short"], m["x"]) >= prev_x)
+               and origin.get(m["short"], m["x"]) < a["x"]]
+        target = round(round(prev_val, 2) - round(a["value"], 2), 2)
+        if seg:
+            cents = [int(m["amount"] * 100 // 1) for m in seg]
+            need = int(round(target * 100)) - sum(cents)
+            order = sorted(range(len(seg)),
+                           key=lambda i: -(seg[i]["amount"] * 100 - cents[i]))
+            for i in order[:max(need, 0)]:
+                cents[i] += 1
+            for i in order[len(order) + min(need, 0):]:
+                cents[i] -= 1
+            for m, c in zip(seg, cents):
+                m["display"] = c / 100.0
+                if abs(m["display"] - m["amount"]) > 0.0101:
+                    raise ValueError(
+                        f"tracker line: {m['short']} would have to print "
+                        f"${m['display']:.2f} against its value of "
+                        f"${m['amount']:.4f}. That is not rounding.")
+        prev_val, prev_x = a["value"], a["x"]
+    for m in marks:
+        m.setdefault("display", m["amount"])
+
+
+def unreconciled(anchors, marks, origin=None, start=100.0):
+    """Printed anchors against printed decrements. [] when the line adds up.
+
+    Reads the same two structures the renderer draws from, so it asserts what
+    the reader sees rather than what the ledger holds.
+    """
+    origin = dict(origin or {})
+    out, prev_val, prev_x = [], start, None
+    for a in anchors:
+        seg = [m for m in marks
+               if (prev_x is None or origin.get(m["short"], m["x"]) >= prev_x)
+               and origin.get(m["short"], m["x"]) < a["x"]]
+        lhs = round(round(prev_val, 2)
+                    - sum(round(m.get("display", m["amount"]), 2) for m in seg), 2)
+        rhs = round(a["value"], 2)
+        if abs(lhs - rhs) > 0.0001:
+            out.append(f"{' / '.join(a['name'])}: ${rhs:.2f} printed, "
+                       f"${lhs:.2f} on the line's own figures "
+                       f"({' '.join('-$%.2f' % m.get('display', m['amount']) for m in seg)})")
+        prev_val, prev_x = a["value"], a["x"]
+    return out
 
 
 def mark_tiers(marks, anchors=(), pad=16.0):
@@ -365,7 +435,7 @@ def mark_tiers(marks, anchors=(), pad=16.0):
              for a in anchors]
     for m in marks:
         w = max(text_w(m["short"], MARK_NAME_PX),
-                text_w(f"-${m['amount']:.2f}", MARK_AMT_PX))
+                text_w(f"-${m.get('display', m['amount']):.2f}", MARK_AMT_PX))
         l0, l1 = m["x"] - w / 2 - pad, m["x"] + w / 2 + pad
         t = 0
         while t < 2 and any(t == pt and not (l1 <= p0 or p1 <= l0)

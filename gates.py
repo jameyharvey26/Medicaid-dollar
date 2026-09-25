@@ -34,12 +34,18 @@ EXPECT = {
         # each other, so their markers land four apart on the FY2030 line. That
         # is the geometry telling the truth, not a placement fault; the two are
         # stacked rather than moved.
+        # S-106, JW 25 September. Pinned by count, not by presence: a panel
+        # that silently stopped reporting would otherwise pass. Three panels
+        # run under `build.py`; the two sensitivity variants are checked when
+        # `build.py sensitivity` runs.
         must=["build complete.",
               "State Admin / Eligibility Rules sit 24 units apart",
               "Vaccines / Provider Tax sit 4 units apart",
               "Other reaches y=674, past Behavioral health's name at y=673"],
         regex=[(r"^\s+(?:NOTE|WARNING)\b", 3,
-                "exactly the three frozen advisories")],
+                "exactly the three frozen advisories"),
+               (r"tracker line adds up as printed", 3,
+                "every panel's tracker line reconciles on its printed figures")],
     ),
     "crossings.py": dict(
         must=["dc_2024", "national_2024", "national_2030_holds",
@@ -61,15 +67,17 @@ EXPECT = {
         forbid=["GATE IS BLIND", "WRONG"],
     ),
     "coverage.py national": dict(
-        # D-70 lapsed all 33 signatures. Nothing on the national panel has
-        # been agreed by a person since the denominator moved, and this
-        # line is how the build says so out loud until it is re-signed.
-        must=["24 verified", "2 modelled", "2 unverified", "3 missing"],
+        # Re-signed 25 September on reference_renders/sign_2026-09-25.png.
+        # Three figures moved from verified to modelled and not by anyone's
+        # choice: the three payer lanes now carry a collections fold whose
+        # pro-rata key is ours, so MEASURED would overstate what Exhibit 17
+        # actually says. The count going DOWN is the honest direction here.
+        must=["21 verified", "5 modelled", "2 unverified", "3 missing"],
     ),
     "coverage.py dc": dict(
         must=["0 verified", "0 modelled", "15 unverified", "26 missing"],
     ),
-    "render_v5_0.py": dict(
+    "render_v6_0.py": dict(
         # Page 6's 22-line stranding closed on 2026-09-19: the Vaccines for
         # Children and federal oversight paragraphs filled the section. Four
         # strandings remain, 9, 10, 15 and 16.
