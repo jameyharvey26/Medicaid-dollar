@@ -1,6 +1,6 @@
 # basis_national.py — the national dollar basis, in one place.
 #
-# D-78. These constants and the lane derivation below used to live in
+# D-83. These constants and the lane derivation below used to live in
 # ledger_national_2024.py, while provider_mix.py carried its own typed copies
 # of the three lane values it needed (41.08, 35.65, 9.69, struck on the old
 # hundred). Two copies of the same figures, one of which nothing checked.

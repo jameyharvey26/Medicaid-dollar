@@ -1,6 +1,6 @@
 # release.py — what this build is, in one place.
 #
-# D-79. The cover and the sources register both used to carry typed strings:
+# D-84. The cover and the sources register both used to carry typed strings:
 # "Working draft v5.0, 19 September 2026" on the cover and "matched to build
 # main@2026-09-11" in the register. They disagreed with each other by eight
 # days and both were stale, because a typed string does not move when the
@@ -18,7 +18,7 @@ import hashlib
 import pathlib
 import datetime
 
-VERSION = "6.0"
+VERSION = "6.1"
 
 # The modules a figure can move through. Deliberately not every file in the
 # repo: a change to a gate or a test does not change what the paper says, and
@@ -57,7 +57,7 @@ def build_date() -> str:
 
 
 def stamp() -> str:
-    """The footer line. 'v6.0 · 25 September 2026 · build a3f9c1'."""
+    """The footer line. 'v6.1 · 26 September 2026 · build a3f9c1'."""
     return f"v{VERSION} \u00b7 {build_date()} \u00b7 build {build_id()}"
 
 

@@ -77,12 +77,21 @@ EXPECT = {
     "coverage.py dc": dict(
         must=["0 verified", "0 modelled", "15 unverified", "26 missing"],
     ),
-    "render_v6_0.py": dict(
-        # Page 6's 22-line stranding closed on 2026-09-19: the Vaccines for
-        # Children and federal oversight paragraphs filled the section. Four
-        # strandings remain, 9, 10, 15 and 16.
-        must=["page 9", "page 10", "page 15", "page 16",
+    "render_v6_1.py": dict(
+        # Both layout gates clean as of 2026-09-26. The four remaining
+        # strandings closed with the 09-25 reflow and this EXPECT was never
+        # updated to match, which is why the gate read FAIL for a reason that
+        # had already been fixed.
+        #
+        # The three page/subject mismatches closed the same day, and not by
+        # moving anything: render_v6_1.py (then v6_0) wrote its HTML to a temp directory,
+        # so every relative figure path resolved to nothing and Chromium
+        # printed a paper of broken image icons. The PDF was 192 kB. It is
+        # 3.1 MB now. figurefit was reading real captions against a document
+        # with no pictures in it.
+        must=["no body page strands more than 6 lines in a column",
               "every subject named in prose appears in a figure on its own page"],
+        forbid=["mismatch(es)"],
         slow=True,
     ),
 }

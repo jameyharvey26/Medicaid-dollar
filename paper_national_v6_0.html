@@ -41,8 +41,8 @@ sup{ font-size:.72em; line-height:0; }
 .cover .covdate{ margin-top:3mm; font-size:9.5pt; }
 .cover .by span{ display:block; font-weight:300; font-size:9.5pt; color:var(--mut);
   margin-top:1.5mm; }
-.cover .right img{ width:100%; display:block; border:1px solid var(--rule);
-  background:var(--paper); }
+.cover .right img{ max-height:172mm; max-width:100%; width:auto; display:block;
+  margin:0 auto; border:1px solid var(--rule); background:var(--paper); }
 .cover .stamp{ margin-top:4mm; border-top:1px solid var(--rule); padding-top:3mm;
   font-size:8pt; color:var(--mut); line-height:1.48; }
 
@@ -153,11 +153,9 @@ table.reg td.en{ font-family:"Jost"; font-weight:600; color:var(--blue);
     </div>
   </div>
   <div class="right">
-    <!-- D-80. Cover figure cut: same file as Figure 1, one page later, at a
-         third the size and unreadable. New cover graphic pending. -->
-    <div class="stamp">
-      In FY2024, $86.92 of every hundred dollars spent on Medicaid reached a health service. By FY2030, only $78.38 will.
-    </div>
+    <img src="paper_figs/cover_taper.png" alt="Where the money stops: $100 of
+      Medicaid narrowing through four phases, and the seven cuts of P.L. 119-21
+      with who carries each. Long description in paper_figs/cover_taper_alt.txt.">
   </div>
 </div>
 
@@ -174,12 +172,12 @@ That is the impact of P.L.&nbsp;119-21, the statute most people in Medicaid call
 
 <p>Today, of every hundred dollars that moves through Medicaid,
 <strong>$86.92 reaches a health service</strong>. Under HR-1,
-<strong>$78.38 will</strong>.</p>
+<strong>$78.33 will</strong>.</p>
 
 <p>The $13.08 that does not reach care today goes to state administration, Medicare
 premiums returned to the federal government, plan administration, retained earnings and a
 small amount of documented fraud. By 2030 the law will take a further $10.34 before care,
-and the share that never becomes a service will rise to $21.62.</p>
+and the share that never becomes a service will rise to $21.67.</p>
 
 <p>The rest of this white paper answers two questions: where
 do the missing dollars leave, and who is holding the bill when they do.</p>
@@ -411,7 +409,7 @@ the reverse.</p>
 
 <p>Before HR-1 does anything, <strong>$86.92 of every $100 of Medicaid spending becomes a
 health service</strong>, and $13.08 does not. That $13.08 is the figure to hold, because
-the law will raise it to $21.62, and a cut applied to an ecosystem already carrying
+the law will raise it to $21.67, and a cut applied to an ecosystem already carrying
 fourteen percent of overhead does not behave the way most readers expect.</p>
 
 </div><!-- /flow -->
@@ -625,7 +623,7 @@ percent, because fewer people are enrolled.</p>
   <tr><td class="svc">Dual-plan capitation</td><td class="n">$10.97</td><td class="n">$10.00</td><td class="n">$0.97</td><td class="n">8.85%</td></tr>
   <tr><td class="svc">Plan administration</td><td class="n">$4.89</td><td class="n">$4.45</td><td class="n">$0.43</td><td class="n">8.85%</td></tr>
   <tr><td class="svc">Public-company earnings</td><td class="n">$0.77</td><td class="n">$0.70</td><td class="n">$0.07</td><td class="n">8.85%</td></tr>
-  <tr class="tot"><td>Claims paid</td><td class="n">$87.07</td><td class="n">$79.37</td><td class="n">$7.70</td><td class="n">8.85%</td></tr>
+  <tr class="tot"><td>Claims paid</td><td class="n">$87.07</td><td class="n">$79.32</td><td class="n">$7.70</td><td class="n">8.85%</td></tr>
 </table>
 
 
@@ -684,7 +682,7 @@ law.<sup>8</sup></p>
   <tr><td class="svc">Wrap around services</td><td class="n">$15.45</td><td class="n">$14.08</td><td class="n">$1.37</td><td class="n">8.85%</td></tr>
   <tr><td class="svc">Behavioral health</td><td class="n">$9.58</td><td class="n">$8.73</td><td class="n">$0.86</td><td class="n">8.95%</td></tr>
   <tr><td class="svc">Prescription drugs</td><td class="n">$4.14</td><td class="n">$3.78</td><td class="n">$0.36</td><td class="n">8.63%</td></tr>
-  <tr class="tot"><td>Health services delivered</td><td class="n">$86.92</td><td class="n">$78.38</td><td class="n">$8.54</td><td class="n">9.83%</td></tr>
+  <tr class="tot"><td>Health services delivered</td><td class="n">$86.92</td><td class="n">$78.33</td><td class="n">$8.54</td><td class="n">9.83%</td></tr>
 </table>
 
 <h3>What this means for a provider organization</h3>
@@ -711,7 +709,7 @@ grind works through from January 2028. An organization facing both is dealing wi
 
 <div class="flow">
 
-<p class="lede">Health services delivered will fall from $86.92 to $78.38 per $100 of
+<p class="lede">Health services delivered will fall from $86.92 to $78.33 per $100 of
 Medicaid spending, and the fall will be uneven across the six categories. A dollar that
 does not reach a hospital is a hospital service that is not delivered.</p>
 

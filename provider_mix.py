@@ -63,7 +63,7 @@
 # not a zero, and it is declared rather than assumed.
 
 # 1. fee-for-service, $M, CMS-64 FY2024 (= Exhibit 17 gross FFS)
-# D-78. These five used to be typed here. They are now derived from the nine
+# D-83. These five used to be typed here. They are now derived from the nine
 # published Exhibit 17 columns in basis_national.py, where the mapping from
 # column to node is written out. The old comment on "Other" was wrong: other
 # practitioner sits in physicians and clinics, not in the wrap-around node.
@@ -165,7 +165,7 @@ def allocate(ffs: float, mco_care: float, dual_care: float):
     return r2(f), r2(m), r2(d), node
 
 
-# D-78. These three used to be typed here at two decimals on the old hundred,
+# D-83. These three used to be typed here at two decimals on the old hundred,
 # duplicating figures the ledger also carried. They are now read from the one
 # place the lanes are derived, so a change to the denominator or to the
 # collections fold promulgates into the provider phase instead of leaving two

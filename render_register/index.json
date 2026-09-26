@@ -1,77 +1,77 @@
 {
   "dc_2024_baseline": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "ac5dc6ba6fde970f"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "75f808f9033a4b31"
   },
   "dc_2024_combined": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "9103d868a0b980bb"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "60fb67c2d877c1e2"
   },
   "dc_2024_overlay": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "92fbfe89c927fe5e"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "9d761b50dcd0156d"
   },
   "national_2024_baseline": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "43e34846f99cb965"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "cebcc56de6b5b795"
   },
   "national_2024_combined": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "51b1ad0717b95315"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "46bc25a138210b8c"
   },
   "national_2024_overlay": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "1c5966498692549f"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "665db42da85e035f"
   },
   "national_2030_holds_baseline": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "4a5626ec38679647"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "1e54a97f1c3d4ed6"
   },
   "national_2030_holds_combined": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "75b929e4ca57ce93"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "5c8b7985c4e7e845"
   },
   "national_2030_holds_overlay": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "cac118ad186f2542"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "bdc5993dc1a37887"
   },
   "national_2030_mixed_baseline": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "76e10956a3b7c101"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "ab1c88778d64774e"
   },
   "national_2030_mixed_combined": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "15fc0a11011bbc90"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "ccaa18470cd686ac"
   },
   "national_2030_mixed_overlay": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "6507d38d9aec72e1"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "b442e2104586d938"
   },
   "national_2030_scales_baseline": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "388aee37c1f120ec"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "f8180db737946984"
   },
   "national_2030_scales_combined": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "4e5ed0f7691891d0"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "daf958dadfa91e4c"
   },
   "national_2030_scales_overlay": {
-    "blessed": "2026-09-25",
-    "reason": "D-81. The two moratorium labels renamed to what the field calls these rules. 'Blocked senior enrollment' and 'Blocked Medicaid enrollment' described people being blocked; the statute suspends CMS rules that would have made enrolling easier. Sub-lines now name the rule and its year. Internal keys unchanged - the label string is the join key across ten modules.",
-    "sha": "5c827225dfaed75d"
+    "blessed": "2026-09-26",
+    "reason": "D-90. Artwork background moves from the warm off-white to the page white; label halos follow. JW 2026-09-26.",
+    "sha": "2b0115af3b5ea0f2"
   }
 }

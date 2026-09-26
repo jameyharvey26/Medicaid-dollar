@@ -1409,3 +1409,13 @@ extra panel on the sheet is something to scan past before the looking starts.
 
 Labels are `v5.0` and `PROPOSED`, not prose. What moved goes in the message,
 not on the image.
+
+
+## S-108 · Prose follows the figure
+
+Where body prose and the figure on its page disagree, the PROSE is adjusted to
+match the figure. Not the other way round. JW, 2026-09-26, as a rule and not a
+case-by-case call.
+
+Always brought to JW for sign-off before it ships. The rule settles which side
+gives; it does not license changing the text silently.

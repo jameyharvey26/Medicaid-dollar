@@ -1,13 +1,16 @@
-import pathlib, tempfile
+import pathlib, sys, tempfile
 from playwright.sync_api import sync_playwright
 import release
 
-# D-79. The manuscript carries placeholders; the values are derived here and
+# D-84. The manuscript carries placeholders; the values are derived here and
 # substituted into a temporary copy, so no provenance string is ever typed
 # into the source. PAPER_URL and REPO are deliberately non-functional
 # placeholders: the landing page is not stood up and the repository path is
 # not final. Both are open items and must be real before this ships.
-SRC = pathlib.Path("paper_national_v6_0.html").resolve()
+# The manuscript, overridable so a retained whole-number release can still be
+# rendered after its own renderer is deleted:  python3 render_v6_1.py paper_national_v6_0.html
+SRC = pathlib.Path(sys.argv[1] if len(sys.argv) > 1
+                   else "paper_national_v6_1.html").resolve()
 OUT = pathlib.Path(f"Medicaid_Dollars_National_v{release.VERSION}.pdf").resolve()
 
 _FILL = {
@@ -22,7 +25,12 @@ for k, v in _FILL.items():
     _txt = _txt.replace(k, v)
 if "{{" in _txt:
     raise SystemExit("unsubstituted placeholder left in the manuscript")
-HTML = pathlib.Path(tempfile.mkdtemp()) / "paper.html"
+# Beside the manuscript, NOT in a temp directory. Every figure in the paper is
+# referenced as a relative path ("paper_figs/..."), so an HTML file written
+# anywhere else resolves none of them and Chromium prints a document of broken
+# image icons without complaining. Found 2026-09-26: the PDF was 192 kB with
+# eighteen figures in it, which is the size of a paper with no pictures.
+HTML = SRC.parent / "_render_tmp.html"
 HTML.write_text(_txt)
 
 with sync_playwright() as p:

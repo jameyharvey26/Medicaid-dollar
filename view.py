@@ -51,6 +51,7 @@ class View:
     # about the page. Amounts inside `steps` and `subs_spec` are keys or are
     # supplied by the composer from the Ledger, never typed in here.
     cp0_label: List[str] = field(default_factory=lambda: ["$100 Medicaid", "Dollars"])
+    cp0_year: str = ""
     centre: tuple = ("100 Dollars of", "Medicaid Spending")
     disp: Dict[str, str] = field(default_factory=dict)
     step_x: Dict[str, int] = field(default_factory=dict)   # peel key -> trunk x

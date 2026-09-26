@@ -13,13 +13,20 @@ import provider_mix as _PM
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple
 
-from outflows import COLS, col_right
+from outflows import OUTFLOWS as _OFL, COLS, col_right
 import tracker as _T
+
+# The three pinned peel positions, read from the one declaration in outflows
+# rather than typed again. They were 615 / 665 / 715 in four files, which is
+# what made D-87 a hand edit in each of them.
+_PIN_ADMIN = _OFL["Administration"]["src_x"]
+_PIN_MEDI = _OFL["Medicare premiums"]["src_x"]
 
 # Tributary terminals ride the tracker lattice (STYLE_GUIDE 2.10). WHICH slot a
 # tributary takes is the reach it declares in outflows.OUTFLOWS, falling back to
 # the column it is charged to where no reach is sourced (S-085).
-T_SLOT = {c: _T.edge(c) for c in ('FEDERAL','STATE_AGENCY','DISBURSE','PAYER','CLAIMS')}
+T_SLOT = {c: _T.edge(c) for c in ('FEDERAL','STATE_AGENCY','DISBURSE','PAYER',
+                                  'CLAIMS','BENEFICIARY')}
 
 
 def _reach_slot(name, default):
@@ -54,7 +61,7 @@ class Instance:
     dualc_n: Dict[str, float]
     gt: Dict[str, float]
     # ---- trunk steps: (name, "top"|"bot", value, x) --------------------
-    # Administration and Medicare premiums are pinned at 615 and 715 in every
+    # Administration and Medicare premiums keep their pinned offsets in every
     # instance. They are far enough apart that the Medicare return curve clears
     # the administration band; HR-1 steps interleave around them and must never
     # displace them (STYLE_GUIDE 3.5).
@@ -78,6 +85,9 @@ class Instance:
     claims_hr1_name: str = "Directed payment caps"
     tracker_hr1: List[Tuple] = field(default_factory=list)
     cp0_label: List[str] = field(default_factory=lambda: ["$100 Medicaid", "Dollars"])
+    # The year, standing on its own at the left of the tracker line. Out of
+    # cp0_label on 2026-09-25; the basis stays there, the year does not.
+    cp0_year: str = ""
     order: List[str] = field(default_factory=lambda: list(ORDER))
     disp: Dict[str, str] = field(default_factory=lambda: {"Other": "Wrap around services"})
     show_beneficiaries: bool = True
@@ -113,7 +123,7 @@ class Instance:
 AS_IS_2024 = Instance(
     name="national_2024",
     # JW, 2026-09-11. The first anchor names what the $100 divides and its basis.
-    cp0_label=["Medicaid Dollars", "(2024 actuals)"],
+    cp0_label=["Actuals"], cp0_year="2024",
     fed=64.70, state=35.30,
     admin=5.07, medicare=2.90,
     mco=40.06, dual=10.89, ffs=41.08,
@@ -127,7 +137,8 @@ AS_IS_2024 = Instance(
     node=_PM.NODE, fraud=0.15,
     ffs_n=_PM.FFS_N, mcoc_n=_PM.MCO_N, dualc_n=_PM.DUAL_N,
     gt={"Children": 13.48, "Adults": 29.56, "Disabled": 24.98, "Aged": 18.41},
-    steps=[("admin", "top", 5.07, 615), ("medicare", "top", 2.90, 715)],
+    steps=[("admin", "top", 5.07, _PIN_ADMIN),
+           ("medicare", "top", 2.90, _PIN_MEDI)],
     subs_spec=[("administration + Medicare premiums", "adm_med", "admin", "STATE_AGENCY", "State Admin"),
                ("plan administration + earnings", "plan", "admin", "PAYER", "MCO Admin"),
                ("documented fraud", "fraud", "fraud", "PROVIDERS", "Fraud")],
@@ -151,8 +162,8 @@ def to_be_2030(L, per100):
     sa = [(n, _OF[n]["src_x"]) for n, o in _OF.items()
           if o["cls"] == "hr1" and o["src"] == "STATE_AGENCY"]
     steps = [(n, "bot", per100[n], x) for n, x in sa]
-    steps += [("admin", "top", L["admin"], 615),
-              ("medicare", "top", L["medicare"], 715)]
+    steps += [("admin", "top", L["admin"], _PIN_ADMIN),
+              ("medicare", "top", L["medicare"], _PIN_MEDI)]
     return Instance(
         name="national_2030",
         fed=64.70, state=35.30,
@@ -208,7 +219,8 @@ def to_be_2030(L, per100):
             ("directed payment caps", per100["Directed payment caps"], "hr1", "CLAIMS", "Payment Caps"),
             ("documented fraud", "fraud", "fraud", "PROVIDERS", "Fraud"),
         ],
-        cp0_label=["Medicaid Dollars", "(2030 projected", "under prior law)"],
+        cp0_label=["Projected under", "prior law"],
+        cp0_year="2030",
         kicker="TO BE  \u00b7  FY2030 PROJECTION",
         title="$100 of Medicaid spending under prior law, with P.L. 119-21 applied",
         strap="Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.",
@@ -232,7 +244,8 @@ def as_is_dc():
         node=D.node, fraud=D.fraud,
         ffs_n=D.ffs_n, mcoc_n=D.mcoc_n, dualc_n=D.dualc_n,
         gt={},
-        steps=[("admin", "top", D.admin, 615), ("medicare", "top", D.medicare, 715)],
+        steps=[("admin", "top", D.admin, _PIN_ADMIN),
+               ("medicare", "top", D.medicare, _PIN_MEDI)],
         subs_spec=[("administration + Medicare premiums", "adm_med", "admin", "STATE_AGENCY", "State Admin"),
                    ("plan administration + earnings", "plan", "admin", "PAYER", "MCO Admin"),
                    ("documented fraud", "fraud", "fraud", "PROVIDERS", "Fraud")],
@@ -240,7 +253,7 @@ def as_is_dc():
         disp={},
         show_beneficiaries=False,
         absent=D.ABSENT,
-        cp0_label=["$100 DC Medicaid", "Dollars"],
+        cp0_label=["Actuals"], cp0_year="2024",
         centre=("100 Dollars of","DC Medicaid Spending"),
         kicker="AS IS  \u00b7  DISTRICT OF COLUMBIA  \u00b7  FY2024",
         title="$100 of DC Medicaid spending, before P.L. 119-21",

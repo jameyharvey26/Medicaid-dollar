@@ -21,7 +21,7 @@ final subtraction there means the value never has to be printed twice.
 CLASSES carry colour, in the dots, the values and the amounts alike:
     hr1 brown | admin grey | fraud red
 """
-from outflows import COLS, TRACKER_ANCHORS
+from outflows import COLS, TRACKER_ANCHORS, anchor_x
 
 # ---- palette -------------------------------------------------------------
 INK = "#111418"
@@ -33,8 +33,8 @@ SUBTLE = "#54585f"     # darkened from #6f6f6f
 COLOUR = {"hr1": HR1, "admin": ADMIN, "fraud": FRAUD}
 
 # ---- geometry ------------------------------------------------------------
-RULE_Y = 1106.0        # the hairline that closes the flow area
-BY = 1188.0            # the ledger line
+from outflows import RULE_Y   # declared with the layout spine, not here
+BY = RULE_Y + 82.0     # the ledger line, at its established offset below the rule
 AMT_Y = -116.0         # subtraction amount, in the span it was taken in
 AMT_LAB_Y = -96.0
 AMT_LAB_Y2 = -78.0     # second label row, when two labels would collide
@@ -310,6 +310,25 @@ MARK_TIER = 56.0           # a whole marker block steps DOWN when it would colli
 MARK_AMT_PX = 20
 MARK_NAME_PX = 17
 
+# The standing year label. JW, 2026-09-25: the year came out of the first
+# anchor's sub-label, where it was the second of three lines of small type in
+# the most crowded corner of the panel, and becomes a label on the line itself.
+# It reads at the LEFT END of the line, left-aligned in the margin the line
+# vacated when its first anchor moved right to the source bar — which is the
+# room that move creates and the reason to make it first.
+YEAR_PX = 40
+YEAR_X = 20.0              # canvas margin; the line now starts at SOURCE_X
+YEAR_DY = 14.0             # baseline below BY, so the label centres on the line
+YEAR_PAD = 14.0            # clear air between the label and the first anchor
+
+
+def year_fits(text, x_anchor, px=YEAR_PX):
+    """Half-true is not good enough here: the year is set large and the anchor
+    circle is fixed, so the build must say so rather than letting a big label
+    run under the first dot. Returns the overrun in units, 0 when it fits."""
+    right = YEAR_X + text_w(text, px)
+    return max(0.0, right - (x_anchor - ANCHOR_R - YEAR_PAD))
+
 
 def ledger(subtractions, marker_x, marker_origin=None, start=100.0):
     """(anchors, marks).
@@ -337,7 +356,7 @@ def ledger(subtractions, marker_x, marker_origin=None, start=100.0):
     origin = dict(marker_origin or {})
     anchors = []
     for col, name in TRACKER_ANCHORS:
-        x = float(COLS[col][0])
+        x = anchor_x(col)
         anchors.append(dict(
             x=x, name=list(name),
             value=start - sum(m["amount"] for m in marks

@@ -3,35 +3,59 @@ import tracker as TR
 import outflows as OF
 FAN_STACK_TOP=806.0
 from outflows import (OUTFLOWS, fan_rows, fan_crossings, resolve_bite_order,
-                      label_of as OUTFLOWS_label)
+                      label_of as OUTFLOWS_label, SOURCE_X)
 # ===== Medicaid Dollar-Flow Sankey, DRAFT V.4 (Public Comment) =====
 # H was 1240, which left the short-name row 4 units from the canvas edge and no
 # room for a second line. A bite whose short name cannot fit between its
 # neighbouring dots wraps (tracker.wrap_short, STYLE_GUIDE 4.8), so the canvas
 # carries the extra line. W is untouched: column register is frozen (1.2), panel
 # HEIGHT never was.
-W,H=2200,1376; cY=540; ys=4.4; bw=18
+W,H=2200,1416; cY=540; ys=4.4; bw=18
 FED="#2f5d74"; STATE="#9bb8c4"; DOLLAR="#1a6b40"
 MCO="#3f8f8a"; DUAL="#9a6fa6"; FFS="#5f7f96"
 ADMIN="#9a9a9a"; MEDI="#9aa0a6"; RETAIN="#5e5e5e"; EARN="#000000"; FRAUD="#e8170f"; DUALADM="#7d6f86"
 CHILD="#6fa382"; ADULT="#d8a24a"; DIS="#cf7d4f"; AGED="#6f6f9e"
-INK="#272727"; MUT="#6f6f6f"; BG="#faf8f3"; LINE="#e2dccf"
+# D-90, JW 2026-09-26. The panels were drawn on the warm off-white the
+# paper used for boxed furniture, and the page itself is white, so every
+# figure read as a card sitting ON the page rather than as part of it.
+# The artwork background and the label halos are the page white now.
+INK="#272727"; MUT="#6f6f6f"; BG="#ffffff"; LINE="#e2dccf"
 
 
 
-xFED=(110,300); xSG=(300,560); xSA=(560,820); xDI=(820,1060); xPA=(1060,1300); xCL=(1300,1560); xPR=(1560,1760); xBE=(1760,2180)
+# The spine, from the one place it is declared. These were a second copy of
+# outflows.COLS — the same nine numbers written twice, which is S-096 and is
+# why D-87 had to be applied in two files that could have disagreed.
+xFED, xSG, xSA, xDI, xPA, xCL, xPR, xBE = (
+    OF.COLS["FEDERAL"], OF.COLS["STATE_GOVT"], OF.COLS["STATE_AGENCY"],
+    OF.COLS["DISBURSE"], OF.COLS["PAYER"], OF.COLS["CLAIMS"],
+    OF.COLS["PROVIDERS"], OF.COLS["BENEFICIARY"])
 svg=[]
 def add(s): svg.append(s)
 def esc(s): return str(s).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+# How far downstream a ribbon's control points sit. Half the run is the right
+# shape for a short hop, and the wrong one for a long one: a tributary crossing
+# most of the page descends so gradually that it rides at mid-height through
+# everything it passes, and cuts the ribbons that stop short of it. Capping the
+# control distance makes a long run fall early and then travel flat and low,
+# under its neighbours. At 340 every existing tributary is unchanged except the
+# Medicaid enrollment rule, which tightens by 28 units.
+CTRL_MAX = 340.0
+
+
+def ctrl_x(x0, x1):
+    return x0 + min((x1 - x0) / 2.0, CTRL_MAX)
+
+
 def band(x0,x1,y0,y1,h0,h1,fill,op=0.82,dash=False):
-    xm=(x0+x1)/2
+    xm=ctrl_x(x0,x1)
     d=f"M{x0:.1f},{y0:.1f} C{xm:.1f},{y0:.1f} {xm:.1f},{y1:.1f} {x1:.1f},{y1:.1f} L{x1:.1f},{y1+h1:.1f} C{xm:.1f},{y1+h1:.1f} {xm:.1f},{y0+h0:.1f} {x0:.1f},{y0+h0:.1f} Z"
     da=' stroke-dasharray="5 3"' if dash else ''
     add(f'<path d="{d}" fill="{fill}" fill-opacity="{op}" stroke="{fill}" stroke-opacity="0.45" stroke-width="0.6"{da}/>')
 def rect(x,y,w,h,fill,op=1.0,rx=2): add(f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" rx="{rx}" fill="{fill}" fill-opacity="{op}"/>')
 def txt(x,y,s,size=13,fill=INK,anchor="start",weight="normal",halo=True,italic=False):
     it=' font-style="italic"' if italic else ''
-    po=' paint-order="stroke" stroke="#faf8f3" stroke-width="2.2" stroke-linejoin="round"' if halo else ''
+    po=f' paint-order="stroke" stroke="{BG}" stroke-width="2.2" stroke-linejoin="round"' if halo else ''
     add(f'<text x="{x:.1f}" y="{y:.1f}" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="{size}" fill="{fill}" text-anchor="{anchor}" font-weight="{weight}"{it}{po}>{esc(s)}</text>')
 def lbg(x,y,s,size=12.5,anchor="start",pad=4):
     w=len(s)*size*0.56+pad*2; h=size+pad*1.5
@@ -106,13 +130,13 @@ def render(cfg):
         add(f'<line x1="{x0}" y1="90" x2="{x0}" y2="1030" stroke="{LINE}" stroke-width="1"/>')
     _rx = xBE[1] if cfg.show_beneficiaries else xPR[1]
     add(f'<line x1="{_rx}" y1="90" x2="{_rx}" y2="1030" stroke="{LINE}" stroke-width="1"/>')
-    add(f'<line x1="110" y1="90" x2="{W-20}" y2="90" stroke="{LINE}" stroke-width="1.2"/>')
+    add(f'<line x1="{xFED[0]}" y1="90" x2="{W-20}" y2="90" stroke="{LINE}" stroke-width="1.2"/>')
 
     # ===== sources =====
     fed_top=126; st_top=655
-    rect(150,fed_top,bw,fed*ys,FED); rect(150,st_top,bw,state*ys,STATE)
-    lbg(150,fed_top-9,f"Federal  ${fed:.2f}",14); txt(150,fed_top-9,f"Federal  ${fed:.2f}",14,FED,"start","bold",halo=False)
-    lbg(150,st_top+state*ys+18,f"State  ${state:.2f}",14); txt(150,st_top+state*ys+18,f"State  ${state:.2f}",14,"#5f7f8c","start","bold",halo=False)
+    rect(SOURCE_X,fed_top,bw,fed*ys,FED); rect(SOURCE_X,st_top,bw,state*ys,STATE)
+    lbg(SOURCE_X,fed_top-9,f"Federal  ${fed:.2f}",14); txt(SOURCE_X,fed_top-9,f"Federal  ${fed:.2f}",14,FED,"start","bold",halo=False)
+    lbg(SOURCE_X,st_top+state*ys+18,f"State  ${state:.2f}",14); txt(SOURCE_X,st_top+state*ys+18,f"State  ${state:.2f}",14,"#5f7f8c","start","bold",halo=False)
     # trunk geometry
     # The trunk is what arrives at the state agency: everything that entered,
     # less anything that peeled before the hundred was struck. D-70. This used
@@ -126,11 +150,11 @@ def render(cfg):
     fed_lane=(T0,T0+(fed-fb-fo)*ys)
     st_lane=(T0+(fed-fo)*ys,TB)
     if fb+fo>0:
-        _fm=(150+bw+xSG[0])/2; _fmy=(fed_top+fed_lane[0])/2
+        _fm=(SOURCE_X+bw+xSG[0])/2; _fmy=(fed_top+fed_lane[0])/2
         # The vaccine money comes off the TOP edge at the earliest point there
         # is — the moment the appropriation leaves its own bar — so the band
         # that crosses the page is already the blended dollar. D-71.
-        band(150+bw,_fm,fed_top+fo*ys,_fmy,(fed-fo)*ys,(fed-fo)*ys,FED,0.8)
+        band(SOURCE_X+bw,_fm,fed_top+fo*ys,_fmy,(fed-fo)*ys,(fed-fo)*ys,FED,0.8)
         band(_fm,xSG[0],_fmy,fed_lane[0],(fed-fo)*ys,(fed-fb-fo)*ys,FED,0.8)
         if fb>0:
             bites.append((cfg.fed_bite_name,_fm,_fmy+fed*ys,fb))
@@ -144,8 +168,8 @@ def render(cfg):
             # Out along the top, one fold, back to a terminal. One doubling
             # back and no swirl: two reversals would suggest the money went
             # somewhere and came back, and it does not.
-            _vh=max(fo*ys,2.4); _vk=150+bw+96; _vt=fed_top-26
-            band(150+bw,_vk,fed_top,fed_top-12,fo*ys,fo*ys,MEDI,0.72)
+            _vh=max(fo*ys,2.4); _vk=SOURCE_X+bw+96; _vt=fed_top-26
+            band(SOURCE_X+bw,_vk,fed_top,fed_top-12,fo*ys,fo*ys,MEDI,0.72)
             _vm=fed_top-12+fo*ys/2
             add(f'<path d="M{_vk:.1f},{_vm:.1f} C{_vk+86:.1f},{_vm:.1f} '
                 f'{_vk+86:.1f},{_vt:.1f} 246,{_vt:.1f}" fill="none" '
@@ -162,8 +186,8 @@ def render(cfg):
             lbg(252,_vt-3,_ol,10.5,"start")
             txt(252,_vt-3,_ol,10.5,"#5f6166","start","bold",halo=False)
     else:
-        band(150+bw,xSG[0],fed_top,fed_lane[0],fed*ys,fed*ys,FED,0.8)  # no bite
-    band(150+bw,xSG[0],st_top,st_lane[0],state*ys,state*ys,STATE,0.8)
+        band(SOURCE_X+bw,xSG[0],fed_top,fed_lane[0],fed*ys,fed*ys,FED,0.8)  # no bite
+    band(SOURCE_X+bw,xSG[0],st_top,st_lane[0],state*ys,state*ys,STATE,0.8)
     band(xSG[0],xSG[1],fed_lane[0],fed_lane[0],(fed-fb-fo)*ys,(fed-fb-fo)*ys,FED,0.82)
     band(xSG[0],xSG[1],st_lane[0],st_lane[0],state*ys,state*ys,STATE,0.82)
     rect(xSG[0],fed_lane[0],bw,(fed-fb-fo)*ys,FED); rect(xSG[0],st_lane[0],bw,state*ys,STATE)
@@ -455,6 +479,21 @@ def render(cfg):
     add(f'<line x1="{anchors[0]["x"]:.0f}" y1="{TR.BY}" x2="{anchors[-1]["x"]:.0f}" '
         f'y2="{TR.BY}" stroke="{TR.INK}" stroke-width="3.4" stroke-opacity="0.85"/>')
 
+    # The standing year label, at the left end of the line. It is the only place
+    # the year appears on a bare panel — the kicker and title live on the
+    # comparison sheet, not here — so it is set large rather than tucked into
+    # the first anchor's sub-label, where it was the second of three lines of
+    # small type in the most crowded corner of the artifact.
+    if cfg.cp0_year:
+        _over = TR.year_fits(cfg.cp0_year, anchors[0]["x"])
+        if _over > 0:
+            raise ValueError(
+                f"tracker: year label {cfg.cp0_year!r} at {TR.YEAR_PX}px "
+                f"overruns the first anchor by {_over:.0f} units. The fix is "
+                f"the size or the margin in tracker.py, not the label.")
+        txt(TR.YEAR_X, TR.BY + TR.YEAR_DY, cfg.cp0_year, TR.YEAR_PX,
+            TR.AGILIAN_BLUE, "start", "bold", halo=False)
+
     # Decrement markers, reading ABOVE the line. Class carries in the SHAPE as
     # well as the colour: rhombus HR-1, square administration, triangle fraud.
     # Each shows only its own amount and name — every sum is at an anchor.
@@ -627,7 +666,12 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
         items.append(dict(name=name, label=OUTFLOWS_label(name), amt=v,
                           xb=xb, xt=xt, th=th, sub=sub,
                           y_src=(yb-v*ys)+th/2,
-                          anchor=OUTFLOWS.get(name,{}).get("label_side")))
+                          anchor=OUTFLOWS.get(name,{}).get("label_side"),
+                          # A declared terminal height, for a tributary the
+                          # solver cannot place correctly from bite order alone.
+                          # The mechanism already existed for the ordinary
+                          # outflows; the HR-1 fan simply never read it.
+                          fixed_y=OUTFLOWS.get(name,{}).get("term_y")))
     # Tributaries that share a terminal column stack CONTIGUOUSLY there, so the
     # reader can add their thicknesses by eye and get the column's subtraction.
     # Their labels become a keyed list beside the stack rather than a block under
@@ -657,14 +701,21 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
         yt=YT[name]
         y0=yb-v*ys                      # flush with the edge (S-057)
         band(xb,xt,y0,yt,th,th,WARM,0.74)
-        xm=(xb+xt)/2
+        xm=ctrl_x(xb,xt)
         add(f'<path d="M{xb:.1f},{y0:.1f} C{xm:.1f},{y0:.1f} {xm:.1f},{yt:.1f} {xt:.1f},{yt:.1f} '
             f'L{xt:.1f},{yt+th:.1f} C{xm:.1f},{yt+th:.1f} {xm:.1f},{y0+th:.1f} {xb:.1f},{y0+th:.1f} Z" '
             f'fill="url(#hr1hatch)"/>')
         if round(xt) in STACKS:
             continue                      # stacked group is labelled as a list below
         rect(xt,yt,6,max(th,4),WARMD)
-        an=ANCH[name]; lx=xt-8 if an=="end" else xt
+        # A declared anchor override, for the rare case where a label block
+        # sits in the only route another mark has. "Other" set three lines to
+        # the RIGHT of its terminal, straight across the lane the incidence
+        # run-out has to take; right-aligning it empties that space. Medicare
+        # Savings is right-aligned at the same terminal and sits 50 units
+        # higher, so the two do not meet.
+        an=OUTFLOWS.get(name,{}).get("label_anchor") or ANCH[name]
+        lx=xt-8 if an=="end" else xt
         # A declared vertical nudge for a label block, in the rare case where two
         # tributaries terminate close enough that their blocks read as one. It
         # moves the WORDS only: the terminal, the ribbon and the marker on the
@@ -687,6 +738,7 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
             lbg(lx,ly+14,sub,10,an); txt(lx,ly+14,sub,10,MUT,an,halo=False,italic=True)
             lbg(lx,ly+28,_amt,12,an)
             txt(lx,ly+28,_amt,12,WARM,an,"bold",halo=False)
+
     # keyed list beside each contiguous stack
     for k,v in STACKS.items():
         y0=YT[v[0]["name"]]; tot=sum(i["th"] for i in v)

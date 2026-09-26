@@ -24,6 +24,18 @@ FILES=(
   # than re-rendered. Do not regenerate them.
   "Medicaid_Dollars_National_DRAFT_v4.pdf"
   "Medicaid_Dollars_National_TYPST.pdf"
+
+  # 2026-09-26. render_v6_0.py wrote its HTML into a temp directory, so every
+  # relative figure path resolved to nothing and Chromium printed the paper as
+  # broken image icons without complaining. render_v6_1.py fixes it and now
+  # takes the manuscript as an argument, so the retained v6.0 whole-number
+  # release still renders:  python3 render_v6_1.py paper_national_v6_0.html
+  # paper_national_v6_0.html itself is KEPT — whole-number releases are
+  # permanent. Only the renderer and the defective PDF go.
+  "render_v6_0.py"
+  # 192 kB with eighteen figures in it, which is the size of a paper with no
+  # pictures. It has none. Superseded by v6.1 at 3.1 MB. Do not regenerate.
+  "Medicaid_Dollars_National_v6.0.pdf"
 )
 
 # Superseded earlier and already gone; kept so the script is idempotent if an

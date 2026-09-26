@@ -37,7 +37,7 @@ REPO = os.path.dirname(os.path.abspath(__file__))
 R = os.path.join(REPO, "reference_renders")
 
 # ---------------------------------------------------------------- style
-BG = (250, 249, 246)
+BG = (255, 255, 255)   # D-90: panels are drawn on white now
 INK = (32, 38, 45)
 MUT = (110, 116, 124)
 WARM = (139, 90, 90)          # HR-1 warm, STYLE_GUIDE 5.5

@@ -58,7 +58,7 @@ HR1 = {
     "Six-month renewals":               ("STATE_AGENCY", "PAYER"),
     "Blocked Medicaid enrollment rule": ("STATE_AGENCY", "CLAIMS"),
     "Everything else":                  ("STATE_AGENCY", "STATE_AGENCY"),
-    "Blocked senior enrollment rule":   ("STATE_AGENCY", "STATE_AGENCY"),
+    "Blocked senior enrollment rule":   ("STATE_AGENCY", "BENEFICIARY"),
     "Provider tax limits":              ("FEDERAL",      "FEDERAL"),
     # Charged at the claims fan; the dollar would have reached a provider. The
     # terminal nonetheless rides the CLAIMS edge, because the tracker lattice
@@ -196,7 +196,7 @@ def build(variant: str = "mixed") -> Ledger:
         return Peel(name, name, _mod(per100[name], METHOD), charged,
                     reach=reach, kind="hr1")
 
-    # D-70/D-71/D-72, completed by D-78. This used to take the inherited FY2024
+    # D-70/D-71/D-72, completed by D-83. This used to take the inherited FY2024
     # $5.07 overhead figure - administration plus federal oversight plus a
     # vaccine purchase, bundled - and split it three ways on FY2024
     # proportions. That was a patch, not the D-70 correction: the as-is panel
@@ -218,7 +218,7 @@ def build(variant: str = "mixed") -> Ledger:
 
     peels = [Peel("vfc", "Vaccines for Children",
                   _mod(_vfc, "Vaccines for Children, $7,239M, held at FY2024 "
-                             "dollars to FY2030 (D-71, D-78). The same figure "
+                             "dollars to FY2030 (D-71, D-83). The same figure "
                              "the as-is panel peels. Before the blend, "
                              "terminates at CDC."),
                   "FEDERAL", reach="FEDERAL", kind="return", outside=True)]

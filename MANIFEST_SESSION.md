@@ -1244,11 +1244,215 @@ finding until we establish where recoveries actually come from.
 
 ---
 
-## 2026-09-25 — D-78 through D-81, S-106, S-107; Brent's review applied
+## 2026-09-26 — D-87 through D-89, S-108; the line, the spine, the long tributary
 
 **Decisions**
 
-- **D-78 · The payer lanes are derived from Exhibit 17 dollars.** They were
+- **D-87 · The spine moves once, and is frozen again.** State government and
+  disbursements each lose 10%; the 50 units recovered go to the LEFT MARGIN.
+  PAYER onward is untouched at 1060 / 1300 / 1560 / 1760 / 2180, so the right
+  two-thirds of every panel and every crop that cuts it is where it was. The
+  boundaries are not derived from anything and never were: 1.2 froze them by
+  listing them, and says nothing about where they came from.
+
+- **D-88 · The flow area gains 40 units.** The Medicare Savings tributary runs
+  the width of the page now and the rows it passes over have to clear it; at
+  the old floor two of them ran into the tracker. H 1376 -> 1416. W and the
+  scale stay frozen (1.2, 1.3); H never was, and was extended once before for
+  the same kind of reason.
+
+- **D-89 · The Medicare Savings loss leaves the Eligibility Rules bundle.**
+  Four of those five levers are dollars that would have bought care. This one
+  would have paid a Medicare premium and lands on the dual eligible, and the
+  panel now draws that difference — summing it with the other four told the
+  reader they were the same kind of loss. Eligibility Rules reads -$6.95; the
+  new marker reads -$1.28.
+
+**Standing notes**
+
+- **S-108 · Prose follows the figure.** Where body prose and the figure on the
+  page disagree, the PROSE is adjusted to match the figure, not the other way
+  round. Always brought to JW for sign-off; never applied silently.
+
+**Also landed**
+
+- The tracker line's ends were re-aligned: the first anchor to SOURCE_X, where
+  the money first appears on the canvas, and the last to the CENTRE of the
+  beneficiary column rather than the end of the provider column. Attribution
+  unchanged — no outflow originates in either vacated stretch.
+- The year is a standing label at the left of the line, 40px. The first
+  anchor's sub-label carries the basis alone: "Actuals", "Projected under
+  prior law". The year was the only place the year appeared on a bare panel.
+- The Medicare Savings moratorium is an ordinary tributary reaching the
+  BENEFICIARY column. Closes EN-19, open since it was written. The dashed
+  incidence treatment tried first was cut: JW, "I hate the dotted line
+  treatment, it's a blight."
+- Ribbon control points are capped at 340 units downstream (CTRL_MAX). Half
+  the run is right for a short hop and wrong for a long one — a tributary
+  crossing the page descended so gradually it rode at mid-height through
+  everything it passed. Only the Medicaid enrollment rule changes, by 28 units.
+- The HR-1 fan now reads a declared terminal height, a mechanism that already
+  existed for the ordinary outflows and that the fan never read.
+
+**Brittleness removed**
+
+- `sankey.py` held a SECOND copy of the column spine as xFED..xBE. S-096.
+  Derived from `outflows.COLS` now.
+- Every peel's `src_x` was an absolute canvas position; they are offsets from
+  their own column's left edge via `_at(col, off)`.
+- The three pinned peel positions were typed in four files; `views.py` and
+  `instances.py` read them from OUTFLOWS.
+- `FAN_FLOOR` was a literal with the tracker rule's position copied into a
+  comment beside it. RULE_Y is declared with the layout spine and the floor
+  derives from it.
+
+**Renumbered.** The 25 September national set was allocated D-78 through D-81,
+four days after the 21 September DC session had spent those numbers. DC keeps
+78-82; national moved to 83-86. 21 lines across nine files, by line number.
+There is no decisions register, which is why this happened twice; one is being
+written.
+
+**Carried to the next build**
+
+- **Figure placement, deferred by JW.** Three mismatches stand: page 4 discusses
+  Medicare premiums with no figure, page 9 shows Figure 8 while discussing work
+  reporting, page 16 discusses "Everything else" with no diagram. Check page 16
+  for a detector false positive on the Limits register before moving anything.
+  Under S-108 the prose moves, not the figure — with sign-off.
+- **All 18 crop boxes are stale.** The canvas is 40 units taller (D-88) and the
+  first four columns moved (D-87); 8 of the 18 cut sub-regions left of PAYER.
+  Re-cut before judging placement.
+- **The Medicare Savings marker is drawn outside the segment it is charged to.**
+  It sits on the providers/beneficiaries divider at x=1760, which is where the
+  loss LANDS; the $1.28 is subtracted in the Budgeted -> Funding Disbursed
+  segment, where the money LEAVES. Both anchors reconcile ($98.75 - $84.47 =
+  6.05 + 6.95 + 1.28), but a reader adding the markers between Claims Paid and
+  Health Services Delivered will find $0.99 of anchor movement against $2.27 of
+  markers. Declared exception to 4.9 in `DECREMENT_X`. Needs either a note on
+  the marker or JW's acceptance.
+- **Gate 31** not yet written. **E&E caveats** not yet drafted. **Cover
+  graphic** in hand.
+
+**D-90 · The artwork is drawn on the page, not on a card.** The panels, the
+cover graphic, the comparison sheets and the figure frames were all painted
+#faf8f3, which is the colour of the paper's BOXED FURNITURE — callouts, the
+limits register — while the page itself is #ffffff. Every figure therefore read
+as a tile sitting on the page rather than as part of it. Artwork background and
+the label halos are now the page white. Manuscript forked to
+`paper_national_v6_1.html` with `render_v6_1.py`; v6.0 kept.
+
+**Beneficiary incidence — designed, not built.** JW asked for the section to be
+rewritten beneficiary-centric. The pies cannot carry it: they hold FY2024
+COMPOSITION, and the FY2030 pies are FY2024 scaled by one multiplier, so all
+four groups fall by 9.83% as an artifact. Allocating the six service falls by
+each service's own mix was tried and came out flat, 9.80 to 10.00 percent, a
+non-answer dressed as a finding.
+
+What works is allocating the PROVISIONS, which is where the named populations
+are. Built in `inc.py` as a declared thought exercise. Margins only get
+published; the full cube goes in the footnotes, because the unraked cube
+contradicts Figure 11 on every service (long-term care -1.89 against a
+published -2.86) and the raked version puts adults at 44.9% of their own
+long-term care, which is an artifact of forcing the margins to agree.
+
+`family.py` draws two composite households from it. Not a case, a reference
+architecture.
+
+**Statute research, and it moved the answer.**
+- §71107 six-month renewals: the adult expansion group at §1902(a)(10)(A)(i)(VIII)
+  plus equivalent §1115 populations. CMS SMD 26-001.
+- §71119 work reporting: the same group, 19 to 64, not enrolled in Medicare;
+  43 states and DC. Non-expansion states are NOT required to implement it.
+- So the answer to JW's question is NO: neither provision reaches the
+  non-expansion, non-ABD, non-SSI population.
+- The IFC (91 FR 33348) excludes parents, guardians, caretaker relatives and
+  family caregivers of a dependent child 13 AND UNDER, **or of a disabled
+  individual of any age**, and multiple caregivers in one household may
+  qualify. A household with a disabled dependent is exempt permanently; a
+  household with young children is exempt until a birthday.
+- Medicare Savings, 2026: Part B premium $202.90/month, $2,434.80/year; Part B
+  deductible $283; Part A deductible $1,736 per benefit period; QMB pays
+  premiums, deductibles and coinsurance, SLMB the premium only.
+
+**D-91 CANDIDATE, NOT TAKEN. The Adults row should be two rows.** Exhibit 21,
+the row already signed in `ledger_national_2024.py` at vintage FY2023,
+publishes FIVE eligibility columns and we summed two of them: Child 15.6%,
+**New adult group 22.5%, Other adult 11.7%**, Disabled 28.9%, Aged 21.3%. Its
+footnote 4 defines other adults as those under 65 qualifying through a pathway
+other than disability or §1902(a)(10)(A)(i)(VIII) — parents and caretakers,
+pregnancy. That is precisely the population the two biggest provisions do not
+reach.
+
+Splitting it: an expansion adult loses 28.0% of the Medicaid dollars behind
+their care; a non-expansion parent loses 4.4%, the same as a child. The 19.9%
+we were about to print is the average of two groups with nothing in common
+under this statute. No acquisition is needed — the source is already open and
+signed. The existing Adults figure will report LAPSED on edit and the two
+replacements need a person's signature.
+
+**Also found:** the pie interiors carry no citation. The ledger's own note says
+they are fit by iterative proportional fitting from an unsourced seed, and the
+cube reads its service-by-group numbers off them. Limits register entry owed.
+
+**`DECISIONS.md` and `decisions_index.py` written**, the register promised at
+close. It finds 14 of 90 and says so on its face: the rest were recorded in
+formats it does not match. Backfilling is an open item. It reports collisions
+by name, which is the failure that produced the D-78 renumber.
+
+**Two deletions added to `DELETE OLD FILES.command`**, which is where they
+belong: `render_v6_0.py` and `Medicaid_Dollars_National_v6.0.pdf`.
+`paper_national_v6_0.html` is KEPT — whole-number releases are permanent — so
+`render_v6_1.py` now takes the manuscript as an optional argument and can
+render it after its own renderer is gone.
+
+**Later the same day — the cover, and a defect that had hidden three others**
+
+- **The cover graphic is the taper.** Portrait, in the right half of the
+  landscape cover. Built to Section 508 / WCAG 2.1 AA and measured rather than
+  asserted: seventeen colour pairs checked against their thresholds. The
+  secondary grey was #7a7570 at 4.30:1 and FAILED 1.4.3; darkened to #6f6a64 at
+  5.05:1. The FY2024 ghost fill reads 1.43:1, so under 1.4.11 the fill is
+  decoration and the BOUNDARY is drawn as a line at 3.13:1. No quantity is
+  carried by colour alone (1.4.1) — a greyscale proof loses nothing. The SVG
+  carries role="img", title and desc, and the long description is generated
+  from the same data so it cannot drift from the picture. `cover_data.py`
+  derives every figure on it; nothing is typed (S-105).
+  The decrement marks are RHOMBUSES, not squares, and are a fixed size rather
+  than sized by amount: a proportional mark makes $0.75 a speck, which is how
+  they were getting lost, and grey squares already mean administration.
+
+- **render_v6_0.py wrote its HTML to a temp directory.** Every figure is
+  referenced as a relative path, so none of them resolved and Chromium printed
+  a paper of broken image icons without complaining. The PDF was 192 kB with
+  eighteen figures in it. It is 3.1 MB now.
+  The three page/subject mismatches carried forward this morning were an
+  artefact of this: figurefit was reading real captions against a document with
+  no pictures. Both layout gates are clean and ALL SEVEN GATES ARE GREEN.
+
+- **All 18 crop boxes re-cut** for D-87 and D-88, by piecewise remap of the
+  moved column boundaries and the 40-unit canvas, not by eye.
+
+- **Stale figures corrected in prose, six places.** $78.38 -> $78.33 (x4),
+  $79.37 -> $79.32, $21.62 -> $21.67. These lapsed under the D-76 correction of
+  2026-09-25 and the re-signing never reached the body text. FOR JW SIGN-OFF
+  under S-108.
+
+- **The cover stamp was cut.** It said what the cover graphic's own footer says,
+  in the same words, and the graphic derives it. FOR JW SIGN-OFF.
+
+## 2026-09-25 — D-83 through D-86, S-106, S-107; Brent's review applied
+
+**Renumbered 2026-09-25, JW.** This set was allocated D-78 through D-81 and
+issued four days after the 21 September DC session had already spent those
+numbers on the Wellpoint composite, the CY2024 rebase, the DHCF revenue
+finding and the MCO long-term care zero. DC allocated first and keeps 78–82;
+the national set moves to 83–86, because the error was made here. 21 lines
+changed by line number across nine files — a global substitution would have
+rewritten the DC entries too. No figure moved.
+
+**Decisions**
+
+- **D-83 · The payer lanes are derived from Exhibit 17 dollars.** They were
   typed at two decimals on the old hundred (40.06 / 10.89 / 41.08) and
   multiplied through when D-70 moved the denominator, while the peels were
   re-derived from Exhibit 16 dollars. Exact figures on one side, twice-rounded
@@ -1262,15 +1466,15 @@ finding until we establish where recoveries actually come from.
   the lane derivation; `provider_mix.py` and `ledger_2030.py` read it instead
   of carrying typed copies. No printed figure moves at two decimals on FY2024.
 
-- **D-79 · Provenance is stamped, not typed.** `release.py` derives the version,
+- **D-84 · Provenance is stamped, not typed.** `release.py` derives the version,
   date and a six-character build id from the content of the figure-bearing
   modules. Cannot come from git: the working copy is a tarball with no `.git`.
   Replaces two typed strings that disagreed with each other by eight days.
 
-- **D-80 · The cover figure is cut.** It was the same file as Figure 1, one page
+- **D-85 · The cover figure is cut.** It was the same file as Figure 1, one page
   later, at a third the size. New cover graphic pending.
 
-- **D-81 · The moratorium labels are renamed.** "Blocked senior enrollment" and
+- **D-86 · The moratorium labels are renamed.** "Blocked senior enrollment" and
   "Blocked Medicaid enrollment" described people being blocked. The statute
   suspends CMS rules that would have made enrolling easier. Now "Medicare
   Savings rule suspended" and "Medicaid enrollment rule suspended", which is
@@ -1300,7 +1504,7 @@ finding until we establish where recoveries actually come from.
   else.** Sankey and tracker line together, in register. Two panels means two
   images. Labels `v5.0` and `PROPOSED`.
 
-**Signatures** — 26 of 36 lapsed under D-78, re-signed 2026-09-25 on
+**Signatures** — 26 of 36 lapsed under D-83, re-signed 2026-09-25 on
 `reference_renders/sign_2026-09-25.png`. Three agreements, not one: each figure,
 the collections convention, and S-106's anchor-holds rule. Coverage moved 24/2
 verified/modelled to 21/5 — the three payer lanes are now MODELLED because the

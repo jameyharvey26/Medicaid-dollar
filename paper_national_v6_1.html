@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>$100 Medicaid Dollars — national edition</title>
+<style>
+@font-face { font-family:"Jost"; src:url("paper_fonts/Jost.ttf") format("truetype");
+             font-weight:100 900; font-display:block; }
+@font-face { font-family:"Nunito"; src:url("paper_fonts/Nunito.ttf") format("truetype");
+             font-weight:200 1000; font-display:block; }
+
+:root{
+  --blue:#17325c; --ink:#272727; --mut:#6f6f6f;
+  --paper:#faf8f3; --rule:#e2dccf; --loss:#8B5A5A;
+}
+@page { size: letter landscape; margin: 14mm 15mm 13mm 15mm; }
+/* D-79. Quiet provenance, stamped at build time by release.py. Never typed:
+   the two strings this replaces disagreed with each other by eight days. */
+.provenance{ position:fixed; bottom:4mm; left:15mm; right:15mm;
+  font-family:"Jost"; font-size:6.5pt; font-weight:300; color:var(--mut);
+  letter-spacing:.02em; display:flex; justify-content:space-between; }
+html{ -webkit-print-color-adjust:exact; print-color-adjust:exact; background:#ffffff; }
+body{ font-family:"Nunito",sans-serif; font-weight:400; font-variation-settings:"wght" 400;
+  font-size:9.7pt; line-height:1.5; color:var(--ink); background:transparent; margin:0; }
+h1,h2,h3,h4,.anum,figcaption b,th,.pull .big{ font-family:"Jost",sans-serif; }
+
+.span{ column-span:all; }
+.flow{ column-count:2; column-gap:11mm; column-rule:1px solid var(--rule);
+  orphans:3; widows:3; }
+p{ margin:0 0 .6em 0; text-align:justify; hyphens:auto; }
+strong{ font-weight:800; font-variation-settings:"wght" 800; color:var(--blue); }
+sup{ font-size:.72em; line-height:0; }
+
+/* cover */
+.cover{ break-after:page; display:grid; grid-template-columns:1.06fr 1fr; gap:0 16mm;
+  align-items:center; height:181mm; }
+.cover .rule{ height:6px; background:var(--blue); width:52mm; margin-bottom:8mm; }
+.cover h1{ font-size:40pt; font-weight:600; line-height:1; color:var(--blue);
+  margin:0 0 4mm 0; letter-spacing:-.015em; }
+.cover h2{ font-size:14pt; font-weight:300; margin:0 0 10mm 0; line-height:1.3;
+  max-width:118mm; }
+.cover .by{ font-family:"Jost"; font-size:11.5pt; font-weight:500; }
+.cover .covdate{ margin-top:3mm; font-size:9.5pt; }
+.cover .by span{ display:block; font-weight:300; font-size:9.5pt; color:var(--mut);
+  margin-top:1.5mm; }
+.cover .right img{ max-height:172mm; max-width:100%; width:auto; display:block;
+  margin:0 auto; background:#ffffff; }
+.cover .stamp{ margin-top:4mm; border-top:1px solid var(--rule); padding-top:3mm;
+  font-size:8pt; color:var(--mut); line-height:1.48; }
+
+/* furniture */
+.sechead{ border-bottom:2px solid var(--blue); padding-bottom:2.5mm; margin:0 0 5mm 0;
+  break-inside:avoid; break-after:avoid; }
+.sechead.gap{ margin-top:11mm; }
+.anum{ font-size:8.2pt; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--loss); margin:0 0 1mm 0; }
+h2.sec{ font-size:21pt; font-weight:600; color:var(--blue); margin:0; line-height:1.1; }
+h3{ break-after:avoid; font-size:11.4pt; font-weight:600; color:var(--blue);
+  margin:4.5mm 0 1.5mm 0; }
+h3.first{ margin-top:0; }
+.lede{ font-size:10.8pt; font-weight:300; line-height:1.42; margin-bottom:3mm; }
+
+/* figures */
+figure{ margin:4mm 0 6mm 0; break-inside:avoid; }
+figure img{ width:100%; display:block; border:1px solid var(--rule); background:#ffffff; }
+figure.det img{ width:auto; max-width:100%; margin:0 auto; }
+figure.tall img{ max-height:87.2mm; }
+figure.portrait img{ max-height:87.2mm; }
+figure.bene img{ max-height:71.8mm; }
+figure.wide img{ max-height:61.6mm; }
+figure.squeeze img{ max-height:66.7mm; }
+table.tight{ font-size:8.6pt; }
+table.tight td{ padding:1mm 1.4mm; }
+table.tight th{ padding:1.1mm 1.4mm; }
+figcaption{ font-size:7.9pt; color:var(--mut); line-height:1.4; margin-top:1.8mm;
+  border-top:1px solid var(--rule); padding-top:1.4mm; text-align:left; }
+figcaption b{ color:var(--blue); font-weight:600; }
+.plate{ break-before:page; break-after:page; }
+.plate figure{ margin:0; }
+.plate .platetitle{ font-family:"Jost"; font-size:17pt; font-weight:600; color:var(--blue);
+  margin:0 0 3mm 0; line-height:1.1; border-bottom:2px solid var(--blue); padding-bottom:2.5mm; }
+.plate img{ max-height:150mm; width:auto; margin:0 auto; }
+.plate figcaption{ font-size:8.6pt; }
+
+/* tables */
+table{ break-inside:avoid; border-collapse:collapse; width:100%; margin:2.5mm 0 3.5mm 0;
+  font-size:9.2pt; }
+th{ text-align:left; font-size:7.7pt; font-weight:600; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--mut); border-bottom:1.5px solid var(--blue);
+  padding:1.4mm 1.6mm; vertical-align:bottom; }
+th.n, td.n{ text-align:right; }
+td{ padding:1.3mm 1.6mm; border-bottom:1px solid var(--rule); }
+td.svc{ font-weight:700; color:var(--blue); }
+tr.tot td{ border-bottom:none; border-top:2px solid var(--blue); font-weight:800;
+  color:var(--blue); padding-top:2mm; }
+
+/* pull */
+.pull{ border-top:3px solid var(--blue); border-bottom:1px solid var(--rule);
+  padding:3.5mm 0 3mm 0; margin:4mm 0; break-inside:avoid; }
+.pull .big{ font-size:22pt; font-weight:600; color:var(--blue); line-height:1.1; }
+.pull .cap{ font-size:9.2pt; margin-top:2mm; text-align:left; }
+
+/* boxes */
+.box{ border:1px solid var(--rule); border-left:5px solid var(--blue);
+  padding:4.5mm 5.5mm 3.5mm; margin:4mm 0 6mm 0; background:var(--paper); break-inside:avoid; }
+.box h4{ break-after:avoid; font-size:10.2pt; font-weight:600; color:var(--blue);
+  margin:0 0 1.5mm 0; }
+.box p{ font-size:9.2pt; }
+.box.wide{ margin-top:0; }
+.box.wide p{ margin-bottom:.45em; }
+.box.wide{ margin:5mm 0 0 0; }
+.box.wide p{ margin-bottom:.45em; font-size:9pt; }
+.flag{ border:1px dashed var(--loss); padding:3.5mm 4mm; margin:4mm 0 6mm 0; font-size:8.9pt;
+  break-inside:avoid; background:var(--paper); }
+.flag b{ font-family:"Jost"; color:var(--loss); font-weight:600; }
+
+/* notes */
+.notes{ border-top:1px solid var(--rule); margin-top:5mm; padding-top:2.5mm;
+  font-size:7.9pt; color:var(--mut); line-height:1.44; }
+.notes p{ text-align:left; margin-bottom:.5em; }
+.notes b{ font-family:"Jost"; color:var(--ink); font-weight:600; }
+table.reg{ font-size:8.3pt; }
+table.reg td{ padding:1.1mm 1.6mm; vertical-align:top; }
+table.reg td.en{ font-family:"Jost"; font-weight:600; color:var(--blue);
+  white-space:nowrap; width:23mm; }
+
+/* authors */
+.authgrid{ display:grid; grid-template-columns:1fr; gap:0; }
+.bio{ break-inside:avoid; font-size:8.8pt; line-height:1.45; text-align:justify; }
+.bio .nm{ font-family:"Jost"; font-size:11pt; font-weight:600; color:var(--blue);
+  margin-bottom:.5mm; }
+.bio .rl{ font-family:"Jost"; font-size:8.6pt; font-weight:400; color:var(--mut);
+  margin-bottom:2mm; }
+.disclose{ margin-top:3mm; padding-top:2mm; border-top:1px solid var(--rule);
+  font-size:8pt; color:var(--mut); text-align:left; }
+.disclose b{ font-family:"Jost"; font-weight:600; color:var(--loss); }
+</style>
+
+<!-- ================= COVER ================= -->
+<div class="provenance">
+  <span>{{STAMP}}</span>
+  <span>{{PAPER_URL}}</span>
+  <span>{{REPO}}</span>
+</div>
+
+<div class="cover">
+  <div class="left">
+    <div class="rule"></div>
+    <h1>$100 Medicaid<br>Dollars</h1>
+    <h2>The national view, and what P.L.&nbsp;119-21 will do to it by fiscal year
+    2030</h2>
+    <div class="by">Jamey Harvey
+      <span>Agilian LLC</span>
+      <span class="covdate">{{RELEASE_DATE}}</span>
+    </div>
+  </div>
+  <div class="right">
+    <img src="paper_figs/cover_taper.png" alt="Where the money stops: $100 of
+      Medicaid narrowing through four phases, and the seven cuts of P.L. 119-21
+      with who carries each. Long description in paper_figs/cover_taper_alt.txt.">
+  </div>
+</div>
+
+<!-- ================= I ================= -->
+<div class="sechead">
+<h2 class="sec">Introduction</h2></div>
+
+<div class="flow">
+
+<p class="lede">By 2030, fewer people will be enrolled in Medicaid. The providers who
+treat them will be paid less. The plans that manage their care will have less care to
+manage, and the states that run the program will have less federal money to run.
+That is the impact of P.L.&nbsp;119-21, the statute most people in Medicaid call HR-1.</p>
+
+<p>Today, of every hundred dollars that moves through Medicaid,
+<strong>$86.92 reaches a health service</strong>. Under HR-1,
+<strong>$78.33 will</strong>.</p>
+
+<p>The $13.08 that does not reach care today goes to state administration, Medicare
+premiums returned to the federal government, plan administration, retained earnings and a
+small amount of documented fraud. By 2030 the law will take a further $10.34 before care,
+and the share that never becomes a service will rise to $21.67.</p>
+
+<p>The rest of this white paper answers two questions: where
+do the missing dollars leave, and who is holding the bill when they do.</p>
+
+<h3>What this analysis is built on</h3>
+
+<p>We built a model of the Medicaid funding lifecycle. It
+follows a dollar through eight phases, from the appropriation that funds it to the service
+a person receives, and every dollar that enters is accounted for where it
+leaves. The diagrams are how that model is read.</p>
+
+<p>The model runs twice, from public sources. The first run covers federal fiscal year 2024 as it actually flowed, the as-was view. The second covers fiscal year 2030 as it would have been before HR-1, with the law subtracted provision by provision at the point where each one bites, the projected to-be view.</p>
+
+<p>Both share a skeleton: same eight phases, same scale, same five anchors on the balance
+line beneath. A reader can lay them side by side, find their own place in the ecosystem,
+and understand how their world will change.</p>
+
+<figure>
+  <img src="paper_figs/figA_lines_pair.png" alt="FY2024 and FY2030 balance lines stacked">
+  <figcaption><b>Figure 1. The same hundred dollars, twice.</b> Above, FY2024 as it
+  flowed. Below, FY2030 under HR-1. Five anchors in the same five places on both, so the
+  difference is read straight off the page. The warm markers on the lower line are the
+  law.</figcaption>
+</figure>
+
+<h3>Our position</h3>
+
+<p>Those dollars removed from the ecosystem will not vanish. Care will go undelivered, or
+go unpaid, or a state will find the money somewhere else. This
+analysis sizes what will leave the Medicaid ecosystem and says where in the lifecycle it
+leaves. We stop short of claiming to know where each dollar lands, because the evidence
+for that routing does not exist at national scale.<sup>1</sup></p>
+
+<h3>Who this is for</h3>
+
+<p>Medicaid and insurance leaders
+seeking insight into what is happening upstream
+and downstream of their enterprise. A hospital finance officer knows disproportionate
+share hospital payments and has no reason to know how cost allocation works at the state.
+A plan president knows the medical loss ratio floor but may have limited insight into how
+the provider tax finances their state's share.</p>
+
+<p>This is a framework for visualizing the health
+and financial impacts of legislative changes to the Medicaid ecosystem.</p>
+
+
+
+
+</div><!-- /flow -->
+
+
+<!-- ================= FIG 2 PLATE ================= -->
+<div class="plate">
+  <h2 class="platetitle">$100 of Medicaid spending, before P.L. 119-21</h2>
+  <figure>
+    <img src="paper_figs/fig1_panel_2024.png" alt="FY2024 national panel">
+    <figcaption><b>Figure 2. One hundred dollars of Medicaid spending, FY2024, before
+    HR-1.</b> Eight phases, left to right: where the money comes from, how the federal and
+    state shares merge, what the state agency takes, how it is disbursed, what the payer keeps, what is paid in claims, which
+    services it buys, and who consumes them. The line beneath carries five anchors, each
+    at the phase whose state it reports, with a marker for every decrement. Grey outflows
+    peel upward and are ordinary leakage under prior law. Source: CMS-64 FY2024 national
+    totals and MACStats February 2026.</figcaption>
+  </figure>
+</div>
+
+<!-- ================= II ================= -->
+<div class="sechead">
+<h2 class="sec">The national baseline, end to end</h2></div>
+
+<div class="flow">
+
+<p class="lede">One hundred dollars of Medicaid spending in FY2024, followed from the
+state agency that budgets it to the service a person receives.</p>
+
+<div class="box">
+  <p>Stated once, here, and not repeated.</p>
+  <p>Views read in dollars and cents per hundred dollars of Medicaid spending. This makes
+  them comparable, and it keeps price growth out of both.<sup>2</sup></p>
+  <p>The FY2024 view is measured. Its figures come from CMS-64 national totals and
+  MACPAC MACStats. Where a figure inside it is derived or estimated, the footnote at that
+  figure says so.</p>
+  <p>The FY2030 view is modeled in full. Not only the warm bands that carry the law, but
+  the ordinary-looking numbers as well: managed care capitation, long-term care, the
+  beneficiary shares. FY2030 spending before HR-1 is a projection, and the structure of
+  that spending is FY2024 structure carried forward.</p>
+  <p>Everything the authors know about the project’s limits is in the footnotes and in the
+  register under Limits and sources.</p>
+</div>
+
+<h3>Where the hundred dollars comes from</h3>
+
+<p>Of every $100 of total Medicaid spending in FY2024, <strong>$65.29 was federal and
+$35.47 was state</strong>. That ratio is the blended federal share, the weighted average
+of what Washington paid across every state and every eligibility category. It is not a
+single statutory rate. The federal medical assistance percentage, or FMAP, runs from 50
+percent in the wealthiest states to roughly 77 percent in the poorest. Adults covered
+through the Affordable Care Act expansion match at 90 percent wherever they live. The
+64.5 percent blend is what falls out of all of it.<sup>3</sup></p>
+
+<p><strong>A little more than $100 enters.</strong> The federal government buys childhood
+vaccines outright under the Vaccines for Children program, and that purchase never mixes
+with state money. Seventy-six cents leaves the federal column before the blend and
+terminates at the Centers for Disease Control and Prevention. It is counted because it is
+Medicaid money in the federal accounts, and it is peeled here because it never reaches a
+state agency and never becomes a payment anyone administers. So $100.76 enters and
+$100.00 is budgeted to Medicaid. The hundred dollars in this paper is struck at the state
+agency, which is where the money becomes something a state can spend.</p>
+
+<h3>What the state agency takes first</h3>
+
+<p>Three things come off the top before a dollar can become a payment.</p>
+
+<p><strong>State and program administration takes $4.25.</strong> Eligibility systems,
+claims processing, staff, and the federally matched administrative expenditure that runs
+the program.</p>
+
+<p><strong>Medicare premiums take $2.92.</strong> This is the one flow on either diagram
+that travels backward. For people enrolled in both programs, Medicaid pays the Medicare
+premium, so the dollar leaves Medicaid and returns to the federal government as Medicare
+revenue.</p>
+
+<p><strong>Federal oversight takes $0.10.</strong> Medicaid fraud control units, and
+survey and certification of the facilities the program pays. It is shown apart from
+administration because it is money spent watching the program rather than money spent
+running it, and because it is federal.</p>
+
+
+<p><strong>$92.73 is disbursed</strong>. The other $7.27 went to administration,
+Medicare premiums and federal oversight.</p>
+
+<h3>The three ways a disbursed dollar travels</h3>
+
+<p><strong>Managed care capitation, $40.37.</strong> The state pays a health plan a fixed
+monthly amount per enrolled person and the plan carries the risk of what that person
+actually costs. The payment is made whether the person sees a doctor or not.</p>
+
+<p><strong>Dual-plan capitation, $10.97.</strong> The same mechanism for people enrolled
+in both Medicaid and Medicare. It is carved out because the plans are different, the
+populations are far more expensive, and the law will treat them differently.</p>
+
+<p><strong>Fee-for-service, $41.39.</strong> The state pays providers directly, claim by
+claim, at a rate it sets. Forty-one dollars of every hundred still moves this way.</p>
+
+<div class="box">
+  <h4>A national average is not a local condition</h4>
+  <p>This national view simplifies what is happening at state and local level
+  around managed care and fee-for-service splits. These views are a baseline against which local
+  conditions can be compared.</p>
+</div>
+
+<h3>What the payer keeps</h3>
+<figure class="det tall">
+  <img src="paper_figs/fig3_payer.png" alt="The payer phase">
+  <figcaption><b>Figure 3. What the payer keeps.</b> Only the two capitated lanes have a
+  margin. Fee-for-service passes through the payer phase untouched, because there is no
+  plan in the middle of it. Detail from Figure 2.</figcaption>
+</figure>
+
+<p>Of the $51.34 that goes to plans, <strong>$45.69 leaves as claims and $5.65 does
+not</strong>. That $5.65 is the plans' margin: the difference between the premium
+received and the medical care paid for. It is measured, and it splits two ways.</p>
+
+<p><strong>Plan administration, $4.89</strong>, made up of $3.84 on non-dual managed care
+and $1.05 on dual plans. Administrative load inside a capitation rate is bounded by the
+medical loss ratio floor, which requires states to set rates such that plans spend at
+least 85 percent of the premium on medical care. Administration is struck as a percentage
+of premium, which matters later.</p>
+
+<p><strong>Public-company earnings, $0.77.</strong> Retained earnings at the publicly
+traded plans.<sup>4</sup></p>
+
+
+<p><strong>$87.07 is paid in claims</strong>. The other 12.93 percent stopped at the
+phases above: administration, Medicare premiums, oversight, and what the plans kept.</p>
+
+
+<h3>Where the claims land</h3>
+<figure class="det squeeze">
+  <img src="paper_figs/fig4b_providers_pies.png" alt="The six services and who consumes them">
+  <figcaption><b>Figure 4. The six services, and who consumes each one.</b> Every bar is
+  fed by all three payer lanes, which is why each carries several ribbons. The pies
+  divide each service by eligibility category. Documented fraud $0.15 terminates with
+  providers rather than before them, because the money does reach a recipient; it is
+  drawn at a visible width and labeled not to scale. Detail from Figure 2.</figcaption>
+</figure>
+
+<table class="tight">
+  <tr><th>Service</th><th class="n">Per $100</th><th class="n">Share of claims</th></tr>
+  <tr><td class="svc">Long-term care</td><td class="n">$29.13</td><td class="n">33.5%</td></tr>
+  <tr><td class="svc">Hospitals</td><td class="n">$17.91</td><td class="n">20.6%</td></tr>
+  <tr><td class="svc">Wrap around services</td><td class="n">$15.45</td><td class="n">17.7%</td></tr>
+  <tr><td class="svc">Physicians and clinics</td><td class="n">$10.87</td><td class="n">12.5%</td></tr>
+  <tr><td class="svc">Behavioral health</td><td class="n">$9.58</td><td class="n">11.0%</td></tr>
+  <tr><td class="svc">Prescription drugs</td><td class="n">$4.14</td><td class="n">4.8%</td></tr>
+  <tr class="tot"><td>Claims paid</td><td class="n">$87.07</td><td class="n">100%</td></tr>
+</table>
+
+<p><strong>Long-term care is the largest single block, at a third of all claims
+paid.</strong> Medicaid is the primary payer for nursing facility and home and
+community-based care in the United States, and no other payer comes close. Hospitals,
+which dominate most conversations about Medicaid, take roughly two thirds of what
+long-term care takes.</p>
+
+<p><strong>Wrap around services is a catch all category.</strong> It is the
+plain-language label for everything the source data does not break out separately: other
+acute care, dental, and behavioral health delivered outside a hospital or a clinic, in
+that order by dollars.<sup>5a</sup></p>
+
+<p><strong>Documented fraud takes $0.15.</strong> It is raised in every conversation
+about Medicaid spending, and it is worth seeing next to the $7.27 of administration
+sitting four phases to its left.</p>
+
+
+<h3>Who consumes the care</h3>
+
+<p>Measured across all six services in FY2024, of every $100 of Medicaid spending,
+<strong>children received $13.58, adults $29.79, people qualifying through disability
+$25.17, and people aged 65 and over $18.55</strong>.<sup>5</sup></p>
+
+<p>The relationship between those figures and enrollment is the most useful thing on that
+phase. Children are the largest enrolled group and the cheapest. People qualifying through
+disability and people over 65 are together about a quarter of enrollment and receive
+roughly $43 of every $100 spent. A provision that reduces enrollment removes far less
+spending than it removes people. A provision that touches the aged or the disabled does
+the reverse.</p>
+
+<h3>The baseline</h3>
+
+<p>Before HR-1 does anything, <strong>$86.92 of every $100 of Medicaid spending becomes a
+health service</strong>, and $13.08 does not. That $13.08 is the figure to hold, because
+the law will raise it to $21.67, and a cut applied to an ecosystem already carrying
+fourteen percent of overhead does not behave the way most readers expect.</p>
+
+</div><!-- /flow -->
+
+<!-- ================= FIG 6 PLATE ================= -->
+<div class="plate">
+  <h2 class="platetitle">$100 of Medicaid spending under prior law, with P.L. 119-21 applied</h2>
+  <figure>
+    <img src="paper_figs/fig6_panel_2030.png" alt="FY2030 national panel with HR-1 applied">
+    <figcaption><b>Figure 5. One hundred dollars of Medicaid spending in FY2030 before
+    HR-1, with HR-1 applied.</b> Same eight phases and same scale as Figure 2. The warm
+    ribbons beneath the spine are the seven provisions, each leaving at the phase where it
+    bites and terminating where the dollar would have reached. The balance line carries
+    the same five anchors in the same five places, with three additional markers for the
+    law. Every figure on this page is modeled.</figcaption>
+  </figure>
+</div>
+
+<!-- ================= III ================= -->
+<!-- ================= IV ================= -->
+<div class="sechead">
+<h2 class="sec">What the law does, provision by provision</h2></div>
+
+<div class="flow">
+
+<p class="lede">HR-1 will remove $10.34 of every $100 of Medicaid spending in FY2030,
+through seven provisions that leave the ecosystem at four different phases, on four different
+statutory schedules. They are taken here from largest to smallest.</p>
+
+<figure class="span">
+  <img src="paper_figs/figB_provisions_with_line.png" alt="The seven provisions and the FY2030 balance line">
+  <figcaption><b>Figure 6. The seven provisions, and the totals they produce.</b> Each warm
+  ribbon peels from the spine at the phase where the provision bites and terminates at its
+  declared reach, with the italic line under each label saying what the dollar would have
+  done. The balance line beneath carries the same five anchors as FY2024, with three
+  additional markers for the law. Detail from Figure 5.</figcaption>
+</figure>
+
+<h3 class="first">Why fiscal year 2030?</h3>
+
+<p>The provisions do not all start at once and they do not all reach full force at once.
+Two enrollment moratoria took effect on enactment. Work reporting begins in January 2027
+and its good-faith exemptions expire at the end of 2028. The provider tax safe harbor
+steps down half a percentage point a year from FY2028 and does not bottom out until
+FY2032. The directed payment cap grinds down grandfathered payments ten points of the
+original amount each year with no statutory end date.</p>
+
+<p>Most of the law has not happened. In FY2028 and FY2029 only
+twenty percent of the ten-year overlay is at full statutory effect. Too late
+and the picture is dominated by the two slowest provisions. FY2030 is where 62.6 percent of the
+ten-year effect is at full force, every provision has started, and the two still ramping are
+ramping visibly.</p>
+
+<p><strong>FY2030 will not be the worst year.</strong> Provider tax limits will be at 60
+percent of their eventual effect and directed payment caps at 50 percent. The $10.34 is a
+figure from the middle of the change, not the end of it.</p>
+
+<p>Two of the seven provisions block no one. They suspend CMS rules that would have made
+enrolling easier, so people who would have got in under the new rules will not get in
+under the old ones. $2.32 of every $100 is coverage that would have been gained and now
+will not be.</p>
+
+<table>
+  <tr><th>Provision</th><th>Section</th><th class="n">Per $100</th><th>Would have reached</th><th class="n">Ramp, FY2030</th></tr>
+  <tr><td class="svc">Work reporting</td><td>§71119</td><td class="n">$4.11</td><td>Disbursements</td><td class="n">full</td></tr>
+  <tr><td class="svc">Medicare Savings rule suspended</td><td>§71101</td><td class="n">$1.28</td><td>State agency</td><td class="n">full</td></tr>
+  <tr><td class="svc">Provider tax limits</td><td>§71115</td><td class="n">$1.25</td><td>Federal band</td><td class="n">60%</td></tr>
+  <tr><td class="svc">Everything else</td><td>residual</td><td class="n">$1.06</td><td>State agency</td><td class="n">full</td></tr>
+  <tr><td class="svc">Eligibility and enrollment rule suspended</td><td>§71102</td><td class="n">$1.04</td><td>Claims</td><td class="n">full</td></tr>
+  <tr><td class="svc">Directed payment caps</td><td>§71116</td><td class="n">$0.85</td><td>Claims</td><td class="n">50%</td></tr>
+  <tr><td class="svc">Six-month renewals</td><td>§71107</td><td class="n">$0.75</td><td>Payer</td><td class="n">full</td></tr>
+  <tr class="tot"><td>Removed by the law</td><td></td><td class="n">$10.34</td><td></td><td class="n"></td></tr>
+</table>
+
+
+<figure class="det wide">
+  <img src="paper_figs/fig14_terminals_left.png" alt="Where the first three provisions land">
+  <figcaption><b>Figure 7. The first three provisions, and where they land.</b> Provider tax
+  limits leave before the merge. Blocked senior enrollment and work reporting leave at the
+  state agency and at disbursements, each drawn to the phase it would have reached. Detail
+  from Figure 5.</figcaption>
+</figure>
+
+<h3>Work reporting, $4.11, leaving at disbursements</h3>
+
+<p>The largest provision by a factor of three. States must impose work and community
+engagement requirements from January 2027. Good-faith-effort exemptions expire no later
+than 31 December 2028 and may not be renewed, which is why it is at full effect in
+FY2030 and not before.</p>
+
+<p>The dollars leave at the disbursement phase because many people who would formerly have
+been enrolled will not be enrolled under the new provisions. There is no claim to deny and
+no rate to cut. Every funding stream downstream, capitation and fee-for-service alike, is
+narrower as a result, which is why this one provision moves all six provider bars.</p>
+
+<h3>The Medicare Savings rule, $1.28, would have paid Medicare premiums</h3>
+
+<p>Medicare Savings Programs are how Medicaid pays the Medicare premiums, and usually the
+cost sharing, of low-income Medicare beneficiaries. A 2023 CMS rule would have made them
+easier to get into. HR-1 suspends it until October 2034.<sup>2b</sup></p>
+
+<p>The people who would have been enrolled keep their Medicare, so this provision never
+appears as lost coverage. It appears as a bill changing hands: a beneficiary poor enough
+to qualify for Medicaid's help now pays their own Part B premium and deductibles. On the
+diagram the Medicare premiums ribbon falls from $2.92 to $1.64.</p>
+
+<p>These expenses are shifted from the government to vulnerable elderly and disabled
+people. At $1.28 it is the second largest of the seven provisions, and eight times the
+documented fraud on the same page.</p>
+
+<h3>Provider tax limits, $1.25, leaving in the federal band</h3>
+
+<p>The only provision that leaves before the federal and state shares merge, and the only one
+about how a state finances its own share rather than about who is enrolled or what is
+paid.</p>
+
+<p>States finance much of their share by taxing providers and using the receipts to draw
+federal match. HR-1 freezes the applicable percentages for fiscal years beginning on or
+after 1 October 2026 and, in expansion states, steps the safe harbor down half a point a
+year from 6.0 percent, reaching 4.5 percent in FY2030 and 3.5 percent from FY2032. Less
+provider tax means less state share, and less state share means less federal match.</p>
+
+<div class="flag">
+  <b>Provider tax limits.</b> The $1.25 blends the expansion-state phase-down with the
+  national freeze and carries no state match. The true figure is larger.
+</div>
+
+<figure class="det portrait">
+  <img src="paper_figs/fig12_sources_2030.png" alt="The FY2030 sources phase">
+  <figcaption><b>Figure 8. The federal band in FY2030, against Figure 2.</b> The provider
+  tax provision leaves the federal column before the two sources merge, so only $98.75
+  reaches the state agency as a budget, and the Medicare premiums ribbon has narrowed
+  from $2.92 to $1.64. Administration still peels upward. Detail from Figure 5.</figcaption>
+</figure>
+
+<p><strong>This is the only provision that takes money before the state has it.</strong>
+The other six reduce what a state spends. This one reduces what a state has to spend
+with, because the limit falls on the provider taxes that raise the non-federal share, and
+the federal match is drawn against a smaller base. On the FY2030 line the second anchor
+reads $98.75 rather than $100.00, which is the whole of the difference.</p>
+
+<h3>Everything else, $1.06, leaving at the state agency</h3>
+
+<p>The Everything else category contains at least eleven separate provisions, published by the Congressional Budget Office as a single figure. They reduce Medicaid funding at four different phases, and some run in opposite directions. Cost sharing requirements bite from October 2028. Alien eligibility
+restrictions bite from October 2026. Retroactive coverage changes bite from January 2027.
+On top of those sit CBO's own interaction adjustments between provisions.</p>
+
+<p>The items printed on the ribbon are examples, not an exhaustive list.<sup>6</sup></p>
+
+<h3>The eligibility and enrollment rule, $1.04, would have reached a paid claim</h3>
+
+<p>The companion suspension: a 2024 CMS rule that would more broadly have streamlined
+application, enrollment and renewal. People who would have enrolled will not enroll. It
+terminates at the claims phase because the dollar would have become a paid claim.</p>
+
+<h3>Directed payment caps, $0.85, leaving at claims</h3>
+<figure class="det wide">
+  <img src="paper_figs/fig13_terminals_2030.png" alt="Where the claims-phase provisions land">
+  <figcaption><b>Figure 9. The claims-phase provisions.</b> Six-month renewals, blocked
+  Medicaid enrollment and the directed payment cap, each drawn to the phase it would have
+  reached. Detail from Figure 5.</figcaption>
+</figure>
+
+<p>State directed payments are arrangements under which a state requires its managed care
+plans to pay certain providers at specified rates, typically well above the plan's
+ordinary contracted rate. HR-1 caps non-grandfathered payments for rating periods
+beginning on or after 4 July 2025, and grinds grandfathered payments down by ten
+percentage points of the original dollar amount each year, not compounding, from the first
+rating period on or after 1 January 2028, until the 100 or 110 percent Medicare limit is
+reached.</p>
+
+<p>It comes out of the capitated leg, because a directed payment is by definition an
+instruction to a plan. A state with a small managed care footprint is barely touched. A
+state that runs nearly all of its Medicaid through plans is exposed across nearly all of
+it.</p>
+
+<p>It is also the one provision that names the providers it affects: hospital, nursing
+facility and academic rates. That naming is why three of the six provider bars fall at a
+statute-specific rate and the other three do not.</p>
+
+<h3>Six-month renewals, $0.75, leaving at the payer</h3>
+
+<p>Renewals initiated on or after 1 January 2027 move from a
+twelve-month to a six-month cycle. Doubling the frequency of a renewal doubles the number
+of opportunities to lose coverage for procedural reasons rather than for eligibility
+reasons.</p>
+
+
+</div><!-- /flow -->
+
+<!-- ================= V ================= -->
+<div class="sechead" style="break-before:page">
+<h2 class="sec">Payer and claims impact</h2></div>
+
+<div class="flow">
+
+<p class="lede">No provision in HR-1 addresses managed care. Premium revenue still falls 8.85
+percent, because fewer people are enrolled.</p>
+
+<figure class="det portrait">
+  <img src="paper_figs/fig8_payer_2030.png" alt="The payer phase in FY2030">
+  <figcaption><b>Figure 10. The payer phase in FY2030, against Figure 3.</b> All three
+  lanes are narrower and every peel above them is narrower by the same proportion.
+  Six-month renewals and work reporting leave below. Detail from Figure 5.</figcaption>
+</figure>
+
+<table>
+  <tr><th>Flow</th><th class="n">FY2024</th><th class="n">FY2030</th><th class="n">Fall</th><th class="n">Modeled rate</th></tr>
+  <tr><td class="svc">Fee-for-service</td><td class="n">$41.39</td><td class="n">$37.73</td><td class="n">$3.66</td><td class="n">8.85%</td></tr>
+  <tr><td class="svc">Managed care capitation</td><td class="n">$40.37</td><td class="n">$36.79</td><td class="n">$3.57</td><td class="n">8.85%</td></tr>
+  <tr><td class="svc">Dual-plan capitation</td><td class="n">$10.97</td><td class="n">$10.00</td><td class="n">$0.97</td><td class="n">8.85%</td></tr>
+  <tr><td class="svc">Plan administration</td><td class="n">$4.89</td><td class="n">$4.45</td><td class="n">$0.43</td><td class="n">8.85%</td></tr>
+  <tr><td class="svc">Public-company earnings</td><td class="n">$0.77</td><td class="n">$0.70</td><td class="n">$0.07</td><td class="n">8.85%</td></tr>
+  <tr class="tot"><td>Claims paid</td><td class="n">$87.07</td><td class="n">$79.32</td><td class="n">$7.70</td><td class="n">8.85%</td></tr>
+</table>
+
+
+
+
+<h3>Same work, less pay</h3>
+
+<p>Administrative dollars fall with premium; administrative obligations do not. Load sits
+inside the capitation rate as a percentage of premium, so a smaller base yields a smaller
+administrative dollar without anything being negotiated. Network management, rate setting
+and regulatory reporting do not shrink because membership did.</p>
+
+<p>Both sides of the medical loss ratio move at once. Membership falls. The premium base shrinks. And the risk pool's mix shifts, because eligibility rules remove the members easiest to disenroll, not the members cheapest to cover.</p>
+
+<h3>The claims phase is different in kind</h3>
+
+<p>Under prior law no money left at claims. A claim was paid or it was not. Under HR-1,
+$1.90 leaves here: $1.04 of blocked enrollment and $0.85 of capped directed payments. It is
+the only money in the lifecycle removed after the point where a service could already have
+been rendered, and it is what a provider's accounts receivable sees first. Where a plan
+holds directed payment arrangements the cap is an instruction to carry out, and the plan
+rather than the state renegotiates with the provider. That creates a new misalignment of
+financial incentives between a plan and its providers.</p>
+
+</div><!-- /flow -->
+
+<div class="sechead">
+<h2 class="sec">Provider revenue</h2></div>
+
+<div class="flow">
+
+<p class="lede">Every provider category loses revenue under HR-1. What differs is the
+mechanism that reaches them, how fast it arrives, and whether there is anything they can
+do about it.</p>
+
+
+
+<figure class="det tall">
+  <img src="paper_figs/fig9b_providers_pies_2030.png" alt="The six services in FY2030">
+  <figcaption><b>Figure 11. The six services in FY2030, at the same scale as Figure 4.</b>
+  Every bar is narrower and the ribbons feeding it are narrower, because the contraction
+  arrives through all three payer lanes at once. The warm bar under each pie is the fall
+  in that service against prior law. Detail from Figure 5.</figcaption>
+</figure>
+
+<p>The top three carry the directed payment cap on top of the general contraction. The
+bottom three carry only the contraction, at rates that differ between them by a tenth of
+a point, which is allocation rounding inside the claims matrix and not anything in the
+law.<sup>8</sup></p>
+
+<table>
+  <tr><th>Service</th><th class="n">FY2024</th><th class="n">FY2030</th><th class="n">Fall</th><th class="n">Modeled rate</th></tr>
+  <tr><td class="svc">Physicians and clinics</td><td class="n">$10.87</td><td class="n">$9.64</td><td class="n">$1.23</td><td class="n">11.29%</td></tr>
+  <tr><td class="svc">Hospitals</td><td class="n">$17.91</td><td class="n">$16.02</td><td class="n">$1.89</td><td class="n">10.54%</td></tr>
+  <tr><td class="svc">Long-term care</td><td class="n">$29.13</td><td class="n">$26.27</td><td class="n">$2.86</td><td class="n">9.82%</td></tr>
+  <tr><td class="svc">Wrap around services</td><td class="n">$15.45</td><td class="n">$14.08</td><td class="n">$1.37</td><td class="n">8.85%</td></tr>
+  <tr><td class="svc">Behavioral health</td><td class="n">$9.58</td><td class="n">$8.73</td><td class="n">$0.86</td><td class="n">8.95%</td></tr>
+  <tr><td class="svc">Prescription drugs</td><td class="n">$4.14</td><td class="n">$3.78</td><td class="n">$0.36</td><td class="n">8.63%</td></tr>
+  <tr class="tot"><td>Health services delivered</td><td class="n">$86.92</td><td class="n">$78.33</td><td class="n">$8.54</td><td class="n">9.83%</td></tr>
+</table>
+
+<h3>What this means for a provider organization</h3>
+
+<p>The rate in the table above is a national average. Actual exposure depends on the state's expansion status, its managed care penetration, the
+organization's own payer mix, whether it currently receives a directed payment, and how far
+above the Medicare limit that payment sits. Two hospitals in neighboring states can face
+materially different outcomes from the same statute.</p>
+
+<p>What the table shows is a sequence. Volume effects will arrive first,
+through 2027 and 2028, as work reporting and the enrollment moratoria reduce covered
+lives. Rate effects will arrive later and on a published schedule, as the directed payment
+grind works through from January 2028. An organization facing both is dealing with two different timelines. Only the second can be planned for with precision.</p>
+
+<p>Contract renegotiation with plans becomes the central lever for organizations with directed payments. Cost structure becomes the central lever for the rest. </p>
+
+
+
+</div><!-- /flow -->
+
+<!-- ================= VII ================= -->
+<div class="sechead gap">
+<h2 class="sec">Health services to beneficiaries</h2></div>
+
+<div class="flow">
+
+<p class="lede">Health services delivered will fall from $86.92 to $78.33 per $100 of
+Medicaid spending, and the fall will be uneven across the six categories. A dollar that
+does not reach a hospital is a hospital service that is not delivered.</p>
+
+<h3 class="first">Long-term care absorbs the largest share</h3>
+
+<p>At $2.86 long-term care takes more of the fall in dollars than any other category,
+because it is the largest category to begin with. It is also the category with the fewest
+substitutes. A person who loses a physician visit can often defer it. A person who loses a
+nursing facility placement or a home and community-based services package does not have an
+alternative arrangement available on the same terms.</p>
+
+<h3>Behavioral health is neither targeted nor protected</h3>
+
+<p>It falls at the undifferentiated rate, which means nothing in HR-1 singles it out and
+nothing in HR-1 shields it. Its $0.86 is small in the ledger. But it is close to a tenth of that category's total spending, and behavioral health was already the least well-supplied service in most state programs.</p>
+
+<h3>The one provision that lands directly on a household</h3>
+
+<p>Of the seven provisions, six reduce what somebody is paid. One converts a Medicaid
+payment directly into a household obligation.</p>
+
+<p>Blocked senior enrollment will remove $1.28, and the visible consequence is the
+Medicare premiums ribbon falling from $2.92 to $1.64. Dual eligibles who do not enroll in
+Medicaid remain enrolled in Medicare. Their Part B premium does not stop being owed. It
+stops being paid by Medicaid and starts being paid by a person over 65 living on a fixed
+income, along with the cost sharing Medicaid would have covered.</p>
+
+<p>No provider loses revenue in that transaction and no service is cut. A bill moves. It
+is the clearest statement in the ledger of what "removed from Medicaid" can
+mean.<sup>9</sup></p>
+
+<figure class="det bene">
+  <img src="paper_figs/fig11_beneficiaries_2030.png" alt="FY2030 beneficiary column">
+  <figcaption><b>Figure 12. Who consumes each service in FY2030, and how much each service
+  loses.</b> The pies divide each service by eligibility category. The warm bar beneath
+  each one is that service's fall against prior law, on a single declared scale across all
+  six. Detail from Figure 5.</figcaption>
+</figure>
+
+
+</div><!-- /flow -->
+
+<!-- ================= VIII ================= -->
+<div class="sechead" style="break-before:page">
+<h2 class="sec">What comes next</h2></div>
+
+<div class="flow">
+
+<p class="lede">Three things this analysis could not do, and what we intend to do about each.</p>
+
+<p><strong>The per-state series.</strong> The provider and beneficiary findings above are national aggregates, and almost every operational decision a reader has to make is a state decision.
+Expansion status, managed care penetration, provider tax structure and directed payment
+exposure vary enormously, and they compound rather than cancel. The state editions carry
+the same eight phases and the same five anchors with that state's numbers in them. A
+District of Columbia edition is furthest along. Tell us which state you need.</p>
+
+<p><strong>Where the removed dollars land.</strong> Saying how the loss divides across
+care not sought, uncompensated care, out-of-pocket spending and state and local absorption
+requires evidence that does not exist at national scale today. We will publish the method
+before the numbers.</p>
+
+<p><strong>Incidence by eligibility category.</strong> The most asked question about this
+law is who bears it. This is not published, and we are pursuing it.</p>
+
+<p>Corrections and challenges are welcome and will be answered in print.</p>
+
+</div><!-- /flow -->
+
+<!-- ================= IX ================= -->
+<!-- ================= AUTHORS ================= -->
+<div class="sechead" style="break-before:page"><h2 class="sec">Who wrote this</h2></div>
+
+<div class="authgrid">
+  <div class="bio">
+    <div class="nm">Jamey Harvey</div>
+    <div class="rl">Chief Executive Officer, Agilian LLC</div>
+    Jamey Harvey is the CEO of Agilian LLC, a boutique firm helping Medicaid beneficiaries stay enrolled. Jamey got into Medicaid when he led the technology implementation of Obamacare for the District of Columbia. Previous to starting Agilian, Jamey was the Deputy Chief Technology Officer for software and data for the District of Columbia government. Jamey is a seven-time entrepreneur and the author of "Wired
+    for White: Confessions from Silicon Valley on the technology of racism," scheduled to
+    be published in 2028. Jamey has a degree in political theory from UC Santa Cruz and
+    two kids in college.
+  </div>
+</div>
+<div class="sechead" style="break-before:page">
+<h2 class="sec">Limits and sources</h2></div>
+
+<div class="flow">
+
+<p class="lede">Seven limits that change how a figure on these pages should be read. The
+full sourcing register, every figure with its vintage and basis, is online.</p>
+
+<table class="reg">
+  <tr><td class="en">Provider tax</td><td>The $1.25 blends two mechanisms and carries no gross-up. It understates.</td></tr>
+  <tr><td class="en">Everything else</td><td>A residual of at least eleven provisions across four phases, some running opposite to each other.</td></tr>
+  <tr><td class="en">Earnings carve</td><td>The $5.65 payer margin is measured. The $0.77 earnings split inside it is estimated, and counts investor-owned plans only; nonprofit plans fall outside it.</td></tr>
+  <tr><td class="en">Class incidence</td><td>The FY2030 beneficiary shares are the FY2024 shares scaled by one multiplier. All four fall by the same 9.83 percent as an artifact of that scaling, which carries no information about who bears the law.</td></tr>
+  <tr><td class="en">Service incidence</td><td>Only §71116 names providers. For the other six provisions, the fall at a given bar is the sum of several mechanisms in proportions nobody has published.</td></tr>
+  <tr><td class="en">Price growth</td><td>Withdrawn from the diagrams by construction. It cannot be recovered by differencing two spending projections.</td></tr>
+  <tr><td class="en">FY2030</td><td>Every figure on the to-be diagram is modeled, including the ordinary-looking ones.</td></tr>
+</table>
+
+<p style="font-size:8.6pt">Primary sources: Congressional Budget Office supplemental of 28
+October 2025 and letter of 5 March 2025; CMS-64 financial management reports; MACPAC
+MACStats, February 2026; P.L. 119-21, Title VII, Subtitle B; annual filings of the
+publicly traded managed care organizations. Full register at the address on the back
+page, matched to build <span style="font-family:Jost">{{BUILD_ID}}</span> of
+{{RELEASE_DATE}}.</p>
+
+<h3>How artificial intelligence was used</h3>
+
+<p>The two diagrams are produced by a model the firm wrote. The ledger, the geometry and
+the balance line are code, and every figure in this paper is read from that code at build
+time rather than typed into the prose. Claude, made by Anthropic, was used throughout as
+an analyst and drafting partner: working through the statutory phase-in schedules,
+deriving the provision allocation, building and auditing the rendering pipeline, and drafting
+these sections.</p>
+
+<p>No figure here was supplied by a language model from memory. Statutory dates and CBO
+figures are taken from the documents and recorded with their vintages. What the analysis
+claims, and what it declines to claim, was decided by the named authors.</p>
+
+</div><!-- /flow -->
+
+<!-- ================= NOTES ================= -->
+<div class="sechead" style="break-before:page"><h2 class="sec">Notes</h2></div>
+<div class="notes flow">
+<p><b>1.</b> A dollar removed from the ecosystem becomes one of at least four things: care
+not sought, care delivered and written off, care paid out of pocket, or a cost absorbed by
+a state or local budget. No national source splits those four. One randomised finding is
+relevant and is deliberately not applied to any figure in this paper: the Oregon Health
+Insurance Experiment implies people losing coverage reduce medical spending by roughly a
+quarter against what they would have spent with it. That is a causal estimate for
+able-bodied adults below the poverty line who wanted coverage, close to the population
+work requirements reach. It establishes that utilization falls. It says nothing about what
+happens to the portion that does not fall.</p>
+
+<p><b>2.</b> Both diagrams read in dollars per one hundred dollars of Medicaid spending:
+the FY2024 diagram divides actual FY2024 spending, the FY2030 diagram divides projected
+FY2030 spending before HR-1. The point is comparability. The same denominator governs
+both, so every node sits in the same place and every band means the same thing, and when
+the state editions publish a state Medicaid executive will be able to compare their own
+$100 against this national baseline. The cost is that the hundred dollars is a unit rather
+than an amount of money: medical prices will rise between 2024 and 2030 and Medicaid
+spending will rise with them, and dividing by the total removes anything that moves the
+numerator and the denominator together. Reinserting price growth as a deduction near the provider end of the FY2030
+diagram applies a price level to an index number, which is a mixed-basis comparison and
+produces a figure that reconciles with neither diagram. The quantity that belongs to the
+margin question is a ratio rather than a level: the gap between growth in Medicaid payment
+and growth in provider input costs. That requires a provider input-cost measure such as a
+CMS market basket index set against the CBO payment path. It cannot be constructed by
+differencing CBO's five percent against the CMS Office of the Actuary's 5.8 percent
+per-enrollee projection, because both are projections of spending rather than measures of
+cost.</p>
+
+<p><b>2a.</b> The hundred dollars is struck at the state agency. It was struck at the
+appropriation until September 2026, and moving it changed two things a reader of the
+earlier draft will notice. Every figure below the agency rose by about three quarters of a
+percent, because the denominator fell by that much once the money that never reaches a
+state agency stopped being counted in it. And the share of the hundred that never becomes
+a service in FY2030 fell from 22.21 percent to 21.62. Nothing in P.L.&nbsp;119-21 changed.
+The vaccine purchase used to be counted as a loss and is not one: it buys vaccines, it
+reaches the children it is meant to reach, and it was only ever inside the hundred because
+of where the line was drawn. Losses are now measured from the hundred, so the vaccine is
+not one and the FY2030 provider tax limit, which does take money the states would
+otherwise have had, is.</p>
+
+<p><b>3.</b> The federal share was 69 percent in FY2023 and fell to 64.5 percent in
+FY2024 as the enhanced match from the public health emergency unwound. A baseline built on
+FY2023 carries a structurally wrong split between Washington and the states, and every
+leverage figure downstream of it inherits the error.</p>
+
+<p><b>4.</b> The $5.65 payer margin is measured and the ledger conserves whatever the
+split inside it. The $0.77 earnings carve is estimated and has not been reconciled to
+Medicaid segment disclosures. Nothing downstream of the payer phase moves if the carve
+changes. Because this band counts publicly traded plans only, retention by nonprofit and
+provider-sponsored plans sits inside the $4.89 labelled plan administration.</p>
+
+<p><b>5.</b> These four totals are measured for FY2024 and describe composition: who the
+money reaches today. They do not support a claim about incidence: who loses money under
+the law. See note 9.</p>
+
+<p><b>5a.</b> The fee-for-service half of the node is $61.3B in CMS-64 FY2024, split
+$55.1B other acute and $6.2B dental. Other acute is itself a bundle: non-emergency medical
+transportation, durable medical equipment, EPSDT, hospice and laboratory. The behavioral
+health portion is the two MACPAC care settings that are neither a hospital nor a clinic,
+substance use disorder residential treatment and a residual called other settings, which
+together are 20.4 percent of behavioral health service spending. The capitated half is
+allocated by the same key as every other node and is not separately observed. The ordering
+in the body text holds at the level the source breaks out; within other acute it does not,
+because no source in this paper splits that bundle.</p>
+
+<p><b>6.</b> How much of the $1.06 is cost sharing, how much is alien eligibility and how
+much is retroactive coverage is not published. CBO's interaction adjustments between
+provisions are not separable from the provisions themselves.</p>
+
+<p><b>7.</b> This is an assumption. Eligibility systems, staff and claims processing do
+not obviously shrink when a caseload does, and the law is silent. If it is wrong, the
+entire overhead picture moves.</p>
+
+<p><b>8.</b> Physicians and clinics, hospitals and long-term care carry the §71116
+directed payment cap on top of the general contraction, in proportion to how much of each
+one's Medicaid revenue arrives through a directed payment in the capitated leg. Wrap
+around services, behavioral health and prescription drugs carry no cap. They fall at 8.85,
+8.95 and 8.63 percent, all three of them the same undifferentiated eligibility-side rate
+once the allocation of behavioral health between its own node and prescription drugs is
+taken into account; a cent of that allocation sits between those two nodes and moves the
+rate a tenth of a point in each direction. Three services landing within a fifth of a
+point of each other is the absence of a service-specific finding rather than the presence
+of one. The six rounded falls sum to $8.57 against a balance difference of $8.54, and the
+six service rows sum to $87.08 against a claims total of $87.07 with the shares summing to
+100.1 percent. Each of those is rounding at the second decimal. The ledger conserves
+exactly; only the printed figures are rounded.</p>
+
+<p><b>9.</b> How the loss falls across children, adults, the disabled and the aged is not
+published, and we are pursuing it. The mechanisms point in directions that do not cancel,
+which is why no estimate appears here. Work reporting, the largest provision at $4.11, applies
+to expansion adults and largely exempts the aged and people qualifying through disability.
+Blocked senior enrollment falls only on the aged. Directed payment caps fall on hospital,
+nursing facility and academic rates, which reach the aged and the disabled far more than
+they reach children. Splitting the $8.54 across four categories using FY2024 shares would
+publish an assumption as a finding.</p>
+
+<p><b>10.</b> A reader of Figure 5 can watch a provider bar shrink and cannot see which of
+the seven levers did the shrinking. The diagram draws a bar that shrank because people
+lost coverage identically to a bar that shrank because a rate was capped. The first means
+care not delivered; the second means the same care delivered for less money.</p>
+</div>
+</html>

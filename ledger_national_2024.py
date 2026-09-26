@@ -46,7 +46,7 @@ EX17 = ("MACPAC, MACStats: Medicaid and CHIP Data Book, Exhibit 17, Total "
 # the reader met was a vaccine purchase wearing the word overhead. S-099.
 # The dollars, the denominator and the lane derivation live in
 # basis_national.py so that this ledger and provider_mix.py read one copy.
-# See that module for D-78 and the collections fold.
+# See that module for D-83 and the collections fold.
 from basis_national import (BENEFITS_M, ADMIN_M, MFCU_M, SNC_M, VFC_M,
                             MEDICARE_M, FED_M, ST_M, CAP_M, FFS_M, COLL_M,
                             DUAL_CAP_M, OTHER_ACUTE_M, DENTAL_M, WRAP_FFS_M,
@@ -67,7 +67,7 @@ def _rebase(L):
     one moves by the same factor. Sources and peels are not touched here: they
     are re-derived from Exhibit 16 dollars above.
 
-    D-78: the payer lanes and everything derived from them are no longer
+    D-83: the payer lanes and everything derived from them are no longer
     rebased. They are computed from Exhibit 17 dollars on the current
     denominator in basis_national.py, so multiplying them here would move them
     twice. What is left on the old hundred is documented fraud and the
@@ -149,7 +149,7 @@ def build() -> Ledger:
         Payer("mco", "MCO capitation", "mco",
               capitation=Fig(MCO_100, source=EX17, vintage=V, basis=B,
                              status=MODELLED,
-                             note="D-78. Exhibit 17 capitation of $496,097M "
+                             note="D-83. Exhibit 17 capitation of $496,097M "
                                   "less the dual lane, both net of the "
                                   "collections fold. MODELLED because the "
                                   "pro-rata key for collections and the dual "
@@ -167,7 +167,7 @@ def build() -> Ledger:
         Payer("dual", "Dual MCO capitation", "dual",
               capitation=Fig(DUAL_100, source=EX17, vintage=V, basis=B,
                              status=MODELLED,
-                             note="D-78. $106,000M of Exhibit 17 capitation, "
+                             note="D-83. $106,000M of Exhibit 17 capitation, "
                                   "triangulated and the softest figure in the "
                                   "model, net of the collections fold."),
               care=Fig.derived(DUAL_CARE, ("payer.dual.capitation", "payer.dual.admin",
@@ -177,7 +177,7 @@ def build() -> Ledger:
         Payer("ffs", "Fee-for-service", "ffs",
               capitation=Fig(FFS_100, source=EX17, vintage=V, basis=B,
                              status=MODELLED,
-                             note="D-78. Exhibit 17 fee-for-service of "
+                             note="D-83. Exhibit 17 fee-for-service of "
                                   "$400,002M, net of the collections fold. The "
                                   "dollars are measured; the fold is ours."),
               care=Fig(FFS_CARE, source=EX17, vintage=V, basis=B, status=MODELLED,

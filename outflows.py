@@ -11,15 +11,34 @@
 # Column boundaries. These are the spine of the whole layout: checkpoints,
 # terminals and right-aligned labels all key off them.
 COLS = {
-    "FEDERAL":     (110, 300),
-    "STATE_GOVT":  (300, 560),
-    "STATE_AGENCY": (560, 820),
-    "DISBURSE":    (820, 1060),
+    # D-87, JW 2026-09-25. State government -10% and Disbursements -10%; the 50
+    # units recovered go to the LEFT MARGIN, which is what the first anchor's
+    # label needed — it was running two units off the edge of the canvas. PAYER
+    # onward is deliberately untouched at 1060 / 1300 / 1560 / 1760 / 2180, so
+    # the right two-thirds of the panel, and every crop that cuts it, is where
+    # it was. Widths are frozen again from here (1.2); they are not derived
+    # from anything, and never were.
+    "FEDERAL":     (160, 350),
+    "STATE_GOVT":  (350, 584),
+    "STATE_AGENCY": (584, 844),
+    "DISBURSE":    (844, 1060),
     "PAYER":       (1060, 1300),
     "CLAIMS":      (1300, 1560),
     "PROVIDERS":   (1560, 1760),
     "BENEFICIARY": (1760, 2180),
 }
+
+
+def _at(col, off):
+    """A peel's trunk x, as an offset from its own column's LEFT edge.
+
+    These were absolute canvas positions. That is fine for exactly as long as
+    the spine never moves, and when D-87 moved four column boundaries every one
+    of them had to be found and re-typed by hand across four files — which is
+    the definition of brittle. An offset moves with its column and cannot be
+    left behind.
+    """
+    return float(COLS[col][0]) + off
 
 # class:   "ordinary" = exists under prior law | "hr1" = P.L. 119-21
 # edge:    "top" = peels up (ordinary) | "bottom" = peels down (HR-1)
@@ -28,17 +47,17 @@ COLS = {
 OUTFLOWS = {
     # ---- ordinary leakage, both diagrams --------------------------------
     "Administration": dict(
-        cls="ordinary", src="STATE_AGENCY", edge="top", src_x=615,
+        cls="ordinary", src="STATE_AGENCY", edge="top", src_x=_at("STATE_AGENCY", 55),
         term_col="STATE_AGENCY", term_y=250, ret=False),
     # D-72. Terminates between Medicare's return at 134 and administration's
     # at 250, so resolve_bite_order deals it the middle slot and none of the
     # three cross. Without a declaration here it had no terminal height to sort
     # on and the solver put it wherever, which crossings.py caught at once.
     "Federal oversight": dict(
-        cls="ordinary", src="STATE_AGENCY", edge="top", src_x=665,
+        cls="ordinary", src="STATE_AGENCY", edge="top", src_x=_at("STATE_AGENCY", 105),
         term_col="STATE_AGENCY", term_y=206, ret=False),
     "Medicare premiums": dict(
-        cls="ordinary", src="STATE_AGENCY", edge="top", src_x=715,
+        cls="ordinary", src="STATE_AGENCY", edge="top", src_x=_at("STATE_AGENCY", 155),
         term_col="FEDERAL", term_y=134, ret=True),
     "MCO plan administration": dict(
         cls="ordinary", src="PAYER", edge="top", src_x=None,
@@ -54,11 +73,11 @@ OUTFLOWS = {
     # because the tracker reads every decrement's origin from this table, and a
     # decrement with no declaration cannot be placed on the line.
     "Vaccines for Children": dict(
-        cls="ordinary", src="FEDERAL", edge="top", src_x=168,
+        cls="ordinary", src="FEDERAL", edge="top", src_x=_at("FEDERAL", 58),
         term_col="FEDERAL", term_y=None, ret=True),
 
     "Documented fraud": dict(
-        cls="ordinary", src="CLAIMS", edge="bottom", src_x=1306,
+        cls="ordinary", src="CLAIMS", edge="bottom", src_x=_at("CLAIMS", 6),
         term_col="PROVIDERS", term_y=880, ret=False),
 
     # ---- HR-1, FY2030 only ----------------------------------------------
@@ -67,7 +86,7 @@ OUTFLOWS = {
     # two bands IS the federal match that will never be drawn, and it stays
     # open through the state government column.
     "Provider tax limits": dict(
-        cls="hr1", src="FEDERAL", edge="fed_bottom", src_x=176,
+        cls="hr1", src="FEDERAL", edge="fed_bottom", src_x=_at("FEDERAL", 66),
         term_col="FEDERAL", term_y=560, ret=False, label_side="end"),
     # THE FIVE STATE-AGENCY LEVERS, IN SOURCE ORDER (JW, 2026-09-11).
     # Source order equals terminal order, which is what fan_rows needs to pack
@@ -81,32 +100,42 @@ OUTFLOWS = {
     # different things under one string is how a detector goes blind (S-079,
     # S-076). One name, declared once, in one place.
     "Work reporting": dict(
-        cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=664,
+        cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=_at("STATE_AGENCY", 104),
         term_col="DISBURSE", term_y=None, ret=False,
         reach="DISBURSE"),
     "Six-month renewals": dict(
-        cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=698,
+        cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=_at("STATE_AGENCY", 138),
         term_col="PAYER", term_y=None, ret=False,
         reach="PAYER"),
     "Blocked Medicaid enrollment rule": dict(
-        cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=732,
+        cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=_at("STATE_AGENCY", 172),
         term_col="CLAIMS", term_y=None, ret=False,
         reach="CLAIMS", label="Medicaid enrollment rule suspended"),
     "Everything else": dict(
-        cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=766,
+        cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=_at("STATE_AGENCY", 206),
         term_col="STATE_AGENCY", term_y=None, ret=False, label="Other"),
     "Blocked senior enrollment rule": dict(
-        cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=800,
-        term_col="STATE_AGENCY", term_y=None, ret=False,
-        reach="STATE_AGENCY", label="Medicare Savings rule suspended",
-        # Above its own terminal rather than below it (JW, 2026-09-11). It and
-        # "Other" both stop at the state agency edge, so their blocks sat one on
-        # top of the other at the bottom of the fan; lifting this one over its
-        # terminal separates them. It crosses a neighbouring ribbon on the way
-        # up, which JW has accepted.
-        label_dy=-52),
+        cls="hr1", src="STATE_AGENCY", edge="bottom", src_x=_at("STATE_AGENCY", 240),
+        # Pinned below the fan. It is the longest run on the panel — state
+        # agency to the beneficiary column — and a tributary that crosses the
+        # whole diagram has to pass UNDER everything that stops short of it or
+        # it cuts them. The solver places by bite order and cannot know that;
+        # directed payment caps bites higher and lands at 932, so an unpinned
+        # row put this one 11 units under it and the two curves met at x=1475.
+        term_col="BENEFICIARY", term_y=1012.0, ret=False, label_side="end",
+        reach="BENEFICIARY", label="Medicare Savings rule suspended",
+        # JW, 2026-09-25. This dollar would have paid a Medicare premium for a
+        # dual eligible; when it is taken, the beneficiary pays it. It used to
+        # terminate at the state agency, which is where it LEAVES, and the panel
+        # then had no way to say where it LANDS. It runs to the beneficiary
+        # column now, as an ordinary tributary, because that is the story the
+        # money tells. EN-19 carried this as an open design question.
+        #
+        # The lifted label is no longer needed: it and "Other" stopped at the
+        # same edge and their blocks stacked, and they no longer do.
+        ),
     "Directed payment caps": dict(
-        cls="hr1", src="CLAIMS", edge="bottom", src_x=1302,
+        cls="hr1", src="CLAIMS", edge="bottom", src_x=_at("CLAIMS", 2),
         term_col="PROVIDERS", term_y=None, ret=False,
         # Its block sat twelve units under Blocked Medicaid's and immediately to
         # the right of it, so the two read as one label and the caps looked like
@@ -176,7 +205,16 @@ FAN_LABEL_H = 45.0     # name + sub + amount
 # LABELS do not overlap in x; where labels do overlap, the 45px label block sets
 # the spacing instead. The widest gap that clears the tracker always wins.
 FAN_TIGHT_GAP = 8.0
-FAN_FLOOR = 1100.0     # tracker rule sits at 1106; labels must clear it
+# The hairline that closes the flow area. Declared here, with the rest of the
+# layout spine, and re-exported by tracker.py — it was a tracker constant with
+# its value copied into a comment beside FAN_FLOOR, which is a hand-carried
+# figure and went stale the moment the flow area grew (S-073).
+#
+# The flow area gained 40 units on 2026-09-25 (D-88): the Medicare Savings
+# tributary now runs the width of the page and the rows it passes over have to
+# clear it. H, unlike W and the scale, was never frozen (1.2, 1.3).
+RULE_Y = 1146.0
+FAN_FLOOR = RULE_Y - 6.0    # labels must clear the rule
 
 
 FAN_LABEL_H_TIGHT = 30.0   # name and amount share a line; sub below
@@ -510,9 +548,14 @@ DECREMENT_MEMBERS = {
     "Provider Tax":      ("Provider tax limits",),
     "State Admin":       ("Administration", "Federal oversight",
                           "Medicare premiums"),
-    "Eligibility Rules": ("Blocked senior enrollment rule", "Work reporting",
-                          "Six-month renewals", "Blocked Medicaid enrollment rule",
-                          "Everything else"),
+    # The Medicare Savings moratorium came OUT of this bundle on 2026-09-25
+    # (D-89). The other four are dollars that would have bought care; this one
+    # would have paid a Medicare premium and lands on the dual eligible. Once
+    # the panel drew that difference, a marker that summed the five was telling
+    # the reader they were the same kind of loss.
+    "Eligibility Rules": ("Work reporting", "Six-month renewals",
+                          "Blocked Medicaid enrollment rule", "Everything else"),
+    "Medicare Savings":  ("Blocked senior enrollment rule",),
     "MCO Admin":         ("MCO plan administration", "Dual MCO plan administration",
                           "Public-company earnings"),
     "Payment Caps":      ("Directed payment caps",),
@@ -569,12 +612,38 @@ def decrement_span(short):
     return min(origins), max(termini)
 
 
+# A declared marker position, for a decrement whose geometric midpoint does not
+# say what the decrement means. JW, 2026-09-25: the Medicare Savings loss is
+# charged at the state agency, so the derived midpoint puts it at x=834 with
+# the other state-agency levers — which is where the dollar LEAVES. It lands on
+# beneficiaries, and the tributary above it now runs there. The marker sits on
+# the providers / beneficiaries divider to say so.
+#
+# This is an exception to 4.9 and is meant to stay one: geometry still drives
+# every other marker on the line, and an override here does NOT move the
+# arithmetic, which is attributed by origin and stays in the disbursement
+# segment where the money actually left.
+DECREMENT_X = {
+    "Medicare Savings": float(COLS["PROVIDERS"][1]),
+}
+
+
 def decrement_x(short):
     """Midway between where the money leaves the flow and the end of the segment
-    it is charged to, both read from the declared outflow geometry (4.9)."""
+    it is charged to, both read from the declared outflow geometry (4.9) —
+    unless the decrement declares a position, which one does."""
+    if short in DECREMENT_X:
+        return DECREMENT_X[short]
     a, b = decrement_span(short)
     return (a + b) / 2.0
 
+
+# Where money first appears on the canvas: the left edge of the source bars.
+# Declared here, with the rest of the layout spine, because the tracker line's
+# first anchor is aligned to it. A second copy of the number in sankey.py would
+# let the bar and the anchor drift apart, which is the whole reason this file
+# exists (S-105).
+SOURCE_X = COLS["FEDERAL"][0] + 40.0
 
 # The four anchors. Identical on every diagram, past, present and future: they are
 # what lets a reader lay two panels side by side (S-060). Each sits on the LEFT
@@ -591,3 +660,30 @@ TRACKER_ANCHORS = [
     ("CLAIMS",      ["Claims Paid"]),
     ("BENEFICIARY", ["Health Services", "Delivered"]),
 ]
+
+
+def anchor_x(col):
+    """Where an anchor sits on the line.
+
+    JW, 2026-09-25. The interior anchors keep the rule above: the left edge of
+    the column whose state they report. The two ENDS do not, because the line's
+    ends are not reporting a column boundary, they are declaring the extent of
+    the thing being measured.
+
+    The first anchor sits at SOURCE_X, where the money first appears on the
+    canvas, rather than at the FEDERAL column's left edge. The column edge is a
+    rule on the page; the bar is where the dollar starts, and the line should
+    begin under it.
+
+    The last anchor sits at the CENTRE of the beneficiary column rather than its
+    left edge. Its left edge is the end of the provider column — it was marking
+    where providers stop, not where services are delivered. The centre is where
+    the beneficiary pies are, and where tracker.py has always said the delivered
+    dot belongs (FINAL_COL, 4.4).
+    """
+    if col == TRACKER_ANCHORS[0][0]:
+        return SOURCE_X
+    if col == TRACKER_ANCHORS[-1][0]:
+        a, b = COLS[col]
+        return (a + b) / 2.0
+    return float(COLS[col][0])

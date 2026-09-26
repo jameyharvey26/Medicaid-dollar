@@ -10,7 +10,7 @@
 from tobe2030 import per100
 
 # --- baseline ledger, prior law, per $100 ----------------------------------
-# D-78. This baseline used to be typed at two decimals on the OLD hundred
+# D-83. This baseline used to be typed at two decimals on the OLD hundred
 # (admin 5.07, medicare 2.90, mco 40.06, dual 10.89, ffs 41.08) while the node
 # dictionaries beneath it came from provider_mix on the current one. Two bases
 # in one function: the lanes summed to 92.03 and the cells were struck against

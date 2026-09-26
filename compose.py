@@ -130,6 +130,7 @@ def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
         show_beneficiaries=bool(V.show_beneficiaries and L.beneficiaries),
         absent=list(L.declarations) if not V.show_beneficiaries else [],
         cp0_label=list(V.cp0_label),
+        cp0_year=V.cp0_year,
         centre=V.centre,
         kicker=V.kicker, title=V.title, strap=V.strap,
     )

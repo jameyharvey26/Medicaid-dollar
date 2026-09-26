@@ -80,7 +80,7 @@ LAPSED_2026_09_16 = {
 #
 # That each figure below is right.
 #
-# That the collections convention is right (D-78). Exhibit 17 reports
+# That the collections convention is right (D-83). Exhibit 17 reports
 # collections - third-party liability, estate and other recoveries, NOT drug
 # rebates - as a single unallocated negative of $15,201M, $1.60 per $100. The
 # source declines to say which lane recovered the money, so it is folded pro
@@ -90,7 +90,7 @@ LAPSED_2026_09_16 = {
 # That when a printed line cannot close, the anchor holds and the decrement
 # gives way (S-106).
 #
-# The 26 figures that lapsed under D-78 are re-agreed here at their new
+# The 26 figures that lapsed under D-83 are re-agreed here at their new
 # values, together with the 10 that never moved.
 SIGNED = {
     'beneficiaries.row.Adults': 29.78057501122407,
