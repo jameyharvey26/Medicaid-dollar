@@ -88,7 +88,7 @@ rule, not a nudge. Layout gates run last, after every geometry change.
 - The landing-page URL and repository path are still placeholders. The footer
   of v6.1 reads `[landing page pending]` and `[repository pending]`. The paper
   cannot ship.
-- The repo is still public and `AUTHOR_HELD_SHEILA.md` and the handoff files
+- The repo is still public and `AUTHOR_HELD_the co-author.md` and the handoff files
   carry a named third party's employer and bio.
 - The Medicare Savings marker sits on the providers/beneficiaries divider but
   is subtracted in the disbursement segment. Declared exception in

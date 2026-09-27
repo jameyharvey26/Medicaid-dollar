@@ -45,7 +45,7 @@ Start with the ones already named:
 
 ## Do not ask me about these
 
-S-092 is closed and does not come back. Sheila's name, employer and bio are
+S-092 is closed and does not come back. The co-author's name, employer and bio are
 still in the working record and the repo is still public. Out of scope unless
 I say otherwise.
 

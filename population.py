@@ -138,7 +138,11 @@ def build(masthead=False, furniture=False):
     PANW = right - SPLIT - mm(2)
     MAG = int((PANW / max(LOSS_G.values())) / K)     # whole multiples only
     MK = K * MAG
-    ROW = mm(17.6)
+    # v7.1. JW: fit it into the white space on the page before, without
+    # squishing. Nothing is scaled: the rows are closer, the bar is a
+    # millimetre thinner and the rate label sits nearer its own segment. Every
+    # figure, every label and both panels are still here at full size.
+    ROW = mm(15.4)
     b = []
 
     b.append(t(X0, top - mm(3.4), "WHAT IMPACTED THEM, PER $100", px(6.6), INK,
@@ -159,10 +163,10 @@ def build(masthead=False, furniture=False):
              f'y2="{top+ROW*len(ORDER)-mm(3)}" stroke="{RULE}" '
              f'stroke-width="{mm(0.4):.1f}"/>')
 
-    y = top + mm(10)
+    y = top + mm(7)
     for g in ORDER:
         cov, rat = LOSS_G_K["coverage"][g], LOSS_G_K["rate"][g]
-        h = mm(7)
+        h = mm(6)
         yb = y - mm(4.4)
 
         b.append(t(X0 - mm(3), y - mm(0.6), g, px(11), INK, "end", "bold"))
@@ -217,7 +221,7 @@ def build(masthead=False, furniture=False):
             _txt = f"\u2212${amt:.2f}  {lab}"
             _w = len(_txt) * px(8) * 0.52
             tx = min(max(cxm + mm(2), SPLIT), right - _w)
-            ty = yb - mm(2.2) if up else yb + h + mm(5)
+            ty = yb - mm(2.2) if up else yb + h + mm(4.2)
             y0l = yb if up else yb + h
             y1l = ty + mm(1) if up else ty - mm(2.6)
             b.append(f'<path d="M{cxm:.1f},{y0l:.1f} L{cxm:.1f},{y1l:.1f} '

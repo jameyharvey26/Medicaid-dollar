@@ -159,7 +159,7 @@ unchanged.
 ### Closed items
 
 **Erin Henderson interview — not planned. Closed 2026-08-27.**
-*(MOOT 2026-09-11, D-67: co-author changed to Sheila Yahyazadeh.)*
+*(MOOT 2026-09-11, D-67: co-author changed; the name is held.)*
 Previously carried as an open item. Closed at the Executive Producer's direction: an interview
 is unlikely to be available, and no source can supply what the placeholder in D-30 stands in
 for. Nobody knows how plans and states will respond, and they will respond differently from
@@ -170,7 +170,7 @@ This is a closure, not a deferral. Do not resurface it as an open item.
 
 Two consequences to carry:
 - **SUPERSEDED 2026-09-11 by D-67.** ~~D-17 is unaffected. Erin remains co-author.~~
-  The byline is now Jamey Harvey and Sheila Yahyazadeh. D-17 amended in place.
+  The byline is now Jamey Harvey and the co-author. D-17 amended in place.
 - *(original text, for the record)* D-17 is unaffected. Erin remains co-author. Co-authorship does not depend on an
   interview and the byline stands unless separately revisited.
 - **D-19 needs a source check.** If Section VI's human-impact sourcing was leaning on her

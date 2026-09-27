@@ -77,7 +77,7 @@ EXPECT = {
     "coverage.py dc": dict(
         must=["0 verified", "0 modelled", "15 unverified", "26 missing"],
     ),
-    "render_v7_0.py": dict(
+    "render_v7_1.py": dict(
         # 2026-09-26b, D-93. This gate is RED and is expected to be red.
         #
         # whitespace.py has been blind since it was written. The provenance

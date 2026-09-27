@@ -95,6 +95,6 @@ Two versions of each, masthead on for standalone use and off for the paper.
 4. D-91: derive all five eligibility rows and re-sign three figures, or leave it.
 5. The AI section says every figure is read from the code at build time. It is not.
 6. Landing page URL and repository path.
-7. AUTHOR_HELD_SHEILA.md in a public repo.
+7. AUTHOR_HELD_the co-author.md in a public repo.
 8. The Medicare Savings marker sits on a divider it is not subtracted at.
 

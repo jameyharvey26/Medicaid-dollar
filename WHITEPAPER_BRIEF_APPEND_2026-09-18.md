@@ -6,12 +6,12 @@ Nothing in this append has been built yet.
 
 ---
 
-### D-68 · Sheila Yahyazadeh comes off the paper
+### D-68 · the co-author comes off the paper
 
-Co-authorship requires CareFirst approval that has not been given. She is removed
+Co-authorship requires her employer approval that has not been given. She is removed
 from every artifact — both HTML drafts, the Typst source, and the three rendered
 PDFs, two of which were deleted rather than re-rendered. Her byline, bio,
-author-grid geometry and disclosure are held verbatim in `AUTHOR_HELD_SHEILA.md`
+author-grid geometry and disclosure are held verbatim in `AUTHOR_HELD_the co-author.md`
 so the decision can be reversed in four moves if the approval comes. Supersedes
 D-67; D-67 stands in the record and is not rewritten. Closes S-092, which asked
 whether she had reviewed the author-page disclosure: there is no longer an

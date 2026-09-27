@@ -11,7 +11,7 @@ Choice DC, and Health Services for Children with Special Needs Inc, CY2024 and
 CY2023 if posted. If she came back empty, say so and stop rather than substituting
 a source.
 
-**Ask me S-092.** Has Sheila seen the disclosure wording on the author page? Keep
+**Ask me S-092.** Has the co-author seen the disclosure wording on the author page? Keep
 asking until I say yes. One line, then move on.
 
 **Run the C-07.2 scan.** grep for "Medicaid dollar" singular. It was 32 instances

@@ -8,9 +8,9 @@ import release
 # placeholders: the landing page is not stood up and the repository path is
 # not final. Both are open items and must be real before this ships.
 # The manuscript, overridable so a retained whole-number release can still be
-# rendered after its own renderer is deleted:  python3 render_v7_0.py paper_national_v6_1.html
+# rendered after its own renderer is deleted:  python3 render_v7_1.py paper_national_v6_1.html
 SRC = pathlib.Path(sys.argv[1] if len(sys.argv) > 1
-                   else "paper_national_v7_0.html").resolve()
+                   else "paper_national_v7_1.html").resolve()
 OUT = pathlib.Path(f"Medicaid_Dollars_National_v{release.VERSION}.pdf").resolve()
 
 _FILL = {

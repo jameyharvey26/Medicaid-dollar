@@ -19,7 +19,7 @@ FILES=(
   # old instances.py path — migration scaffolding, and its premise expired when
   # D-70 moved the national baseline. renderproof.py replaces it.
   "byteproof.py"
-  # The two PDFs carry Sheila Yahyazadeh's name and employer on the cover and
+  # The two PDFs carry the co-author's name and employer on the cover and
   # the author page. D-68 took her off every artifact; these were deleted rather
   # than re-rendered. Do not regenerate them.
   "Medicaid_Dollars_National_DRAFT_v4.pdf"
@@ -36,6 +36,23 @@ FILES=(
   # 192 kB with eighteen figures in it, which is the size of a paper with no
   # pictures. It has none. Superseded by v6.1 at 3.1 MB. Do not regenerate.
   "Medicaid_Dollars_National_v6.0.pdf"
+
+  # 2026-09-27, JW. The co-author's held bio comes out of the repo. Her name
+  # and employer are redacted in place everywhere else; this file is nothing
+  # BUT that material, so it goes.
+  #
+  # The entry stays on the list even though the filename carries her first
+  # name. It was taken off once, on the reasoning that a deletion list should
+  # not name the person it protects - which meant the file was deleted in the
+  # Author's sandbox and NOT on JW's machine, where the list is the only thing
+  # that acts. A tidy list that does not delete the file is worse than an
+  # untidy one that does. Take it off after the deletion has been committed.
+  #
+  # Deleting it does not remove it from the repository's HISTORY. Every past
+  # commit still contains it and the repo is public, so this stops future
+  # exposure and nothing else. Removing it from history needs the repo made
+  # private and the history rewritten. Raised with JW at v7.1.
+  "AUTHOR_HELD_SHEILA.md"
 
   # 2026-09-27. Dead exploratory cover studies from before D-95. No script
   # produces them, and tapertest.py reports them as faults on every run
@@ -58,6 +75,13 @@ FILES=(
   "paper_figs/fig13_terminals_2030.png"
   "paper_figs/fig14_terminals_left.png"
   "paper_figs/figB_provisions_with_line.png"
+
+  # v7.0 is a point release superseded within the day. The whole-number
+  # release itself is KEPT as paper_national_v7_0.html; only the PDF and the
+  # renderer go, and v7.0 still renders with
+  #   python3 render_v7_1.py paper_national_v7_0.html
+  "render_v7_0.py"
+  "Medicaid_Dollars_National_v7.0.pdf"
 
   # v6.2 is a point release. The whole-number releases stay; this does not.
   "paper_national_v6_2.html"
@@ -87,6 +111,23 @@ if [ ! -f "build.py" ] || [ ! -f "instances.py" ]; then
   exit 1
 fi
 
+
+# ---- did it actually work? --------------------------------------------------
+# The list is only as good as what is left on disk afterwards, and the check
+# has to run whether or not anything was deleted this time. It did not, once,
+# and a file that should have gone stayed for two commits.
+leakcheck() {
+  local hits
+  hits=$(grep -ril "yahyazadeh\|carefirst" . --exclude-dir=.git 2>/dev/null \
+         | grep -v "DELETE OLD FILES.command")
+  if [ -n "$hits" ]; then
+    echo
+    echo "WARNING: the co-author's name or employer is still in this folder:"
+    echo "$hits" | sed 's/^/   /'
+    echo
+  fi
+}
+
 present=()
 for f in "${FILES[@]}"; do
   [ -e "$f" ] && present+=("$f")
@@ -94,7 +135,7 @@ done
 
 if [ ${#present[@]} -eq 0 ]; then
   echo "Nothing to delete. Every file on the list is already gone."
-  echo
+  leakcheck
   read -r -p "Press return to close. "
   exit 0
 fi
@@ -123,5 +164,6 @@ done
 echo
 echo "Done. Open GitHub Desktop: the deletions are now in your changes list."
 echo "Commit them with everything else."
-echo
+leakcheck
+
 read -r -p "Press return to close. "

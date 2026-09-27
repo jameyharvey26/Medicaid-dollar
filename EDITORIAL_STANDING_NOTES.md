@@ -1222,8 +1222,8 @@ something to fix in the middle of a different repair.
 
 **S-092 · Ask, at the start of every new chat that follows a commit, whether the
 co-author has seen the disclosure wording.**
-JW, 2026-09-11. The rendered author page carries four lines describing Sheila
-Yahyazadeh's employer and its relationship to two figures on the diagrams. JW has
+JW, 2026-09-11. The rendered author page carries four lines describing the co-author's
+employer and its relationship to two figures on the diagrams. JW has
 instructed that the Author raise this at the opening of each new session carrying a
 new commit, and keep raising it, until JW states that she has seen it. The trigger is
 a new chat plus a new commit, not the passage of time. On reassurance, amend this note

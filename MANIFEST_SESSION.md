@@ -551,7 +551,7 @@ was carried by hand.
 1. **The repo is public and the draft is now substantially complete.** Per the standing
    instruction this is the flag.
 2. **S-092 is live.** At the start of the next chat following this commit, ask whether
-   Sheila has seen the disclosure wording on the author page.
+   the co-author has seen the disclosure wording on the author page.
 3. **EN-43 re-scope, not yet ruled on.** 10-K segment disclosures cannot produce a measured
    Medicaid earnings figure; they give revenue, not line-of-business profit, so the carve
    stays an allocation however much work is done. NAIC statutory filings do break out a
@@ -616,7 +616,7 @@ JW's biography generalized for a national readership. Ward Four, the residency c
 designation and the Williams Administration reference are out. The District of Columbia
 survives as the place the work happened, because it carries the credential.
 
-**S-092 remains open.** The draft has been shared with Sheila. Sharing is not review, and the
+**S-092 remains open.** The draft has been shared with the co-author. Sharing is not review, and the
 note asks specifically whether she has seen the disclosure wording on the author page.
 
 ## Open, for JW
@@ -860,7 +860,7 @@ AmeriHealth Caritas DC and Wellpoint DC, both years.
   conditions; the EN-43 cascade is live in the ledger but invisible in coverage.
 - New FY2030 label collision: wrap-around pie reaches y=674, two units past the
   behavioral health label. Consequence of the node resize. Presentation, frozen.
-- S-092: Sheila has not yet seen the author-page disclosure wording.
+- S-092: the co-author has not yet seen the author-page disclosure wording.
 
 ## Session handoff streamlined (2026-09-16, JW)
 `SESSION_START.md` holds everything stable between sessions; the per-session
@@ -1052,7 +1052,7 @@ The DHCF report is unopened and the $425.3M / $411.2M question is untouched. DC
 Phase 2 signing. DC Phase 1. The collections netting. `legacy_mix=True`. The
 author page.
 
-**S-092 is closed.** JW, 19 September: Sheila saw the author-page disclosure
+**S-092 is closed.** JW, 19 September: the co-author saw the author-page disclosure
 wording and it has been deleted for now. It does not come back as an open item.
 The plain-language sentence about plan administration that came out of it is
 still unhomed, and still matters once the DC payer lane names actual plans.
@@ -1077,8 +1077,8 @@ all seven gates pass.
 **D-78. The $425.3M "Wellpoint DC" lane is a two-plan composite.** Not a swap
 and not CY2022. Three of the four constants in `build_sankey_dc.py:21-22` are
 exact DHCF CY2023 figures. The fourth is Amerigroup ($317.9M / $260.8M, nine
-months) plus CareFirst ($107.4M / $87.7M, three months) summed and given the
-successor plan's name. CareFirst's administration is a full year of wind-down
+months) plus her employer ($107.4M / $87.7M, three months) summed and given the
+successor plan's name. her employer's administration is a full year of wind-down
 against one quarter of revenue, so the lane's retention — $76.8M on $425.3M —
 belongs to neither plan. The claims ratio survived the merge almost untouched
 (81.9% composite against Amerigroup's 82.0%), which is why no ratio check
@@ -2132,3 +2132,51 @@ Figure 9 up a section made it 35, so it is left alone.
 `DELETE OLD FILES.command` run: sixteen files, including the six crops the
 tapers replaced, `payer.py` and its outputs, the three dead cover studies, and
 the v6.2 point release. Whole-number releases v5.0, v6.0 and v6.1 are kept.
+
+**v7.1.** JW: fit Figure 9 into the white space on the page before, without
+squishing.
+
+Nothing is scaled. The figure is rebuilt 14mm shorter - rows closer, the
+magnified bar a millimetre thinner, the rate label nearer its own segment -
+and every figure, every label and both panels are still there at full size.
+104mm rather than 118mm, which is what let it sit under the prose instead of
+taking a page of its own.
+
+The caption came down with it, and carried a defect worth naming: it said the
+right panel was enlarged **four times** while the figure, which derives its own
+magnification, prints **five**. It had been wrong since the bar scale changed.
+The caption no longer states the factor at all; the figure declares it, and
+one of the two cannot drift from the other now.
+
+**Nineteen pages, and no whitespace strandings anywhere.** Six gates green.
+`render_v7_1.py` is red on one count only, the three known Figure 6 leader
+crossings JW has set aside.
+
+**The co-author is out of the working tree.** JW, 27 September. The held bio
+file is deleted and the name and employer are redacted from sixteen other
+files, in place, to "the co-author" and "her employer". The record of what was
+decided and when survives; the personal data does not. Eight of those files
+needed a second pass, because a blind substitution left sentences like "the
+co-author is the co-author" and lower-case starts mid-paragraph.
+
+**Corrected the same day.** The deletion list entry was first retired on the
+reasoning that a list should not name the person it protects. That was wrong in
+a way worth writing down: the file had been deleted in the Author's sandbox,
+and the LIST is the only thing that acts on JW's machine. Taking the entry off
+meant the file would have survived on the working copy while the record said it
+was gone. A tidy list that does not delete the file is worse than an untidy one
+that does. The entry is back, and comes off after the deletion is committed.
+
+`DELETE OLD FILES.command` also gained a check that runs on BOTH exit paths,
+including the "nothing to delete" one: it greps the folder for the name and the
+employer afterwards and says so if either is still there. Tested by planting a
+file and watching it fire.
+
+**This does not remove her from the repository.** Every past commit still
+contains the file, the name and the employer, and the repo is public. Deleting
+from the working tree stops future exposure and nothing else. Removing it from
+history means making the repo private and rewriting history with
+git-filter-repo or BFG, then force-pushing; GitHub also keeps forks and cached
+views of deleted content, so private-first is the safe order. Raised with JW at
+v7.1 and NOT done here, because rewriting a published history is his call and
+not a thing to do inside a packaging step.

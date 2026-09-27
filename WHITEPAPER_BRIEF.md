@@ -2,7 +2,7 @@
 
 **Working title:** $100 Medicaid Dollars — The National View and the Impact of HR-1
 **Executive Producer:** JW
-**Byline:** Jamey Harvey, Sheila Yahyazadeh  *(amended 2026-09-11, D-67)*
+**Byline:** Jamey Harvey, the co-author  *(amended 2026-09-11, D-67)*
 **Kickoff:** 2026-08-18
 **Status:** structure approved, research in progress, no drafting started
 
@@ -158,22 +158,22 @@ not. **Build toward a finished PDF, not a designer handoff package.** Designer d
 optimise for what renders reliably in print CSS.
 
 ### D-17 · Byline and author bios
-**AMENDED 2026-09-11 by D-67. The co-author is Sheila Yahyazadeh.**
-Jamey Harvey and Sheila Yahyazadeh.
+**AMENDED 2026-09-11 by D-67. The co-author's name is held (D-68).**
+Jamey Harvey and the co-author.
 
-**Sheila Yahyazadeh (as supplied by JW; one typo fix marked):**
-> Sheila Yahyazadeh is the Chief External Operations Officer for CareFirst BlueCross
+**the co-author (as supplied by JW; one typo fix marked):**
+> the co-author is the Chief External Operations Officer for her employer BlueCross
 > BlueShield Community Health Plan Maryland. She has over a decade of experience working
 > with government health programs including Marketplace, Medicaid, and Medicare. She
 > specializes in business strategy, growth operations, innovation, and partnership building.
-> Sheila is passionate about elevating the voice of consumers and the community to improve
+> the co-author is passionate about elevating the voice of consumers and the community to improve
 > equitable access to care. Through partnerships with providers, community stakeholders,
 > startups, and the state, she has built pathways to care access [for] historically
-> underserved and disadvantaged communities. Prior to joining CareFirst BCBS, Sheila led
+> underserved and disadvantaged communities. Prior to joining her employer BCBS, the co-author led
 > strategic campaigns and CX initiatives for Fortune 100 healthcare clients. She also
 > spearheaded a health innovation team that brought together cross functional expertise in
 > AI/machine learning, creative services, and UX/UI to reimagine how healthcare is
-> delivered. Sheila is committed to innovation as an advisor to start-up founders. She has a
+> delivered. The co-author is committed to innovation as an advisor to start-up founders. She has a
 > bachelor's in Human and Global Security as well as a Master's degree in Public
 > Administration and Health Policy from American University. She is first generation
 > American, daughter to Peruvian and Iranian parents. She is also a certified Health Coach,
@@ -228,18 +228,18 @@ framing on motive (S-003) and travels to plans across many political geographies
 edition calls for one.
 
 **AMENDED 2026-09-11 by D-67.** The bios no longer close in parallel: Jamey's ends on two
-kids in college, Sheila's on parentage, a health coaching certification and travel. The
+kids in college, the co-author's on parentage, a health coaching certification and travel. The
 humanising function survives and the symmetry does not. Do not manufacture the symmetry by
 editing either bio.
 
-### D-67 · The co-author is Sheila Yahyazadeh
+### D-67 · The co-author is the co-author
 JW, 2026-09-11. Recorded here because five places in the brief and the appends cite
 D-67 as the superseding decision and none of them stated it. A reference with no
 definition is the same defect as a stale in-place entry (S-044), read from the other
 end: the next person to follow the citation finds nothing.
 
 Erin Henderson was co-author from kickoff on 2026-08-18. The byline is now Jamey
-Harvey and Sheila Yahyazadeh, Jamey leading, on the cover and on the author page. Bio
+Harvey and the co-author, Jamey leading, on the cover and on the author page. Bio
 supplied verbatim by JW and amended into D-17. The interview closure recorded in the
 2026-08-27 appends is moot rather than closed, and the two credibility hooks it left
 standing are withdrawn and replaced; see D-17 as amended.
@@ -247,7 +247,7 @@ standing are withdrawn and replaced; see D-17 as amended.
 **Disclosure, added by the Author and open for JW's ruling.** A sitting officer of a
 Medicaid managed care organisation is now a co-author of a paper that prints a plan
 administration band and a public-company earnings band. The rendered author page
-carries four lines stating the role, that CareFirst BlueCross BlueShield Community
+carries four lines stating the role, that her employer BlueCross BlueShield Community
 Health Plan Maryland is a nonprofit and therefore outside the $0.76 public-company
 earnings figure (EN-43 as amended), and that the plan administration band is a
 national aggregate from CMS-64 and MACStats containing no plan-specific figure. All

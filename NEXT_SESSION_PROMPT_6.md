@@ -18,7 +18,7 @@ MedStar's DC Medicaid is $425.0M — within $0.3M of the figure sitting under
 Wellpoint's name. Either two plans are swapped or all three are CY2022. Do not
 model around it and do not pick the likelier explanation.
 
-**The working record.** D-68 took Sheila off every artifact, but
+**The working record.** D-68 took the co-author off every artifact, but
 `WHITEPAPER_BRIEF.md`, `MANIFEST_SESSION.md` and the handoff files still carry
 her name, her employer and her bio verbatim, and the repo is public. That was
 declared out of scope on the day. It still is unless I say otherwise.

@@ -13,7 +13,7 @@ anything else in it.
 
 ## Do not ask me about these
 
-S-092 is closed. Sheila saw the author-page disclosure and we deleted it. It is
+S-092 is closed. The co-author saw the author-page disclosure and we deleted it. It is
 not an open item and it does not come back.
 
 The working record still carries her name, her employer and her bio in

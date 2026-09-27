@@ -7,7 +7,7 @@ for. Where the two disagree, this one is newer — say so rather than picking.
 
 ## Ask me three things, one at a time
 
-**S-092.** Has Sheila seen the disclosure wording on the author page?
+**S-092.** Has the co-author seen the disclosure wording on the author page?
 
 **The DHCF report.** Has anyone opened it? The DC ledger carries plan revenues
 of $425.3M for Wellpoint and $411.2M for MedStar, traced to an uncited constant
