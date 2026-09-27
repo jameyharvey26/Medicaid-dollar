@@ -168,19 +168,34 @@ def build(variant: str = "mixed") -> Ledger:
     )
 
     # --- beneficiaries ---------------------------------------------------
-    # FY2024 group shares carried forward against the FY2030 provider total.
-    # EN-47: the split is the FY2024 split times one multiplier, so every group
-    # falls by the same proportion. That is the assumption, stated, and it is
-    # why no per-beneficiary-class finding is drawn off it.
-    tot = sum(L["node"].values())
-    G24 = {"Children": 13.48, "Adults": 29.56, "Disabled": 24.98, "Aged": 18.41}
+    # D-102, JW. This was the FY2024 split times one multiplier, so every group
+    # fell by the same proportion and, as EN-47 said, no per-class finding
+    # could be drawn off it. Meanwhile inc.py allocated each provision to the
+    # population its statute names and the paper printed BOTH: the panel put
+    # the new adult group at $17.66 and Figure 12 put it at $14.11, on facing
+    # pages. The two models lived in modules that never imported each other, so
+    # nothing in the repo could see the $3.55.
+    #
+    # There is one model now, in incidence.py, and this is it. Each row is the
+    # FY2024 signed margin less what the provisions take from that population:
+    # Sec. 71119 and Sec. 71107 reach the new adult group and no other, the
+    # directed payment cap reaches the three services it names, and the rest is
+    # proportional. The rows no longer fall by one rate, which is the point.
+    #
+    # The interior is still unallocated here, and note 13 says why it is not
+    # published: raked to the service falls it asserts things no mechanism in
+    # the statute supports.
+    import incidence
+    _amt = dict(per100)
+    _g30 = incidence.allocate(L["node"], _amt)["by_g30"]
+
     ben = Matrix(
-        name="beneficiaries", rows=list(G24), cols=NODES,
-        row_margin={g: _mod(v * tot / 86.43,
-                            "FY2024 eligibility-group share of provider spending "
-                            "held constant and applied to the FY2030 total. "
-                            "EN-47.")
-                    for g, v in G24.items()},
+        name="beneficiaries", rows=list(_g30), cols=NODES,
+        row_margin={g: _mod(v,
+                            "FY2024 signed group margin less the provisions "
+                            "that reach that population, allocated by "
+                            "incidence.py. D-102.")
+                    for g, v in _g30.items()},
         col_margin={n: Fig.derived(L["node"][n], (f"claims.col.{n}",))
                     for n in NODES},
         cell={},

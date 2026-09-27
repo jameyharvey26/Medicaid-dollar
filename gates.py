@@ -72,12 +72,29 @@ EXPECT = {
         # choice: the three payer lanes now carry a collections fold whose
         # pro-rata key is ours, so MEASURED would overstate what Exhibit 17
         # actually says. The count going DOWN is the honest direction here.
-        must=["21 verified", "5 modelled", "2 unverified", "3 missing"],
+        must=["22 verified", "5 modelled", "2 unverified", "3 missing"],
     ),
     "coverage.py dc": dict(
         must=["0 verified", "0 modelled", "15 unverified", "26 missing"],
     ),
-    "render_v6_1.py": dict(
+    "render_v7_0.py": dict(
+        # 2026-09-26b, D-93. This gate is RED and is expected to be red.
+        #
+        # whitespace.py has been blind since it was written. The provenance
+        # footer was `position:fixed; bottom:4mm`, which in a paged context
+        # positions against the CONTENT box, so the footer printed inside the
+        # column and was the lowest text block on every page. dead_space()
+        # measured from it and returned about one line on every page of every
+        # draft this project has ever rendered - cover, plates and section ends
+        # alike, which is impossible. Every green this gate printed was the
+        # footer, not the text.
+        #
+        # D-93 moved the footer out of the flow into a reserved band in the
+        # bottom margin, which fixed the collisions JW reported on pages 4, 6
+        # and 8 and incidentally uncovered the blindness. The detector now sees
+        # the text and reports six real strandings that were always there. JW
+        # is fixing them by hand. Do not re-green this by loosening the
+        # threshold.
         # Both layout gates clean as of 2026-09-26. The four remaining
         # strandings closed with the 09-25 reflow and this EXPECT was never
         # updated to match, which is why the gate read FAIL for a reason that
@@ -89,8 +106,14 @@ EXPECT = {
         # printed a paper of broken image icons. The PDF was 192 kB. It is
         # 3.1 MB now. figurefit was reading real captions against a document
         # with no pictures in it.
+        # The expectation is NOT relaxed to make this green. It reads FAIL
+        # until the six strandings are closed in the prose.
         must=["no body page strands more than 6 lines in a column",
-              "every subject named in prose appears in a figure on its own page"],
+              "every subject named in prose appears in a figure on its own page",
+              "no body text within 6pt of the footer",
+              "every section opens a page",
+              "no generated figure carries more than",
+              "every leader lands where the rule says"],
         forbid=["mismatch(es)"],
         slow=True,
     ),

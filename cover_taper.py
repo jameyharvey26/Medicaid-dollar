@@ -69,7 +69,7 @@ def wrap(s, size, budget):
     return out
 
 
-def build():
+def build(masthead=True):
     X0, K = 278.0, 2.62                  # bar left edge, px per dollar
     LX = 640.0                           # the label column
     ys = [468, 756, 1044, 1332]
@@ -126,8 +126,14 @@ def build():
                 yy += 21
             ly += max(78, yy - ly + 34)
 
-    head = (t(80, 118, "AGILIAN", 17, BLUE, w="bold", ls=4.2)
-            + t(80, 148, "THE MEDICAID DOLLAR PROJECT", 17, MUT, ls=2.6)
+    # D-95, JW: the masthead comes off the version that sits on the cover,
+    # because the cover already carries it three inches to the left. The
+    # standalone version keeps it, because pulled out for a deck or a
+    # one-pager it has to say whose work it is.
+    mast = (t(80, 118, "AGILIAN", 17, BLUE, w="bold", ls=4.2)
+            + t(80, 148, "THE MEDICAID DOLLAR PROJECT", 17, MUT, ls=2.6)) \
+        if masthead else ""
+    head = (mast
             + t(80, 238, "Where the money stops", 52, INK, w="bold")
             + t(80, 280, "$100 of Medicaid, and the seven cuts of P.L. 119-21", 24, MUT)
             + f'<line x1="80" y1="316" x2="{W-80}" y2="316" stroke="{RULE}" stroke-width="1.6"/>')
@@ -146,18 +152,34 @@ def build():
         f". Gross removal is ${D['gross']:.2f}; overhead falls by ${D['rebate']:.2f}; "
         f"${D['net']:.2f} less reaches care.")
 
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" '
+    # D-98. With the masthead off, the block it occupied printed as 24mm of
+    # dead paper at the top of the cover graphic - artwhite.py measures it.
+    # The drawing lifts by exactly the height of what was removed and the
+    # canvas loses the same amount, so the cover version has no hole in it and
+    # the standalone version is untouched.
+    lift = 0 if masthead else 120
+    h = H - lift
+    inner = head + "".join(b) + foot
+    body = (f'<g transform="translate(0,{-lift})">{inner}</g>' if lift
+            else inner)
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {h}" role="img" '
             f'aria-labelledby="ttl dsc">'
             f'<title id="ttl">Where the money stops: $100 of Medicaid and the seven cuts '
             f'of P.L. 119-21</title><desc id="dsc">{desc}</desc>'
-            f'<rect width="{W}" height="{H}" fill="{BG}"/>'
-            + head + "".join(b) + foot + '</svg>'), desc
+            f'<rect width="{W}" height="{h}" fill="{BG}"/>'
+            + body + '</svg>'), desc
 
 
 os.makedirs("cover", exist_ok=True)
-svg, desc = build()
-open("cover/cover_taper.svg", "w").write(svg)
-open("cover/cover_taper_alt.txt", "w").write(desc + "\n")
-open("cover/cover_taper.png", "wb").write(
-    bytes(resvg_py.svg_to_bytes(svg_string=svg, width=1540)))
-print("wrote cover/cover_taper.png")
+for _name, _mast in (("cover_taper", False), ("cover_taper_standalone", True)):
+    svg, desc = build(masthead=_mast)
+    open(f"cover/{_name}.svg", "w").write(svg)
+    open(f"cover/{_name}_alt.txt", "w").write(desc + "\n")
+    open(f"cover/{_name}.png", "wb").write(
+        bytes(resvg_py.svg_to_bytes(svg_string=svg, width=1540)))
+    print(f"wrote cover/{_name}.png  masthead={_mast}")
+
+import contrast
+print("\n  contrast, measured against the page:")
+_w = contrast.report(contrast.PALETTE)
+print(f"\n  worst meaningful element {_w[0]} at {_w[1]:.2f}:1")

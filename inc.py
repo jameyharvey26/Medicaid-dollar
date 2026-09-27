@@ -17,64 +17,46 @@ adults removes ADULT dollars, so it takes more from hospitals than from
 long-term care. The two cannot both be right. They reconcile only at the
 total, $8.60, and nowhere in between (A7).
 """
-import views, sankey
+import views
 from compose import compose
 import ledger_national_2024 as NAT, ledger_national_2030 as N30
 
+import incidence
+
 c24 = compose(NAT.build(), views.V_NAT)
 c30 = compose(N30.build("mixed"), views.V_2030, prior=NAT.build())
-f = sankey._solve_pies(c24.order, c24.node, c24.gt)
-G = ["Children", "Adults", "Disabled", "Aged"]
-S = c24.order
+
+# D-102. The allocation itself moved to incidence.py, because instances.py has
+# to read it while compose is still importing and this module cannot be
+# imported from there. What is left here is the presentation: the cube printed
+# for inspection, and the names the figures import.
+G, S, D = incidence.G, incidence.S, incidence.D
+BY_G = incidence.BY_G
 DISP = {"Other": "Wrap around"}
 
-# measured: FY2024 dollars, by service and group
-D = {s: {g: c24.node[s] * f[s][i] for i, g in enumerate(G)} for s in S}
-BY_G = {g: sum(D[s][g] for s in S) for g in G}
-claims = sum(BY_G.values())
-prop = {g: BY_G[g] / claims for g in G}
+# The SAME amounts the FY2030 ledger allocates with, imported rather than
+# recovered from the composed panel's steps. Recovering them gave figures a
+# cent or two different, which put the panel at $14.16 and this module at
+# $14.11 - the $3.55 problem again, two orders of magnitude smaller and just
+# as wrong. One input, one model, one number.
+from tobe2030 import per100 as amt
 
-amt = {st[0]: st[2] for st in c30.steps}
-amt[c30.claims_hr1_name] = c30.claims_hr1
-for spec in c30.subs_spec:
-    if spec[4] == "Provider Tax":
-        amt["Provider tax limits"] = float(spec[1])
+_A = incidence.allocate(c30.node, amt)
+cube, cube_k, per_prov = _A["cube"], _A["cube_k"], _A["per_prov"]
+pool, gross, scale = _A["pool"], _A["gross"], _A["scale"]
 
-ONLY = lambda g0: {g: (1.0 if g == g0 else 0.0) for g in G}
-CAP_SERVICES = ["Physicians & clinics", "Hospitals", "Long-term care"]
-
-RULES = [
-    ("Work reporting",                   ONLY("Adults"), S,            "A1"),
-    ("Provider tax limits",              prop,           S,            "A4"),
-    ("Everything else",                  prop,           S,            "A4"),
-    ("Blocked Medicaid enrollment rule", prop,           S,            "A4"),
-    ("Directed payment caps",            None,           CAP_SERVICES, "A3"),
-    ("Six-month renewals",               ONLY("Adults"), S,            "A5"),
-]
-
-pool = sum(c24.node[s] - c30.node[s] for s in S)
-gross = sum(amt[n] for n, _, _, _ in RULES)
-scale = pool / gross
-
-cube = {s: {g: 0.0 for g in G} for s in S}
-per_prov = {}
-for name, reach, svcs, tag in RULES:
-    v = amt[name] * scale
-    if reach is None:                      # the cap: named services, all users
-        tot = sum(D[s][g] for s in svcs for g in G)
-        cell = {(s, g): v * D[s][g] / tot for s in svcs for g in G}
-    else:
-        cell = {}
-        for g in G:
-            gv = v * reach[g]
-            if gv <= 0:
-                continue
-            tot = sum(D[s][g] for s in svcs)
-            for s in svcs:
-                cell[(s, g)] = gv * D[s][g] / tot
-    per_prov[name] = (v, tag, cell)
-    for (s, g), x in cell.items():
-        cube[s][g] += x
+# The FY2030 margins are READ OFF THE PANEL, not recomputed here. Both come
+# from incidence.allocate, but the panel's call passes the FY2030 ledger's own
+# node totals and this one passes the composed panel's, which differ in the
+# fourth decimal - enough to print $14.16 there and $14.11 here. A published
+# figure is measured, not recomputed: the panel publishes it, so this module
+# takes it and rakes its own split to match.
+BY_G30 = dict(c30.gt)
+LOSS_G = {g: BY_G[g] - BY_G30[g] for g in G}
+LOSS_G_K = {k: {g: _A["loss_k"][k][g] * (LOSS_G[g] / _A["loss"][g])
+                for g in G} for k in ("coverage", "rate")}
+RULES, KIND = incidence.RULES, incidence.KIND
+MSP_BILL = amt["Blocked senior enrollment rule"]      # a bill, not a service
 
 if __name__ == "__main__":
     print(f"pool ${pool:.2f}   gross ${gross:.2f}   scale {scale:.4f}\n")

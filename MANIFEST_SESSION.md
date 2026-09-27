@@ -1521,3 +1521,614 @@ written to fill them.
 the reflow); item 32 (year label, line geometry); gate 31 (caption counts);
 item 28 (cover graphic); two E&E caveats to draft; landing-page URL and
 repository path are non-functional placeholders and must be real before ship.
+
+---
+
+## 2026-09-26b — v6.2, step 1
+
+**D-91 · The Adults row becomes two rows.** MACStats Exhibit 21, FY2023,
+publishes five eligibility columns. This ledger carried four: the two adult
+columns were summed. They are not one population and the FY2030 provisions do
+not reach them alike, so §71119 and §71107 could not be stated of the group
+they actually reach without also asserting them of parents and caretakers.
+Exhibit 21 footnote 4 defines "other adults" as those under 65 qualifying
+through a pathway other than disability or §1902(a)(10)(A)(i)(VIII).
+
+The two dollar figures are derived in code from the exhibit's own percentages,
+22.5 and 11.7 — never typed (S-105). The adult total is unchanged, so the three
+rows that did not move keep their 25 September signatures and no column margin
+below the row moved. JW pre-signed the two replacement figures in the session
+plan: `beneficiaries.row.New adult group` 19.592483560015832 and
+`beneficiaries.row.Other adult` 10.188091451208233.
+
+Three sub-decisions taken under the batching rule, recorded rather than asked:
+
+- **The three unmoved rows are left alone.** Deriving all five rows from the
+  exhibit's percentages — the fuller S-105 answer — moves Children, Disabled
+  and Aged by 0.003, 0.002 and 0.0004 against their signed values, because the
+  typed figures were percentage × base rounded to two decimals. That would
+  report three figures LAPSED, which is outside the pre-approval. The adult
+  split is derived; the other three keep the values that were signed. **Open
+  for JW: re-sign the three and derive all five, or leave it.**
+- **One declaration, not four.** `ledger_national_2024.ex21_groups()` is now
+  the only place the group totals exist. `instances.py` carried the dict twice
+  and `ledger_national_2030.py` once; under D-91 all three would have gone on
+  publishing a summed adult row while the ledger did not. `sankey.py` and
+  `inc.py` read the group set off the composed row margin rather than a list of
+  their own.
+- **Both adult rows take the seed the single adult column carried.** The IPF
+  seed is per-service utilisation and carries no citation. Splitting it would
+  invent a pattern; duplicating it splits the adult slice pro rata by margin
+  and invents nothing. Declared, and belongs in the Limits register entry step
+  3 already calls for.
+
+**Layout consequence.** The beneficiary key went from four entries to five,
+332 units to 504, wider than the column: Aged printed past the right edge of
+the artifact. The key now wraps on the column's own right edge, measured, so a
+sixth group lands correctly without another edit.
+
+**Verification.** `inc.py` reports the new adult group at −28.0% of its own
+FY2024 baseline and other adults at −4.4%, the same as children. JW's stated
+expectation was about 28% and about 4.4%. Nothing moved by a point.
+
+**Gates** — all seven green. `coverage.py national` expectation moved 21→22
+verified of 32 (the row margin gained a figure). Fifteen panels re-blessed.
+
+**Open at close** — see the session report.
+
+**D-93 · The provenance line is stamped, not laid out.** JW reported body text
+running into the footer on pages 4, 6 and 8. Cause: `position:fixed; bottom:4mm`
+positions against the PAGE AREA in a paged context, not the paper, so the line
+sat 4mm above the bottom of the flowing text, inside the column.
+
+The first fix pushed it out with a negative `bottom` and then a transform. Both
+made Chromium print the line at the TOP of every page — caught by JW, not by a
+detector. Measured afterwards on a probe document: `bottom:-7.5mm`,
+`transform:translateY(9mm)` and a negative margin all land at the top, and every
+non-negative `bottom` leaves the line inside the text. There is no offset that
+works. The band cannot be reserved by moving the footer.
+
+So `render_v6_2.py` stamps the three fields into the margin with pymupdf, from
+the same `_FILL` values the manuscript would have carried. `@page` bottom margin
+13mm to 18mm; the line sits at 9mm, below the text, with 18.5pt of clearance.
+
+`footerfit.py` is new and gates it. It finds the line by position AND content,
+because its own first version took "whatever sits lowest on the page" and went
+on reporting clean while the footer was at the top — measuring body text against
+body text. It works on text lines rather than blocks: when the two overlap the
+extractor merges them into one block and a block-level check cannot see it. It
+reproduces the collisions on v6.1 pages 3, 4, 6, 8 and 18 and reports none on
+v6.2.
+
+**whitespace.py was blind for the same reason.** The footer was the lowest text
+on every page, so `dead_space()` measured from it and returned about one line on
+every page of every draft — cover, plates and section ends alike, which is not
+possible. Every green it printed was the footer. With the footer gone from the
+flow it reports six real strandings, pages 12, 15, 17, 18, 19 and 20. JW is
+closing those by hand. The `render_v6_2.py` gate is RED and its EXPECT is NOT
+relaxed to hide it.
+
+**D-94 · whitespace.py is rebuilt on content, not on ink.** It reported about
+one line of dead space on every page of every draft, including covers, plates
+and section ends. Five faults, all of which had to go:
+
+1. It measured down to `FOOT_MM = 13.0`, a typed copy of the `@page` bottom
+   margin. D-93 moved that margin to 18mm and this file went on measuring
+   against 13. The text bottom is now read off the document.
+2. It measured the lowest ink, and the lowest ink was the provenance footer on
+   every page. The footer is now excluded by its own text, on the same test
+   `footerfit.py` uses.
+3. The renderer paints a large unstroked backing fill behind the text area,
+   drawn to the page box. Its lower edge is the bottom of the text area on
+   every page whether or not any text got there. Excluded.
+4. `column-rule` is a hairline drawn to the full height of the column box, not
+   to the last line in it, and it straddles the centre, so it poisoned both
+   columns at once. Excluded.
+5. The raster was sliced at exactly W/2, so that rule fell in either half or
+   neither depending on rounding. Columns are now assigned by the x-midpoint of
+   each span, and a span that straddles the centre counts for both.
+
+Two things added rather than fixed. `flow_bottom` takes the deepest y that
+QUORUM=3 pages independently reach, not the maximum, because one figure
+overrunning the text area would otherwise redefine the text area as wherever it
+reached and make every other page read short; `overruns` reports those
+separately, with a whole line of tolerance, since the notes are set at 7.9pt and
+legitimately sit lower than the body. And a blindness check: if the spread of
+dead space across pages is under three lines, the file says MEASUREMENT NOT
+TRUSTED and fails, because a paginated document has section ends in it and a
+flat reading is the signature of measuring to furniture. That check would have
+caught the original fault on the day it was written.
+
+Cross-validated: on v6.1 it reports strandings on pages 10, 15 and 16 and the
+page 4 overrun, which is the footer collision seen from the other side. On v6.2
+it reports seven, pages 5, 12, 15, 17, 18, 19 and 20.
+
+Two of those were mine and are closed: the households figure was 1.29 to 1, took
+a page of its own and printed 10.6mm into the footer; `family.py` is now 1.64 to
+1 and fills the measure, and `.plate img` came down from 150mm to 145mm. The
+remaining seven are prose flow, for JW.
+
+**D-95 · The crops become a family of tapers.** JW: Figures 6, 7, 8, 9 and 11
+as horizontal versions of the cover graphic, same style, same compositing,
+provision by provision. `taper.py` builds all five from one generator against
+`cover_data.load()`; nothing is typed.
+
+Each figure names the provisions it is about and draws the rest of the run
+greyed rather than cutting it away, which is what made the crops hard to read:
+a crop shows a piece of a picture with no picture around it.
+
+The phase set runs one further up than the cover's. Figure 8's whole subject is
+the provider tax leaving the federal column before the two shares merge, and
+the cover starts at the state agency by JW's own decision, so a figure in the
+cover's language had nowhere to put it. `cover_data.load(federal=True)` prepends
+the band and moves that one marker into it. The cover is unchanged.
+
+Two geometries derived rather than typed. Each canvas is sized to its own
+labels, then widened to hit one family aspect ratio of 2.9 to 1 at that height,
+iterating to a fixed point because widening changes the wrapping. All five
+therefore print at 86mm on a 250mm measure under one CSS rule, and none strands
+paper beside itself. The rule and the generator have to agree; `whitespace.py`
+reports it when they do not.
+
+**Figure 12 is new: `population.py`.** JW's page-14 note asked for the pie
+information told from the population's side. Five categories in dollars off the
+hundred, each fall split into coverage and rate. The households graphic follows
+as Figure 13. The service strip is FY2024 composition only and says so; note 13
+says why the cube behind it is not published.
+
+**Figure 3** loses the state agency lane. It began at x=664, inside
+STATE_AGENCY (584-844), so it opened on the green block its caption never
+mentions. The crop now starts at the disbursement boundary read from
+`outflows.COLS`.
+
+**`contrast.py` is new.** Accessibility was asserted in docstrings with typed
+ratios, which is the S-105 defect wearing a different hat: the colour constant
+moves and the claim beside it goes on reading as though someone checked. Every
+custom graphic now measures and prints its ratios at build time. A decorative
+fill gets its own verdict rather than a false FAIL, and only where the same
+shape is also stroked at a passing ratio.
+
+**Two versions of every custom graphic**, masthead on for standalone use and
+off for the in-paper version, across the cover taper, the five tapers and the
+population graphic. Each ships its own script, SVG, PNG and generated alt text
+in `cover/`; `make_figs.py` builds every one of them in a single command.
+
+**Cost, stated.** The figure-placement detector went from one mismatch to five.
+The provision section traded three column-width crops for three full-width
+tapers, so the prose for work reporting, provider tax limits, the residual, the
+directed payment caps and six-month renewals now sits on pages carrying no
+figure. Whitespace strandings went from seven pages to eight, and page 9 is the
+worst at 38 lines: the provisions table and Figure 7 do not fit together. Both
+are layout, and both are in JW's hand pass.
+
+**D-96 · A section starts a page.** It was true of the first five sections by
+accident: four carried an inline `break-before` and the rest happened to fall
+right. From page 15 it stopped being true. It is a rule now, `break-before:page`
+on `.sechead`, in one place, and the four inline copies are gone.
+`sectionfit.py` measures it on the rendered PDF by type size rather than by
+wording, and reports NO SECTION HEADS FOUND rather than a pass if the type-size
+test ever loses its subject. Twelve of twelve open a page.
+
+**D-97 · The generated figures are drawn at the size of the slot they sit in.**
+JW: design the output to fit the context it is already in, do not push the
+content around the paper to suit the picture. Every generated figure now works
+in millimetres of page at one scale, PXMM = 11.7, with `px()` for type in POINTS
+and `mm()` for distances. The first version of `taper.py` used one helper for
+both and every layout constant came out at a quarter of its intended size,
+because a millimetre and a point are not the same unit and nothing in the code
+said which was meant.
+
+Each figure is generated at exactly its slot: Figure 6 at 250 x 119.5mm, the
+size of the crop it replaced; Figures 7 and 9 at 118 x 61.6mm; Figures 8, 11,
+12, 13 and 14 at 118 x 87.2mm. The manuscript places them at full width of
+whatever they sit in and caps nothing, so the picture and the page cannot
+disagree about how big the picture is. A figure that outgrows its slot fails the
+build with a named message; it is never scaled down until its type stops being
+readable.
+
+Three simplifications, all deliberate, all with JW's permission. The in-paper
+versions carry no masthead, title, subtitle or footing, because the figcaption
+says both and the page carries the masthead; the standalone versions keep all of
+it. A narrow taper prints short phase names and drops the "was $X in FY2024"
+line, which the ghost edge already says. The population figure drops its FY2024
+composition strip, because Figure 4 already divides every service by category
+and this figure's question is WHO.
+
+Two layout faults fixed inside the family: the narrow labels moved from one
+stack to two columns, because three provisions in a single stack need 74mm of a
+62mm slot; and the amount moved above the label rather than beside it, because
+a 14mm gutter out of a 55mm column wrapped every label of more than three words.
+
+**The households are two figures.** JW: the pair was squeezed into one landscape
+graphic and the people came out flattened. Figures 13 and 14, each the width of
+its column, with the reasoning moved out of the picture and into prose beside
+it, written from the household's side rather than the ledger's.
+
+**Figure 4 re-cropped.** The payer column is out and the crop opens high enough
+to carry the whole beneficiary key. It began at x=1250, inside PAYER
+(1060-1300), and at y=100, which sliced the key. Both bounds now read from
+`outflows.COLS`.
+
+**figurefit.py taught about generated figures.** It tests a subject by asking
+whether that subject's label on a panel falls inside a crop's rectangle. A taper
+has no panel behind it, so every provision page reported as carrying no diagram:
+the detector missing a new kind of figure, not the page missing a picture. A
+generated figure now declares what it shows, from the generator's own focus
+lists, and `SUBJECTS` carries the S-108 names rather than two that had stopped
+matching anything.
+
+**Where it stands.** One figure/subject mismatch, page 11, six-month renewals:
+five provision sections and four figures. Nine whitespace strandings; pages 13
+and 18 at 38 lines are the two worth looking at first.
+
+**D-98 · The provisions section is reordered into phase order, and the figures
+are trimmed to their own content.** JW, seven instructions in one pass.
+
+*Footer.* The repository path comes off; it will live on the landing page, so
+there is one address to fix rather than two. The centre carries `Page x of y`,
+stamped per page by `render_v6_2.py`. Both `footerfit.py` and `whitespace.py`
+had to be told about it: the page number carries none of the marks the other
+two fields do, so the first reported it as body text colliding with the footer
+on all 25 pages, and the second measured to it and tripped its own blindness
+check. That check firing on the first new footer field it ever met is the
+strongest evidence it was worth adding.
+
+*Phase order.* The table and the section ran largest-to-smallest while Figure 6
+drew the run in phase order, so the reader met the provisions in two different
+orders on facing pages. Both now read provider tax, the residual, work
+reporting, six-month renewals, the Medicaid enrollment rule, the directed
+payment caps, the Medicare Savings rule. The three detail figures were re-cut to
+match: Figure 7 the federal band, Figure 8 the state agency and disbursements,
+Figure 9 the payer and claims and beyond. Between them they name all seven, so
+no provision is discussed without a picture that has it in colour.
+
+*Page 8.* Figure 6 sits at the head of the section now rather than after the
+lede. A spanning element splits a multi-column flow, and with only a lede above
+it the second column was balanced into a strip and left empty. At the head of
+the page the text flows beneath it into both columns, which is what a
+typesetter would have done. `whitespace.py` prints that diagnosis itself now:
+a page whose columns both end early while carrying a full-width figure is told
+to move the figure up.
+
+*Dead paper inside the diagrams.* `artwhite.py` is new and measures it, because
+no instrument here could: a figure drawn on a canvas taller than its content
+prints blank paper the page cannot reclaim, since as far as the page is
+concerned that blank is part of the picture. JW caught three by eye and each
+was costing about 40mm. The generators now trim to their own content and then
+trim again against the RENDERED blank, because the layout cursor sits a few
+millimetres past the last ink. The cover taper had 24mm of hole where the
+masthead used to be; the drawing lifts by exactly what was removed.
+
+*Tables.* Numbered and captioned in the same voice as the figures, above the
+rule. Tables 1, 2, 3, 4 and 5. In the payer section the table moved below
+*Same work, less pay* so prose separates it from Figure 10, on the standing
+rule that a table and a figure should not sit against each other.
+
+*Figure 12 redrawn across the measure.* JW could not tell what it meant, and he
+was right: $0.29 against $25.16 is a millimetre of paper. The fall now gets its
+own panel at a magnification DERIVED from the data rather than chosen - the
+largest fall fills the panel and the factor falls out, currently 4x - with the
+scale change said out loud on the figure, a dashed rule joining each bar to its
+own enlargement, and the two amounts on staggered lines with a tick down to the
+segment each names. Centred on one line they overlapped on every row but the
+first.
+
+*The households are set aside* at JW's direction. `family.py` still builds and
+still passes; the figures are not in this paper. The beneficiary section closes
+by reading Figure 12 instead.
+
+**Gate state.** Figure placement, footer clearance, section rule and diagram
+whitespace all clean. Eight whitespace strandings remain, pages 5, 11, 13, 14,
+17, 18, 19 and 20; 14 and 20 are the two worth looking at first. 23 pages, down
+from 25.
+
+**D-99 · The tables follow the diagram, and the whitespace pass is mostly
+mechanical after all.**
+
+*Table 2.* The Medicare Savings rule now reads Beneficiaries, per JW. The
+ledger's `cover_data.WHO` is the single declaration and says why: the dollar
+would have paid a premium for a person, which is a beneficiary reach; the fact
+that it leaves the agency's budget is where it LEAVES, not where it would have
+GOT to. `render_v6_2.py` checks every row of Table 2 against that dict at build
+time, on the phase rather than the wording, because the table says "Federal
+band" where the ledger says "Federal and state shares".
+
+That check immediately found a second disagreement, which is NOT fixed:
+six-month renewals reads Payer in the table and Disbursements in the ledger.
+The build prints it and declines to pick. **For JW.**
+
+*Table 3 was stale and is now read from the ledger.* Every FY2030 figure in it
+was a cent or two out and the rate was 8.85 percent against a ledger that says
+8.91. The lanes all move at one rate, and that rate is now computed rather than
+typed; claims paid is derived as the three lanes less the two peels, which
+reproduces $87.07 and $79.32 exactly. The lede's "falls 8.85 percent" moved
+with it.
+
+**Table 4 has the same defect and is NOT fixed.** Its per-service falls are the
+figures JW described as already signed, and correcting them to the ledger would
+report three signatures LAPSED. The ledger says long-term care falls 9.91
+percent against the table's 9.82, and all three uncapped services fall at
+exactly 8.91 percent rather than at 8.85, 8.95 and 8.63 - which means note 8's
+whole paragraph about a tenth of a point of allocation rounding is describing
+something that is no longer in the model. **For JW: this needs a signature.**
+
+*Figure 10* is a custom diagram now, in the same vocabulary as the tapers and
+Figure 12: FY2024 outline, FY2030 solid inside it, the fall in the warm colour.
+It is built to make the sameness visible rather than each lane legible, because
+the finding at the payer is that there is no finding: one rate, printed once,
+large, six times over.
+
+*Whitespace.* Eight strandings to three, and the two rules that did it were
+both ones JW had already stated.
+
+A page that carries a section head and also ends short is a SHORT SECTION, not
+a broken one. The rule that a section opens a page makes them, and "What comes
+next" is two paragraphs long by design. Three pages were being flagged for
+obeying a rule. `whitespace.py` classes them `short-sec` and exempts them.
+
+The Limits register is a list and may break. `break-inside:avoid` threw nine
+rows of prose to the next page whole and left the heading with three lines
+under it; the register now spans the measure and breaks between rows.
+
+The rest was moving things: Table 4 below the first paragraph of *What this
+means for a provider organization*, which filled a page that was 38 lines
+short, and the renewals aside up beside the provision it concerns.
+
+Three remain, all section ends with no head on them: pages 11, 16 and 5.
+
+**Figure 10 redrawn as a funnel.** JW did not like the bar chart, and the
+reason it did not work is that a stack of bars is a table with the numbers
+taken out: it made the reader do the comparison the picture was supposed to
+make. It is now the same shape as everything else in the paper - a band of
+money entering on the left, the two peels leaving upward in grey as ordinary
+leakage, what is left going on as claims - with FY2024 as the ghost behind and
+FY2030 solid in front, hung from the same upper edge, so the gap along the
+lower edge IS the law. Only the two capitated lanes narrow at the payer line,
+because fee-for-service has no plan in the middle of it.
+
+Two drawing notes worth keeping: the peels are straight tapering wedges rather
+than curves, because at two millimetres of paper a curve reads as a hook; and
+the year pair is printed on every lane, so no quantity depends on the reader
+measuring the ghost.
+
+**D-100 · Figure 10 joins the taper family instead of being its own drawing.**
+JW, twice: make it work like six, seven, eight and nine, just for the payer
+lane. The bar chart and then the funnel were both new programs answering a
+question the family already answers. `payer.py` is deleted.
+
+`taper.py` now takes its phases and its markers from the spec rather than from
+module globals, and the payer figure supplies one extra phase and two extra
+markers. Palette, ghost-behind-solid, rhombus, two-column labels and slot
+arithmetic are the same code, so the figure cannot drift from its siblings.
+
+The extra phase is the payer itself. The band is flat across it, because
+nothing has left yet, and then steps down to claims: that step IS the $5.65 the
+plans keep, and the two markers under it are its halves. They are drawn in the
+focus colour because they are what the figure is ABOUT; grey in this family
+means out of focus, not lawful, and the `who` line under each says they are
+ordinary leakage under prior law.
+
+Two faults in the family fixed on the way, both of which affected Figures 7 to
+9 as well. Markers sharing a phase were drawn on top of each other, because the
+marker's x was the phase's x and nothing spread them; they fan by half a
+rhombus each now, so a reader can count them. And the last phase label was
+shortened to DELIVERED, because BENEFICIARIES and CLAIMS met in the middle of a
+118mm measure once a sixth phase was added.
+
+**All seven gates green.** The last three strandings closed, each by a
+different rule, and none of them by loosening a detector.
+
+*Page 11, the end of the provisions section.* Four lines of prose, then the
+"Why fiscal year 2030" aside running two thirds down one column while the other
+held five lines and stopped. The box is `column-span:all` now: across the
+measure it is half as tall, and the closing paragraph sits beside rather than
+below it. Note that a first attempt at this did nothing, because `wide` was
+already a modifier on `.box` with a different meaning and the new rule was
+never added; the class is `across`.
+
+*Page 16, the end of the beneficiary section.* Genuinely short of words, so it
+got words: two paragraphs on what the coverage-and-rate split means for what a
+category can do about it, and on why a state watching its enrolment line will
+see the new adult group's $4.83 first and may conclude from that alone that the
+law has landed.
+
+*Page 5.* Figure 4 lost the payer column and gained the whole key in this
+session, so its crop is nearly square. At 66.7mm it was 69mm wide in a 118mm
+column, which put a gap beside it AND left six lines under it. At 78mm it fills
+both.
+
+Two fixes tried and reverted, recorded so they are not tried again: pulling
+Figure 12 down into its own narrative made three pages worse, and moving the
+FY2030 aside earlier took page 11 from 30 lines to 22 but broke a figure and
+its subject apart.
+
+**Table 4 and note 8 corrected. No signature was involved and I was wrong to
+say one was.** The per-service FY2030 figures are not in `signatures.py` at
+all - the register holds claims-cell figures, not these - so correcting them
+lapsed nothing. I had asserted a signature constraint without checking the
+register, which is the same fault as asserting geometry without rendering.
+
+The table disagreed with the FY2030 panel the paper prints two pages earlier:
+the panel says $26.25, $16.01, $37.70, $3.77 and the table said $26.27, $16.02,
+$37.73, $3.78. Both now come from the ledger at build time.
+
+Note 8 had to move with it. It explained why wrap around services, behavioral
+health and prescription drugs fell at 8.85, 8.95 and 8.63 percent - "a cent of
+that allocation sits between those two nodes and moves the rate a tenth of a
+point in each direction". In the current ledger all three fall at exactly 8.91
+percent. The note was explaining an artefact that is not in the model, and the
+finding is stronger without it: three services on one number is a cleaner
+statement of "no service-specific finding" than three within a fifth of a point.
+
+**D-101 · Bite and reach are two declarations, and the audit that followed.**
+
+`cover_data.WHO` now carries an optional fourth field, `reach`: where the
+dollar would have GOT TO, as against `phase`, where the provision BITES. For
+six of seven they are the same, which is why one field did the work of two and
+why the build check compared the wrong pair. Six-month renewals is the
+exception and the reason the split exists: the person is already enrolled and
+attributed to a plan, so what is lost is a premium a PAYER would have received;
+work reporting is the opposite case and stops at disbursement. It was declared
+at disbursements only because the cover had no payer column, and D-100 gave the
+family one. The table and the heading were right; the ledger was wrong.
+
+**`figaudit.py` is new.** `typedfigures.py` finds figures in the CODE that
+should have been derived. Nothing looked at the ones in the PROSE, and that is
+where every defect below had been sitting. It builds the set of quantities the
+ledger can produce, at the precision the paper prints them, and lists every
+dollar figure in the document that is not in it. It is a list to read, not a
+pass or a fail: the paper also prints statutory amounts and CBO totals this
+model never computes.
+
+Found and corrected, all of them stale against the ledger:
+
+- **Table 1** said $29.13, $17.91 and $15.45 where the panel says $29.14,
+  $17.90 and $15.44. Rebuilt from the ledger at build time, like Tables 3 and 4.
+- **Table 5** said $25.16 for the disabled row where page 6 said $25.17. See
+  the row-margin fix below.
+- **Behavioral health's fall** read $0.86 in the prose against $0.85 in the
+  ledger.
+- **Note 9** still divided $8.54 across the categories; the figure is $8.59.
+- **The Medicare premiums ribbon** was said to fall to $1.64 in two places. It
+  falls to $1.67.
+- **$45.69 leaves as claims** was $51.34 minus $5.65, arithmetic on two rounded
+  figures. Measured, it is $45.68.
+
+**The row margins are the ledger's, not a re-derivation.** `inc.BY_G` summed
+the pie interior, which sits on c24.node's 87.07, while the ledger's signed
+group totals sit on 87.0749. Six thousandths of a percent, and enough to print
+the disabled row as $25.16 in Figure 12 and $25.17 on page 6: one quantity, two
+numbers, one document. The signed margin wins and the interior is raked to it.
+
+**One finding NOT fixed, and it is the largest.** The FY2030 panel draws its
+beneficiary pies by scaling FY2024 with a single multiplier - the Limits
+register says so, and says it "carries no information about who bears the law".
+Figure 12 and Table 5 allocate by the population each statute names. Both are
+in the paper. The panel puts the new adult group at $17.66; Figure 12 puts it
+at $14.11. Same quantity, $3.55 apart, on facing pages. "The text follows the
+diagram" cannot settle this one, because here the diagram carries the weaker
+model. **For JW.**
+
+**D-102 · One incidence model, not two.** JW approved. The FY2030 panel drew
+its beneficiary rows as the FY2024 shares times one multiplier; inc.py
+allocated each provision to the population its statute names. Both were
+printed. The panel put the new adult group at $17.66 and Figure 12 put it at
+$14.11, on facing pages, and nothing in the repo could see it because the two
+models lived in modules that never imported each other.
+
+`incidence.py` is new and holds the allocation. It depends on the raw ledgers
+and the pie solver only - not compose, not instances - because
+`ledger_national_2030.py` has to call it while compose is still importing, and
+a module that reaches back up its own import chain is how one model becomes
+two in the first place. `inc.py` is now presentation: the cube printed for
+inspection and the names the figures import.
+
+Two sub-cent traps on the way, both the same fault at smaller scale. Recovering
+the provision amounts from the composed panel's steps rather than importing
+`tobe2030.per100` put the panel at $14.16 and inc.py at $14.11. And passing the
+composed node totals rather than the ledger's own moved the fourth decimal.
+inc.py now READS the FY2030 margins off the panel and rakes its own coverage
+and rate split to them: a published figure is measured, not recomputed.
+
+Fifteen panels re-blessed against a stacked before-and-after, S-093. Nothing
+lapsed: no FY2030 beneficiary row is in the signature register.
+
+Downstream, all corrected: Table 5 and Figure 12 regenerated, eight prose
+figures that quoted the old allocation, note 13's pool, note 14's coverage and
+rate sums, and the Limits register's "Class incidence" entry, which said all
+five rows fall by the same 9.83 percent "as an artifact of that scaling". They
+now fall at different rates, which is a finding rather than an artifact, and
+the entry says what is and is not published instead.
+
+All seven gates green. 22 pages.
+
+**2026-09-27, JW's final markup: 61 annotations applied.**
+
+Structural, on JW's answers: the federal-band figure and the payer figure are
+deleted and the rest renumbered 1 to 10; *What the figure says* is cut whole;
+the "Why fiscal year 2030" aside becomes note 17, called from the first
+paragraph of the section it belongs to; Table 3 moves into the space the payer
+figure leaves; Figure 7 moves above the work-reporting heading.
+
+**The detail tapers are cropped to their own phases and carry no grey
+diamonds.** The greyed markers were there to keep the whole run visible; JW's
+reading is that in a detail view they carry no meaning and read as clutter. The
+span is derived rather than declared per figure - first focus phase to last,
+one phase forward so the band has somewhere to go, one phase back if that still
+leaves fewer than three - which is what puts Figure 8 at disbursements, where
+JW asked for it, and keeps the federal and agency phases out of it, which he
+also asked for. One rule, both notes.
+
+Two consequences worth recording. A cropped band does not start at $100, so the
+"$100" label prints only on the uncropped figure; printing it inside a band
+that opens at $84.47 would have been a plain untruth about the picture. And
+Figure 7 gained six-month renewals, because with the payer figure gone that
+provision had no picture on its page.
+
+**The FY2024 sub-labels came off the band.** They printed grey on dark blue
+inside it, where they could not be read. They sit above the band now, under the
+phase name and over the figure they qualify.
+
+Corrections made while applying, all flagged on the change list:
+
+- "four different phases" is **five**: federal band, state agency,
+  disbursements, claims, beneficiaries.
+- The provider-tax sentence carried six marks and lost its subject; split in
+  two so "the only provision that changes" has one.
+- #50-54 together weaken a claim: "does not have an alternative arrangement
+  available on the same terms" becomes "is not likely to have an alternative
+  arrangement available at lower prices". The original says substitutes do not
+  exist; the new one says cheap substitutes do not. Applied as marked.
+
+**An earlier batch in this pass aborted after a failed match and wrote
+nothing**, so three edits I had reported as applied were not. They were caught
+by rendering and reading the page rather than by trusting the script's own
+output. The lesson is the file write, not the assertion: a batch that exits
+before writing loses everything before the failure too.
+
+**`notefit.py` is new.** Nothing was checking the footnote apparatus. It
+reports one dangling caller, note 2b, and five orphaned notes - 2, 2a, 6, 7 and
+10. Note 6 was orphaned by this pass; the rest predate it. It reports rather
+than fails, because which orphans to cut and how to renumber is editorial.
+
+19 pages. One stranding, page 9 at 8 lines.
+
+## 2026-09-27 — v7.0
+
+**Shipped as a whole-number release.** `paper_national_v7_0.html`,
+`render_v7_0.py`, VERSION 7.0. Twenty pages, ten figures, five tables.
+
+**The taper family is the paper's diagram language now.** `taperkit.py` holds
+the parts, `tapertest.py` checks every figure any generator produces, and
+`taper.py`, `population.py` and `cover_taper.py` all draw with them. A state
+edition should need a ledger and a spec, not a drawing program.
+
+**JW's leader rule, final form.** If the marker sits anywhere over its own
+amount's hit box, the leader goes straight down and stops. Otherwise it drops
+and turns to the end of the amount. A line that drops and turns reads as a
+route; a line that just drops reads as a pointer, and most of these only ever
+needed to be a pointer.
+
+Two things I got wrong on the way, both the same mistake: asked to fix the
+placement of the TEXT, I changed the routing of the LINES. First a rail down
+the side of each column, then single-row packing that gave seven labels 35mm
+each and wrapped "Provider tax limits" to three lines. Both were strictly
+better by the collision metric and plainly worse to look at. JW reverted me
+twice. `taperkit.pack()` - isotonic regression by pool-adjacent-violators, the
+standard answer to this and the one I should have looked up rather than
+invented - is in the toolkit, correct and tested, and is NOT wired into any
+figure. It waits for a deliberate tuning pass.
+
+**Known and accepted, at JW's direction:** three leaders on Figure 6 cross the
+label of the entry above them, in the two columns that stack a second
+provision. `tapertest.py` reports them on every run so they cannot quietly
+become permanent.
+
+**Gate state.** Six green. `render_v7_0.py` red on two counts, both expected
+and neither relaxed: the three Figure 6 crossings, and one whitespace
+stranding on page 14, the end of the beneficiary section at 26 lines. Moving
+Figure 9 up a section made it 35, so it is left alone.
+
+`DELETE OLD FILES.command` run: sixteen files, including the six crops the
+tapers replaced, `payer.py` and its outputs, the three dead cover studies, and
+the v6.2 point release. Whole-number releases v5.0, v6.0 and v6.1 are kept.

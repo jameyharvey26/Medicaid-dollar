@@ -15,6 +15,13 @@ FED="#2f5d74"; STATE="#9bb8c4"; DOLLAR="#1a6b40"
 MCO="#3f8f8a"; DUAL="#9a6fa6"; FFS="#5f7f96"
 ADMIN="#9a9a9a"; MEDI="#9aa0a6"; RETAIN="#5e5e5e"; EARN="#000000"; FRAUD="#e8170f"; DUALADM="#7d6f86"
 CHILD="#6fa382"; ADULT="#d8a24a"; DIS="#cf7d4f"; AGED="#6f6f9e"
+# D-91. The adult row is two rows. The new adult group keeps the adult gold
+# it has always had; the other adult column takes a light tint of the same
+# hue, so the pair still reads as one family and the two separate in
+# grayscale. build_palette_test.py prints the measured separation.
+ADULT_OTH="#efd39a"
+GCOL={"Children":CHILD,"Adults":ADULT,"New adult group":ADULT,
+      "Other adult":ADULT_OTH,"Disabled":DIS,"Aged":AGED}
 # D-90, JW 2026-09-26. The panels were drawn on the warm off-white the
 # paper used for boxed furniture, and the page itself is white, so every
 # figure read as a card sitting ON the page rather than as part of it.
@@ -100,8 +107,16 @@ def pielabels(cx,cy,r,fracs,a0=-90.0):
 order=["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"]
 disp={"Other":"Wrap around services"}
 G=["Children","Adults","Disabled","Aged"]
-seed={"Long-term care":[.02,.10,1.0,1.0],"Hospitals":[.85,1.0,.75,.45],"Other":[.95,.95,.80,.55],
+# The IPF seed, keyed by group name rather than by position, so a group can be
+# added without silently re-indexing every row. D-91 splits the adult column in
+# two: both adult rows take the seed the single adult column carried, which is
+# the one choice that invents no new utilisation pattern. The seed carries no
+# citation either way - declared on the artifact and in the Limits register.
+_SEED4={"Long-term care":[.02,.10,1.0,1.0],"Hospitals":[.85,1.0,.75,.45],"Other":[.95,.95,.80,.55],
  "Physicians & clinics":[1.05,1.0,.60,.40],"Behavioral health":[.55,1.05,1.35,.30],"Rx drugs":[.40,.85,1.05,.65]}
+SEED={p:{**{g:v for g,v in zip(G,r)},
+         "New adult group":r[1],"Other adult":r[1]} for p,r in _SEED4.items()}
+seed=_SEED4
 
 
 def render(cfg):
@@ -354,7 +369,7 @@ def render(cfg):
             cy=node_y[p]+node[p]*ys/2; r=16.8*math.sqrt(node[p]); a0=rot_for(pie_frac[p])
             if p=="Rx drugs": a0+=30   # nudge so the small outside labels clear the $ below
             _prior = cfg.prior_node.get(p)
-            pie(cx,cy,r,pie_frac[p],[CHILD,ADULT,DIS,AGED],a0)
+            pie(cx,cy,r,pie_frac[p],[GCOL[g] for g in gt],a0)
             pielabels(cx,cy,r,pie_frac[p],a0)
             nm=disp.get(p,p)+("*" if p=="Other" else "")
             lbg(cx,cy-r-10,nm,19.5,"middle"); txt(cx,cy-r-10,nm,19.5,INK,"middle","bold",halo=False)
@@ -406,14 +421,23 @@ def render(cfg):
                 print(f"  WARNING  beneficiary overlay: {p} reaches y={bot:.0f}, "
                       f"past {q}'s name at y={name_top:.0f}")
 
-        # beneficiary legend (compact, horizontal)
+        # beneficiary legend. It wraps on the column, it does not run off it.
+        # D-91 took the key from four entries to five and from 332 units to
+        # 504, which is wider than the column; the old single row put Aged
+        # past the right edge of the artifact. The rule is measured against
+        # the column the key belongs to, so any future group lands correctly
+        # without a second edit here.
         lx=xBE[0]+20; ly=108
         txt(lx,ly,"Share of each service consumed by:",12.5,INK,"start","bold",halo=False)
-        gx=lx
-        for g,c in zip(G,[CHILD,ADULT,DIS,AGED]):
-            rect(gx,ly+11,13,13,c); txt(gx+18,ly+21,g,12,INK,"start",halo=False)
-            gx+=40+len(g)*12*0.55
-        txt(lx,ly+42,"numbers = % of that node's dollars (black sits outside)",10.5,MUT,"start",halo=False,italic=True)
+        LEG_R = xBE[1] - 12
+        def _legw(g): return 40+len(g)*12*0.55
+        gx, gy, rows = lx, ly+11, 1
+        for g in gt:
+            if gx > lx and gx + _legw(g) > LEG_R:
+                gx, gy, rows = lx, gy+20, rows+1
+            rect(gx,gy,13,13,GCOL[g]); txt(gx+18,gy+10,g,12,INK,"start",halo=False)
+            gx+=_legw(g)
+        txt(lx,gy+31,"numbers = % of that node's dollars (black sits outside)",10.5,MUT,"start",halo=False,italic=True)
         # The overlay's key reads BELOW the pies, beside the bars it explains
         # (JW, 2026-09-11), not at the top of the column where it sat above the
         # thing it was describing. Its scale is declared on the artifact and not
@@ -628,9 +652,11 @@ def _draw_absent(cfg, ax, ay):
 
 
 def _solve_pies(order, node, gt):
-    seed={"Long-term care":[.02,.10,1.0,1.0],"Hospitals":[.85,1.0,.75,.45],"Other":[.95,.95,.80,.55],
-     "Physicians & clinics":[1.05,1.0,.60,.40],"Behavioral health":[.55,1.05,1.35,.30],"Rx drugs":[.40,.85,1.05,.65]}
-    M={p:{g:seed[p][i] for i,g in enumerate(G)} for p in order}
+    # Groups come off the ledger's own row margin, in its order, not from a
+    # list carried here. S-105: two declarations of one set is how the adult
+    # split would have gone stale in exactly one of them.
+    G=list(gt)
+    M={p:{g:SEED[p][g] for g in G} for p in order}
     for _ in range(80):
         for p in order:
             s=sum(M[p].values())

@@ -31,7 +31,13 @@ print("fig1_panel_2024.png", im.size)
 crop("fig2_sources.png", 87, 80, 916, 780)
 
 # Fig 3 — the payer column: three lanes in, margin peeling up and out.
-crop("fig3_payer.png", 664, 90, 1400, 780)
+# JW, page 5: crop out the state agency lane. It started at 664, inside
+# STATE_AGENCY (584-844), so the figure opened on the green block the caption
+# never mentions and the reader met the wrong subject first. It now starts at
+# the disbursement boundary, read from outflows.COLS rather than typed, so a
+# column width moving does not silently put the lane back.
+import outflows as _OF
+crop("fig3_payer.png", _OF.COLS["DISBURSE"][0], 90, 1400, 780)
 
 # Fig 4 — provider bars.
 crop("fig4_providers.png", 1250, 120, 1772, 900)
@@ -76,8 +82,12 @@ pair.save(os.path.join(OUT, "figA_lines_pair.png"))
 print("figA_lines_pair.png", pair.size)
 
 # C-08.2 / #34 / #73: provider bars WITH the beneficiary pies beside them.
-crop("fig4b_providers_pies.png", 1250, 100, 2200, 910)
-crop30("fig9b_providers_pies_2030.png", 1250, 100, 2200, 910)
+# JW: the payer column is confusing here and the legend was being cut. The
+# crop started at 1250, inside PAYER (1060-1300), and at y=100, which sliced
+# the beneficiary key. It now starts at the claims fan, read from
+# outflows.COLS, and opens high enough to carry the whole key.
+crop("fig4b_providers_pies.png", _OF.COLS["CLAIMS"][0], 36, 2200, 940)
+crop30("fig9b_providers_pies_2030.png", _OF.COLS["CLAIMS"][0], 36, 2200, 940)
 
 # Section VII needs the FY2030 beneficiary column on its own.
 crop30("fig11_beneficiaries_2030.png", 1745, 100, 2200, 910)
@@ -107,6 +117,45 @@ print("figB_provisions_with_line.png", comb.size)
 # of "is the thing being discussed visible", it covers the provisions crop's box.
 CROPS["figB_provisions_with_line.png"] = dict(panel="2030", box=list(CROPS["fig7_lanes_2030.png"]["box"]))
 CROPS["figA_lines_pair.png"] = dict(panel="2024", box=[0, 1090, 2190, 1440])
+
+# D-92. The two-households graphic is not a crop of a panel: it is its own
+# artifact, built by family.py, and it is copied in here so the manuscript
+# references one directory. It carries no crops.json entry because there is no
+# panel region for the figure-placement detector to check it against.
+# D-95. The custom graphics are not crops of a panel: each is its own script,
+# its own SVG, PNG and generated alt text, with its contrast measured and
+# printed rather than asserted. They are built here so one command produces
+# every figure in the paper, and copied into paper_figs so the manuscript
+# references one directory. None carries a crops.json entry, because there is
+# no panel region for the figure-placement detector to check them against.
+import subprocess
+# family.py still builds and still passes its gates; the households are set
+# aside for a later edition (JW, 2026-09-26) and are not in this paper.
+for script in ("taper.py", "population.py"):
+    subprocess.check_call(["python3", script])
+
+CUSTOM = {
+    "fig6_taper_all": "fig6_taper_all",
+    "fig7_taper_upstream": "fig7_taper_upstream",
+    "fig8_taper_claims": "fig8_taper_claims",
+    "fig9_population": "fig9_population",
+}
+# What each generated figure SHOWS, declared once, from the generator's own
+# focus lists. figurefit.py cannot work this out for a generated figure the way
+# it does for a crop: a crop is a rectangle of a panel and the detector can ask
+# whether a label falls inside it, but a taper has no panel behind it. Without
+# this the detector reported every provision page as carrying no diagram, which
+# was the detector missing a new kind of figure rather than the page missing a
+# picture.
+import taper as _TP
+SHOWS = {dst: (_TP.FIGS[src]["focus"] or [l["label"] for l in _TP.LV])
+         for src, dst in CUSTOM.items() if src in _TP.FIGS}
+
+for src, dst in CUSTOM.items():
+    Image.open(f"cover/{src}.png").save(os.path.join(OUT, f"{dst}.png"))
+    if dst in SHOWS:
+        CROPS[f"{dst}.png"] = dict(shows=SHOWS[dst])
+    print(f"{dst}.png copied from cover/{src}.png")
 
 with open(os.path.join(OUT, "crops.json"), "w") as f:
     json.dump(CROPS, f, indent=1, sort_keys=True)

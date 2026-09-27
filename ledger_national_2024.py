@@ -93,6 +93,26 @@ def _rebase(L):
     return L
 
 
+# MACStats Exhibit 21, FY2023, adult columns, percent of benefit spending.
+# Declared once, here, and imported by the FY2030 ledger. Footnote 4 of the
+# exhibit defines the second column. D-91.
+EX21_ADULT_PCT = {"New adult group": 22.5, "Other adult": 11.7}
+# The five eligibility-group totals on the old hundred, declared once. Three
+# other modules carried their own copy of the four-group dict; under D-91 all
+# three would have gone on publishing a summed adult row while this one did
+# not. One fact, one declaration.
+EX21_OTHER = {"Children": 13.48, "Disabled": 24.98, "Aged": 18.41}
+_EX21_ADULTS = 29.56
+
+
+def ex21_groups():
+    """Exhibit 21's five columns, in reading order, on the old hundred."""
+    ap = sum(EX21_ADULT_PCT.values())
+    g = {"Children": EX21_OTHER["Children"]}
+    g.update({k: _EX21_ADULTS * pc / ap for k, pc in EX21_ADULT_PCT.items()})
+    g.update({"Disabled": EX21_OTHER["Disabled"], "Aged": EX21_OTHER["Aged"]})
+    return g
+
 NODES = ["Long-term care", "Hospitals", "Other", "Physicians & clinics",
          "Behavioral health", "Rx drugs"]
 
@@ -215,7 +235,19 @@ def build() -> Ledger:
                  for k, v in _dual.items()}},
     )
 
-    groups = {"Children": 13.48, "Adults": 29.56, "Disabled": 24.98, "Aged": 18.41}
+    # D-91. Exhibit 21 publishes five eligibility columns and we carried four:
+    # the two adult columns were summed into one "Adults" row. They are not one
+    # population and the FY2030 provisions do not reach them alike, so the row
+    # is split again here, from the exhibit's own percentages, never typed
+    # (S-105). Exhibit 21 footnote 4 defines "other adults" as those under 65
+    # who qualify through a pathway other than disability or
+    # Sec. 1902(a)(10)(A)(i)(VIII) - parents, caretaker relatives, pregnancy.
+    # That is exactly the population Sec. 71119 and Sec. 71107 do not reach.
+    #
+    # The adult total is unchanged, so the three rows that did not move keep
+    # their 2026-09-25 signatures and every column margin below is untouched.
+    groups = ex21_groups()
+
     beneficiaries = Matrix(
         name="beneficiaries",
         rows=list(groups),

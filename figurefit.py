@@ -25,12 +25,14 @@ SVG = {"2024": "reference_renders/national_2024_combined.svg",
 
 # The subjects a reader would expect to see when the prose names them. Each is a
 # phrase that appears in the prose and the label text it corresponds to on a panel.
+# S-108: the phrases are the ones the prose and the diagrams now both use.
+# Two of them were still the old names and would have gone on matching nothing.
 SUBJECTS = [
     ("Work reporting",                 "Work reporting"),
-    ("Blocked senior enrollment",      "Blocked senior enrollment"),
+    ("Medicare Savings rule suspended", "Medicare Savings rule suspended"),
     ("Provider tax limits",            "Provider tax limits"),
     ("Everything else",                "Other"),
-    ("Blocked Medicaid enrollment",    "Blocked Medicaid enrollment"),
+    ("Medicaid enrollment rule suspended", "Medicaid enrollment rule suspended"),
     ("Directed payment caps",          "Directed payment caps"),
     ("Six-month renewals",             "Six-month renewals"),
     ("Public-company earnings",        "Public-company earnings"),
@@ -103,13 +105,17 @@ def main(pdf, html):
         for phrase, label in SUBJECTS:
             if phrase.lower() not in subject_text:
                 continue
-            seen = False
+            # A generated figure declares what it shows, because there is no
+            # panel behind it to test a label position against.
+            seen = any(phrase in c.get("shows", []) for _, c in boxes)
             for panel in SVG:
+                if seen:
+                    break
                 for txt, x, y in labels[panel]:
                     if label.lower() not in txt.lower():
                         continue
                     for n, c in boxes:
-                        if c["panel"] != panel:
+                        if c.get("panel") != panel:
                             continue
                         x0, y0, x1, y1 = c["box"]
                         if x0 <= x <= x1 and y0 <= y <= y1:

@@ -120,6 +120,12 @@ class Instance:
 
 
 # ============================ FY2024 AS-IS ================================
+
+def _G24():
+    """The FY2024 eligibility-group totals, five columns. One declaration."""
+    from ledger_national_2024 import ex21_groups
+    return ex21_groups()
+
 AS_IS_2024 = Instance(
     name="national_2024",
     # JW, 2026-09-11. The first anchor names what the $100 divides and its basis.
@@ -136,7 +142,9 @@ AS_IS_2024 = Instance(
     # have gone on passing after one of them was corrected.
     node=_PM.NODE, fraud=0.15,
     ffs_n=_PM.FFS_N, mcoc_n=_PM.MCO_N, dualc_n=_PM.DUAL_N,
-    gt={"Children": 13.48, "Adults": 29.56, "Disabled": 24.98, "Aged": 18.41},
+    # D-91: five eligibility columns. Split from Exhibit 21's own percentages,
+    # imported from the FY2024 ledger so there is one declaration, not three.
+    gt=_G24(),
     steps=[("admin", "top", 5.07, _PIN_ADMIN),
            ("medicare", "top", 2.90, _PIN_MEDI)],
     subs_spec=[("administration + Medicare premiums", "adm_med", "admin", "STATE_AGENCY", "State Admin"),
@@ -146,6 +154,17 @@ AS_IS_2024 = Instance(
     title="$100 of Medicaid spending, before P.L. 119-21",
     strap="CMS-64 FY2024 national totals. Measured, except where flagged.",
 )
+
+
+def _gt_2030(L, per100):
+    """FY2030 group totals, allocated by the population each statute names.
+
+    Imported inside the function on purpose: incidence.py depends on the raw
+    ledgers and the pie solver only, but this module is imported BY compose,
+    so a module-level import here would close a cycle.
+    """
+    import incidence
+    return incidence.allocate(L["node"], per100)["by_g30"]
 
 
 def to_be_2030(L, per100):
@@ -175,9 +194,14 @@ def to_be_2030(L, per100):
         mco_care=L["mco_care"], dual_care=L["dual_care"],
         node=L["node"], fraud=L["fraud"],
         ffs_n=L["ffsn"], mcoc_n=L["mcoc"], dualc_n=L["dualc"],
-        gt={k: v * sum(L["node"].values()) / 86.43
-            for k, v in {"Children": 13.48, "Adults": 29.56,
-                         "Disabled": 24.98, "Aged": 18.41}.items()},
+        # D-102, JW. This used to scale FY2024 by one multiplier, which put
+        # every group's FY2030 figure in a fixed ratio to its FY2024 one and
+        # carried, as the Limits register said, no information about who bears
+        # the law. It disagreed with Figure 12 and Table 5 by $3.55 on the new
+        # adult group, on facing pages, and no instrument in the repo could see
+        # it because the two models lived in modules that never imported each
+        # other. There is one model now, in incidence.py, and this reads it.
+        gt=_gt_2030(L, per100),
         # By reference, so the overlay's arithmetic and the FY2024 panel can
         # never disagree. EN-46.
         prior_node=dict(AS_IS_2024.node),

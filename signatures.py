@@ -93,7 +93,15 @@ LAPSED_2026_09_16 = {
 # The 26 figures that lapsed under D-83 are re-agreed here at their new
 # values, together with the 10 that never moved.
 SIGNED = {
-    'beneficiaries.row.Adults': 29.78057501122407,
+    # D-91, pre-approved by JW in the 2026-09-26 session plan. The summed
+    # 'Adults' row at 29.78057501122407 is retired and replaced by the two
+    # columns Exhibit 21 publishes. They sum to the value that was signed on
+    # 25 September, so nothing below the row margin moved and no other
+    # signature is disturbed. JW signed the two replacement figures in the
+    # plan; the stacked before-and-after required by S-093 is in
+    # reference_renders/sign_2026-09-26_D91.png.
+    'beneficiaries.row.New adult group': 19.592483560015832,
+    'beneficiaries.row.Other adult': 10.188091451208233,
     'beneficiaries.row.Aged': 18.5473743557725,
     'beneficiaries.row.Children': 13.58058698076118,
     'beneficiaries.row.Disabled': 25.166399315980286,
