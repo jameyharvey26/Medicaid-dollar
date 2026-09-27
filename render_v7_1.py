@@ -1,12 +1,14 @@
 import pathlib, sys, tempfile
 from playwright.sync_api import sync_playwright
 import release
+import landing
 
 # D-84. The manuscript carries placeholders; the values are derived here and
 # substituted into a temporary copy, so no provenance string is ever typed
-# into the source. PAPER_URL and REPO are deliberately non-functional
-# placeholders: the landing page is not stood up and the repository path is
-# not final. Both are open items and must be real before this ships.
+# into the source. PAPER_URL now comes from landing.py, which is the single
+# declaration the deck reads too (D-103). REPO is deliberately empty: the
+# repository path lives on the landing page instead, so there is one address
+# to fix rather than two.
 # The manuscript, overridable so a retained whole-number release can still be
 # rendered after its own renderer is deleted:  python3 render_v7_1.py paper_national_v6_1.html
 SRC = pathlib.Path(sys.argv[1] if len(sys.argv) > 1
@@ -17,7 +19,7 @@ _FILL = {
     "{{STAMP}}":        release.stamp(),
     "{{RELEASE_DATE}}": release.build_date(),
     "{{BUILD_ID}}":     release.build_id(),
-    "{{PAPER_URL}}":    "[landing page pending]",
+    "{{PAPER_URL}}":    landing.FOOTER,
     # D-98, JW: the repository path comes off the footer. It will live on the
     # landing page instead, so there is one address to fix rather than two.
     "{{REPO}}":         "",

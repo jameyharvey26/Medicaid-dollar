@@ -66,7 +66,6 @@ im30.save(os.path.join(OUT, "fig6_panel_2030.png"))
 print("fig6_panel_2030.png", im30.size)
 
 crop30("fig7_lanes_2030.png", 87, 600, 1800, 1160)   # the warm HR-1 ribbons
-crop30("fig8_payer_2030.png", 644, 90, 1800, 1065)   # payer column under the law
 crop30("fig9_providers_2030.png", 1250, 120, 1772, 900)
 crop30("fig10_numberline_2030.png", 0, 1104, 2190, 1440)
 
@@ -87,35 +86,18 @@ print("figA_lines_pair.png", pair.size)
 # the beneficiary key. It now starts at the claims fan, read from
 # outflows.COLS, and opens high enough to carry the whole key.
 crop("fig4b_providers_pies.png", _OF.COLS["CLAIMS"][0], 36, 2200, 940)
-crop30("fig9b_providers_pies_2030.png", _OF.COLS["CLAIMS"][0], 36, 2200, 940)
 
-# Section VII needs the FY2030 beneficiary column on its own.
-crop30("fig11_beneficiaries_2030.png", 1745, 100, 2200, 910)
-
-# FY2030 detail crops, parallel to the FY2024 set.
-crop30("fig12_sources_2030.png", 87, 80, 961, 1160)
-
-# The right-hand terminals: where the remaining provisions actually land.
-crop30("fig14_terminals_left.png", 87, 540, 1250, 1160)
-crop30("fig13_terminals_2030.png", 961, 540, 1900, 1160)
-
-# The provisions crop with the FY2030 balance line beneath it, so the reader can
-# see the provisions and the totals they produce in one figure.
-a = Image.open(os.path.join(OUT, "fig7_lanes_2030.png"))
-b = Image.open(os.path.join(OUT, "fig10_numberline_2030.png"))
-sc = a.width / b.width
-b2 = b.resize((a.width, int(b.height * sc)))
-gap = 18
-comb = Image.new("RGB", (a.width, a.height + gap + b2.height), "#ffffff")
-comb.paste(a, (0, 0))
-comb.paste(b2, (0, a.height + gap))
-comb.save(os.path.join(OUT, "figB_provisions_with_line.png"))
-print("figB_provisions_with_line.png", comb.size)
-
-
-# figB is the provisions crop with the balance line stacked under it; for the purpose
-# of "is the thing being discussed visible", it covers the provisions crop's box.
-CROPS["figB_provisions_with_line.png"] = dict(panel="2030", box=list(CROPS["fig7_lanes_2030.png"]["box"]))
+# 2026-09-27, JW. Seven FY2030 crops came off at v7.0, superseded by the taper
+# family (D-100): fig8_payer_2030, fig9b_providers_pies_2030,
+# fig11_beneficiaries_2030, fig12_sources_2030, fig13_terminals_2030,
+# fig14_terminals_left and figB_provisions_with_line.
+#
+# They were put on DELETE OLD FILES.command and the crop calls were left here,
+# so the script trashed them and the next build made them again. A delete list
+# cannot remove a figure that a generator recreates; the generator is the only
+# place a generated figure can be deleted. The calls are gone rather than
+# commented out - a commented crop is a crop waiting to be uncommented, and the
+# boxes are in git history if any of these is ever wanted back.
 CROPS["figA_lines_pair.png"] = dict(panel="2024", box=[0, 1090, 2190, 1440])
 
 # D-92. The two-households graphic is not a crop of a panel: it is its own
@@ -131,7 +113,7 @@ CROPS["figA_lines_pair.png"] = dict(panel="2024", box=[0, 1090, 2190, 1440])
 import subprocess
 # family.py still builds and still passes its gates; the households are set
 # aside for a later edition (JW, 2026-09-26) and are not in this paper.
-for script in ("taper.py", "population.py"):
+for script in ("taper.py", "population.py", "cover_taper.py"):
     subprocess.check_call(["python3", script])
 
 CUSTOM = {
@@ -156,6 +138,21 @@ for src, dst in CUSTOM.items():
     if dst in SHOWS:
         CROPS[f"{dst}.png"] = dict(shows=SHOWS[dst])
     print(f"{dst}.png copied from cover/{src}.png")
+
+# The cover taper was the one figure in paper_figs that nothing here produced.
+# It had been copied in by hand from cover/cover_taper_standalone.png, which is
+# how a figure directory acquires a stale picture: the generator moves, the
+# copy does not, and nothing in the repo can tell. It is copied by the build
+# now, with its generated alt text beside it. It carries no crops.json entry
+# for the same reason the tapers do not - there is no panel region behind it.
+for _n in ("cover_taper.png", "cover_taper_alt.txt"):
+    _src = os.path.join("cover", _n.replace("cover_taper",
+                                            "cover_taper_standalone"))
+    if _n.endswith(".png"):
+        Image.open(_src).save(os.path.join(OUT, _n))
+    else:
+        open(os.path.join(OUT, _n), "w").write(open(_src).read())
+    print(f"{_n} copied from {_src}")
 
 with open(os.path.join(OUT, "crops.json"), "w") as f:
     json.dump(CROPS, f, indent=1, sort_keys=True)

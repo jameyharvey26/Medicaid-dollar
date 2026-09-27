@@ -89,22 +89,48 @@ tc30   = {k: fed30[k] * GROSS[k] for k in fed30}                # total-computab
 per100 = {k: tc30[k] / TOTAL_30 * 100 for k in tc30}            # $ per $100
 
 if __name__ == "__main__":
+    # S-109. This diagnostic used to print `per100` alone and call it "per
+    # $100", which is a different hundred from the one the paper, the panels
+    # and the tracker line all use. D-70 strikes the hundred at the state
+    # agency, and `ledger_national_2030._rebase` multiplies every peel by
+    # basis_national.RESCALE to put it there. The raw column below is a stage
+    # in the derivation and is published nowhere; the published column is the
+    # rebased one. Both are printed, both name their denominator, and no line
+    # says "per $100" without saying which hundred.
+    from basis_national import RESCALE
+    r100 = {k: v * RESCALE for k, v in per100.items()}
     print(f"FY2030 denominator: federal ${FED_OUTLAYS_30:.0f}B / {FED_SHARE:.4f} "
           f"= ${TOTAL_30:,.1f}B total  (federal share MODELLED)")
-    print(f"FY2030 numerator  : federal ${FY30_DEFICIT:.3f}B deficit effect (sourced)\n")
-    print(f"{'Lane':34} {'fed $B':>8} {'x':>6} {'tot $B':>8} {'per $100':>9}  bite point")
-    print("-" * 96)
+    print(f"FY2030 numerator  : federal ${FY30_DEFICIT:.3f}B deficit effect (sourced)")
+    print(f"D-70 rebase factor: RESCALE = {RESCALE:.6f}\n")
+    print(f"{'Lane':34} {'fed $B':>8} {'x':>6} {'tot $B':>8} "
+          f"{'raw/$100':>9} {'D-70/$100':>10}  bite point")
+    print("-" * 108)
     for k in sorted(per100, key=lambda x: -per100[x]):
-        print(f"{k:34} {fed30[k]:8.2f} {GROSS[k]:6.3f} {tc30[k]:8.2f} {per100[k]:9.2f}  {BITE[k]}")
-    print("-" * 96)
+        print(f"{k:34} {fed30[k]:8.2f} {GROSS[k]:6.3f} {tc30[k]:8.2f} "
+              f"{per100[k]:9.2f} {r100[k]:10.2f}  {BITE[k]}")
+    print("-" * 108)
     print(f"{'TOTAL':34} {sum(fed30.values()):8.2f} {'':6} {sum(tc30.values()):8.2f} "
-          f"{sum(per100.values()):9.2f}")
+          f"{sum(per100.values()):9.2f} {sum(r100.values()):10.2f}")
     print()
-    print(f"Federal-only, no gross-up : ${FY30_DEFICIT/TOTAL_30*100:.2f} per $100")
-    print(f"Total-computable          : ${sum(per100.values()):.2f} per $100")
+    print("  raw/$100    per $100 of the tobe2030 denominator above. A stage in "
+          "the derivation.")
+    print("              Published nowhere. Do not quote it.")
+    print("  D-70/$100   per $100 struck at the state agency, the basis the "
+          "paper, the panels")
+    print("              and the tracker line all use. This is the published "
+          "figure.")
     print()
-    print("Reading: of every $100 that would have flowed through Medicaid in FY2030")
-    print(f"under prior law, ${sum(per100.values()):.2f} will not flow under HR-1.")
+    print(f"Federal-only, no gross-up : ${FY30_DEFICIT/TOTAL_30*100:.2f} "
+          f"per $100 (raw denominator)")
+    print(f"Total-computable          : ${sum(per100.values()):.2f} "
+          f"per $100 (raw denominator)")
+    print(f"Total-computable, rebased : ${sum(r100.values()):.2f} "
+          f"per $100 (D-70 denominator)  <- PUBLISHED")
+    print()
+    print("Reading: of every $100 of Medicaid spending struck at the state agency")
+    print(f"in FY2030 under prior law, ${sum(r100.values()):.2f} will not flow "
+          f"under HR-1.")
 
 # --- MEDICAL COST GROWTH, memo only (EN-30) --------------------------------
 # NOT part of the conserved ledger. Drawn to scale, subtracted after "to
