@@ -48,6 +48,46 @@ PROP = {g: BY_G[g] / _claims for g in G}
 ONLY = lambda g0: {g: (1.0 if g == g0 else 0.0) for g in G}
 CAP_SERVICES = ["Physicians & clinics", "Hospitals", "Long-term care"]
 
+# An HR-1 provision that is deliberately outside this model, and why.
+#
+# D-104. `RULES` below covers six of the ledger's seven HR-1 peels. The seventh
+# is correctly absent: D-89 established that the Medicare Savings moratorium's
+# dollar pays a Medicare premium rather than buying a service, so it has no
+# service incidence to allocate and it must not enter `gross`.
+#
+# Correct, and until now unasserted. `ledger_national_2030.agreement()` checks
+# the ledger's HR-1 set against `outflows.OUTFLOWS`; nothing checked it against
+# this module. An eighth provision landing in the ledger would have been
+# dropped here in silence: `gross` would shrink, `scale` would rise, and the
+# remaining six would absorb its dollars pro rata. The cube would still sum to
+# the pool and `check()` would still pass, because an absence conserves.
+# That is the D-102 failure one module over, and this is the instrument.
+EXCLUDED = {
+    "Blocked senior enrollment rule":
+        "D-89. Pays a Medicare premium; reaches BENEFICIARY, not a service. "
+        "It has no service incidence and is outside the scaled pool.",
+}
+
+
+def coverage():
+    """Assert every HR-1 peel is either allocated here or declared excluded.
+
+    Returns a list of failures, empty when the two sets agree. Called by
+    `build.py` alongside `ledger_national_2030.agreement()`.
+    """
+    from ledger_national_2030 import HR1
+    ours = {n for n, _, _, _ in RULES}
+    out = []
+    for name in sorted(set(HR1) - ours - set(EXCLUDED)):
+        out.append(f"{name}: an HR-1 peel this model neither allocates nor "
+                   f"declares excluded. Its dollars would be absorbed by the "
+                   f"other provisions without trace.")
+    for name in sorted(ours & set(EXCLUDED)):
+        out.append(f"{name}: both allocated and declared excluded.")
+    for name in sorted((ours | set(EXCLUDED)) - set(HR1)):
+        out.append(f"{name}: named here, not an HR-1 peel in the ledger.")
+    return out
+
 RULES = [
     ("Work reporting",                   ONLY("New adult group"), S, "A1"),
     ("Provider tax limits",              PROP, S,            "A4"),

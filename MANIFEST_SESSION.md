@@ -2180,3 +2180,494 @@ git-filter-repo or BFG, then force-pushing; GitHub also keeps forks and cached
 views of deleted content, so private-first is the safe order. Raised with JW at
 v7.1 and NOT done here, because rewriting a published history is his call and
 not a thing to do inside a packaging step.
+
+---
+
+# 2026-09-27 · The explorer, rebuilt from the ledger
+
+**D-103 · The project's public address, in one place.** Backfilled, not new.
+The decision was taken with `landing.py` and recorded only in that module's own
+docstring, so `decisions_index.py` — which reads this manifest and nothing else
+— reported D-103 as the next free number and would have issued it twice. The
+same failure the register exists to prevent, invisible to it because the
+register can only see what the manifest says.
+
+What was decided, transcribed from `landing.py`: the URL was a
+"[landing page pending]" placeholder in the paper's renderer and absent from
+the deck entirely. It now appears in the manuscript footer and on the deck,
+which is two artifacts quoting one string, and S-096 says that is one
+declaration. `landing.URL` is that declaration; the sentence the deck prints
+names the URL so it lives there too. The footer takes the bare address because
+a sentence would wrap in small type. Changing it in `landing.py` moves both.
+
+**D-104 · The incidence model must declare what it leaves out.** `incidence.RULES`
+covers six of the ledger's seven HR-1 peels. The seventh is correctly absent —
+D-89 established that the Medicare Savings moratorium's dollar pays a Medicare
+premium rather than buying a service, so it has no service incidence and must
+not enter `gross`. Correct, and unasserted: `ledger_national_2030.agreement()`
+checks the ledger's HR-1 set against `outflows.OUTFLOWS`, and nothing checked it
+against `incidence.py`. An eighth provision landing in the ledger would have
+been dropped in silence — `gross` shrinks, `scale` rises from 0.9496, the other
+six absorb its dollars pro rata, the cube still sums to the pool and `check()`
+still passes. That is D-102 one module over. `incidence.EXCLUDED` now names the
+exclusion and its reason, `incidence.coverage()` asserts the two sets agree, and
+`build.py` raises on failure. Proved by removing Work reporting from `RULES` and
+watching it fire by name.
+
+**D-105 · The explorer is a build target, not a file.** JW approved the whole
+shape on 27 September. The predecessor (`medicaid_dollar_explorer.html`, Brent,
+August) carried its numbers as a JSON blob pasted into the page, and two things
+followed, both invisible. Its national half was struck on the OLD hundred —
+$957.4B, administration $5.07, care delivered $86.27 — and went on serving those
+for two decision cycles after D-70 and D-83 moved the floor. Its DC half agreed
+with `ledger_dc_2024.py` to fifteen significant figures, so a machine had
+written it, but a machine writing a number ONCE is not a live connection: DC has
+since withdrawn its service allocation and the page went on publishing a DC
+service mix (long-term care $35.94, physicians $21.63) that `coverage.py dc`
+reports as MISS on every node. A withdrawn figure does not disappear from an
+artifact holding its own copy.
+
+`explorer.py` serializes the ledger with provenance on every figure;
+`explorer_template.html` holds structure and copy and no figures;
+`build_explorer.py` writes one self-contained HTML plus the data separately.
+
+**D-105a · The lever is a visibility control, not a recalculation control.**
+JW's reading, and the better one. Selecting a provision greys the rest and
+lights that lane from where it leaves the trunk to where it terminates, carrying
+its population and service incidence. It generates no arithmetic the paper does
+not contain. The alternative — remove the dollars and re-derive — produces 63
+subsets, none verified and none signed.
+
+**D-105b · Both figures travel with a provision.** Work reporting leaves the
+trunk at $4.11 and only $3.90 of it fails to reach care; the gap is overhead
+falling with the loss (`incidence.scale` = 0.9496). Both are true, the paper
+prints them in different places, and the page shows both, labelled.
+
+**D-105c · The three FY2030 variants replace the growth slider.** `holds`,
+`scales` and `mixed` already exist and are already defensible. The predecessor's
+three free sliders — federal cut, backfill, growth — had no relationship to
+P.L. 119-21 and let a reader generate any number they liked under the project's
+name. Removed.
+
+**D-105d · The fact cards are the deck's own lines, read at build time.** JW:
+latest MHPA deck is authoritative. `build_deck.py` writes its heroes as
+f-strings off the ledger, so a card taken from `CARDS` moves when the ledger
+moves; a transcription would not. `build_deck.slide()` now records its parts
+structurally alongside the HTML it already emitted. Nothing the deck renders
+changed.
+
+**D-105e · DRAFT — UNPUBLISHED travels the whole way on DC.** JW's call: banner,
+a dagger on every figure and tooltip, and a rotated stamp on any print or
+export. Declared once on the panel; the page obeys.
+
+**S-109 · A web artifact is proved by rendering it, not by reading it.**
+`typedfigures.py` reads source, which is right for the paper: a typed figure is
+a literal. A page can produce a number three ways and only one looks like a
+literal. The first build of the flow view summed three ROUNDED lane margins in
+JavaScript and printed $87.08 where the ledger says 87.074936, which prints
+$87.07 — nothing typed, every input serialized, and a one-cent disagreement with
+the paper produced by nothing but where the addition happened. `explorerproof.py`
+therefore renders the built page, sweeps 32 states (every jurisdiction, year,
+variant and lever), harvests every dollar figure on screen and asserts each is
+one the ledger serialized. Proved by reinstating the page-side sum and watching
+it named. Totals now derive in `explorer.py` at full precision; the page adds
+nothing up.
+
+**S-110 · A gate suite must build its own inputs.** `gates.py` ran `build.py`
+and went straight to `render_v7_1.py`, whose `figurefit` and `artwhite`
+sub-gates read `paper_figs/crops.json` and the generated PNGs. On a clean clone
+those do not exist, `figurefit` died on a FileNotFoundError, and four of the six
+reported misses were the suite failing to build its own inputs while reporting a
+content failure. Detector fixed rather than worked around: `make_figs.py` and
+`deckalts.py` are gates now, in dependency order.
+
+**Contrast, narrowly.** JW: do not touch the colours in the sankey or the white
+paper. `explorerchrome.py` measures the explorer's own chrome and nothing else —
+21 pairs, all meeting WCAG 2.1 AA, measured not asserted. It also fails on any
+hex in the template that no pair names, which is how the two loss tints the
+chrome had borrowed were caught and moved back to `palette.py`.
+
+**Also changed.** `coverage.rows(L, width=60)` — the 60-character truncation
+exists for the terminal and the web inherited it, cutting two reasons off
+mid-word. Now a parameter; the terminal report is unchanged.
+
+**Open, and raised rather than fixed.**
+
+- `views.V_DC.strap` still says the DC MCO service mix is a national proxy. The
+  ledger withdrew that allocation and the panel now shows it absent. The strap
+  describes a model that no longer exists. Editorial, so left alone.
+- The deck's `CARE24` ($86.92) and the claims total ($87.07) are different
+  figures in different artifacts. Both are ledger-derived and the difference is
+  presumably fraud; nobody has written down which one answers "reaches care".
+- D-103 was claimed by `landing.py` and recorded nowhere else. Backfilled
+  above on 27 September; `decisions_index.py` now reports what it skips
+  rather than dropping it (D-108).
+- `render_v7_1.py` remains red on stranding (pages 3, 6, 7, 9, 10, 14) and
+  leader landing. Unchanged this session.
+
+**D-106 · The diagram goes back, with handles.** JW, 27 September: the first
+rebuild replaced the sankey with bar rulers and was a straight loss. The rulers
+are more legible per row and say nothing about where anything goes; the diagram
+*was* the product. Brent's mechanic is restored — hover or click any band and
+that money lights across the whole lifecycle while everything else steps back —
+and what is new is that the handles are generated. `sankey.trace` is a context,
+not an argument, so a block declares once what it is drawing and every shape
+inside inherits; `band()` has twenty-five call sites and threading two
+parameters through all of them is twenty-five chances to mislabel a ribbon.
+Four dimensions are traceable where the predecessor had one: source, payer,
+provision, and the claims fan by lane so following a payer does not stop at the
+claims column. The legend is read OUT of the SVG, so a band whose key is not a
+figure in the ledger fails the build rather than becoming a dead swatch.
+
+The attributes are inert in print. `renderproof.py` hashes SVG bytes, so it
+fired on fifteen panels and its raster diff was empty on every one of them,
+which is the proof.
+
+**D-106a · The overlay is a drawing layer, not an arithmetic one.** An earlier
+draft of this button said "lift P.L. 119-21 off the diagram". It is false.
+Hiding `overlay-hr1` removes the tributaries and leaves the trunk still
+stepped, the tracker line still showing every decrement, and long-term care
+still at $26.25 rather than $29.14. That control would have taken away the
+explanation and kept the consequence, and a reader watching the picture barely
+move would have concluded the law does little. Caught by rendering the baseline
+layer alone and looking at it. Relabelled "hide the tributaries", with the
+caption saying plainly that no layer of this diagram can show prior law and
+that the year switch is where that lives.
+
+**D-106b · DC ships with no diagram, declared.** `build.py` renders the DC
+panel with `legacy_mix=True` — the flag its own comment marks as uncorrected —
+which draws a DC service mix (long-term care $35.85, physicians $21.63) that
+`ledger_dc_2024.build()` declares absent on every node. Embedding that plate
+would have put a diagram asserting those figures beside a table reading "no
+allocation in the ledger", on one screen, and the diagram is the one a reader
+believes. It is the predecessor's defect exactly, reintroduced by this session
+and caught by `explorerproof.py` rather than by eye.
+
+Rendering DC honestly is not available: `compose()` raises `KeyError` on the
+first service node with no allocation, which is what the legacy flag exists to
+avoid. The panel therefore carries a stated absence instead of a drawing. **A
+payer-column-only panel needs a real change to `sankey.py` and is JW's call.**
+
+**S-111 · A gate that never rebuilds a panel cannot see it move.** `gates.py`
+ran `build.py`, which renders the FY2030 mixed panel only; the two sensitivity
+variants live behind `build.py sensitivity` and nothing ran it. `renderproof.py`
+compares the SVGs on disk, so the stale variant files went on matching their
+stale blessing and reported "unchanged" indefinitely. Both had in fact been
+wrong since **D-91**: each still drew the beneficiary panel with four
+eligibility groups (Children / Adults / Disabled / Aged) against the paper's
+five. A false green, which is worse than the false red S-110 fixed, because
+nothing draws attention to it. `build.py sensitivity` is a gate now.
+
+**Third named figure source.** `explorerproof.py` accepts figures from
+`explorer.py`, from `build_deck.py` and now from `sankey.py`, counted
+separately in its report. Naming the sources rather than waiving them keeps the
+claim intact: no figure on screen was computed by the page.
+
+**D-107 · One version across all three artifacts, HTML and PDF of each.**
+JW, 27 September. The paper carried `release.VERSION`; the deck was
+`MHPA_Board_Deck` with no version in the name, so two builds a month apart were
+indistinguishable once downloaded; the explorer likewise. All three are
+rendered from the same ledger in the same build and a reader handed all three
+had no way to tell they belonged together. They now take one version from one
+declaration — `release.VERSION`, bumped to 8.0 — and `publish.py` writes six
+files: `Medicaid_Dollars_National_v8.0`, `MHPA_Board_Deck_v8.0` and
+`medicaid_dollar_explorer_v8.0`, HTML and PDF of each.
+
+`paper_national_v8_0.html` and `render_v8_0.py` are forked from the v7.1 pair;
+v7.1 is a point release and may be deleted, v8.0 is a whole number and is kept.
+
+**Two faults the packaging found.**
+
+*The paper's HTML did not survive leaving the repo.* It references its figures
+as relative paths, which is right inside the repo and useless outside it: the
+first delivered file was 61 kB against a 2,369 kB PDF, and a reader who
+downloaded it would have got a document of broken image icons with no warning.
+That is the 26 September 192 kB fault arriving a second time by a different
+route — the file moves rather than the renderer. `publish.py` now inlines every
+relative asset and raises on any it cannot find. The paper's HTML is 2,813 kB.
+
+*The publisher would have forced a false green.* `render_v8_0.py` exits
+non-zero on its own layout gates and two of them are honestly red. A publisher
+that refuses to write the PDF over them means the only route to a release is to
+loosen a detector that is telling the truth. The faults are reported and the
+artifact is written.
+
+**Stranding is one page, not six.** The six-page report this session opened
+with was the S-110 input-ordering defect: `figurefit` was reading captions
+against a document with no pictures in it. With the figures built, page 9
+strands seven lines and no other page is over threshold. The leader fault on
+`fig6_taper_all.svg` is real and stands — three leaders run through a label.
+
+**`gates.py`** now runs `publish.py`, and `render_v7_1.py` is `render_v8_0.py`.
+
+**Indexer fragility, found and worked around, not fixed.** This decision was
+first titled "D-107 · v8.0. One version across all three artifacts", and
+`decisions_index.py` dropped it in silence. `clean()` takes the first sentence,
+"v8.0." became "v8" after the trailing period is stripped, and the eight-
+character minimum discarded it. Any decision title beginning with a decimal
+number disappears from the register without a word — the same class as D-103,
+which is claimed by `landing.py` and indexed nowhere. The title was reworded.
+**The indexer should say what it skipped rather than skipping it quietly**, and
+that is a change to a shared instrument, so it is raised not taken.
+
+**D-108 · A detector that discards its own input in silence.**
+`decisions_index.py` recognised a D-number, judged its title too short to be a
+title, and dropped the whole decision without a word. The length test is right
+— it keeps a stray "D-12" in prose out of the index — but failing it was
+invisible, and the output looked complete. That is worse than no detector.
+`scan()` now returns what it skipped, `DECISIONS.md` carries a Skipped section,
+and the command line names each one with the line number and what it read.
+Proved by planting a heading titled "v9.1." and watching it reported.
+
+**D-109 · A panel stops where the knowledge stops.** JW approved 27 September.
+`legacy_mix` is off.
+
+The flag existed because the renderer could not draw a panel without a service
+allocation — `compose()` raised `KeyError` on the first node — so the only way
+to get a DC panel at all was to fill the fan from the national mix. Its comment
+called it "the visible record that DC is still carrying the national service
+mix", which was honest about the choice and did nothing about the artifact: the
+drawing still asserted five DC service figures this ledger has withdrawn, and a
+reader had no way to know. The explorer would have republished them on the web.
+
+`compose()` now truncates a panel whose fan cannot be drawn. **The test is what
+the drawing needs, not a status word** — a value for every node margin and every
+lane-by-node cell. DC is the case that forces the distinction: its matrix is
+PARTIAL, not UNALLOCATED, because fee-for-service is allocated and the two
+capitated lanes are not. A coarser test would have called that drawable and
+failed on the first missing cell. When DC's allocation is acquired this reverts
+to a full panel with no code change, because the predicate reads the matrix.
+
+`sankey.py` draws the stop where the fan would have been, drops the PROVIDERS
+heading rather than leaving a column headed and empty, and pulls the right edge
+in. Only the three DC panels moved; the national panels are untouched.
+
+**`check.py` asserts something different about a truncated panel, not nothing.**
+It must be truncated WHOLE — every service structure empty, not some of them,
+because a half-drawn fan is the failure that could actually reach a reader —
+and it must declare a reason. Both proved by planting a node total and by
+clearing the declarations.
+
+**Two faults this uncovered, both pre-existing, both fixed.**
+
+*The panel printed $0.00 for figures it declares absent.* `Fig.n` returns 0.0
+for an absent figure and the retention labels drew whenever the lane was on, so
+the DC panel read "MCO plan administration $0.00" three inches from a
+declaration saying that split is not published for DC. An artifact must not
+contradict its own register. The labels gate on the value now, and `check.py`
+will only allow a retention with no split when a declaration says so.
+
+*Declarations ran off the canvas.* `_draw_absent` drew at a fixed x with no
+wrapping, so three of DC's eight declarations were clipped mid-sentence. A
+clipped declaration is worse than a missing one: the reader sees a sentence
+start and cannot tell it was cut. They wrap to the space actually left.
+
+**Open, and now urgent rather than tidy.** `views.V_DC.strap` still reads
+"MCO service mix is a national proxy (modelled)". Until today that was a stale
+line. It is now a false statement about the artifact it sits on, because the
+panel no longer draws a service mix at all. Editorial, so not changed here.
+Proposed: "REDUCED FIDELITY. CMS-64 / MACStats FY2024 DC spine; payer peel DHCF
+CY2023. The panel stops at claims: no DC service allocation is published and
+none has been estimated. Vintages need re-checking."
+
+**D-110 · Everything on the drawing is a handle.** JW's punch list, 28
+September. Brent's page made the payer lanes selectable; this makes the whole
+artifact selectable. Handles now sit on the overhead exits, the retention
+exits, the provider bars, the beneficiary pies, the grey widgets on the number
+line and the anchors. Raster identical on every panel, across four blessings.
+
+**D-110a · A shape can belong to more than one story.** The band from the payer
+column to the plan box is BOTH the MCO lane's money and the retention the
+number line totals as "MCO Admin". One `data-trace` could not say both, and on
+the DC panel — where the split into administration and margin is not published
+and only the undifferentiated band is drawn — the "MCO Admin" widget had
+nothing to light. Extra memberships go in `data-also`, separated by a pipe
+rather than a space, because a provision key contains spaces.
+
+**D-110b · A widget must light something.** `explorer._groups` fails the build
+if a mark on the number line names no ribbon the panel draws. It need not light
+everything: DC has no federal oversight peel and its "State Admin" mark is
+still the total of what it does have. What cannot stand is a control that lights
+nothing, which looks broken and lies about what it totals.
+
+**D-110c · Group membership is declared where the ledger does not declare it.**
+The HR-1 groups already name their members — `views` carries a `PeelSum` — and
+those keys are read rather than restated. The four overhead groups name theirs
+only inside a prose label, so the sets are written once in
+`explorer.OVERHEAD_GROUPS`. Anchor membership is not written at all: an anchor
+lights every key whose own charged phase is at or before it, which the peels
+already know.
+
+**D-111 · The punch list.** Two destinations, not six: the diagram, the phases
+and the law are one argument read top to bottom, so they are one scrolling page.
+The register moved under the summary, where somebody checking a figure will be.
+Compare is gone and the District is hidden from the picker — the panel is still
+built and still in the payload, so restoring it is putting one option back.
+
+- **The provisions are checkboxes.** Turn them on one at a time and watch them
+  sum. All 127 subsets are serialized by `explorer.py`; the page could add the
+  selected ones up in two lines and must not, because `explorerproof.py` is
+  only worth having if it is never the thing that gets relaxed.
+- **The whole drawing dims, not only the tagged shapes.** Selecting "federal
+  money" already dimmed every tagged band, but the trunk block, the column
+  rules and every label are untagged and stayed at full strength, so the
+  picture read as though nothing had happened. That was the real fault behind
+  JW's note, not the one the note described.
+- **The payer lanes keep their controls and lose their heading.** "Who holds
+  it" was my label and it confused the reader it was written for. The diagram's
+  own column headers already say DISBURSEMENTS and PAYER; a third word for the
+  same phase is one word too many.
+- **The overhead note moved under its control** and changes with it.
+- The Summary carries the whitepaper, embedded and downloadable with no
+  network, its thumbnail rasterized from page one of the very PDF beside it;
+  then the deck's own slides, cover excluded, photographed rather than lifted,
+  so a change to the deck's stylesheet cannot silently break this page.
+- No explorer PDF. It is an interactive page and a flat print was always the
+  lesser artifact.
+
+**S-112 · Do not edit a file by index without re-reading it.** Four consecutive
+slice edits to `explorer_template.html` were made against a picture of the file
+from before the previous edit. One marker matched in the wrong place and pasted
+the CSS block and the whole body a second time: one `<style>` open, two closes,
+two `<body>` tags, 1,699 lines where there should be 860. The build SUCCEEDED
+and wrote a 15 MB file, because `str.replace` filled both copies of the data
+marker. `explorerproof.py` renders the page and would have caught a broken
+build; a DOUBLED build renders correctly. This is the stale-picture failure
+this session opened by finding elsewhere, committed by hand. Repaired by
+truncating at the seam and recovering the chrome block from the stale copy.
+
+**D-112 · The plate does not move.** JW, 28 September: the diagram jumped as
+the pointer crossed the controls above it, which is worse than untidy — the
+band you were aiming at slid out from under the cursor as you reached for it.
+
+The cause was that every control above the plate changes size as you use it.
+The caption gains a name and a figure, the clear chip appears and disappears,
+the law toggle changes its wording, the overhead note changes length with the
+variant. Each reflowed the block and pushed the drawing down or pulled it up.
+
+Fixed by reserving the space rather than by moving the plate somewhere else: a
+minimum height on each strip, `visibility` rather than `display` on the chip so
+it keeps its box when hidden, the caption's second clause on its own line so it
+cannot rewrap, and the law toggle a block with its explanation under it rather
+than text flowing around a button. Nothing about what is said changed; only
+that saying it no longer moves the picture.
+
+**Measured, not eyed.** The plate's top edge is sampled before and after every
+interaction — each trace kind, the law toggle, all three overhead variants.
+First pass left 2.3px on the group and anchor captions, which was the minimum
+height being a hair under two lines. Second pass is 0.0px on all eight.
+
+**D-112a · The explorer opens on FY2030.** JW: the law is what the reader came
+for; FY2024 is the comparison, not the starting point. The cover headline takes
+the FY2030 title with it, which also matches the cover taper's own subject.
+
+**D-112b · The Summary no longer offers the board deck.** It is not published.
+
+**D-113 · A label belongs to the thing it names.** JW, 28 September: selecting
+a pie greyed out the name of the service it represents, the provider bar's
+name, and the tributary's own amount. The blanket dim reached them because
+`txt` and `lbg` drew outside any trace block. They inherit `_h()` now, and the
+node labels, the pie captions and the tracker marks' leaders, amounts and names
+are drawn inside their own trace context. Raster identical. Context that is not
+a competing subject — the HR-1 rule and its zone label — dims to .45 rather
+than .1, so it stays readable behind a selection.
+
+**D-113a · The big dots do nothing.** An anchor lit everything upstream of it,
+which was true and was not intuitive: rolling across the number line flashed
+most of the diagram with no way to tell why. The diamonds and squares stay,
+because each names one thing.
+
+**Open, and JW's call.**
+
+*The provider tax tributary terminates in the federal column.* Reported as a
+regression; it is not one. `renderproof.py` shows every national panel
+raster-identical through this whole session, so the drawing has not moved. The
+cause is the declaration: `HR1["Provider tax limits"]` is charged FEDERAL and
+reaches FEDERAL, and `reach_slot["FEDERAL"]` is x=350. Every tributary
+terminates at the reach it declares — that is the standing rule — so this one
+stops where the federal match would have been drawn and never crosses the
+page. The other six declare downstream reaches and drop to the HR-1 zone,
+which is why it reads as the odd one out. Changing it means changing either
+the reach (a claim about where the money would have got to) or the rule that
+tributaries terminate at their reach. Both are modelling decisions, not
+drawing ones.
+
+*The marker also sits on top of Vaccines on the number line.* `render_v8_0.py`
+already reports it: "markers Vaccines / Provider Tax sit 4 units apart on the
+line." Moving it is `tracker.assign`'s lattice, and it is the same decision as
+above — worth taking once, together.
+
+**D-114 · The explorer is 2.3 MB, and opens on a phone.** JW, 28 September:
+link the paper, composite the slides.
+
+It was 7 MB and the Open button did nothing on iOS — no error, just a page
+that would not start. The weight was 3.2 MB of base64 PDF and 1.5 MB of slide
+screenshots, both added the same day at JW's direction and both a straight
+substitution of file size for a link.
+
+The paper is linked to the landing page now; its thumbnail stays, because 148
+kB of page one is what makes the block worth looking at. The slides are
+composited from `build_deck.CARDS` — kicker, hero and body, styled as slides —
+rather than photographed. **What the composite drops is each slide's figure,
+and that is the point:** the reader has the live diagram one tab away, drawn
+from the same ledger, and it is better than a picture of a picture.
+
+The earlier argument for photographing (D-111: a change to the deck's
+stylesheet cannot silently break this page) still holds and is answered
+differently — the composite takes the deck's DATA, not its CSS, so there is no
+stylesheet to break.
+
+Remaining weight is 805 kB of provision subsets, 553 kB of panels and plates,
+and 730 kB of fonts. The subsets are the next thing to cut if it has to get
+smaller: they are 127 combinations carrying six figures each.
+
+**D-115 · Two arbitrary numbers doing real damage.** JW, 28 September, and he
+was right that I was being pedantic about it.
+
+The provider tax tributary read as stopping nowhere — halfway up the federal
+column while the other six drop below the HR-1 rule. I defended that as the
+reach rule and it was the wrong defence. The reach is FEDERAL and stays
+FEDERAL: that is a claim about how far the dollar gets, and it is right. How
+far DOWN the tributary hangs is not a claim about anything. It is layout, and
+it should say what the other six say, which is that HR-1 takes this out.
+`term_y=560` was pinning it. Released to the solver.
+
+Likewise `src_x`: 66 units into the federal column put the bite at x=226
+against the vaccine peel's 218, so the two markers landed on top of each other
+on the number line and `render_v8_0.py` had been reporting them 4 units apart
+every build. Where a tributary leaves the federal stream is equally arbitrary.
+Moved to 140 units in. The warning is gone.
+
+**One declaration for one point.** The band bent at the midpoint of the gap,
+x=284, while the tracker put the marker at the declared `src_x`. Two numbers
+for one place. `sankey` reads the declaration now — but only where there IS a
+bite: reading it unconditionally moved the FY2024 federal band for no reason,
+which the renderproof diff caught before it was blessed. Nine FY2030 panels
+changed; FY2024 and DC are untouched.
+
+**D-116 · The HTML artifacts are for a screen.** JW, 28 September: the deck's
+HTML needed white gutters to display right, and the paper needed the same.
+
+Both are laid out for an 11in landscape sheet, and both ran to the very edge of
+the browser window with a sideways scroll. A page is a sheet of paper and has
+to read as one, which means seeing space on both sides of it.
+
+Neither sheet can reflow — the layout gates measure them at 11in and the
+figures are placed against that — so on a narrower window the sheet is SCALED
+rather than cropped. `zoom` rather than `transform`, because zoom reflows the
+page height with it and a transform leaves a column of dead space below the
+document. Stepped breakpoints rather than a `calc()`, so it behaves the same
+in every browser, and each breakpoint allows for the gutter as well as the
+sheet — the first attempt sized the sheet to the window and the margins then
+pushed it back out.
+
+The paper's rules go in **`publish.py`, inside `@media screen`**, injected
+during packaging. They cannot reach the PDF: `render_v8_0.py` prints from the
+source before any of this runs. Verified at 1000px and 1500px, no horizontal
+scroll at either, all ten figures loading.
+
+**D-117 · The whitepaper's own address.** JW, 28 September:
+`https://agilian.com/100MedicaidDollarsProject/Whitepaper`. Both the thumbnail
+and the Download button in the explorer's Summary point there. Declared in
+`build_explorer.py` beside the file it names, so the two cannot drift; the
+landing URL stays in `landing.py` and remains a different thing.

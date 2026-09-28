@@ -18,7 +18,7 @@ import hashlib
 import pathlib
 import datetime
 
-VERSION = "7.1"
+VERSION = "8.0"
 
 # The modules a figure can move through. Deliberately not every file in the
 # repo: a change to a gate or a test does not change what the paper says, and

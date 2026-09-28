@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<!--
+  explorer_template.html — structure, copy and behaviour. No figures.
+
+  D-105. Every number this page shows arrives in DATA, serialized by
+  explorer.py from the ledger at build time. Nothing numeric is written here,
+  and explorerproof.py renders the built page and fails the build if a dollar
+  figure appears on screen that is not in the payload. The predecessor held
+  its own copy of the numbers; that is the failure this file exists to make
+  impossible.
+
+  Colours come from palette.py through DATA.palette. Do not write a hex value
+  into this file: the sankey and paper palettes are settled and the explorer
+  matches them rather than restating them.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>$100 of Medicaid Spending — the explorer</title>
+<style>
+@font-face{font-family:'Jost';src:url(__JOST__) format('truetype');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Nunito';src:url(__NUNITO__) format('truetype');font-weight:100 900;font-display:swap}
+
+:root{
+  --ink:#1B2127; --ink-2:#4A565F; --ink-3:#7C8894;
+  --page:#FBFAF7; --card:#FFFFFF; --rule:#E2DFD8; --rule-2:#EFEDE7;
+  --draft:#8B5A5A;
+  /* Filled by build_explorer.py from palette.py. No hex is written into
+     this file: palette.py is the one declaration and the explorer reads it. */
+  --unsigned:__LOSS_CARE_FOREGONE__; --unsigned-line:__LOSS_OUT_OF_POCKET__;
+  --unsigned-ink:#9A6A50; --miss-wash:#FDF6F4;
+  --focus:#1F7A5A;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--page);color:var(--ink);
+  font-family:'Nunito',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.kick,.num{font-family:'Jost','Jost',sans-serif}
+h1{text-wrap:balance;font-size:clamp(28px,4.4vw,44px);line-height:1.04;font-weight:700;margin:0 0 .4em;letter-spacing:-.01em}
+h2{font-size:clamp(20px,3vw,27px);line-height:1.12;font-weight:700;margin:0 0 .35em;letter-spacing:-.005em}
+h3{font-size:16px;font-weight:600;margin:0 0 .3em}
+p{margin:0 0 .85em;max-width:64ch}
+a{color:var(--focus)}
+.kick{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+  font-weight:600;margin:0 0 .7em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,34px)}
+.muted{color:var(--ink-2)}
+.small{font-size:13px}
+.tiny{font-size:11.5px;color:var(--ink-3)}
+
+/* ---------- cover taper -------------------------------------------- */
+/* The taper is a portrait poster (roughly 3:4). Beside the words on a wide
+   screen, above them on a narrow one, and capped by viewport height in both
+   so the cover is one screen and the button is never below the fold. */
+#cover{min-height:100svh;display:flex;align-items:center;position:relative;
+  overflow:hidden;padding:5vh 0}
+#cover .wrap{display:grid;gap:clamp(22px,4vw,54px);align-items:center;
+  grid-template-columns:minmax(0,4fr) minmax(0,5fr)}
+#cover .art{margin:0;opacity:0;transform:scaleY(.6);transform-origin:top center;
+  animation:resolve 1500ms cubic-bezier(.22,.7,.25,1) 200ms forwards}
+#cover img{display:block;width:100%;height:auto;max-height:78svh;
+  object-fit:contain;object-position:top center}
+@media (max-width:760px){
+  #cover .wrap{grid-template-columns:1fr}
+  #cover img{max-height:42svh}
+}
+@keyframes resolve{to{opacity:1;transform:scaleY(1)}}
+#cover .said{opacity:0;animation:rise 800ms ease 1100ms forwards}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#cover .enter{opacity:0;animation:rise 700ms ease 1700ms forwards}
+.btn{font-family:'Jost',sans-serif;font-size:14px;font-weight:600;letter-spacing:.02em;
+  background:var(--focus);color:#fff;border:0;border-radius:2px;padding:12px 26px;
+  cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--rule);
+  padding:9px 16px}
+.btn.ghost[aria-pressed=true]{border-color:var(--focus);color:var(--focus);
+  box-shadow:inset 0 0 0 1px var(--focus)}
+@media (prefers-reduced-motion:reduce){
+  #cover .art,#cover .said,#cover .enter{animation:none;opacity:1;transform:none}
+}
+
+/* ---------- chrome --------------------------------------------------- */
+#app{display:none}
+#app.on{display:block}
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
+  background:rgba(251,250,247,.94);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule)}
+.bar .wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  padding-top:11px;padding-bottom:11px}
+.brand{font-family:'Jost',sans-serif;font-weight:700;font-size:15px;letter-spacing:-.01em;
+  white-space:nowrap}
+nav{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
+nav button{font-family:'Jost',sans-serif;font-size:13px;font-weight:500;background:none;
+  border:0;border-bottom:2px solid transparent;color:var(--ink-2);padding:6px 11px;
+  cursor:pointer;white-space:nowrap}
+nav button[aria-current=true]{color:var(--ink);border-bottom-color:var(--focus);font-weight:600}
+
+.controls[hidden]{display:none}
+.controls{display:flex;gap:10px 14px;flex-wrap:wrap;align-items:center;
+  padding:13px 0;border-bottom:1px solid var(--rule-2)}
+.ctlnote{flex:1 0 100%;margin:2px 0 0;font-size:12.5px;color:var(--ink-2);
+  max-width:78ch;line-height:1.45}
+.ctlnote b{font-family:'Jost',sans-serif}
+select{font-family:'Nunito',sans-serif;font-size:13.5px;padding:7px 10px;
+  border:1px solid var(--rule);border-radius:2px;background:var(--card);color:var(--ink)}
+label.sel{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  font-weight:600;margin-right:6px}
+
+section.view{display:none;padding:26px 0 70px}
+h2.sect{margin-top:46px;padding-top:22px;border-top:1px solid var(--rule)}
+section.view.on{display:block}
+
+/* ---------- draft ---------------------------------------------------- */
+.draftbar{background:var(--draft);color:#fff;font-family:'Jost',sans-serif;
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+  text-align:center;padding:7px 12px}
+.draftbar span{opacity:.82;letter-spacing:.02em;text-transform:none;font-weight:400;
+  display:block;font-size:11.5px;margin-top:3px}
+body.draft .num::after{content:"\00a0\2020";color:var(--draft);font-size:.7em;
+  vertical-align:super;font-weight:600}
+.dagger{color:var(--draft)}
+
+/* ---------- figures & provenance ------------------------------------- */
+.num{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;
+  border-bottom:1px dotted var(--rule);cursor:help}
+.num[data-state=model]{border-bottom-style:dashed}
+.num[data-state=stale]{border-bottom-color:var(--unsigned)}
+.num[data-state=lapsed]{border-bottom:2px solid var(--draft)}
+.num.gap{color:var(--ink-3);font-weight:400;font-style:italic;
+  border-bottom:1px solid var(--rule)}
+/* D-112. The plate must not move when the pointer crosses a control above it.
+   Everything in this strip changes as you hover — the caption gains a name
+   and a figure, the clear chip appears, the law toggle changes its wording —
+   and each of those reflowed the block, so the diagram slid under the cursor
+   and the band you were aiming at was no longer there. Reserve the space
+   instead: the strip is a fixed height and the chip keeps its box when it is
+   not shown. Nothing here changes what is said, only that saying it does not
+   move the picture. */
+#tracecap{min-height:3.2em;margin:0 0 6px}
+.tracebar{min-height:34px}
+/* The button is a block and its explanation sits under it. Inline, the text
+   wrapped around the button and the first line started mid-sentence. */
+#lawline{min-height:4.4em;margin:0 0 10px}
+#lawline .btn{display:block;width:max-content;margin-bottom:6px}
+#lawline span{display:block;max-width:74ch}
+.sw[hidden]{visibility:hidden;display:inline-flex}
+.ctlnote{min-height:3.9em}
+#tip{position:fixed;z-index:90;max-width:min(400px,84vw);background:var(--ink);color:#fff;
+  padding:10px 13px;border-radius:3px;font-size:12.5px;line-height:1.45;
+  pointer-events:none;opacity:0;transition:opacity .11s;box-shadow:0 6px 22px rgba(0,0,0,.24)}
+#tip.on{opacity:1}
+#tip b{font-family:'Jost',sans-serif;display:block;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:4px;opacity:.75;font-weight:600}
+
+/* ---------- ruler ---------------------------------------------------- */
+.phase{margin:0 0 22px}
+.phase > .kick{margin-bottom:9px;border-bottom:1px solid var(--rule-2);padding-bottom:6px}
+.row{display:grid;grid-template-columns:minmax(150px,1.5fr) minmax(90px,3fr) auto;
+  gap:12px;align-items:center;padding:5px 0;border-bottom:1px solid var(--rule-2)}
+.row:last-child{border-bottom:0}
+.row .lab{font-size:13.5px}
+.row .lab small{display:block;color:var(--ink-3);font-size:11.5px;line-height:1.3}
+.track{height:13px;background:var(--rule-2);border-radius:1px;overflow:hidden;position:relative}
+.track b{display:block;height:100%;border-radius:1px}
+.track.absent{background:repeating-linear-gradient(135deg,var(--rule-2) 0 5px,transparent 5px 10px);
+  border:1px dashed var(--rule)}
+.row .val{text-align:right;min-width:74px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:14px 0 26px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:14px 15px}
+.card .kick{margin-bottom:5px}
+.card .big{font-family:'Jost',sans-serif;font-size:27px;font-weight:700;line-height:1;
+  letter-spacing:-.015em;display:block;margin-bottom:5px}
+
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 24px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--rule-2);vertical-align:top}
+th{font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--rule)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;font-family:'Jost',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:9px;
+  border:1px solid var(--rule);color:var(--ink-2);white-space:nowrap}
+.pill[data-state=held]{border-color:var(--focus);color:var(--focus)}
+.pill[data-state=model]{border-color:var(--ink-3);color:var(--ink-2)}
+.pill[data-state=stale]{border-color:var(--unsigned-line);color:var(--unsigned-ink)}
+.pill[data-state=miss]{border-color:var(--unsigned);color:var(--draft);
+  background:repeating-linear-gradient(135deg,var(--miss-wash) 0 4px,transparent 4px 8px)}
+.pill[data-state=lapsed]{border-color:var(--draft);color:#fff;background:var(--draft)}
+
+/* ---------- the plate ------------------------------------------------ */
+.plate{position:relative;background:var(--card);border:1px solid var(--rule);
+  border-radius:3px;overflow:auto;margin:6px 0 10px}
+.plate svg{display:block;width:100%;height:auto;min-width:900px}
+.plate [data-trace]{transition:opacity .15s;cursor:pointer}
+/* D-111. Dim the WHOLE drawing, not only the shapes that carry handles.
+   Selecting "federal money" already dimmed every tagged band, but the trunk
+   block, the column rules and every label are untagged and stayed at full
+   strength, so the picture read as though nothing had happened. */
+.plate.tracing svg > g > *{opacity:.1;transition:opacity .15s}
+.plate.tracing [data-trace]{opacity:.1}
+.plate.tracing [data-trace].lit{opacity:1}
+/* The HR-1 decrement rule and its zone label are context, not a
+   competing subject: they stay readable behind a selection. */
+.plate.tracing svg > g > line,
+.plate.tracing svg > g > text{opacity:.45}
+.plate.tracing [data-trace].lit text,
+.plate.tracing text[data-trace].lit{opacity:1}
+.plate.lawoff #overlay-hr1{display:none}
+.tracebar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 8px}
+.tracebar .grp{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:600;font-family:'Jost',sans-serif;
+  margin:0 2px 0 8px}
+.tracebar .grp:first-child{margin-left:0}
+/* A group with no heading still needs to read as a group. */
+.tracebar .gap{flex:0 0 14px}
+.sw{display:inline-flex;align-items:center;gap:6px;font-family:'Nunito',sans-serif;
+  font-size:12.5px;background:var(--card);border:1px solid var(--rule);
+  border-radius:20px;padding:4px 11px 4px 6px;cursor:pointer;color:var(--ink);
+  transition:border-color .13s,box-shadow .13s,opacity .13s}
+.sw i{width:11px;height:11px;border-radius:50%;flex:none}
+.sw:hover{border-color:var(--ink-3)}
+.sw[aria-pressed=true]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.tracebar.tracing .sw:not([aria-pressed=true]){opacity:.45}
+.sw.clear{opacity:1!important;border-style:dashed}
+.sw b{font-variant-numeric:tabular-nums;font-weight:600}
+.platehead{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;margin:16px 0 4px}
+.platehead h3{margin:0}
+
+/* ---------- provisions ----------------------------------------------- */
+.levers{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:9px;margin:14px 0}
+.lever{text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:3px;
+  padding:11px 12px;cursor:pointer;font-family:inherit;font-size:13px;color:var(--ink);
+  transition:border-color .13s,box-shadow .13s,opacity .13s}
+.lever:hover{border-color:var(--ink-3)}
+.lever .nm{font-family:'Jost',sans-serif;font-weight:600;font-size:13.5px;display:block;
+  margin-bottom:3px}
+.lever .sub{color:var(--ink-3);font-size:11.5px;line-height:1.35;display:block}
+.lever .amt{font-family:'Jost',sans-serif;font-weight:700;font-size:17px;
+  font-variant-numeric:tabular-nums;display:block;margin-top:6px}
+.levers.tracing .lever{opacity:.3}
+.levers.tracing .lever[aria-pressed=true]{opacity:1;border-color:var(--focus);
+  box-shadow:inset 0 0 0 1px var(--focus)}
+.lever[data-excluded=true] .amt{color:var(--ink-3)}
+.traced{opacity:.26;transition:opacity .16s}
+.traced.lit{opacity:1}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.note{border-left:2px solid var(--rule);padding:2px 0 2px 13px;margin:12px 0;
+  font-size:13px;color:var(--ink-2);max-width:66ch}
+.note b{font-family:'Jost',sans-serif}
+
+.paper{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:22px;
+  align-items:start;background:var(--card);border:1px solid var(--rule);
+  border-radius:3px;padding:20px;margin:6px 0 30px}
+.paper .thumb{display:block;border:1px solid var(--rule);line-height:0}
+.paper .thumb img{width:100%;height:auto;display:block}
+.paper h3{font-size:17px}
+@media (max-width:640px){.paper{grid-template-columns:1fr}}
+.slides{display:grid;gap:14px}
+.sl{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+  padding:20px 22px}
+.sl .kick{margin-bottom:6px}
+.sl h3{font-size:clamp(18px,2.4vw,24px);line-height:1.15;letter-spacing:-.005em;
+  margin:0 0 10px;text-wrap:balance}
+.sl .slbody{font-size:14px;color:var(--ink-2);line-height:1.55}
+.sl .slbody p{margin:0 0 .6em;max-width:72ch}
+.sl .slbody p:last-child{margin-bottom:0}
+.sl .slbody b,.sl .slbody strong{color:var(--ink)}
+.factcard{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+  padding:18px 20px;margin:0 0 12px}
+.factcard h3{font-size:19px;line-height:1.2;letter-spacing:-.005em}
+.factcard .body{font-size:13.5px;color:var(--ink-2)}
+.factcard .body p{margin-bottom:.6em}
+
+footer{border-top:1px solid var(--rule);padding:22px 0 44px;font-size:12px;color:var(--ink-3)}
+
+@media print{
+  /* The PDF is a record of an interactive page, so every view is opened and
+     each starts a sheet. `page-break-before:always` on all of them put a
+     blank leading page in front of the first; `:first-of-type` is excepted.
+     The plate carries a 900px minimum for on-screen scrolling, which would
+     run off a printed sheet, so it is released here and the diagram fits. */
+  @page{size:11in 8.5in;margin:14mm}
+  #cover,header.bar,.controls,nav,.tracebar,#tracecap,#lawtog{display:none!important}
+  section.view{display:block!important;page-break-before:always}
+  section.view:first-of-type{page-break-before:avoid}
+  .plate{overflow:visible;border:0}
+  .plate svg{min-width:0;width:100%}
+  .card,.factcard,table,.phase{break-inside:avoid}
+  body.draft::before{content:attr(data-draft);position:fixed;top:44%;left:0;right:0;
+    text-align:center;font-family:'Jost',sans-serif;font-size:58px;font-weight:700;
+    letter-spacing:.22em;color:var(--draft);opacity:.14;transform:rotate(-22deg);z-index:999}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================ cover ============================ -->
+<div id="cover">
+  <div class="wrap">
+    <div class="art"><img id="taper" src="__TAPER__" alt="A tapering band: one hundred dollars of Medicaid spending narrowing as money leaves the flow at each phase."></div>
+    <div>
+      <div class="said">
+        <p class="kick">The Medicaid Dollar Project &middot; Agilian</p>
+        <h1 id="cover-h"></h1>
+        <p class="muted">Follow the money from appropriation to the person receiving
+        care, phase by phase &mdash; and then follow what P.L. 119-21 takes out of it.</p>
+        <p class="muted">Every figure is dollars per one hundred dollars of Medicaid
+        spending. Every figure says where it came from, and the ones nobody has
+        published say that instead of guessing.</p>
+      </div>
+      <p class="enter"><button class="btn" id="enter">Open the explorer</button></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ app ============================== -->
+<div id="app">
+<div id="draftbar"></div>
+<header class="bar"><div class="wrap">
+  <span class="brand">$100 of Medicaid Spending</span>
+  <nav id="nav"></nav>
+</div></header>
+
+<div class="wrap">
+  <div class="controls" id="ctl"></div>
+</div>
+
+<div class="wrap">
+  <section class="view" id="v-plate">
+    <div id="v-plate-top"></div>
+    <div id="v-flow"></div>
+    <div id="v-law"></div>
+  </section>
+  <section class="view" id="v-reading">
+    <div id="v-reading-top"></div>
+    <div id="v-register"></div>
+  </section>
+</div>
+
+<footer><div class="wrap">
+  <p id="foot"></p>
+</div></footer>
+</div>
+
+<div id="tip" role="tooltip"></div>
+
+<script>
+const DATA = /*__EXPLORER_DATA__*/null;
+
+/* ---------- formatting ------------------------------------------------ */
+/* A non-breaking hyphen in the statute's name. The title comes from views.py
+   and is not edited; this is line-breaking, not wording. */
+const nb = s => String(s).replace(/119-21/g, "119\u201121");
+const esc = s => String(s == null ? "" : s)
+  .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const money = v => (v < 0 ? "\u2212$" : "$") + Math.abs(v).toFixed(2);
+const PHASE_WORD = {
+  FEDERAL: "federal government", STATE_GOVERNMENT: "state government",
+  STATE_AGENCY: "the state agency", DISBURSE: "disbursement",
+  PAYER: "the payer", CLAIMS: "a paid claim", PROVIDERS: "a provider",
+  BENEFICIARY: "the beneficiary"
+};
+
+/* A figure, with its provenance riding along. This is the only function that
+   writes a number into the page, which is what makes the gate checkable. */
+function num(f, opts) {
+  opts = opts || {};
+  if (!f) return '<span class="num gap">not in the ledger</span>';
+  if (f.v == null) {
+    return '<span class="num gap" data-state="miss" data-why="' + esc(f.why || f.note || "") +
+           '" data-word="not acquired">' + esc(opts.gap || "not published") + '</span>';
+  }
+  const t = opts.raw ? f.v.toFixed(2) : money(f.v);
+  return '<span class="num" data-state="' + esc(f.state) + '" data-word="' + esc(f.word) +
+         '" data-why="' + esc(f.why || "") + '" data-src="' + esc(f.source || "") +
+         '" data-vintage="' + esc(f.vintage || "") + '" data-note="' + esc(f.note || "") +
+         '" data-verified="' + esc(f.verified || "") + '">' + t + "</span>";
+}
+
+function pill(state, word) {
+  return '<span class="pill" data-state="' + esc(state) + '">' + esc(word) + "</span>";
+}
+
+/* ---------- tooltip --------------------------------------------------- */
+const tip = document.getElementById("tip");
+function hideTip() { tip.classList.remove("on"); }
+document.addEventListener("mouseover", e => {
+  const el = e.target.closest(".num");
+  if (!el) return hideTip();
+  const bits = [];
+  if (el.dataset.src) bits.push(esc(el.dataset.src));
+  if (el.dataset.vintage) bits.push("Vintage " + esc(el.dataset.vintage));
+  if (el.dataset.note) bits.push(esc(el.dataset.note));
+  if (el.dataset.verified) bits.push("Checked " + esc(el.dataset.verified));
+  if (!bits.length && el.dataset.why) bits.push(esc(el.dataset.why));
+  if (document.body.classList.contains("draft"))
+    bits.push("<span class='dagger'>\u2020 " + esc(DATA.draft_mark) + "</span>");
+  tip.innerHTML = "<b>" + esc(el.dataset.word || "") + "</b>" + bits.join("<br>");
+  tip.classList.add("on");
+  place(el);
+}, true);
+document.addEventListener("mouseout", e => {
+  if (e.target.closest(".num")) hideTip();
+}, true);
+document.addEventListener("scroll", hideTip, true);
+function place(el) {
+  const r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
+  let x = Math.min(Math.max(8, r.left), innerWidth - t.width - 8);
+  let y = r.bottom + 9;
+  if (y + t.height > innerHeight - 8) y = Math.max(8, r.top - t.height - 9);
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+
+/* ---------- state ----------------------------------------------------- */
+const COL = DATA.palette;
+/* JW, 28 September: open on the projection, not the baseline. The law is
+   what the reader came for; FY2024 is the comparison. */
+let PLACE = "US", YEAR = "2030", VARIANT = "mixed", VIEW = "plate", LEVER = null;
+let TRACE = null, LAW = true;
+let PICKED = new Set();   // provisions, multi-select
+
+const panelCode = () => PLACE === "DC" ? "DC2024"
+  : (YEAR === "2030" ? "US2030_" + VARIANT : "US2024");
+const P = () => DATA.panels[panelCode()];
+/* The View's name for a node, where it has one. "Other" is "Wrap around
+   services" on the national panel and the explorer says what the paper says. */
+const show = (p, c) => (p.disp && p.disp[c]) || c;
+const PROV = () => DATA.provisions[panelCode()] || null;
+
+/* D-111. Two destinations, not six. The diagram, the phases and the law are
+   one argument read top to bottom, so they are one scrolling page rather than
+   three tabs a reader has to know to click. The register moved under the
+   summary, where somebody checking a figure will be. */
+const VIEWS = [
+  ["plate", "The diagram"],
+  ["reading", "Summary"]
+];
+
+/* ---------- ruler ----------------------------------------------------- */
+function bar(f, color, scale) {
+  if (!f || f.v == null)
+    return '<div class="track absent" title="not published"></div>';
+  const w = Math.max(0.6, Math.min(100, Math.abs(f.v) / scale * 100));
+  return '<div class="track"><b style="width:' + w.toFixed(2) + "%;background:" +
+         esc(color) + '"></b></div>';
+}
+
+function rows(items, scale) {
+  return items.map(it =>
+    '<div class="row"><div class="lab">' + esc(it.label) +
+    (it.sub ? "<small>" + it.sub + "</small>" : "") + "</div>" +
+    bar(it.fig, it.color, scale) +
+    '<div class="val">' + num(it.fig, { gap: it.gap }) + "</div></div>"
+  ).join("");
+}
+
+function phase(title, items, scale) {
+  return '<div class="phase"><p class="kick">' + esc(title) + "</p>" +
+         rows(items, scale) + "</div>";
+}
+
+/* summary layout */
+const _CSS_MARKER = 0;
+/* ---------- the plate: the real diagram, with handles ------------------
+   D-106. The bands in this SVG carry data-trace / data-kind / data-val,
+   written by sankey.trace at render time off the ledger's own keys. Pull one
+   and everything else steps back. This is Brent's mechanic; what is new is
+   that the handles are generated rather than maintained, and that the law
+   can be lifted off the diagram, which a printed page cannot do. */
+/* D-111. A selected key may be a GROUP or an ANCHOR, in which case it lights
+   its members rather than itself: the grey widget on the number line is the
+   handle for the three ribbons it totals, and a large circle is the handle for
+   everything that has happened up to it. The membership comes from
+   explorer.py, derived from the ledger where the ledger declares it. */
+function litSet() {
+  if (!TRACE) return null;
+  const g = (P().plate.groups || {})[TRACE];
+  const keys = new Set(g ? g : [TRACE]);
+  keys.add(TRACE);
+  return keys;
+}
+
+function applyTrace() {
+  const plate = document.querySelector("#v-plate-top .plate");
+  if (!plate) return;
+  plate.classList.toggle("tracing", !!TRACE);
+  const keys = litSet();
+  plate.querySelectorAll("[data-trace]").forEach(e => {
+    const mine = [e.dataset.trace].concat(
+      (e.dataset.also || "").split("|").filter(Boolean));
+    e.classList.toggle("lit", !!keys && mine.some(k => keys.has(k)));
+  });
+  const bar = document.getElementById("tracebar");
+  bar.classList.toggle("tracing", !!TRACE);
+  bar.querySelectorAll(".sw[data-k]").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.k === TRACE)));
+  const cap = document.getElementById("tracecap");
+  const pl = P().plate;
+  const grp = TRACE && (pl.groups || {})[TRACE];
+  let row = TRACE && pl.legend.find(r => r.key === TRACE);
+  if (!row && grp) {
+    // A group or anchor: name it and say how many ribbons it covers, rather
+    // than showing a figure the legend does not hold.
+    row = { label: TRACE, kind: "group",
+            fig: { v: null, state: "held", word: "on the number line",
+                   why: "lights " + grp.length + " part" +
+                        (grp.length === 1 ? "" : "s") + " of the flow" } };
+  }
+  cap.innerHTML = row
+    ? "<b>" + esc(row.label) + "</b>" +
+      (row.fig.v == null ? " \u00b7 " + esc(row.fig.why)
+                         : " \u00b7 " + num(row.fig) + " per $100") +
+      (KINDSAY[row.kind] ? "<br>" + esc(KINDSAY[row.kind]) : "")
+    : "Hover or click any band, any service, any widget on the number line."
+      + "<br>Everything else steps back.";
+  const c = document.getElementById("clearTrace");
+  if (c) c.hidden = !TRACE;
+}
+
+const KINDSAY = {
+  source: "follow it from where it is appropriated",
+  payer: "follow it from the agency to the care it buys",
+  provision: "the law takes this out; the band ends where the dollar would have got to",
+  group: "", node: "", anchor: ""
+};
+
+function renderPlate() {
+  const p = P(), pl = p.plate, is30 = !!PROV();
+  if (!pl) {
+    document.getElementById("v-plate").innerHTML =
+      '<p class="kick">' + esc(DATA.kickers[panelCode()] || "") + "</p><h2>" +
+      esc(nb(DATA.titles[panelCode()] || p.name)) + "</h2>" +
+      '<p class="note"><b>No diagram for this panel.</b> ' + esc(p.no_plate) +
+      '</p><p><button class="btn ghost" id="toflow">Go to the phases</button></p>';
+    document.getElementById("toflow").onclick = () => {
+      VIEW = "flow"; location.hash = VIEW; draw();
+    };
+    return;
+  }
+  let h = '<p class="kick">' + esc(DATA.kickers[is30 ? "US2030" : panelCode()] || "") + "</p>";
+  h += "<h2>" + esc(nb(DATA.titles[is30 ? "US2030" : panelCode()] || p.name)) + "</h2>";
+  h += '<p class="muted small">' + esc(p.strap || "") + "</p>";
+
+  h += '<div class="tracebar" id="tracebar">';
+  for (const k of pl.kinds) {
+    /* JW, 28 September: the payer lanes keep their controls and lose their
+       heading. "Who holds it" was my label and it was confusing \u2014 the
+       diagram's own column headers say DISBURSEMENTS and PAYER, and a third
+       name for the same phase is one name too many. */
+    h += k.label ? '<span class="grp">' + esc(k.label) + "</span>"
+                 : '<span class="gap"></span>';
+    for (const r of pl.legend.filter(x => x.kind === k.kind)) {
+      h += '<button class="sw" data-k="' + esc(r.key) + '" aria-pressed="false">' +
+        '<i style="background:' + esc(r.color) + '"></i>' + esc(r.label) +
+        " <b>" + money(r.fig.v) + "</b></button>";
+    }
+  }
+  h += '<button class="sw clear" id="clearTrace" hidden>Show everything</button>';
+  h += "</div>";
+  h += '<p class="tiny" id="tracecap"></p>';
+
+  /* The overlay is a DRAWING layer, not an arithmetic one. Hiding it removes
+     the tributaries and leaves the trunk still stepped, the tracker line still
+     showing every decrement, and long-term care still at its post-law figure.
+     An earlier draft of this button said "lift P.L. 119-21 off the diagram",
+     which would have taken away the explanation and kept the consequence — a
+     reader would have seen the picture barely move and concluded the law does
+     little. The control is kept because the FY2030 plate is genuinely busy,
+     and labelled for what it actually does. */
+  if (is30) {
+    h += '<p id="lawline"><button class="btn ghost" id="lawtog" aria-pressed="' + !LAW + '">' +
+      (LAW ? "Hide the P.L. 119-21 tributaries" : "Show the P.L. 119-21 tributaries") +
+      '</button> <span class="tiny">Declutters the drawing. It does not show ' +
+      'prior law: the trunk, the figures and the tracker line are already ' +
+      'FY2030 under the law, and no layer of this diagram can undo that. For ' +
+      'the world before it, switch the year to FY2024.</span></p>';
+  }
+
+  h += '<div class="plate' + (LAW ? "" : " lawoff") + '">' + pl.svg + "</div>";
+  h += '<p class="tiny">The diagram is the paper\u2019s, drawn from the same ledger this page reads. '
+    + 'Click any band, any service, any widget on the number line.</p>';
+  document.getElementById("v-plate-top").innerHTML = h;
+
+  const plate = document.querySelector("#v-plate-top .plate");
+  plate.querySelectorAll("[data-trace]").forEach(e => {
+    /* JW, 28 September: the big dots do nothing. An anchor lit everything
+       upstream of it, which is true and was not intuitive \u2014 a reader
+       rolling across the number line got the whole diagram flashing at them
+       with no way to tell why. The diamonds and squares stay: those name one
+       thing each. */
+    if (e.dataset.kind === "anchor") { e.style.cursor = "default"; return; }
+    e.addEventListener("mouseenter", () => { if (!PINNED) { TRACE = e.dataset.trace; applyTrace(); } });
+    e.addEventListener("mouseleave", () => { if (!PINNED) { TRACE = null; applyTrace(); } });
+    e.addEventListener("click", () => {
+      PINNED = (PINNED === e.dataset.trace) ? null : e.dataset.trace;
+      TRACE = PINNED; applyTrace();
+    });
+  });
+  document.getElementById("tracebar").querySelectorAll(".sw[data-k]").forEach(b => {
+    b.addEventListener("mouseenter", () => { if (!PINNED) { TRACE = b.dataset.k; applyTrace(); } });
+    b.addEventListener("mouseleave", () => { if (!PINNED) { TRACE = null; applyTrace(); } });
+    b.addEventListener("click", () => {
+      PINNED = (PINNED === b.dataset.k) ? null : b.dataset.k;
+      TRACE = PINNED; applyTrace();
+    });
+  });
+  document.getElementById("clearTrace").onclick = () => {
+    PINNED = null; TRACE = null; applyTrace();
+  };
+  const lt = document.getElementById("lawtog");
+  if (lt) lt.onclick = () => { LAW = !LAW; renderPlate(); };
+  applyTrace();
+}
+let PINNED = null;
+
+/* ---------- the flow view --------------------------------------------- */
+/* Service and population bands take the local ramp, which is already declared
+   in palette.py and already cool. Nothing here invents a colour. */
+const nodeColor = i => COL.local[i % COL.local.length];
+const groupColor = i => COL.local[(COL.local.length - 1 - i % COL.local.length)];
+
+function payerColor(p) {
+  if (p.kind === "ffs") return COL.structural.ffs;
+  if (p.kind === "pace") return COL.type.PACE;
+  if (p.kind === "dual") return COL.type["D-SNP"];
+  const e = p.entity || p.label;
+  return COL.carrier[e] || COL.health_system[e] || COL.local[0] || COL.structural.agency;
+}
+
+function renderFlow() {
+  const p = P(), S = 100;
+  /* D-111. No title here. The phases sit under the diagram on one scrolling
+     page now, and the page has already said what panel this is. */
+  let h = '<h2 class="sect">Phase by phase</h2>';
+  h += '<p class="muted small">The same hundred dollars as a list, for ' +
+    'reading a figure off rather than following it.</p>';
+
+  // headline cards. Every figure here is serialized; the page adds nothing up.
+  h += '<div class="cards">';
+  h += card("Enters the hundred", p.totals.hundred);
+  h += card("Leaves before a provider", p.totals.peeled);
+  h += card("Reaches a paid claim", p.totals.claims);
+  h += card("Federal share of the source", p.sources.federal);
+  h += "</div>";
+
+  // sources
+  h += phase("Where the money comes from", Object.entries(p.sources).map(([k, f]) => ({
+    label: k === "federal" ? "Federal share" : (p.code.startsWith("DC") ? "District share" : "Non-federal share"),
+    fig: f, color: k === "federal" ? COL.structural.federal : COL.structural.local
+  })), S);
+
+  // peels
+  const peelColor = x => x.kind === "hr1" ? COL.loss.state_local_offset
+    : x.kind === "admin" ? COL.structural.admin
+    : x.kind === "fraud" ? COL.loss.out_of_pocket : COL.structural.premiums;
+  h += phase("What leaves, and where", p.peels.map(x => ({
+    label: x.label,
+    sub: "charged at " + esc(PHASE_WORD[x.charged] || x.charged) +
+         (x.reach !== x.charged ? " \u00b7 would have reached " +
+          esc(PHASE_WORD[x.reach] || x.reach) : "") +
+         (x.outside ? " \u00b7 outside the hundred" : ""),
+    fig: x.amount, color: peelColor(x)
+  })), S);
+
+  // payers
+  const lanes = p.payers.filter(x => p.lanes.indexOf(x.key) >= 0);
+  h += phase("Who holds the money next", lanes.map(x => ({
+    label: x.label,
+    sub: x.children.length ? x.children.length + " named plans beneath this lane" : "",
+    fig: x.capitation, color: payerColor(x)
+  })), S);
+
+  const kids = p.payers.filter(x => p.lanes.indexOf(x.key) < 0);
+  if (kids.length) {
+    h += phase("The named plans", kids.map(x => ({
+      label: x.label, sub: x.note || "", fig: x.capitation, color: payerColor(x)
+    })), S);
+  }
+
+  // retention
+  h += phase("What the payers keep", lanes.filter(x => x.kind !== "ffs").flatMap(x => ([
+    { label: x.label + " \u2014 administration", fig: x.admin, color: COL.structural.plan_admin },
+    { label: x.label + " \u2014 margin and earnings", fig: x.margin, color: COL.structural.plan_admin }
+  ])), 10);
+
+  // providers
+  const cm = p.claims.col_margin;
+  const anyNode = p.claims.cols.some(c => cm[c] && cm[c].v != null);
+  h += phase("What kind of care it buys", p.claims.cols.map((c, i) => ({
+    label: show(p, c), fig: cm[c], color: nodeColor(i),
+    gap: "no allocation in the ledger"
+  })), 40);
+  if (!anyNode) {
+    h += '<p class="note"><b>Declared absent.</b> This panel carries no service ' +
+         'allocation. The payer lanes are known and the service split is not, and a ' +
+         'share taken from another jurisdiction would be an invention rather than a ' +
+         'finding. The rows above are empty because the ledger is empty, not because ' +
+         'the values are zero.</p>';
+  }
+
+  // beneficiaries
+  if (p.beneficiaries) {
+    const bm = p.beneficiaries.row_margin;
+    h += phase("Who the care goes to", p.beneficiaries.rows.map((r, i) => ({
+      label: r, fig: bm[r], color: groupColor(i)
+    })), 40);
+  }
+  document.getElementById("v-flow").innerHTML = h;
+}
+
+function card(kick, f) {
+  return '<div class="card"><p class="kick">' + esc(kick) + '</p><span class="big">' +
+         num(f) + "</span></div>";
+}
+
+/* ---------- the law view ---------------------------------------------- */
+function renderLaw() {
+  const pr = PROV();
+  const el = document.getElementById("v-law");
+  if (!pr) {
+    el.innerHTML = '<h2 class="sect">P.L. 119-21</h2><p class="muted">The law is modelled ' +
+      'nationally, for fiscal year 2030. Switch the year above to fiscal year 2030 ' +
+      'to open it. There is no District of Columbia projection: a state projection ' +
+      'needs a state baseline, and this one is still being built.</p>';
+    return;
+  }
+  let h = '<h2 class="sect">What the law does, provision by provision</h2>';
+  h += '<p class="muted small">Select a provision to follow it alone. Two figures ' +
+       'travel with each one and they answer different questions: what leaves the ' +
+       'flow, and how much of that never reaches a service. The second is smaller ' +
+       'because overhead falls with the loss.</p>';
+
+  h += '<div class="levers' + (PICKED.size ? " tracing" : "") + '" id="levers">';
+  for (const l of pr.lanes) {
+    h += '<button class="lever" data-key="' + esc(l.key) + '" data-excluded="' + l.excluded +
+      '" role="checkbox" aria-checked="' + PICKED.has(l.key) +
+      '" aria-pressed="' + PICKED.has(l.key) + '">' +
+      '<span class="nm">' + esc(l.label) + "</span>" +
+      '<span class="sub">' + esc(l.sub) + "</span>" +
+      '<span class="amt">' + num(l.amount) + "</span></button>";
+  }
+  h += "</div>";
+
+  /* D-111. Checkboxes, not radio buttons. JW, 28 September: turn them on one
+     by one and watch them sum. The running total is not computed here \u2014
+     explorer.py serializes every subset, so the page still adds nothing up. */
+  const picked = pr.lanes.filter(x => PICKED.has(x.key));
+  const sel = picked.length === 1 ? picked[0] : null;
+  const subKey = picked.map(x => x.key).sort().join("|");
+  const sub = pr.subsets ? pr.subsets[subKey] : null;
+  h += '<div class="two">';
+
+  // left
+  h += "<div>";
+  if (sub) {
+    h += "<h3>" + (picked.length === 1 ? esc(sel.label)
+                   : picked.length + " provisions together") + "</h3>";
+    h += "<p>" + num(sub.leaves) + " leaves the flow" +
+      (picked.length === 1
+        ? " at " + esc(PHASE_WORD[sel.charged] || sel.charged) +
+          ". Had it stayed, it would have reached " +
+          esc(PHASE_WORD[sel.reach] || sel.reach) + "."
+        : " between them.") + "</p>";
+    if (picked.length === 1 && sel.excluded) {
+      h += '<p class="note"><b>This lever does not move the service figures, ' +
+        'and that is the finding.</b> ' + esc(sel.why_excluded) + " A dollar " +
+        "that pays a Medicare premium was never going to buy a service, so no " +
+        "amount of it shows up as care that did not happen. It shows up on the " +
+        "person instead.</p>";
+    } else {
+      h += "<p>" + num(sub.allocated) + " of that fails to reach a service. " +
+        "The difference is overhead that falls away with the loss.</p>";
+      h += "<h3>Who carries it</h3><table><tbody>";
+      for (const g of pr.populations) {
+        const f = sub.by_population[g];
+        h += "<tr><td>" + esc(g) + '</td><td class="n">' +
+          (f.v > 0.0049 ? num(f)
+            : '<span class="num gap">not reached</span>') + "</td></tr>";
+      }
+      h += "</tbody></table>";
+    }
+    h += '<p class="tiny">Add another provision to see them sum. ' +
+      'Click a selected one again to take it out.</p>';
+  } else {
+    h += "<h3>All seven together</h3>";
+    h += "<p>Of the money the law removes, " + num(pr.pool) +
+      " is care that does not happen. The rest is overhead that falls away " +
+      "with it. Tick a provision above to take it on its own, then add " +
+      "another and watch them add up.</p>";
+    h += "<h3>Loss by population</h3><table><tbody>";
+    for (const g of pr.populations) {
+      h += "<tr><td>" + esc(g) + '</td><td class="n">' +
+        num(pr.loss_by_population[g]) + "</td></tr>";
+    }
+    h += "</tbody></table>";
+  }
+  h += "</div>";
+
+  // right
+  h += "<div><h3>" + (sel && !sel.excluded ? "Which services"
+                      : "Coverage and rate") + "</h3>";
+  if (sel && !sel.excluded) {
+    h += "<table><tbody>";
+    for (const sv of pr.services) {
+      const f = sel.by_service[sv];
+      h += "<tr><td>" + esc(show(P(), sv)) + '</td><td class="n">' +
+        (f.v > 0.0049 ? num(f)
+          : '<span class="num gap">not named by this provision</span>') +
+        "</td></tr>";
+    }
+    h += "</tbody></table>";
+  } else if (sel) {
+    h += '<p class="muted">None. That is the point of the previous panel.</p>';
+  } else {
+    h += "<p>Two different things happen to a dollar. <b>Coverage</b> is " +
+      "somebody dropped, and the whole of their care goes to zero. <b>Rate</b> " +
+      "is the same person, still enrolled, with their provider paid less.</p>" +
+      "<table><tbody>";
+    for (const k of ["coverage", "rate"]) {
+      h += "<tr><td>" + esc(k[0].toUpperCase() + k.slice(1)) + '</td><td class="n">' +
+        num(pr.loss_by_kind[k]) + "</td></tr>";
+    }
+    h += "</tbody></table>";
+  }
+  h += "</div></div>";
+  el.innerHTML = h;
+
+  document.getElementById("levers").addEventListener("click", e => {
+    const b = e.target.closest(".lever");
+    if (!b) return;
+    if (PICKED.has(b.dataset.key)) PICKED.delete(b.dataset.key);
+    else PICKED.add(b.dataset.key);
+    renderLaw();
+    // The plate follows the selection when exactly one is picked, because a
+    // single tributary is a thing the drawing can light. Several at once is a
+    // sum, and the drawing has no band for a sum.
+    TRACE = (PICKED.size === 1) ? [...PICKED][0] : null;
+    PINNED = TRACE; applyTrace();
+  });
+}
+
+/* ---------- register --------------------------------------------------- */
+function renderRegister() {
+  const p = P();
+  const c = p.currency;
+  const tally = {};
+  c.forEach(r => tally[r.state] = (tally[r.state] || 0) + 1);
+  let h = '<h2 class="sect">What is current, and what is not</h2>';
+  h += '<p class="muted small">Every figure this panel needs, and the state each one ' +
+    'is in. A figure is verified when a person opened the source and agreed with the ' +
+    'number. Nothing is graded verified for being arithmetic: a derived figure ' +
+    'inherits from what it was computed from.</p>';
+  h += "<p>" + Object.entries(tally).map(([k, v]) =>
+    pill(k, v + " " + (c.find(r => r.state === k) || {}).word).replace("</span>", "</span>")
+  ).join(" ") + "</p>";
+  h += "<table><thead><tr><th>Phase</th><th>Figure</th><th>State</th>" +
+    "<th>What is behind it</th></tr></thead><tbody>";
+  for (const r of c) {
+    h += "<tr><td class='tiny'>" + esc(r.phase) + "</td><td>" + esc(r.item) + "</td><td>" +
+      pill(r.state, r.word) + "</td><td class='tiny'>" + esc(r.why || "") + "</td></tr>";
+  }
+  h += "</tbody></table>";
+  document.getElementById("v-register").innerHTML = h;
+}
+
+/* ---------- summary --------------------------------------------------- */
+function renderReading() {
+  const p = DATA.paper;
+  let h = '<p class="kick">The Medicaid Dollar Project</p><h2>Whitepaper</h2>';
+
+  h += '<div class="paper">';
+  /* D-114. Linked, not embedded. Three megabytes of base64 PDF inside the
+     page is what stopped it opening on a phone, and a reader who wants the
+     paper is one tap from it either way. */
+  h += '<a class="thumb" href="' + esc(p.url) + '"><img src="' + p.thumb +
+    '" alt="The first page of the whitepaper: a tapering band showing where ' +
+    'one hundred dollars of Medicaid spending stops."></a>';
+  h += "<div><h3>" + esc(p.file.replace(/_/g, " ").replace(/\.pdf$/, "")) +
+    "</h3><p class='muted small'>" + p.pages + " pages. The national view, and " +
+    "what P.L. 119-21 will do to it by fiscal year 2030. Every figure in it " +
+    "comes from the same ledger this page reads.</p>";
+  h += '<p><a class="btn" href="' + esc(p.url) + '">Download the ' +
+    'whitepaper</a></p>';
+  h += "</div></div>";
+
+  h += "<h2 id='execsum'>Executive Summary</h2>";
+  h += '<div class="slides">';
+  for (const c of DATA.facts) {
+    h += '<section class="sl"><p class="kick">' + c.kicker + "</p><h3>" +
+      nb(c.hero) + '</h3><div class="slbody">' + c.body + "</div>" +
+      (c.note ? '<p class="tiny">' + c.note + "</p>" : "") + "</section>";
+  }
+  h += "</div>";
+  document.getElementById("v-reading-top").innerHTML = h;
+}
+
+/* ---------- chrome ------------------------------------------------------ */
+function renderControls() {
+  const opt = (v, t, cur) => '<option value="' + esc(v) + '"' +
+    (v === cur ? " selected" : "") + ">" + esc(t) + "</option>";
+  /* D-111. The District panel is built and stays in the payload, but it is
+     not offered: JW, 28 September, hide the DC government information for
+     now. Restoring it is putting this option back. */
+  let h = "";
+  if (PLACE === "US") {
+    h += '<span><label class="sel" for="year">Year</label><select id="year">' +
+      opt("2024", "FY2024 actual", YEAR) +
+      opt("2030", "FY2030 under P.L. 119-21", YEAR) + "</select></span>";
+  }
+  if (PLACE === "US" && YEAR === "2030") {
+    h += '<span><label class="sel" for="variant">Overhead</label><select id="variant">' +
+      Object.entries(DATA.variants).map(([k, v]) => opt(k, v.label, VARIANT)).join("") +
+      "</select></span>";
+
+  }
+  /* JW, 28 September: this audience needs to be told what the overhead
+     control means, under the widget, and the explanation must change with the
+     selection. It sat beside the dropdown before, where it read as a caption
+     on the row rather than an answer to "what am I choosing?". */
+  if (PLACE === "US" && YEAR === "2030") {
+    h += '<p class="ctlnote"><b>Overhead: ' + esc(DATA.variants[VARIANT].label) +
+      ".</b> " + esc(DATA.variants[VARIANT].note) +
+      " When the program shrinks, administration and the share plans keep do " +
+      "not have to shrink with it. Which of those you assume decides how much " +
+      "of the loss lands on care rather than on overhead.</p>";
+  }
+  const ctl = document.getElementById("ctl");
+  ctl.innerHTML = h;
+  const on = (id, fn) => { const e = document.getElementById(id); if (e) e.onchange = fn; };
+
+  on("year", e => { YEAR = e.target.value; LEVER = null; draw(); });
+  on("variant", e => { VARIANT = e.target.value; draw(); });
+}
+
+function renderNav() {
+  document.getElementById("nav").innerHTML = VIEWS.map(([k, t]) =>
+    '<button data-v="' + k + '" aria-current="' + (VIEW === k) + '">' + esc(t) + "</button>"
+  ).join("");
+}
+
+function draw() {
+  const p = P();
+  const isDraft = !!p.draft;
+  document.body.classList.toggle("draft", isDraft);
+  document.body.dataset.draft = DATA.draft_mark;
+  document.getElementById("draftbar").innerHTML = isDraft
+    ? '<div class="draftbar">' + esc(p.draft) +
+      "<span>Early draft. The payer lanes are built; the service allocation is not. " +
+      "Figures marked \u2020 are not for citation or circulation.</span></div>"
+    : "";
+  renderControls(); renderNav();
+  document.getElementById("ctl").hidden = (VIEW !== "plate");
+  renderPlate(); renderFlow(); renderLaw(); renderRegister(); renderReading();
+  for (const [k] of VIEWS)
+    document.getElementById("v-" + k).classList.toggle("on", k === VIEW);
+  document.getElementById("foot").innerHTML =
+    "Agilian LLC \u00b7 The Medicaid Dollar Project \u00b7 <a href='" + esc(DATA.url) +
+    "'>" + esc(DATA.url) + "</a>";
+}
+
+document.getElementById("nav").addEventListener("click", e => {
+  const b = e.target.closest("button[data-v]");
+  if (!b) return;
+  VIEW = b.dataset.v; location.hash = VIEW; draw();
+});
+
+document.getElementById("cover-h").textContent = nb(DATA.titles.US2030);
+document.getElementById("enter").addEventListener("click", () => {
+  document.getElementById("cover").style.display = "none";
+  document.getElementById("app").classList.add("on");
+  draw();
+  scrollTo(0, 0);
+});
+if (location.hash) {
+  const want = location.hash.slice(1);
+  if (VIEWS.some(v => v[0] === want)) {
+    VIEW = want;
+    document.getElementById("cover").style.display = "none";
+    document.getElementById("app").classList.add("on");
+    draw();
+  }
+}
+</script>
+</body>
+</html>

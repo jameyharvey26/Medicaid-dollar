@@ -17,6 +17,7 @@ from compose import compose
 from check import gate
 from tobe2030 import per100
 from ledger_2030 import ledger
+import incidence
 
 REPO = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(REPO, "reference_renders")
@@ -75,10 +76,23 @@ def build_2024():
 
 
 def build_dc():
-    # legacy_mix=True until the correction is taken. The flag is the visible
-    # record that DC is still carrying the national service mix.
+    # D-109, JW approved 27 September. legacy_mix is OFF.
+    #
+    # The flag existed because the renderer could not draw a panel without a
+    # service allocation — compose() raised KeyError on the first node — so
+    # the only way to get a DC panel at all was to fill the fan from the
+    # national mix. That made the flag "the visible record that DC is still
+    # carrying the national service mix", which was honest about the choice
+    # and did nothing about the artifact: the drawing still asserted five DC
+    # service figures this ledger has withdrawn, and a reader had no way to
+    # know. The explorer would have republished them on the web.
+    #
+    # compose() now truncates a panel whose fan cannot be drawn, and the
+    # drawing says so where the fan would have been. The panel stops where the
+    # knowledge stops. When DC's service allocation is acquired, this reverts
+    # to a full panel with no code change — the predicate reads the matrix.
     import ledger_dc_2024 as DC
-    L = DC.build(legacy_mix=True)
+    L = DC.build(legacy_mix=False)
     LD.gate(L, "DC FY2024 as-is ledger")
     cfg = compose(L, views.V_DC)
     gate(cfg, "DC FY2024 as-is")
@@ -98,6 +112,14 @@ def build_2030(variant="mixed"):
         raise LD.LedgerError("HR-1 reach is declared in the ledger and in "
                              "outflows and they disagree:\n  "
                              + "\n  ".join(drift))
+    # D-104. And the fourth: every HR-1 peel is either allocated by the
+    # incidence model or declared outside it. An unallocated provision does
+    # not fail any of the three above, because its dollars are absorbed by
+    # the others and the cube still conserves.
+    gaps = incidence.coverage()
+    if gaps:
+        raise LD.LedgerError("HR-1 provisions the incidence model neither "
+                             "allocates nor excludes:\n  " + "\n  ".join(gaps))
     L = N30.build(variant)
     LD.gate(L, f"FY2030 to-be ledger [{variant}]")
     cfg = compose(L, views.V_2030, prior=NAT.build())

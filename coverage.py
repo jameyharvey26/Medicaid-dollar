@@ -55,8 +55,15 @@ def _state(fig, cycle=None, key=None, named=None):
     return (MODEL if fig.verified else STALE), fig.note
 
 
-def rows(L):
-    """Every figure the baseline needs, in lifecycle order."""
+def rows(L, width=60):
+    """Every figure the baseline needs, in lifecycle order.
+
+    `width` truncates the reason column, which exists for the terminal report
+    and nothing else. Pass None to keep the whole string: the explorer renders
+    these reasons in a table with room for them, and inheriting a terminal's
+    column width cut two of them off mid-word.
+    """
+    cut = (lambda s: s) if width is None else (lambda s: s[:width])
     out = []
     # Identity, not equality: two figures can carry the same value and the
     # same provenance and still be different figures in different phases.
@@ -109,7 +116,7 @@ def rows(L):
                 if s != MISS:
                     src.add(why)
             out.append(("CLAIMS", f"{r} into service categories", worst,
-                        "; ".join(sorted(src))[:60]))
+                        cut("; ".join(sorted(src)))))
 
     for c in L.nodes:
         add("PROVIDERS", f"{c} total", M.col_margin.get(c))
@@ -132,7 +139,7 @@ def rows(L):
             add("BENEFICIARIES", f"{g} total", B.row_margin.get(g))
         out.append(("BENEFICIARIES", "group by service interior",
                     MISS if B.state == UNALLOCATED else MODEL,
-                    B.note[:60]))
+                    cut(B.note)))
     return out
 
 

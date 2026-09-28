@@ -20,6 +20,7 @@ import landing
 from ledger_2030 import ledger as _arith
 from tobe2030 import per100
 
+import release
 OUT = "/mnt/user-data/outputs/MHPA_Board_Deck.html"
 ALTS = "deck_alts"
 
@@ -71,9 +72,20 @@ def folio():
             f'www.agilian.com</span><span>{_PAGE[0]}</span></p>')
 
 
+# D-105. The explorer's fact cards are the deck's own lines. Taking them by
+# re-typing would be two declarations of one sentence (S-096) and, worse, the
+# deck's heroes are f-strings off the ledger while a transcription is not: the
+# card would go on saying $87.07 after the ledger moved. So the parts are
+# recorded here as they are formatted, and `explorer.py` reads CARDS.
+# Nothing here changes what the deck renders.
+CARDS = []
+
+
 def slide(kicker, hero, body, figure=None, alt="", note=None, cls=""):
     f = f'<div class="fig">{img(figure, alt)}</div>' if figure else ""
     n = f'<p class="note">{note}</p>' if note else ""
+    CARDS.append({"kicker": kicker, "hero": hero, "body": body,
+                  "note": note or "", "figure": figure or "", "cls": cls})
     SLIDES.append(f'''<section class="slide {cls}">
   <p class="kicker">{kicker}</p>
   <h2>{hero}</h2>
@@ -312,7 +324,28 @@ CSS = """
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;background:var(--deck);color:var(--ink);
   font-family:'Nunito',system-ui,sans-serif;}
-.stage{width:var(--pw);margin:0 auto;padding:30px 0 60px;}
+/* D-116, JW 28 September. The stage was a fixed 11in wide with no horizontal
+   padding, so on any viewport narrower than 1056px the slides ran to the very
+   edge of the window with nothing around them. A slide is a sheet of paper and
+   has to read as one, which means seeing space on both sides of it.
+   `width:fit-content` lets the padding sit outside the sheet instead of eating
+   into it, and the gutter is white rather than the deck grey so the eye reads
+   it as margin rather than as more background. */
+.stage{width:fit-content;max-width:100%;margin:0 auto;
+  padding:30px 34px 60px;background:var(--page);}
+/* A slide is 11in = 1056px wide and cannot reflow: the fit checks in this
+   file measure it at that size and the figures are placed against it. So on a
+   narrower window the sheet is SCALED rather than cropped, which keeps the
+   gutter on both sides and means nobody has to scroll sideways to read a
+   sentence. Stepped rather than a calc() so it behaves the same everywhere;
+   `zoom` is used over `transform` because it reflows the page height with it
+   and a transform would leave a column of dead space below the deck. */
+@media (max-width:1180px){.stage{zoom:.92;}}
+@media (max-width:1080px){.stage{zoom:.84;}}
+@media (max-width:1000px){.stage{zoom:.76;}}
+@media (max-width:900px){.stage{zoom:.66;}}
+@media (max-width:780px){.stage{zoom:.56;}}
+@media (max-width:640px){.stage{zoom:.44;padding:16px 14px 40px;}}
 .slide{position:relative;width:var(--pw);height:var(--ph);overflow:hidden;
   background:var(--page);border:1px solid var(--rule);
   box-shadow:0 12px 28px rgba(20,25,35,.14);

@@ -39,27 +39,54 @@ def check(cfg, label=""):
     # payer column
     eq("MCO splits into care and retention", L.mco_care + L.mco_ret, L.mco)
     eq("dual splits into care and retention", L.dual_care + L.dual_ret, L.dual)
-    eq("plan administration plus earnings", L.mco_adm + L.dual_adm + L.earnings,
-       L.mco_ret + L.dual_ret)
+    # D-109. A panel may omit the retention split, but only if it SAYS it is
+    # absent. `Fig.n` returns 0.0 for an absent figure, so without this the
+    # difference between "these plans retain nothing" and "nobody publishes
+    # how they split it" is a silent zero, and the drawing prints $0.00 beside
+    # a register that says the opposite.
+    _split = L.mco_adm + L.dual_adm + L.earnings
+    _ret = L.mco_ret + L.dual_ret
+    if _split > 0.005 or _ret <= 0.005:
+        eq("plan administration plus earnings", _split, _ret)
+    elif not any("retention" in a or "administration" in a for a in L.absent):
+        f.append("retention of %.4f is split into nothing, and no declaration "
+                 "says the split is absent. An omission has to be stated."
+                 % _ret)
 
     # claims and providers
     claims = L.mco_care + L.dual_care + L.ffs
-    eq("provider nodes sum to claims less claims-side HR-1",
-       sum(L.node.values()), claims - L.claims_hr1)
+    if L.truncated:
+        # A truncated panel has no fan, so the sums below assert nothing. What
+        # must still hold is that it is truncated CLEANLY: every service
+        # structure empty, not some of them. A half-drawn fan is the failure
+        # this replaces them with, and it is the one that could reach a reader.
+        for _nm, _d in (("node totals", L.node), ("ffs cells", L.ffs_n),
+                        ("mco cells", L.mcoc_n), ("dual cells", L.dualc_n)):
+            if _d:
+                f.append(f"panel is truncated but still carries {_nm}: "
+                         f"{sorted(_d)}. Truncate whole or not at all.")
+        if not L.absent:
+            f.append("panel is truncated and declares nothing absent. The "
+                     "reader is owed the reason the flow stops.")
+    else:
+        eq("provider nodes sum to claims less claims-side HR-1",
+           sum(L.node.values()), claims - L.claims_hr1)
 
     # provider node components
     for p in L.node:
         eq(f"node components: {p}",
            L.ffs_n.get(p, 0) + L.mcoc_n.get(p, 0) + L.dualc_n.get(p, 0), L.node[p])
     # Fee-for-service is untouched by the claims-side bite, so it must be exact.
-    eq("fee-for-service components sum to the lane", sum(L.ffs_n.values()), L.ffs)
+    if not L.truncated:
+        eq("fee-for-service components sum to the lane", sum(L.ffs_n.values()), L.ffs)
     # The claims-side bite (directed payment caps) falls on the CAPITATED legs
     # only, so capitated components sum to their lanes LESS that bite. Stating
     # this precisely is what the checker is for; the first draft asserted the
     # lanes exactly and failed correctly.
-    eq("capitated components sum to their lanes less the claims-side bite",
-       sum(L.mcoc_n.values()) + sum(L.dualc_n.values()),
-       L.mco_care + L.dual_care - L.claims_hr1)
+    if not L.truncated:
+        eq("capitated components sum to their lanes less the claims-side bite",
+           sum(L.mcoc_n.values()) + sum(L.dualc_n.values()),
+           L.mco_care + L.dual_care - L.claims_hr1)
 
     # beneficiary shares
     if getattr(L, "show_beneficiaries", True):

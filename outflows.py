@@ -85,9 +85,23 @@ OUTFLOWS = {
     # The state band does NOT slide up to close the space: the gap between the
     # two bands IS the federal match that will never be drawn, and it stays
     # open through the state government column.
+    # D-115, JW 28 September. Two arbitrary numbers were doing real damage.
+    #
+    # `term_y=560` pinned this tributary halfway up the federal column while
+    # the other six drop below the HR-1 rule, so it read as stopping nowhere.
+    # The reach is FEDERAL and stays FEDERAL — that is a claim about how far
+    # the dollar gets, and it is right. How far DOWN it hangs is not a claim
+    # about anything; it is layout, and it should say what the other six say:
+    # HR-1 takes this out. Released to the solver.
+    #
+    # `src_x` at 66 units into the column put the bite at x=226 against the
+    # vaccine peel's 218, so their markers landed on top of each other on the
+    # number line and `render_v8_0.py` has been reporting them 4 units apart.
+    # Where a tributary leaves the federal stream is equally arbitrary. Moved
+    # to 140, which is clear of the vaccine peel and still inside the column.
     "Provider tax limits": dict(
-        cls="hr1", src="FEDERAL", edge="fed_bottom", src_x=_at("FEDERAL", 66),
-        term_col="FEDERAL", term_y=560, ret=False, label_side="end"),
+        cls="hr1", src="FEDERAL", edge="fed_bottom", src_x=_at("FEDERAL", 140),
+        term_col="FEDERAL", term_y=None, ret=False, label_side="end"),
     # THE FIVE STATE-AGENCY LEVERS, IN SOURCE ORDER (JW, 2026-09-11).
     # Source order equals terminal order, which is what fan_rows needs to pack
     # them without crossings once the terminals spread across four columns

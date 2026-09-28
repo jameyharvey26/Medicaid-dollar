@@ -92,6 +92,10 @@ class Instance:
     disp: Dict[str, str] = field(default_factory=lambda: {"Other": "Wrap around services"})
     show_beneficiaries: bool = True
     absent: List[str] = field(default_factory=list)   # declared, never estimated
+    # D-109. The panel stops at the claims column because the ledger has no
+    # service allocation to draw. Not a style; a fact about the data. Set by
+    # compose() off the claims matrix, never by hand.
+    truncated: bool = False
     # Lanes the ledger says are not there. A zero lane must DISAPPEAR, taking
     # its label, its node contribution and its tracker row with it, rather than
     # rendering as a hairline band with a $0.00 label (ARCHITECTURE 3, S-071).

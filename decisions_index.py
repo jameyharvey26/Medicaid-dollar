@@ -27,7 +27,22 @@ def clean(t):
 
 
 def scan():
-    rows, date = [], "undated"
+    """Returns (rows, skipped). A skip is REPORTED, never silent.
+
+    D-108. This parser recognised a D-number, decided its title was too short
+    to be a title, and dropped the whole decision without a word. D-107 was
+    first written "D-107 . v8.0. One version across all three artifacts":
+    `clean` takes the first sentence, "v8.0." became "v8" once the trailing
+    period came off, and eight characters is the floor. The decision vanished
+    from the register, and the register is the one instrument that stops a
+    number being issued twice.
+
+    The length test is still right — it is what keeps a stray "D-12 -" in
+    prose out of the index. What was wrong is that failing it was invisible.
+    A detector that discards its own input in silence is worse than no
+    detector, because the output looks complete.
+    """
+    rows, skipped, date = [], [], "undated"
     for n, line in enumerate(SRC.read_text().split("\n"), 1):
         m = DATE.match(line)
         if m:
@@ -38,11 +53,13 @@ def scan():
             title = clean(m.group(2))
             if len(title) > 8:
                 rows.append((int(m.group(1)), date, title))
-    return rows
+            else:
+                skipped.append((n, int(m.group(1)), title, line.strip()[:90]))
+    return rows, skipped
 
 
 def main():
-    rows = scan()
+    rows, skipped = scan()
     seen = collections.defaultdict(list)
     for num, date, title in rows:
         if (date, title) not in seen[num]:
@@ -68,13 +85,28 @@ def main():
                   + ", ".join(f"D-{n:02d}" for n in gaps) + ".", "",
                   "Backfilling them is an open item. Until it is done, allocate from "
                   "the highest number above and never from a gap.", ""]
+    if skipped:
+        lines += ["## Skipped", "",
+                  "Lines that name a decision number and whose title this "
+                  "parser could not read. They are NOT in the register below. "
+                  "A title that starts with a decimal is the usual cause: the "
+                  "first sentence ends inside the number.", ""]
+        for n, num, title, raw in skipped:
+            lines.append(f"- **D-{num:02d}** · manifest line {n} · "
+                         f"read as {title!r} · `{raw}`")
+        lines.append("")
     lines += ["## Register", ""]
     for k in sorted(seen):
         for date, title in seen[k]:
             lines.append(f"- **D-{k:02d}** · {date} · {title}")
     OUT.write_text("\n".join(lines) + "\n")
     print(f"wrote {OUT} — {len(seen)} decisions, highest D-{max(seen):02d}, "
-          f"{len(dupes)} collision(s)")
+          f"{len(dupes)} collision(s), {len(skipped)} skipped")
+    for n, num, title, raw in skipped:
+        print(f"  SKIPPED  line {n}: D-{num:02d} title read as {title!r}")
+    if skipped:
+        print("  A decision naming a number but not entering the register is "
+              "how a number gets issued twice. Reword the heading.")
     return 1 if dupes else 0
 
 

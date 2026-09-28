@@ -27,6 +27,10 @@ GCOL={"Children":CHILD,"Adults":ADULT,"New adult group":ADULT,
 # figure read as a card sitting ON the page rather than as part of it.
 # The artwork background and the label halos are the page white now.
 INK="#272727"; MUT="#6f6f6f"; BG="#ffffff"; LINE="#e2dccf"
+# The loss family's anchor and its darker text tone, from palette.LOSS.
+# _draw_hr1 re-declares these locally; that duplication predates D-109
+# and is not taken here, but nothing new is typed: render() reads these.
+WARM_ANCHOR="#8B5A5A"; WARM_TEXT="#6f4747"
 
 
 
@@ -54,20 +58,109 @@ def ctrl_x(x0, x1):
     return x0 + min((x1 - x0) / 2.0, CTRL_MAX)
 
 
+# ---- trace handles -------------------------------------------------------
+# D-106. The same drawing serves the paper and the explorer, and the explorer
+# needs to know which shape is whose money. Brent's August page proved the
+# mechanic: give every band the name of the thing flowing through it, and a
+# reader can hover one ribbon and watch that payer's money light up across the
+# whole lifecycle. It is the best idea in the predecessor and it was the one
+# thing the first rebuild dropped.
+#
+# Done as a CONTEXT rather than as arguments, because `band()` has some
+# twenty-five call sites and threading two parameters through all of them is
+# twenty-five chances to mislabel a ribbon. A block declares what it is
+# drawing once and every shape inside it inherits.
+#
+# These attributes are inert in print: resvg and Chromium both ignore unknown
+# data attributes, so the rendered pixels do not move. renderproof.py hashes
+# SVG BYTES, so it will fire by name — correctly, because the bytes did change
+# — and its pixel diff is the proof that nothing visible did.
+_TRACE = {}
+
+
+class trace:
+    """Name what the shapes inside this block are carrying.
+
+    `kind` is the dimension a reader can trace along: 'source' (federal or
+    state money), 'payer' (who holds it), 'provision' (which HR-1 lane took
+    it), 'node' (what care it bought). One mechanic, four stories.
+    """
+    def __init__(self, key, kind, val=None):
+        # `key` may be a tuple. A shape can belong to more than one story:
+        # the band from the payer column to the plan box is BOTH the MCO
+        # lane's money and the retention the number line totals as "MCO
+        # Admin". With a single key the retention group had nothing to light
+        # on the DC panel, where the split into administration and margin is
+        # not published and only the undifferentiated band is drawn.
+        # A key contains spaces ("Provider tax limits"), so extra memberships
+        # go in their own attribute rather than being packed into this one.
+        keys = (key,) if isinstance(key, str) else tuple(key)
+        self.new = {"trace": keys[0], "also": keys[1:], "kind": kind,
+                    "val": val}
+
+    def __enter__(self):
+        global _TRACE
+        self.old = _TRACE
+        _TRACE = self.new
+        return self
+
+    def __exit__(self, *e):
+        global _TRACE
+        _TRACE = self.old
+        return False
+
+
+def _h():
+    """The handle attributes, or nothing at all outside a trace block."""
+    if not _TRACE:
+        return ""
+    s = f' data-trace="{esc(_TRACE["trace"])}" data-kind="{_TRACE["kind"]}"'
+    if _TRACE.get("also"):
+        s += ' data-also="' + esc("|".join(_TRACE["also"])) + '"'
+    if _TRACE.get("val") is not None:
+        s += f' data-val="{_TRACE["val"]:.4f}"'
+    return s
+
+
 def band(x0,x1,y0,y1,h0,h1,fill,op=0.82,dash=False):
     xm=ctrl_x(x0,x1)
     d=f"M{x0:.1f},{y0:.1f} C{xm:.1f},{y0:.1f} {xm:.1f},{y1:.1f} {x1:.1f},{y1:.1f} L{x1:.1f},{y1+h1:.1f} C{xm:.1f},{y1+h1:.1f} {xm:.1f},{y0+h0:.1f} {x0:.1f},{y0+h0:.1f} Z"
     da=' stroke-dasharray="5 3"' if dash else ''
-    add(f'<path d="{d}" fill="{fill}" fill-opacity="{op}" stroke="{fill}" stroke-opacity="0.45" stroke-width="0.6"{da}/>')
-def rect(x,y,w,h,fill,op=1.0,rx=2): add(f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" rx="{rx}" fill="{fill}" fill-opacity="{op}"/>')
+    add(f'<path d="{d}" fill="{fill}" fill-opacity="{op}" stroke="{fill}" stroke-opacity="0.45" stroke-width="0.6"{da}{_h()}/>')
+def rect(x,y,w,h,fill,op=1.0,rx=2): add(f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" rx="{rx}" fill="{fill}" fill-opacity="{op}"{_h()}/>')
 def txt(x,y,s,size=13,fill=INK,anchor="start",weight="normal",halo=True,italic=False):
     it=' font-style="italic"' if italic else ''
     po=f' paint-order="stroke" stroke="{BG}" stroke-width="2.2" stroke-linejoin="round"' if halo else ''
-    add(f'<text x="{x:.1f}" y="{y:.1f}" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="{size}" fill="{fill}" text-anchor="{anchor}" font-weight="{weight}"{it}{po}>{esc(s)}</text>')
+    add(f'<text x="{x:.1f}" y="{y:.1f}" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="{size}" fill="{fill}" text-anchor="{anchor}" font-weight="{weight}"{it}{po}{_h()}>{esc(s)}</text>')
+def _wrap(t, size, width):
+    """Break a line to fit `width` units at `size` px.
+
+    Same 0.56 average advance `lbg` uses to size its halo, so a wrapped line
+    and the box behind it agree. Approximate, and deliberately so: the exact
+    advance needs the font metrics and this is a declaration block, not a
+    justified column. Continuation lines are indented under the bullet.
+    """
+    if not t:
+        return [""]
+    cap = max(8, int(width / (size * 0.56)))
+    words, out, cur = t.split(), [], ""
+    lead = "     " if t.startswith("\u2022") else ""
+    for w in words:
+        trial = (cur + " " + w).strip()
+        if len(trial) > cap and cur:
+            out.append(cur)
+            cur = lead + w
+        else:
+            cur = trial
+    if cur:
+        out.append(cur)
+    return out
+
+
 def lbg(x,y,s,size=12.5,anchor="start",pad=4):
     w=len(s)*size*0.56+pad*2; h=size+pad*1.5
     xx=x-pad if anchor=="start" else (x-w/2 if anchor=="middle" else x-w+pad)
-    add(f'<rect x="{xx:.1f}" y="{y-size:.1f}" width="{w:.1f}" height="{h:.1f}" rx="3" fill="{BG}" fill-opacity="0.82"/>')
+    add(f'<rect x="{xx:.1f}" y="{y-size:.1f}" width="{w:.1f}" height="{h:.1f}" rx="3" fill="{BG}" fill-opacity="0.82"{_h()}/>')
 def fexit(x0,ytop,thick,xend,lane,color,title,sub):
     band(x0,xend,ytop,lane,thick,thick,color,0.88)
     rect(xend,lane,5,max(thick,4),color)
@@ -85,9 +178,9 @@ def pie(cx,cy,r,fracs,cols,a0=-90.0):
         x1=cx+r*math.cos(math.radians(a1)); y1=cy+r*math.sin(math.radians(a1))
         large=1 if (a1-a)>180 else 0
         if f>=0.999:
-            add(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" fill="{c}"/>')
+            add(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" fill="{c}"{_h()}/>')
         else:
-            add(f'<path d="M{cx:.1f},{cy:.1f} L{x0:.1f},{y0:.1f} A{r:.1f},{r:.1f} 0 {large},1 {x1:.1f},{y1:.1f} Z" fill="{c}" stroke="{BG}" stroke-width="1.2"/>')
+            add(f'<path d="M{cx:.1f},{cy:.1f} L{x0:.1f},{y0:.1f} A{r:.1f},{r:.1f} 0 {large},1 {x1:.1f},{y1:.1f} Z" fill="{c}" stroke="{BG}" stroke-width="1.2"{_h()}/>')
         a=a1
 def pielabels(cx,cy,r,fracs,a0=-90.0):
     a=a0
@@ -137,13 +230,19 @@ def render(cfg):
     # how the drawing was put together (JW, 2026-09-04).
     heads=[("FEDERAL","federal appropriation",xFED),("STATE GOVERNMENT","blended cost allocation",xSG),
      ("STATE AGENCY","budgeted to Medicaid",xSA),("DISBURSEMENTS","payment mechanisms",xDI),
-     ("PAYER","MCO administration",xPA),("CLAIMS","claims paid to providers",xCL),("PROVIDERS","sized by spend",xPR)]
+     ("PAYER","MCO administration",xPA),("CLAIMS","claims paid to providers",xCL)]
+    # D-109. A heading over an empty column reads as a column the drawing
+    # forgot to fill. On a truncated panel the providers phase is not empty by
+    # accident, and the absence is stated below rather than implied by a gap.
+    if not cfg.truncated:
+        heads.append(("PROVIDERS","sized by spend",xPR))
     if cfg.show_beneficiaries:
         heads.append(("BENEFICIARIES","who consumes each service",xBE))
     for name,sub,(x0,x1) in heads:
         txt(x0+6,58,name,15,INK,"start","bold",halo=False); txt(x0+6,77,sub,11.5,MUT,"start",halo=False,italic=True)
         add(f'<line x1="{x0}" y1="90" x2="{x0}" y2="1030" stroke="{LINE}" stroke-width="1"/>')
-    _rx = xBE[1] if cfg.show_beneficiaries else xPR[1]
+    _rx = (xBE[1] if cfg.show_beneficiaries
+           else (xCL[1] if cfg.truncated else xPR[1]))
     add(f'<line x1="{_rx}" y1="90" x2="{_rx}" y2="1030" stroke="{LINE}" stroke-width="1"/>')
     add(f'<line x1="{xFED[0]}" y1="90" x2="{W-20}" y2="90" stroke="{LINE}" stroke-width="1.2"/>')
 
@@ -165,12 +264,24 @@ def render(cfg):
     fed_lane=(T0,T0+(fed-fb-fo)*ys)
     st_lane=(T0+(fed-fo)*ys,TB)
     if fb+fo>0:
-        _fm=(SOURCE_X+bw+xSG[0])/2; _fmy=(fed_top+fed_lane[0])/2
+        # D-115. The band used to bend at the midpoint of the gap, x=284,
+        # while the tracker put this bite's marker at the declared src_x.
+        # Two numbers for one point. The declaration wins.
+        # Only where there IS a bite. On FY2024 there is none, and reading
+        # the declaration there moved the band's bend for no reason: the
+        # renderproof diff showed the 2024 federal band shifting when the
+        # only intended change was to a FY2030 tributary.
+        _fm=((OF.OUTFLOWS.get(cfg.fed_bite_name,{}).get("src_x")
+              or (SOURCE_X+bw+xSG[0])/2) if fb > 0
+             else (SOURCE_X+bw+xSG[0])/2)
+        _fmy=(fed_top+fed_lane[0])/2
         # The vaccine money comes off the TOP edge at the earliest point there
         # is — the moment the appropriation leaves its own bar — so the band
         # that crosses the page is already the blended dollar. D-71.
-        band(SOURCE_X+bw,_fm,fed_top+fo*ys,_fmy,(fed-fo)*ys,(fed-fo)*ys,FED,0.8)
-        band(_fm,xSG[0],_fmy,fed_lane[0],(fed-fo)*ys,(fed-fb-fo)*ys,FED,0.8)
+        with trace('federal','source',fed):
+            band(SOURCE_X+bw,_fm,fed_top+fo*ys,_fmy,(fed-fo)*ys,(fed-fo)*ys,FED,0.8)
+        with trace('federal','source',fed):
+            band(_fm,xSG[0],_fmy,fed_lane[0],(fed-fo)*ys,(fed-fb-fo)*ys,FED,0.8)
         if fb>0:
             bites.append((cfg.fed_bite_name,_fm,_fmy+fed*ys,fb))
         if fo>0:
@@ -184,7 +295,8 @@ def render(cfg):
             # back and no swirl: two reversals would suggest the money went
             # somewhere and came back, and it does not.
             _vh=max(fo*ys,2.4); _vk=SOURCE_X+bw+96; _vt=fed_top-26
-            band(SOURCE_X+bw,_vk,fed_top,fed_top-12,fo*ys,fo*ys,MEDI,0.72)
+            with trace('vfc','peel',fo):
+                band(SOURCE_X+bw,_vk,fed_top,fed_top-12,fo*ys,fo*ys,MEDI,0.72)
             _vm=fed_top-12+fo*ys/2
             add(f'<path d="M{_vk:.1f},{_vm:.1f} C{_vk+86:.1f},{_vm:.1f} '
                 f'{_vk+86:.1f},{_vt:.1f} 246,{_vt:.1f}" fill="none" '
@@ -201,10 +313,14 @@ def render(cfg):
             lbg(252,_vt-3,_ol,10.5,"start")
             txt(252,_vt-3,_ol,10.5,"#5f6166","start","bold",halo=False)
     else:
-        band(SOURCE_X+bw,xSG[0],fed_top,fed_lane[0],fed*ys,fed*ys,FED,0.8)  # no bite
-    band(SOURCE_X+bw,xSG[0],st_top,st_lane[0],state*ys,state*ys,STATE,0.8)
-    band(xSG[0],xSG[1],fed_lane[0],fed_lane[0],(fed-fb-fo)*ys,(fed-fb-fo)*ys,FED,0.82)
-    band(xSG[0],xSG[1],st_lane[0],st_lane[0],state*ys,state*ys,STATE,0.82)
+        with trace('federal','source',fed):
+            band(SOURCE_X+bw,xSG[0],fed_top,fed_lane[0],fed*ys,fed*ys,FED,0.8)  # no bite
+    with trace('state','source',state):
+        band(SOURCE_X+bw,xSG[0],st_top,st_lane[0],state*ys,state*ys,STATE,0.8)
+    with trace('federal','source',fed):
+        band(xSG[0],xSG[1],fed_lane[0],fed_lane[0],(fed-fb-fo)*ys,(fed-fb-fo)*ys,FED,0.82)
+    with trace('state','source',state):
+        band(xSG[0],xSG[1],st_lane[0],st_lane[0],state*ys,state*ys,STATE,0.82)
     rect(xSG[0],fed_lane[0],bw,(fed-fb-fo)*ys,FED); rect(xSG[0],st_lane[0],bw,state*ys,STATE)
     # The blended share, not the appropriation share. They differ once anything
     # 100 percent federal peels before the blend, and that difference is the
@@ -237,27 +353,31 @@ def render(cfg):
         _thk-=_v; _x=_sx
     band(_x,xSA[1],_top,_top,_thk*ys,_thk*ys,DOLLAR,0.82)
     top3=_top
-    fexit(ax,origin["admin"],admin*ys,xSA[1]-6,250,ADMIN,f"Administration  ${admin:.2f}","state / program overhead")
+    with trace('admin','peel',admin):
+        fexit(ax,origin["admin"],admin*ys,xSA[1]-6,250,ADMIN,f"Administration  ${admin:.2f}","state / program overhead")
     # D-72 split the old $5.07 three ways, but only two of the three were ever
     # drawn: the trunk narrowed by this $0.10 with nothing on the page to say
     # where it went. A peel that steps the trunk and draws no exit is money
     # leaving the diagram unexplained.
     if ox is not None and oversight > 0.004:
-        fexit(ox,origin["oversight"],oversight*ys,xSA[1]-6,206,ADMIN,
-              f"Federal oversight  ${oversight:.2f}",
-              "fraud control units, survey and certification")
+        with trace('oversight','peel',oversight):
+            fexit(ox,origin["oversight"],oversight*ys,xSA[1]-6,206,ADMIN,
+                  f"Federal oversight  ${oversight:.2f}",
+                  "fraud control units, survey and certification")
     # Medicare premiums peels flush off the TOP edge like any ordinary outflow, then
     # returns to the federal lane. The return is the one sanctioned exception to the
     # downstream rule (S-055), because the money genuinely goes back (S-062).
     _mh=medicare*ys; _mk=mx+64; _mky=origin["medicare"]-48
-    band(mx,_mk,origin["medicare"],_mky,_mh,_mh,MEDI,0.72)
+    with trace('medicare','peel',medicare):
+        band(mx,_mk,origin["medicare"],_mky,_mh,_mh,MEDI,0.72)
     # The return used to terminate at y=136, hard against the top of the plot,
     # for no reason except that nothing had ever been drawn above it. The
     # federal band's top edge at this x is y=223, so there are 87 units of
     # clear space underneath. It sits in that space now, which leaves the top
     # line for the vaccine peel. Nothing about the arithmetic changes.
     _my=205
-    add(f'<path d="M{_mk:.1f},{_mky+_mh/2:.1f} C{_mk-200:.1f},{_mky+_mh/2-80:.1f} 470,{_my-6} 236,{_my}" fill="none" stroke="{MEDI}" stroke-width="{_mh:.1f}" stroke-opacity="0.72" stroke-linecap="round"/>')
+    with trace('medicare','peel',medicare):
+        add(f'<path d="M{_mk:.1f},{_mky+_mh/2:.1f} C{_mk-200:.1f},{_mky+_mh/2-80:.1f} 470,{_my-6} 236,{_my}" fill="none" stroke="{MEDI}" stroke-width="{_mh:.1f}" stroke-opacity="0.72" stroke-linecap="round"{_h()}/>')
     add(f'<path d="M226,{_my} l16,-6 l0,12 Z" fill="{MEDI}"/>')
     lbg(252,_my-24,f"Medicare premiums  ${medicare:.2f}",12,"start"); txt(252,_my-24,f"Medicare premiums  ${medicare:.2f}",12,"#5f6166","start","bold",halo=False)
     lbg(252,_my-9,"returns to the federal government (Medicaid \u2192 Medicare)",10,"start"); txt(252,_my-9,"returns to the federal government (Medicaid \u2192 Medicare)",10,MUT,"start",halo=False,italic=True)
@@ -274,9 +394,15 @@ def render(cfg):
     on=lambda k: k not in _off
     mco_y=top3; dual_y=mco_y+mco*ys; ffs_y=dual_y+dual*ys
     peelx=1150
-    if on('mco'):  band(xSA[1]+bw,peelx,mco_y,mco_y,mco*ys,mco*ys,MCO,0.82)
-    if on('dual'): band(xSA[1]+bw,peelx,dual_y,dual_y,dual*ys,dual*ys,DUAL,0.82)
-    if on('ffs'):  band(xSA[1]+bw,xCL[0],ffs_y,ffs_y,ffs*ys,ffs*ys,FFS,0.82)
+    if on('mco'):
+        with trace('mco','payer',mco):
+            band(xSA[1]+bw,peelx,mco_y,mco_y,mco*ys,mco*ys,MCO,0.82)
+    if on('dual'):
+        with trace('dual','payer',dual):
+            band(xSA[1]+bw,peelx,dual_y,dual_y,dual*ys,dual*ys,DUAL,0.82)
+    if on('ffs'):
+        with trace('ffs','payer',ffs):
+            band(xSA[1]+bw,xCL[0],ffs_y,ffs_y,ffs*ys,ffs*ys,FFS,0.82)
     if on('mco'):  rect(xDI[0],mco_y,bw,mco*ys,MCO)
     if on('dual'): rect(xDI[0],dual_y,bw,dual*ys,DUAL)
     if on('ffs'):  rect(xDI[0],ffs_y,bw,ffs*ys,FFS)
@@ -286,26 +412,46 @@ def render(cfg):
 
     # ===== Payer: peel administration, fork into earnings + MCO admin + dual-MCO admin =====
     mco_care_y=mco_y+mco_ret*ys; dual_care_y=dual_y+dual_ret*ys
-    if on('mco'):  band(peelx,xCL[0],mco_care_y,mco_care_y,mco_care*ys,mco_care*ys,MCO,0.82)
-    if on('dual'): band(peelx,xCL[0],dual_care_y,dual_care_y,dual_care*ys,dual_care*ys,DUAL,0.82)
+    if on('mco'):
+        with trace('mco','payer',mco_care):
+            band(peelx,xCL[0],mco_care_y,mco_care_y,mco_care*ys,mco_care*ys,MCO,0.82)
+    if on('dual'):
+        with trace('dual','payer',dual_care):
+            band(peelx,xCL[0],dual_care_y,dual_care_y,dual_care*ys,dual_care*ys,DUAL,0.82)
     plx=1235; planY=250
-    if on('mco'):  band(peelx,plx,mco_y,planY,mco_ret*ys,mco_ret*ys,RETAIN,0.88)
-    if on('dual'): band(peelx,plx,dual_y,planY+mco_ret*ys,dual_ret*ys,dual_ret*ys,RETAIN,0.88)
+    if on('mco'):
+        with trace(('mco','retention_mco'),'payer',mco_ret):
+            band(peelx,plx,mco_y,planY,mco_ret*ys,mco_ret*ys,RETAIN,0.88)
+    if on('dual'):
+        with trace(('dual','retention_dual'),'payer',dual_ret):
+            band(peelx,plx,dual_y,planY+mco_ret*ys,dual_ret*ys,dual_ret*ys,RETAIN,0.88)
     yk=planY
     if earnings > 0:
-        band(plx,xPA[1]-6,yk,136,earnings*ys,earnings*ys,EARN,0.9); yk+=earnings*ys
-        rect(xPA[1]-6,136,5,max(earnings*ys,4),EARN)
+        with trace('earnings','retention',earnings):
+            band(plx,xPA[1]-6,yk,136,earnings*ys,earnings*ys,EARN,0.9)
+            rect(xPA[1]-6,136,5,max(earnings*ys,4),EARN)
+        yk+=earnings*ys
         lbg(xPA[1]-15,132,f"Public-company earnings  ${earnings:.2f}",13,"end"); txt(xPA[1]-15,132,f"Public-company earnings  ${earnings:.2f}",13,EARN,"end","bold",halo=False)
     if earnings > 0:
         lbg(xPA[1]-15,148,"subset of margin (est.)",10.5,"end"); txt(xPA[1]-15,148,"subset of margin (est.)",10.5,MUT,"end",halo=False,italic=True)
-    if on('mco'):
-     band(plx,xPA[1]-6,yk,198,mco_adm*ys,mco_adm*ys,RETAIN,0.9); yk+=mco_adm*ys
-     rect(xPA[1]-6,198,5,mco_adm*ys,RETAIN)
+    # D-109. Gated on the VALUE, not on the lane. `Fig.n` returns 0.0 for an
+    # absent figure, so `if on('mco')` drew "MCO plan administration $0.00" on
+    # the DC panel, three inches from a declaration saying that very split is
+    # not published for DC. An artifact must not contradict its own register.
+    # A true measured zero is also not drawn, and loses nothing: a lane that
+    # retains nothing has no exit to show.
+    if on('mco') and mco_adm > 0.005:
+     with trace('mco_adm','retention',mco_adm):
+      band(plx,xPA[1]-6,yk,198,mco_adm*ys,mco_adm*ys,RETAIN,0.9)
+      rect(xPA[1]-6,198,5,mco_adm*ys,RETAIN)
+     yk+=mco_adm*ys
      lbg(xPA[1]-15,194,f"MCO plan administration  ${mco_adm:.2f}",13,"end"); txt(xPA[1]-15,194,f"MCO plan administration  ${mco_adm:.2f}",13,RETAIN,"end","bold",halo=False)
      lbg(xPA[1]-15,210,"non-dual MCO administration",10.5,"end"); txt(xPA[1]-15,210,"non-dual MCO administration",10.5,MUT,"end",halo=False,italic=True)
-    if on('dual'):
-     band(plx,xPA[1]-6,yk,262,dual_adm*ys,dual_adm*ys,DUALADM,0.92); yk+=dual_adm*ys
-     rect(xPA[1]-6,262,5,max(dual_adm*ys,4),DUALADM)
+    if on('dual') and dual_adm > 0.005:
+     with trace('dual_adm','retention',dual_adm):
+      band(plx,xPA[1]-6,yk,262,dual_adm*ys,dual_adm*ys,DUALADM,0.92)
+      rect(xPA[1]-6,262,5,max(dual_adm*ys,4),DUALADM)
+     yk+=dual_adm*ys
      lbg(xPA[1]-15,258,f"Dual MCO plan administration  ${dual_adm:.2f}",13,"end"); txt(xPA[1]-15,258,f"Dual MCO plan administration  ${dual_adm:.2f}",13,DUALADM,"end","bold",halo=False)
      lbg(xPA[1]-15,274,"dual-plan administration",10.5,"end"); txt(xPA[1]-15,274,"dual-plan administration",10.5,MUT,"end",halo=False,italic=True)
 
@@ -335,28 +481,64 @@ def render(cfg):
         _fx0, _fx1 = xCL[0] + 6, barR
         _fm = (_fx0 + _fx1) / 2
         _fsy = ffs_y + ffs * ys - fh / 2
-        add(f'<path d="M{_fx0:.1f},{_fsy:.1f} C{_fm:.1f},{_fsy:.1f} '
-            f'{_fm:.1f},{_fy:.1f} {_fx1:.1f},{_fy:.1f}" fill="none" '
-            f'stroke="{FRAUD}" stroke-width="{fh:.1f}" stroke-opacity="0.95" '
-            f'stroke-linecap="round"/>')
-        rect(barR, _fy - max(fh, 5) / 2, 6, max(fh, 5), FRAUD)
+        with trace('fraud','peel',fraud):
+            add(f'<path d="M{_fx0:.1f},{_fsy:.1f} C{_fm:.1f},{_fsy:.1f} '
+                f'{_fm:.1f},{_fy:.1f} {_fx1:.1f},{_fy:.1f}" fill="none" '
+                f'stroke="{FRAUD}" stroke-width="{fh:.1f}" stroke-opacity="0.95" '
+                f'stroke-linecap="round"{_h()}/>')
+            rect(barR, _fy - max(fh, 5) / 2, 6, max(fh, 5), FRAUD)
         lbg(barR - 6, _fy - 9, f"Documented fraud  ${fraud:.2f}", 12, "end")
         txt(barR - 6, _fy - 9, f"Documented fraud  ${fraud:.2f}", 12, FRAUD, "end", "bold", halo=False)
         lbg(barR - 6, _fy + 8, "providers receive it; it is not services delivered (not to scale)", 9.5, "end")
         txt(barR - 6, _fy + 8, "providers receive it; it is not services delivered (not to scale)", 9.5, MUT, "end", halo=False, italic=True)
+    # The fan is traced by LANE, so following a payer does not stop at the
+    # claims column. "Follow it to the care it buys" is the promise the
+    # handles make, and the fan is where the buying happens.
+    _LANEKEY = {"MCO": "mco", "Dual": "dual", "FFS": "ffs"}
     for p in order:
         for L in ["MCO","Dual","FFS"]:
             v=comp[L][p]; h=v*ys
             if v<=0: continue
-            band(xCL[0],barL,lane_src[L],ncur[p],h,h,lc[L],0.62 if L!="FFS" else 0.8, dash=(L!="FFS"))
+            with trace(_LANEKEY[L],'payer',v):
+                band(xCL[0],barL,lane_src[L],ncur[p],h,h,lc[L],0.62 if L!="FFS" else 0.8, dash=(L!="FFS"))
             lane_src[L]+=h; ncur[p]+=h
+    if cfg.truncated:
+        # D-109. What the ledger does not know, said on the drawing.
+        #
+        # The alternative was the DC panel as the repository renders it: the
+        # fan filled from a national proxy, which puts five service figures on
+        # the page that the ledger has withdrawn. The page cannot be the place
+        # a withdrawn figure survives. STATE_PLAYBOOK: absent data stays absent
+        # and is declared on the artifact.
+        _tx = xCL[1] + 40
+        _ty = cY - 120
+        txt(_tx, _ty, "THE FLOW STOPS HERE", 14, WARM_TEXT, "start", "bold",
+            halo=False)
+        for i, line in enumerate((
+                "What these claims buy is not in this ledger.",
+                "The payer lanes are measured; the split across",
+                "services is not published for this jurisdiction",
+                "and has not been estimated.",
+                "",
+                "A share carried from another jurisdiction would",
+                "be an invention, not a finding. The columns to",
+                "the right are absent, not empty.")):
+            txt(_tx, _ty + 26 + i * 19, line, 12.5, MUT, "start", halo=False,
+                italic=not line.startswith("A share"))
+        add(f'<path d="M{xCL[1]+8:.1f},{cY-70:.1f} L{xCL[1]+8:.1f},{cY+110:.1f}" '
+            f'stroke="{WARM_TEXT}" stroke-width="1.6" stroke-dasharray="2 5" '
+            f'fill="none"/>')
+
         # ===== PROVIDERS =====
     for p in order:
         yy=node_y[p]
-        for L,val in [(L,comp[L][p]) for L in LANES]:
-            rect(barL,yy,barW,val*ys,lc[L]); yy+=val*ys
-        nm=disp.get(p,p)+("*" if p=="Other" else "")
-        lbg(barL+barW/2,node_y[p]-9,f"{nm}  ${node[p]:.2f}",13.5,"middle"); txt(barL+barW/2,node_y[p]-9,f"{nm}  ${node[p]:.2f}",13.5,INK,"middle","bold",halo=False)
+        # D-110. The bar and its pie share one key, so a reader who clicks
+        # either gets both. They are the same service seen twice.
+        with trace(p,'node',node[p]):
+            for L,val in [(L,comp[L][p]) for L in LANES]:
+                rect(barL,yy,barW,val*ys,lc[L]); yy+=val*ys
+            nm=disp.get(p,p)+("*" if p=="Other" else "")
+            lbg(barL+barW/2,node_y[p]-9,f"{nm}  ${node[p]:.2f}",13.5,"middle"); txt(barL+barW/2,node_y[p]-9,f"{nm}  ${node[p]:.2f}",13.5,INK,"middle","bold",halo=False)
     _ben_floor = {}
     _key_at = None
     if cfg.show_beneficiaries:
@@ -369,11 +551,13 @@ def render(cfg):
             cy=node_y[p]+node[p]*ys/2; r=16.8*math.sqrt(node[p]); a0=rot_for(pie_frac[p])
             if p=="Rx drugs": a0+=30   # nudge so the small outside labels clear the $ below
             _prior = cfg.prior_node.get(p)
-            pie(cx,cy,r,pie_frac[p],[GCOL[g] for g in gt],a0)
+            with trace(p,'node',node[p]):
+                pie(cx,cy,r,pie_frac[p],[GCOL[g] for g in gt],a0)
             pielabels(cx,cy,r,pie_frac[p],a0)
             nm=disp.get(p,p)+("*" if p=="Other" else "")
-            lbg(cx,cy-r-10,nm,19.5,"middle"); txt(cx,cy-r-10,nm,19.5,INK,"middle","bold",halo=False)
-            lbg(cx,cy+r+22,f"${node[p]:.2f}",19.5,"middle"); txt(cx,cy+r+22,f"${node[p]:.2f}",19.5,INK,"middle","bold",halo=False)
+            with trace(p,'node',node[p]):
+                lbg(cx,cy-r-10,nm,19.5,"middle"); txt(cx,cy-r-10,nm,19.5,INK,"middle","bold",halo=False)
+                lbg(cx,cy+r+22,f"${node[p]:.2f}",19.5,"middle"); txt(cx,cy+r+22,f"${node[p]:.2f}",19.5,INK,"middle","bold",halo=False)
             # ---- BENEFICIARY OVERLAY (JW, this session) ----------------------
             # Dollars and cents out of each service, on ONE scale across all six
             # so the bars are comparable with each other by eye. Percentages are
@@ -526,33 +710,44 @@ def render(cfg):
         y = TR.BY
         t = tiers[m["short"]] * TR.MARK_TIER
         if m["cls"] == "hr1":
-            add(f'<polygon points="{x:.1f},{y-r:.1f} {x+r:.1f},{y:.1f} '
-                f'{x:.1f},{y+r:.1f} {x-r:.1f},{y:.1f}" fill="{c}"/>')
+            with trace(m["short"], 'group', m["display"]):
+                add(f'<polygon points="{x:.1f},{y-r:.1f} {x+r:.1f},{y:.1f} '
+                    f'{x:.1f},{y+r:.1f} {x-r:.1f},{y:.1f}" fill="{c}"{_h()}/>')
         elif m["cls"] == "fraud":
-            add(f'<polygon points="{x:.1f},{y-r:.1f} {x+r*0.95:.1f},{y+r*0.78:.1f} '
-                f'{x-r*0.95:.1f},{y+r*0.78:.1f}" fill="{c}"/>')
+            with trace(m["short"], 'group', m["display"]):
+                add(f'<polygon points="{x:.1f},{y-r:.1f} {x+r*0.95:.1f},{y+r*0.78:.1f} '
+                    f'{x-r*0.95:.1f},{y+r*0.78:.1f}" fill="{c}"{_h()}/>')
         else:
             h = r * 0.88
-            add(f'<rect x="{x-h:.1f}" y="{y-h:.1f}" width="{h*2:.1f}" '
-                f'height="{h*2:.1f}" fill="{c}"/>')
-        if t:
-            # A stepped-down block is led back to its own marker, or the reader
-            # has to guess which shape the words belong to.
-            add(f'<line x1="{x:.1f}" y1="{y+r+4:.1f}" x2="{x:.1f}" '
-                f'y2="{y+t+TR.MARK_AMT_Y-14:.1f}" stroke="{c}" stroke-width="1.1" '
-                f'stroke-opacity="0.55"/>')
-        txt(x, y+t+TR.MARK_AMT_Y, f"\u2212${m['display']:.2f}", TR.MARK_AMT_PX, c,
-            "middle", "bold", halo=False)
-        txt(x, y+t+TR.MARK_NAME_Y, m["short"], TR.MARK_NAME_PX, c,
-            "middle", "bold", halo=False)
+            # D-110. The grey widget on the number line is the handle for the
+            # GROUP it totals. "MCO Admin" is one mark and three ribbons.
+            with trace(m["short"], 'group', m["display"]):
+                add(f'<rect x="{x-h:.1f}" y="{y-h:.1f}" width="{h*2:.1f}" '
+                    f'height="{h*2:.1f}" fill="{c}"{_h()}/>')
+        # D-113. The leader, the amount and the name belong to the mark, so
+        # selecting it does not grey out the words that say what it is.
+        with trace(m["short"], 'group', m["display"]):
+            if t:
+                # A stepped-down block is led back to its own marker, or the
+                # reader has to guess which shape the words belong to.
+                add(f'<line x1="{x:.1f}" y1="{y+r+4:.1f}" x2="{x:.1f}" '
+                    f'y2="{y+t+TR.MARK_AMT_Y-14:.1f}" stroke="{c}" stroke-width="1.1" '
+                    f'stroke-opacity="0.55"{_h()}/>')
+            txt(x, y+t+TR.MARK_AMT_Y, f"\u2212${m['display']:.2f}", TR.MARK_AMT_PX, c,
+                "middle", "bold", halo=False)
+            txt(x, y+t+TR.MARK_NAME_Y, m["short"], TR.MARK_NAME_PX, c,
+                "middle", "bold", halo=False)
 
     # The four anchors. Same four on every diagram, always: they are what lets a
     # reader lay two panels side by side. Value above, name below, percentage
     # lost beneath the name — every sum on the line happens here.
     for i, a in enumerate(anchors):
         x = a["x"]
-        add(f'<circle cx="{x:.0f}" cy="{TR.BY}" r="{TR.ANCHOR_R}" '
-            f'fill="{TR.AGILIAN_BLUE}"/>')
+        # The anchor is the handle for everything that has happened up to it.
+        with trace(a["name"][0] if a["name"] else cfg.cp0_label[0],
+                   'anchor', a["value"]):
+            add(f'<circle cx="{x:.0f}" cy="{TR.BY}" r="{TR.ANCHOR_R}" '
+                f'fill="{TR.AGILIAN_BLUE}"{_h()}/>')
         txt(x, TR.BY+TR.ANCHOR_VAL_Y, f"${a['value']:.2f}", TR.ANCHOR_VAL_PX,
             TR.INK, "middle", "bold", halo=False)
         lines = cfg.cp0_label if i == 0 else a["name"]
@@ -587,11 +782,17 @@ def render(cfg):
     # The HR-1 rule sits BELOW everything the flow draws, so it can no longer cut
     # through the Rx drugs fan (JW, 2026-09-04). Derived, never a literal: the
     # flow's own lowest point decides where the HR-1 zone starts.
-    _hr1_rule = max(node_y[order[-1]]+node[order[-1]]*ys, ffs_y+ffs*ys) + (
-        76 if fraud > 0 else 30)
+    # On a truncated panel there are no provider bars, so the flow's lowest
+    # point is the last lane rather than the last node. Derived either way:
+    # the drawing decides where the HR-1 zone starts, not a literal.
+    _flow_floor = (max(node_y[order[-1]]+node[order[-1]]*ys, ffs_y+ffs*ys)
+                   if order else ffs_y+ffs*ys)
+    _hr1_rule = _flow_floor + (76 if fraud > 0 else 30)
     return svg, (_draw_hr1(cfg, bites, ys, TB, _obs, _pin, _hr1_rule)
                  + _draw_ben_key(_key_at)
-                 + _draw_absent(cfg, xBE[0]+20, _abs_y))
+                 + _draw_absent(cfg,
+                                *((xCL[1]+40, cY+150) if cfg.truncated
+                                  else (xBE[0]+20, _abs_y))))
 
 
 def _draw_ben_key(at):
@@ -634,18 +835,29 @@ def _draw_absent(cfg, ax, ay):
     _saved, svg = svg, []
     _ax, _ay = ax, ay
 
-    def _dec(y, t, px, col, bold=False, ital=False):
-        lbg(_ax, y, t, px, "start")
-        txt(_ax, y, t, px, col, "start", "bold" if bold else None,
-            halo=False, italic=ital)
-    _dec(_ay, "NOT SHOWN, and not estimated:", 13, "#8B5A5A", bold=True)
-    for _i, _a in enumerate(cfg.absent):
-        _dec(_ay+26+_i*22, "\u2022  "+_a, 12, MUT)
-    _dec(_ay+26+len(cfg.absent)*22+14,
-         "Absent data is left absent. Filling a gap with a share",
-         11, MUT, ital=True)
-    _dec(_ay+26+len(cfg.absent)*22+30,
-         "would produce a modelled figure wearing a measured figure's clothes.",
+    # D-109. These lines were drawn at a fixed x with no wrapping, so a
+    # declaration longer than the space to the canvas edge ran off it. Three of
+    # DC's eight did. A declaration that is clipped is worse than one that is
+    # missing: the reader sees a sentence start and cannot tell it was cut.
+    # The width is what is actually left on the canvas, not a guess.
+    _avail = (W - 24) - _ax
+    _y = [_ay]
+
+    def _dec(t, px, col, bold=False, ital=False, gap=0):
+        for line in _wrap(t, px, _avail):
+            lbg(_ax, _y[0], line, px, "start")
+            txt(_ax, _y[0], line, px, col, "start", "bold" if bold else None,
+                halo=False, italic=ital)
+            _y[0] += px + 5.5
+            t = ""            # continuation lines are not re-bulleted
+        _y[0] += gap
+
+    _dec("NOT SHOWN, and not estimated:", 13, "#8B5A5A", bold=True, gap=8)
+    for _a in cfg.absent:
+        _dec("\u2022  " + _a, 12, MUT, gap=4)
+    _y[0] += 10
+    _dec("Absent data is left absent. Filling a gap with a share would produce "
+         "a modelled figure wearing a measured figure's clothes.",
          11, MUT, ital=True)
     out, svg = svg, _saved
     return out
@@ -726,7 +938,8 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
         xt,sub,th = it["xt"], it["sub"], it["th"]
         yt=YT[name]
         y0=yb-v*ys                      # flush with the edge (S-057)
-        band(xb,xt,y0,yt,th,th,WARM,0.74)
+        with trace(name,'provision',v):
+            band(xb,xt,y0,yt,th,th,WARM,0.74)
         xm=ctrl_x(xb,xt)
         add(f'<path d="M{xb:.1f},{y0:.1f} C{xm:.1f},{y0:.1f} {xm:.1f},{yt:.1f} {xt:.1f},{yt:.1f} '
             f'L{xt:.1f},{yt+th:.1f} C{xm:.1f},{yt+th:.1f} {xm:.1f},{y0+th:.1f} {xb:.1f},{y0+th:.1f} Z" '

@@ -29,21 +29,23 @@ EXPECT = {
         # by their text rather than by a count — so a fourth appearing fails
         # here rather than hiding among the ones we already tolerate.
         #
-        # The third is new on 2026-09-18 (D-71, D-73). Vaccines for Children and
-        # the provider tax limits genuinely leave the flow within eight units of
-        # each other, so their markers land four apart on the FY2030 line. That
-        # is the geometry telling the truth, not a placement fault; the two are
-        # stacked rather than moved.
+        # The third, the Vaccines / Provider Tax pair at four units apart, is
+        # GONE as of D-115 and must stay gone. It was tolerated on 2026-09-18
+        # as "the geometry telling the truth", which it was not: where a
+        # tributary leaves the federal stream is arbitrary, and the bite was
+        # simply declared too close. Moving it cost nothing and the markers no
+        # longer stack. An advisory that turns out to be movable is a defect
+        # that was being lived with.
         # S-106, JW 25 September. Pinned by count, not by presence: a panel
         # that silently stopped reporting would otherwise pass. Three panels
         # run under `build.py`; the two sensitivity variants are checked when
         # `build.py sensitivity` runs.
         must=["build complete.",
               "State Admin / Eligibility Rules sit 24 units apart",
-              "Vaccines / Provider Tax sit 4 units apart",
               "Other reaches y=674, past Behavioral health's name at y=673"],
-        regex=[(r"^\s+(?:NOTE|WARNING)\b", 3,
-                "exactly the three frozen advisories"),
+        forbid=["Vaccines / Provider Tax"],
+        regex=[(r"^\s+(?:NOTE|WARNING)\b", 2,
+                "exactly the two frozen advisories"),
                (r"tracker line adds up as printed", 3,
                 "every panel's tracker line reconciles on its printed figures")],
     ),
@@ -77,7 +79,67 @@ EXPECT = {
     "coverage.py dc": dict(
         must=["0 verified", "0 modelled", "15 unverified", "26 missing"],
     ),
-    "render_v7_1.py": dict(
+    # ORDERING DEFECT, 27 September. This suite ran build.py and then went
+    # straight to render_v7_1.py, whose figurefit and artwhite sub-gates read
+    # paper_figs/crops.json and the generated PNGs. On a clean clone those do
+    # not exist, figurefit died on a FileNotFoundError, and four of the six
+    # reported misses were the suite failing to build its own inputs while
+    # reporting a content failure. A detector that misfires gets fixed rather
+    # than worked around: the generation steps are gates now, in order.
+    # FALSE GREEN, 27 September. This suite runs build.py, which renders the
+    # FY2030 mixed panel only; the two sensitivity variants are behind
+    # `build.py sensitivity` and nothing ran it. renderproof.py compares the
+    # SVGs ON DISK, so the stale variant files went on matching their stale
+    # blessing and reported "unchanged" indefinitely. They had in fact been
+    # wrong since D-91: both still drew the beneficiary panel with four
+    # eligibility groups (Children / Adults / Disabled / Aged) against the
+    # paper's five. A gate that never rebuilds a panel cannot see it move.
+    "build.py sensitivity": dict(
+        must=["build complete."],
+        slow=True,
+    ),
+    "make_figs.py": dict(
+        must=["wrote crops.json"],
+    ),
+    "deckalts.py": dict(
+        must=["wrote alt1_governing_number_bare"],
+        slow=True,
+    ),
+    # D-105. The explorer is built from the ledger like everything else, and
+    # proved like everything else. build_explorer.py has to run first: the
+    # proof renders the built page rather than reading the template, because
+    # the failure it exists to catch is arithmetic in the page's own script,
+    # which no static read can see.
+    "build_explorer.py": dict(
+        must=["medicaid_dollar_explorer.html", "explorer_data.json"],
+        slow=True,
+    ),
+    "explorerchrome.py": dict(
+        # JW, 27 September: new chrome only. palette.py is not measured here
+        # and the sankey and paper palettes are not to be changed.
+        must=["meet WCAG 2.1 AA, measured not asserted"],
+        forbid=["UNMEASURED"],
+    ),
+    # D-107. All three artifacts take one version, from release.VERSION, and
+    # this builds every one of them HTML and PDF. It runs the paper renderer
+    # itself, whose layout gates are honestly red; publish.py reports those
+    # and writes the artifact anyway, because the alternative is that the only
+    # way to ship is to green a detector that is telling the truth.
+    "publish.py": dict(
+        must=["Medicaid_Dollars_National_v", "MHPA_Board_Deck_v",
+              "medicaid_dollar_explorer_v"],
+        regex=[(r"_v\d+\.\d+\.(?:html|pdf)", 5, "five artifacts at one "
+                "version: paper HTML and PDF, deck HTML and PDF, explorer HTML")],
+        slow=True,
+    ),
+    "explorerproof.py": dict(
+        must=["every figure on screen is one the ledger serialized",
+              "no dollar literal in the template"],
+        regex=[(r"swept \d+ page states", 1,
+                "every year, variant, lever and cumulative selection swept")],
+        slow=True,
+    ),
+    "render_v8_0.py": dict(
         # 2026-09-26b, D-93. This gate is RED and is expected to be red.
         #
         # whitespace.py has been blind since it was written. The provenance

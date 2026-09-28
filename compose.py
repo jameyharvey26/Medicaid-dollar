@@ -66,7 +66,7 @@ def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
     lane = {p.key: p for p in L.lanes()}
 
     def cells(row):
-        return {c: M.get(row, c).n for c in L.nodes}
+        return {c: M.get(row, c).n for c in nodes}
 
     mco, dual, ffs = lane["mco"], lane["dual"], lane["ffs"]
 
@@ -76,7 +76,28 @@ def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
             side = "top" if p.kind in ("admin", "return") else "bot"
             steps.append((p.key, side, p.amount.n, V.step_x[p.key]))
 
-    node = {c: M.col_margin[c].n for c in L.nodes}
+    # D-109. A ledger with no service allocation cannot draw a service fan,
+    # and the old behaviour was a KeyError on the first node — which is why
+    # the DC panel was being rendered with `legacy_mix=True`, filling the gap
+    # with a national proxy the ledger had withdrawn. A panel that stops where
+    # the knowledge stops is the honest drawing; an invented one is not.
+    #
+    # The test is the matrix's own state, not a flag on the View. Whether the
+    # fan can be drawn is a fact about the data, and a View that asserted it
+    # could be drawn would be asserting something it does not know.
+    # The test is what the DRAWING needs, not a status word. The fan needs a
+    # value for every node margin and for every lane-by-node cell; one absent
+    # cell and there is no fan to draw. DC is the case that makes the
+    # distinction matter: its matrix is PARTIAL, not UNALLOCATED, because
+    # fee-for-service is allocated and the two capitated lanes are not. A
+    # coarser test would have called that drawable and failed on the first
+    # missing cell, which is the KeyError this replaces.
+    truncated = any(
+        c not in M.col_margin or M.col_margin[c].is_absent
+        or any(M.get(r, c).is_absent for r in M.rows)
+        for c in L.nodes)
+    nodes = [] if truncated else list(L.nodes)
+    node = {c: M.col_margin[c].n for c in nodes}
 
     # A View names its subtraction amounts; it never holds one. Resolve the
     # named ones here, against this ledger.
@@ -115,7 +136,7 @@ def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
         adm_marg=mco.admin.n + dual.admin.n,
         mco_adm=mco.admin.n, dual_adm=dual.admin.n,
         mco_care=mco.care.n, dual_care=dual.care.n,
-        node=node,
+        node=node, truncated=truncated,
         fraud=_peel(L, "fraud"),
         ffs_n=cells("ffs"), mcoc_n=cells("mco"), dualc_n=cells("dual"),
         collapsed=collapsed,
@@ -125,7 +146,7 @@ def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
         subs_spec=subs,
         prior_node=prior_node,
         **hr1,
-        order=list(L.nodes),
+        order=list(nodes),
         disp=dict(V.disp),
         show_beneficiaries=bool(V.show_beneficiaries and L.beneficiaries),
         absent=list(L.declarations) if not V.show_beneficiaries else [],

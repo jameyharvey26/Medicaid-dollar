@@ -1,77 +1,77 @@
 {
   "dc_2024_baseline": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "75f808f9033a4b31"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "efc24ebf984c2231"
   },
   "dc_2024_combined": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "60fb67c2d877c1e2"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "637845f98ce5f98c"
   },
   "dc_2024_overlay": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "9d761b50dcd0156d"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "b698020fcf5bc76c"
   },
   "national_2024_baseline": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "f2b9763f2f2249b5"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "35f0651bea914a7e"
   },
   "national_2024_combined": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "fd52816a91ddca2d"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "40891e149e7bbdd4"
   },
   "national_2024_overlay": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
     "sha": "665db42da85e035f"
   },
   "national_2030_holds_baseline": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "1e54a97f1c3d4ed6"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "db920689698d572c"
   },
   "national_2030_holds_combined": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "5c8b7985c4e7e845"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "660992b254ef3b8f"
   },
   "national_2030_holds_overlay": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "bdc5993dc1a37887"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "8ef7d6db8789af75"
   },
   "national_2030_mixed_baseline": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "6d37a494a7763d8f"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "a4a1332c89ce8f41"
   },
   "national_2030_mixed_combined": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "b6e0b4dd69d15e39"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "95229d76df3614cb"
   },
   "national_2030_mixed_overlay": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "b442e2104586d938"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "be3e6974f368932d"
   },
   "national_2030_scales_baseline": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "f8180db737946984"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "54f66333b0899e5b"
   },
   "national_2030_scales_combined": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "daf958dadfa91e4c"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "961b72dab26b70b4"
   },
   "national_2030_scales_overlay": {
-    "blessed": "2026-09-27",
-    "reason": "D-102: the FY2030 beneficiary rows are allocated to the population each statute names, not the FY2024 shares times one multiplier. The panel and Figure 12 printed $17.66 and $14.11 for the new adult group on facing pages; there is one model now, in incidence.py, and both read it.",
-    "sha": "2b0115af3b5ea0f2"
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "898f01e4834c4318"
   }
 }
