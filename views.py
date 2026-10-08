@@ -129,3 +129,41 @@ V_2030 = View(
     title="$100 of Medicaid spending under prior law, with P.L. 119-21 applied",
     strap="Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.",
 )
+
+
+# --------------------------------------------------------------------------
+# DC FY2030 to-be. V_2030's structure on V_DC's framing. What is dropped is
+# dropped because DC does not publish it, not because the panel is simplified:
+# no Vaccines for Children line, no federal oversight peel, no DC fraud figure,
+# no beneficiary overlay. Each absence is already declared on the ledger.
+V_DC_2030 = View(
+    root="state_agency",
+    cp0_label=["Projected under", "prior law"],
+    cp0_year="2030",
+    centre=("100 Dollars of", "DC Medicaid Spending"),
+    disp={},
+    step_x={**{n: _OF[n]["src_x"] for n in SA_TRUNK},
+            **{k: _PIN[k] for k in ("admin", "medicare")}},
+    subs_spec=[
+        ("provider tax limits", PeelSum(("Provider tax limits",)), "hr1",
+         "STATE_GOVT", "Provider Tax"),
+        ("administration and Medicare premiums", "adm_med", "admin",
+         "STATE_AGENCY", "State Admin"),
+        ("work reporting, renewals, enrollment rules, other",
+         PeelSum(SA_LEVERS), "hr1", "STATE_AGENCY", "Eligibility Rules"),
+        ("Medicare Savings moratorium",
+         PeelSum(("Blocked senior enrollment rule",)), "hr1", "STATE_AGENCY",
+         "Medicare Savings"),
+        ("plan administration + earnings", "plan", "admin", "PAYER", "MCO Admin"),
+        ("directed payment caps", PeelSum(("Directed payment caps",)), "hr1",
+         "CLAIMS", "Payment Caps"),
+    ],
+    hr1_sub=SUB_2030,
+    reach_slot=REACH_SLOT,
+    show_beneficiaries=False,
+    kicker="TO BE  \u00b7  DISTRICT OF COLUMBIA  \u00b7  FY2030",
+    title="$100 of DC Medicaid spending under prior law, with P.L. 119-21 applied",
+    strap="DRAFT, NOT FOR CIRCULATION. Six of seven HR-1 lanes carry no DC "
+          "figure and are drawn as violet placeholders. The FY2030 hundred is "
+          "modelled on a national prior-law growth rate.",
+)

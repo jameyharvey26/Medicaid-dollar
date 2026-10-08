@@ -1,0 +1,38 @@
+<svg viewBox="0 0 2200 1416" width="100%" xmlns="http://www.w3.org/2000/svg">
+<g id="baseline" display="none">
+</g>
+<g id="overlay-hr1">
+<rect x="1596.0" y="677.0" width="219.1" height="19.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="690.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#8B5A5A" text-anchor="start" font-weight="bold">NOT SHOWN, and not estimated:</text>
+<rect x="1596.0" y="704.5" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="716.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• claims row mco: DC does not publish managed-care spending by service category. The</text>
+<rect x="1596.0" y="722.0" width="283.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="734.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">fan out of the capitated lanes is absent.</text>
+<rect x="1596.0" y="743.5" width="391.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="755.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• claims row dual: as above, for the D-SNP wrap and PACE.</text>
+<rect x="1596.0" y="765.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="777.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• mco: plan retention is measured in total; its split into administration and margin</text>
+<rect x="1596.0" y="782.5" width="169.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="794.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">is not published for DC.</text>
+<rect x="1596.0" y="804.0" width="377.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="816.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• dual: no retention figure for the D-SNP wrap or PACE.</text>
+<rect x="1596.0" y="825.5" width="491.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="837.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• amerihealth, wellpoint, medstar, hscsn: retention split not published.</text>
+<rect x="1596.0" y="847.0" width="317.1" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="859.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• united, pace: retention split not published.</text>
+<rect x="1596.0" y="868.5" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="880.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Behavioral health is not a separate node. The DC source folds it into wrap-around</text>
+<rect x="1596.0" y="886.0" width="256.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="898.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">services and into the capitated lump.</text>
+<rect x="1596.0" y="907.5" width="229.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="919.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Documented fraud: no DC figure.</text>
+<rect x="1596.0" y="929.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="941.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Beneficiary shares: no matrix built. MACStats Exhibit 21 carries a state dimension</text>
+<rect x="1596.0" y="946.5" width="142.4" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="958.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">and is the route in.</text>
+<rect x="1596.0" y="979.0" width="537.8" height="17.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="990.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#6f6f6f" text-anchor="start" font-weight="None" font-style="italic">Absent data is left absent. Filling a gap with a share would produce a modelled figure</text>
+<rect x="1596.0" y="995.5" width="229.8" height="17.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1006.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#6f6f6f" text-anchor="start" font-weight="None" font-style="italic">wearing a measured figure's clothes.</text>
+</g>
+</svg>

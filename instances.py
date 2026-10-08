@@ -66,6 +66,11 @@ class Instance:
     # the administration band; HR-1 steps interleave around them and must never
     # displace them (STYLE_GUIDE 3.5).
     steps: List[Tuple] = field(default_factory=list)
+    # The payer lane as the ledger names it: (key, label, capitation, care,
+    # entity) per row, in draw order. Empty where the ledger names no plans,
+    # which is every national panel. Additive: the three aggregate scalars
+    # above are unchanged, so nothing that reads them moves.
+    payer_rows: List[tuple] = field(default_factory=list)
     # ---- HR-1 ---------------------------------------------------------
     # ---- money that leaves before the hundred is struck (D-70, D-71) ----
     # Not a loss and not an HR-1 bite: it narrows the federal band on the same

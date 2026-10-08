@@ -70,6 +70,15 @@ def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
 
     mco, dual, ffs = lane["mco"], lane["dual"], lane["ffs"]
 
+    # THE PAYER RULE (2026-10-07). If the ledger names the payers, the panel
+    # carries them. View.payer_rows decides; compose does not second-guess it.
+    # The aggregate scalars below are still computed from the lanes, so a
+    # renderer that has not yet learned about named rows draws exactly what it
+    # drew before and nothing moves.
+    rows = V.payer_rows(L)
+    payer_rows = [(p.key, p.label, p.capitation.n, p.care.n, p.entity)
+                  for p in rows]
+
     steps = []
     for p in L.peels:
         if p.key in V.step_x:
@@ -136,6 +145,7 @@ def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
         adm_marg=mco.admin.n + dual.admin.n,
         mco_adm=mco.admin.n, dual_adm=dual.admin.n,
         mco_care=mco.care.n, dual_care=dual.care.n,
+        payer_rows=payer_rows,
         node=node, truncated=truncated,
         fraud=_peel(L, "fraud"),
         ffs_n=cells("ffs"), mcoc_n=cells("mco"), dualc_n=cells("dual"),

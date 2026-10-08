@@ -1,0 +1,77 @@
+{
+  "dc_2024_baseline": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "efc24ebf984c2231"
+  },
+  "dc_2024_combined": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "637845f98ce5f98c"
+  },
+  "dc_2024_overlay": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "b698020fcf5bc76c"
+  },
+  "national_2024_baseline": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "35f0651bea914a7e"
+  },
+  "national_2024_combined": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "40891e149e7bbdd4"
+  },
+  "national_2024_overlay": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "665db42da85e035f"
+  },
+  "national_2030_holds_baseline": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "db920689698d572c"
+  },
+  "national_2030_holds_combined": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "660992b254ef3b8f"
+  },
+  "national_2030_holds_overlay": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "8ef7d6db8789af75"
+  },
+  "national_2030_mixed_baseline": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "a4a1332c89ce8f41"
+  },
+  "national_2030_mixed_combined": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "95229d76df3614cb"
+  },
+  "national_2030_mixed_overlay": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "be3e6974f368932d"
+  },
+  "national_2030_scales_baseline": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "54f66333b0899e5b"
+  },
+  "national_2030_scales_combined": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "961b72dab26b70b4"
+  },
+  "national_2030_scales_overlay": {
+    "blessed": "2026-09-28",
+    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "sha": "898f01e4834c4318"
+  }
+}

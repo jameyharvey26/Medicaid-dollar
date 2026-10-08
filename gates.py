@@ -55,6 +55,27 @@ EXPECT = {
         regex=[(r"0 crossing\(s\) in the margin", 5, "five panels clean")],
         forbid=["ORPHAN"],
     ),
+    # FALSE GREEN, 27 September. This suite runs build.py, which renders the
+    # FY2030 mixed panel only; the two sensitivity variants are behind
+    # `build.py sensitivity` and nothing ran it. renderproof.py compares the
+    # SVGs ON DISK, so the stale variant files went on matching their stale
+    # blessing and reported "unchanged" indefinitely. They had in fact been
+    # wrong since D-91: both still drew the beneficiary panel with four
+    # eligibility groups (Children / Adults / Disabled / Aged) against the
+    # paper's five. A gate that never rebuilds a panel cannot see it move.
+    "build.py sensitivity": dict(
+        must=["build complete."],
+        slow=True,
+    ),
+    # ORDERING DEFECT, 7 October. The FALSE GREEN fix above added
+    # `build.py sensitivity` as a gate but placed it BELOW renderproof.py,
+    # which is the gate that depends on it. renderproof reads the SVGs on
+    # disk; on a clean clone those are the committed reference_renders files,
+    # which are stale, so six national panels reported MOVED and the suite
+    # accused the national model of drifting when nothing had drifted. On a
+    # warm working copy a previous session had left fresh files and it went
+    # green, which is why it was only ever seen on a fresh clone. Rebuilding
+    # a panel must precede proving it has not moved.
     "renderproof.py": dict(
         # Replaces byteproof.py, whose premise expired with D-70. That gate
         # proved the Ledger path matched the old instances.py path — migration
@@ -86,18 +107,6 @@ EXPECT = {
     # reported misses were the suite failing to build its own inputs while
     # reporting a content failure. A detector that misfires gets fixed rather
     # than worked around: the generation steps are gates now, in order.
-    # FALSE GREEN, 27 September. This suite runs build.py, which renders the
-    # FY2030 mixed panel only; the two sensitivity variants are behind
-    # `build.py sensitivity` and nothing ran it. renderproof.py compares the
-    # SVGs ON DISK, so the stale variant files went on matching their stale
-    # blessing and reported "unchanged" indefinitely. They had in fact been
-    # wrong since D-91: both still drew the beneficiary panel with four
-    # eligibility groups (Children / Adults / Disabled / Aged) against the
-    # paper's five. A gate that never rebuilds a panel cannot see it move.
-    "build.py sensitivity": dict(
-        must=["build complete."],
-        slow=True,
-    ),
     "make_figs.py": dict(
         must=["wrote crops.json"],
     ),

@@ -24,6 +24,9 @@
 
 from ledger import (Fig, Ledger, MEASURED, MODELLED, Matrix, Payer, Peel,
                     DERIVED)
+from basis_dc import (DC_ADMIN_M, DC_DEDTAX_M, DC_FED_M, DC_MEDICARE_M,
+                      DC_STATE_M, DC_TOTAL_M, DHCF_BUDGET, EX16, EX17,
+                      SCALE)
 
 SPINE = "CMS-64 / MACStats FY2024 DC"
 # RE-ACQUIRED 2026-09-15. Phase 1 and the first half of Phase 2 of
@@ -43,17 +46,11 @@ SPINE = "CMS-64 / MACStats FY2024 DC"
 #
 # The exhibit's own note: figures may change if a state revises its
 # expenditure data after 29 May 2024.
-EX16 = ("MACPAC, MACStats: Medicaid and CHIP Data Book, Exhibit 16, Medicaid "
-        "Spending by State, Category, and Source of Funds, FY 2024, published "
-        "February 2026; MACPAC analysis of CMS-64 FMR net expenditure data as "
-        "of 3 June 2025")
-DC_TOTAL_M, DC_FED_M, DC_STATE_M, DC_ADMIN_M = 4372.0, 3199.0, 1173.0, 234.0
 
 # $M per $1 of the DC hundred. Derived from the measured total, not typed:
 # a revised Exhibit 16 moves every per-$100 figure on the DC panel through
 # this one line. Convention 2026-09-19, JW: derive in code, never type an
 # output. See typedfigures.py.
-SCALE = DC_TOTAL_M / 100.0
 
 # RE-ACQUIRED 2026-09-18. Second half of Phase 2 of ACQUISITION.md. Exhibit 17
 # is the benefit-category companion to Exhibit 16: same CMS-64 FMR pull, same
@@ -69,11 +66,6 @@ SCALE = DC_TOTAL_M / 100.0
 #   = total computable, Exhibit 16       $4,372M
 #
 # The category is "Medicare premiums and coinsurance," not premiums alone.
-EX17 = ("MACPAC, MACStats: Medicaid and CHIP Data Book, Exhibit 17, Total "
-        "Medicaid Benefit Spending by State and Category, FY 2024, published "
-        "February 2026; MACPAC analysis of CMS-64 FMR net expenditure data as "
-        "of 3 June 2025")
-DC_MEDICARE_M = 86.0
 
 # ---- the non-federal share is not one kind of money -----------------------
 # Exhibit 16 reports a single non-federal share. DC's own appropriation splits
@@ -96,10 +88,6 @@ DC_MEDICARE_M = 86.0
 # accountings and is DERIVED, not measured. Cross-checked two ways: dedicated
 # taxes are 9.81% of the budget's local funds, which applied to the state share
 # agrees with direct division to the cent.
-DHCF_BUDGET = ("Government of the District of Columbia, FY2027 Proposed Budget "
-               "and Financial Plan, Department of Health Care Finance (HT0), "
-               "agency financial summary, FY2024 actual")
-DC_DEDTAX_M = 114.647
 
 
 def _x(v, note=""):

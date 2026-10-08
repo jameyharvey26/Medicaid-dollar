@@ -36,7 +36,10 @@ class PeelSum:
 class View:
     root: str = "state_agency"          # what the hundred dollars is of
     normalise: float = 100.0
-    expand: List[str] = field(default_factory=list)   # payer lane keys to open
+    expand: List[str] = field(default_factory=list)   # SUPERSEDED, see payer_rows
+    # Lanes to draw aggregate even though the ledger names their children.
+    # An explicit decision, because the default is now to show what we know.
+    collapse_payers: List[str] = field(default_factory=list)
     collapse: List[str] = field(default_factory=list) # phases to fold shut
     show_beneficiaries: bool = True
     show_claims_fan: bool = True        # ribbons payer -> provider node
@@ -66,12 +69,27 @@ class View:
 
     # ---- what the layout is actually asked to draw ----------------------
     def payer_rows(self, L: Ledger):
-        """The lanes as this view wants them: expanded into named plans where
-        asked, aggregate otherwise."""
+        """The lanes as this panel draws them.
+
+        THE RULE, 2026-10-07: if the ledger names the payers, the panel shows
+        them. Decomposition is a property of the data, not a flag on the view.
+
+        It was a flag — `expand`, an opt-in list — and the named DC plans kept
+        disappearing because a new view is written without it and nothing
+        complains. Acquiring seven named payers and then drawing one aggregate
+        band is a silent loss of exactly the work that makes a state panel
+        worth having, and no gate could see it because the ledger was intact
+        and the drawing was merely poorer.
+
+        `expand` is kept so existing views still parse, but it no longer
+        decides anything. To draw a lane aggregate when the ledger names its
+        children, a view must now say so explicitly in `collapse_payers`, which
+        is a decision someone has to make and can be asked about.
+        """
         rows = []
         for lane in L.lanes():
             kids = L.children(lane.key)
-            if lane.key in self.expand and kids:
+            if kids and lane.key not in self.collapse_payers:
                 rows.extend(kids)
             else:
                 rows.append(lane)
