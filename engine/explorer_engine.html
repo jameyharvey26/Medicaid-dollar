@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spike — one engine, drawn in the browser</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&amp;family=Nunito:wght@400;600&amp;display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --ground:#FAF8F3; --ink:#1A2733; --muted:#5A6B7A; --rule:#E4DFD4;
+    --panel:#FFFFFF; --warn:#8B5A5A; --vio:#5B21B6;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --ground:#14191F; --ink:#ECEAE4; --muted:#9AA7B2; --rule:#2C343C;
+      --panel:#1B2128; --warn:#C9A9A4; --vio:#B9A2E8;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --ground:#14191F; --ink:#ECEAE4; --muted:#9AA7B2; --rule:#2C343C;
+    --panel:#1B2128; --warn:#C9A9A4; --vio:#B9A2E8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;min-height:100%;background:var(--ground);color:var(--ink);
+    font-family:Nunito,Georgia,serif;display:flex;flex-direction:column;
+  }
+  header{
+    border-bottom:1px solid var(--rule);background:var(--panel);
+    padding:14px 22px;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 20px;
+  }
+  header h1{font-family:Jost,system-ui,sans-serif;font-size:17px;font-weight:600;margin:0;margin-right:auto}
+  .seg{display:flex;gap:6px}
+  .seg button{
+    font-family:Jost,system-ui,sans-serif;font-size:14px;min-height:44px;padding:0 15px;
+    border:1px solid var(--rule);background:var(--panel);color:var(--muted);
+    border-radius:3px;cursor:pointer;
+  }
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+  main{display:flex;align-items:flex-start}
+  .stage{flex-grow:1;min-width:0;padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+  .plate{overflow-x:auto}
+  svg{display:block}
+  aside{
+    width:352px;flex-shrink:0;border-left:1px solid var(--rule);background:var(--panel);
+    padding:18px 20px;display:flex;flex-direction:column;gap:16px;
+    position:sticky;top:0;
+  }
+  .kicker{font-family:Jost,system-ui,sans-serif;font-size:11px;letter-spacing:.14em;color:var(--muted)}
+  label{font-family:Jost,system-ui,sans-serif;font-size:14px;display:block}
+  input[type=range]{width:100%;margin-top:6px}
+  .val{font-family:Jost,system-ui,sans-serif;font-size:17px;font-weight:600}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .note{font-size:12px;color:var(--muted);line-height:1.45}
+  .check{border:1px solid var(--rule);border-radius:3px;padding:12px 14px}
+  .check.ok{border-color:#1F7A5A}
+  .check.bad{border-color:var(--warn)}
+  .mono{font-family:Jost,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+  .trk{display:flex;gap:10px;border-top:1px solid var(--rule);padding-top:14px;align-items:flex-end}
+  .stn{flex:1;border-left:1px solid var(--rule);padding-left:12px}
+  .stn:first-child{border-left:0;padding-left:0}
+  .stn b{font-family:Jost,system-ui,sans-serif;font-size:23px;font-weight:600;display:block;letter-spacing:-.01em}
+  .stn span{font-size:12.5px;color:var(--muted);display:block}
+  .stn .less{font-size:12px;color:var(--warn);margin-top:2px}
+  .drops{margin-bottom:10px}
+  .drop{font-family:Jost,system-ui,sans-serif;font-size:12px;color:var(--muted);padding:1px 0}
+  button.ghost{
+    font-family:Jost,system-ui,sans-serif;font-size:13px;min-height:44px;
+    border:1px solid var(--rule);background:transparent;color:var(--ink);
+    border-radius:3px;cursor:pointer;
+  }
+  @media (max-width:900px){
+    main{flex-direction:column}
+    aside{width:auto;border-left:0;border-top:1px solid var(--rule)}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>One engine &#183; drawn in the browser</h1>
+  <div class="seg" id="place" role="group" aria-label="Jurisdiction">
+    <button type="button" data-k="US" aria-pressed="true">United States</button>
+    <button type="button" data-k="DC" aria-pressed="false">District of Columbia</button>
+  </div>
+  <div class="seg" id="year" role="group" aria-label="Year">
+    <button type="button" data-y="2024" aria-pressed="false">FY2024 actual</button>
+    <button type="button" data-y="2030" aria-pressed="true">FY2030 under P.L. 119-21</button>
+  </div>
+</header>
+
+<main>
+  <div class="stage">
+    <div class="plate" id="plate"></div>
+    <div class="seg" id="zoom" role="group" aria-label="Zoom">
+      <button type="button" data-z="all" aria-pressed="true">Whole flow</button>
+      <button type="button" data-z="state" aria-pressed="false">State</button>
+      <button type="button" data-z="agency" aria-pressed="false">Agency</button>
+      <button type="button" data-z="payer" aria-pressed="false">Payer</button>
+      <button type="button" data-z="provider" aria-pressed="false">Provider</button>
+    </div>
+    <div class="trk" id="trk"></div>
+  </div>
+
+  <aside>
+    <div>
+      <div class="kicker">ASSUMPTION</div>
+      <div class="row" style="margin-top:8px">
+        <label for="wr" id="wrlab">Work reporting</label>
+        <span class="val" id="wrval">$4.11</span>
+      </div>
+      <input id="wr" type="range" min="2.90" max="5.40" step="0.01" value="4.11">
+      <p class="note" id="wrnote">CBO range $2.90 &ndash; $5.40. Central estimate $4.11.</p>
+    </div>
+
+    <div>
+      <button type="button" class="ghost" id="reset">reset to the paper</button>
+    </div>
+
+    <div class="check" id="check">
+      <div class="kicker">CONSERVATION</div>
+      <div class="val mono" id="checkv" style="margin-top:6px">&#8212;</div>
+      <p class="note" id="checkn"></p>
+    </div>
+
+    <div>
+      <div class="kicker">LAYOUT</div>
+      <p class="note" id="layoutq" style="margin-top:8px"></p>
+    </div>
+
+    <div>
+      <div class="kicker">WHAT MOVED</div>
+      <div id="moved" class="note" style="margin-top:8px"></div>
+    </div>
+
+    <div>
+      <div class="kicker">DECLARED ASSUMPTION</div>
+      <p class="note" style="margin-top:8px">The payload says what each lane holds, not how a changed peel redistributes across them. This engine rescales the lanes proportionally and says so. A different rule would give different lane figures from the same hundred.</p>
+    </div>
+  </aside>
+</main>
+
+<script>
+const GEOM = {"cols":{"FEDERAL":[160,350],"STATE_GOVT":[350,584],"STATE_AGENCY":[584,844],"DISBURSE":[844,1060],"PAYER":[1060,1300],"CLAIMS":[1300,1560],"PROVIDERS":[1560,1760],"BENEFICIARY":[1760,2180]},"source_x":200.0,"canvas":{"w":2200,"h":1416},"ys":4.4,"bw":18,"centre_y":540,"ctrl_max":340.0,"fan":{"top":800.0,"min_gap":40.0,"tight_gap":8.0,"label_h":45.0,"label_h_tight":30.0,"rule_y":1146.0,"floor":1140.0,"stack_top":806.0},"source_tops":{"federal":126.0,"state":655.0}};
+const DATA = {"US|2024":{"code":"US2024","name":"National","strap":"CMS-64 FY2024 national totals. Measured, except where flagged.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Administration","v":4.2477,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1016,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":2.9231,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Documented fraud","v":0.1511,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.367,"care":35.9234},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":10.9688,"care":9.7597},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":41.3919,"care":41.3919}],"cells":{"mco|Long-term care":7.08,"mco|Hospitals":7.53,"mco|Other":7.63,"mco|Physicians & clinics":6.61,"mco|Behavioral health":5.01,"mco|Rx drugs":2.06,"dual|Long-term care":1.92,"dual|Hospitals":2.04,"dual|Other":2.07,"dual|Physicians & clinics":1.8,"dual|Behavioral health":1.36,"dual|Rx drugs":0.56,"ffs|Long-term care":20.13,"ffs|Hospitals":8.33,"ffs|Other":5.74,"ffs|Physicians & clinics":2.47,"ffs|Behavioral health":3.21,"ffs|Rx drugs":1.52},"disp":{"Other":"Wrap around services"},"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":87.0749},"US|2030":{"code":"US2030_mixed","name":"National","strap":"Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Work reporting","v":4.1061,"kind":"hr1","charged":"STATE_AGENCY","reach":"DISBURSE"},{"label":"Six-month renewals","v":0.7513,"kind":"hr1","charged":"STATE_AGENCY","reach":"PAYER"},{"label":"Blocked Medicaid enrollment rule","v":1.0396,"kind":"hr1","charged":"STATE_AGENCY","reach":"CLAIMS"},{"label":"Everything else","v":1.0587,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Blocked senior enrollment rule","v":1.2801,"kind":"hr1","charged":"STATE_AGENCY","reach":"BENEFICIARY"},{"label":"Administration","v":4.28,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1023,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.6653,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Provider tax limits","v":1.2499,"kind":"hr1","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Directed payment caps","v":0.8517,"kind":"hr1","charged":"CLAIMS","reach":"PROVIDERS"},{"label":"Documented fraud","v":0.1389,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":36.7707,"care":32.723},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":9.9916,"care":8.8902},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":37.7044,"care":37.7044}],"cells":{"mco|Long-term care":6.2277,"mco|Hospitals":6.6236,"mco|Other":6.9503,"mco|Physicians & clinics":5.8143,"mco|Behavioral health":4.5637,"mco|Rx drugs":1.8765,"dual|Long-term care":1.6889,"dual|Hospitals":1.7944,"dual|Other":1.8856,"dual|Physicians & clinics":1.5833,"dual|Behavioral health":1.2388,"dual|Rx drugs":0.5101,"ffs|Long-term care":18.3367,"ffs|Hospitals":7.5879,"ffs|Other":5.2286,"ffs|Physicians & clinics":2.25,"ffs|Behavioral health":2.924,"ffs|Rx drugs":1.3846},"disp":{"Other":"Wrap around services"},"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":78.4689},"DC|2024":{"code":"DC2024","name":"DC","strap":"REDUCED FIDELITY. CMS-64 / MACStats FY2024 DC spine; payer peel DHCF CY2023; the District publishes no managed-care service mix, so that fan is absent. Vintages need re-checking.","sources":{"federal":73.17,"state":26.83},"peels":[{"label":"Administration","v":5.3522,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.9671,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.3019,"care":35.4529},{"key":"dual","label":"Dual and PACE capitation","kind":"dual","cap":0.9149,"care":0.9149},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":51.4639,"care":51.4639}],"cells":{"ffs|Long-term care":28.2708,"ffs|Hospitals":6.7932,"ffs|Physicians & clinics":9.2864,"ffs|Wrap around services":5.0778,"ffs|Rx drugs":2.0357},"disp":{},"cols":["Long-term care","Hospitals","Physicians & clinics","Wrap around services","Rx drugs"],"claims":87.8317},"DC|2030":null};
+const C = {
+  federal:'#3D6E8C', local:'#A8BFCE', agency:'#1F7A5A', ffs:'#8494A6',
+  mco:'#4A54A8', dual:'#6F80C4', svc:['#1F7A5A','#2E8B6B','#57A98C','#83C3A8','#AEDAC6','#D2EAE0'],
+  loss:'#A56E63', admin:'#9AA5AF', ret:'#8E9BA6', vio:'#7C3AED', viol:'#A78BFA'
+};
+let place = 'US';
+let year = '2030';
+const panelKey = () => place + '|' + year;
+let wr = null;
+let zoomLevel = 'all';
+
+const money = v => '$' + v.toFixed(2);
+const PAPERNAME = {
+  'Everything else':'Other',
+  'Blocked Medicaid enrollment rule':'Medicaid enrollment rule suspended',
+  'Blocked senior enrollment rule':'Medicare Savings rule suspended'
+};
+const PAPERCLAUSE = {
+  'Provider tax limits':'federal match never drawn',
+  'Everything else':'e.g. home equity, cost sharing',
+  'Work reporting':'will not enroll; would have reached disbursements',
+  'Six-month renewals':'will not survive renewal; would have reached the payer',
+  'Blocked Medicaid enrollment rule':'2024 rule; would have reached a paid claim',
+  'Blocked senior enrollment rule':'2023 rule; dual eligibles pay these Medicare costs themselves',
+  'Directed payment caps':'will not top up hospital, nursing facility, academic rates',
+  'Documented fraud':'providers receive it; it is not services delivered (not to scale)'
+};
+const REACHWORD = {
+  FEDERAL:'returns federally; never blended',
+  STATE_AGENCY:'charged at the state agency',
+  DISBURSE:'would have reached disbursements',
+  PAYER:'would have reached the payer',
+  CLAIMS:'would have reached a paid claim',
+  PROVIDERS:'would have reached a provider',
+  BENEFICIARY:'would have reached the beneficiary'
+};
+
+function model(key, wrValue){
+  const P = DATA[key];
+  if (!P) return null;
+  const peels = P.peels.map(p => {
+    const v = (p.label === 'Work reporting' && wrValue != null) ? wrValue : p.v;
+    return Object.assign({}, p, {v, moved: v !== p.v});
+  });
+  const inflow = Object.values(P.sources).reduce((a,b)=>a+b,0);
+  const at = s => peels.filter(p => p.charged === s);
+  const rises = peels.filter(p => p.kind === 'admin' || p.kind === 'return');
+  const falls = peels.filter(p => p.kind !== 'admin' && p.kind !== 'return' && p.charged !== 'CLAIMS' && p.charged !== 'PROVIDERS');
+  const fedAll = at('FEDERAL').reduce((a,b)=>a+b.v,0);
+  const hundred = inflow - fedAll;
+  const agAll = at('STATE_AGENCY').reduce((a,b)=>a+b.v,0);
+  const disb = hundred - agAll;
+
+  // declared assumption: lanes rescale proportionally with what is disbursed
+  const baseCap = P.lanes.reduce((a,l)=>a+l.cap,0);
+  const f = baseCap ? disb / baseCap : 0;
+  const lanes = P.lanes.map(l => ({...l, cap: l.cap*f, care: (l.care||0)*f}));
+  const careTot = lanes.reduce((a,l)=>a+l.care,0);
+
+  const svc = {};
+  for (const [k,v] of Object.entries(P.cells)){
+    const [lane, name] = k.split('|');
+    svc[name] = (svc[name]||0) + v*f;
+  }
+  const allocated = Object.values(svc).reduce((a,b)=>a+b,0);
+  // peels charged after the claim: drawn, never folded into the absence
+  const late = peels.filter(p => p.charged === 'CLAIMS' || p.charged === 'PROVIDERS');
+  const lateAll = late.reduce((a,b)=>a+b.v,0);
+  const absent = careTot - lateAll - allocated;
+  return {P, peels, rises, falls, inflow, hundred, disb, lanes, careTot, svc, allocated, absent, late, lateAll, f};
+}
+
+
+// ---------------------------------------------------------------------------
+// LABEL PLACEMENT
+//
+// The Python renderer reports collisions and refuses to move anything
+// (tracker.py:collisions, "the marker rule places by geometry and does not
+// negotiate"). That was right while one author tuned every panel by hand. It
+// is wrong here: a user dragging a slider generates a layout nobody has ever
+// looked at, and "the fit is the fit" hands them a mess they cannot diagnose.
+//
+// So placement is automatic, under constraints that cannot be traded away:
+//
+//   order preserved   a label that jumps its neighbour points at the wrong
+//                     band, which is worse than an overlap because it looks
+//                     fine and is a lie
+//   inside the frame  nothing leaves the panel
+//   leader if moved   any label off its anchor grows a line back to it
+//
+// Within those, minimise the WORST displacement, not the total. One label
+// shoved 40 units reads as broken; eight shoved 5 do not.
+//
+// When the constraints cannot all hold, labels are SUPPRESSED rather than
+// crammed -- lowest tier first, then smallest dollar (JW, 23 Oct). The count
+// is reported, so nothing disappears silently.
+//
+// TIERS
+//   1  always drawn: spine totals, lane names, absence blocks
+//   2  drawn when there is room: reach clauses, small-lane figures
+//   3  rollover only: provenance, vintage, the full why-text
+//
+// Mode matters. Interactive suppresses and ignores nudges. Publishing places
+// everything and honours a view's declared nudges, because a PDF has no
+// hover and a consultant has decided where that label goes.
+function placeLabels(labels, opts){
+  const minGap = opts.minGap || 17;
+  const top = opts.top, bottom = opts.bottom;
+  const mode = opts.mode || 'interactive';
+  const report = {moved:0, worst:0, suppressed:[], outOfFrame:0};
+
+  let live = labels.slice().sort((a,b)=>a.anchorY-b.anchorY);
+
+  function layout(items){
+    // Order-preserving block placement. Overlapping neighbours merge into a
+    // block; the block centres on the midpoint of its anchors' span, which is
+    // the min-max optimum for equal-height labels.
+    const blocks = [];
+    for (const it of items){
+      blocks.push({items:[it], lo:it.anchorY, hi:it.anchorY});
+      let b = blocks[blocks.length-1];
+      b.h = minGap;
+      b.y = it.anchorY;
+      while (blocks.length > 1){
+        const prev = blocks[blocks.length-2];
+        if (prev.y + prev.h > b.y - 0.001){
+          prev.items = prev.items.concat(b.items);
+          prev.lo = Math.min(prev.lo, b.lo);
+          prev.hi = Math.max(prev.hi, b.hi);
+          prev.h = minGap * prev.items.length;
+          prev.y = (prev.lo + prev.hi)/2 - prev.h/2 + minGap/2;
+          blocks.pop();
+          b = prev;
+        } else break;
+      }
+    }
+    const out = [];
+    for (const b of blocks){
+      let y = b.y;
+      for (const it of b.items){ out.push({it, y}); y += minGap; }
+    }
+    return out;
+  }
+
+  // Pinned labels (a view's declared nudge) are fixed points, and only in
+  // publishing mode. An end user never nudges.
+  if (mode === 'publishing'){
+    for (const l of live) if (l.pin != null) l.anchorY = l.pin;
+  }
+
+  // Feasibility is total height against the frame, NOT where the first pass
+  // happened to land. An early version suppressed whenever a centred block
+  // drifted past an edge and threw away six labels that fitted easily; the
+  // block only needed sliding back inside.
+  const frame = bottom - top;
+  while (live.length * minGap > frame){
+    const droppable = live.filter(l=>l.tier >= 2 && l.pin == null);
+    if (!droppable.length || mode === 'publishing'){ report.outOfFrame = live.length; break; }
+    droppable.sort((a,b)=>(b.tier-a.tier)||(a.value-b.value));
+    report.suppressed.push(droppable[0].text);
+    live = live.filter(l=>l !== droppable[0]);
+  }
+
+  let placed = layout(live);
+  if (placed.length){
+    const lo = Math.min(...placed.map(p=>p.y));
+    const hi = Math.max(...placed.map(p=>p.y));
+    let shift = 0;
+    if (lo < top) shift = top - lo;
+    else if (hi > bottom) shift = bottom - hi;
+    if (shift) for (const p of placed) p.y += shift;
+  }
+
+  for (const p of placed){
+    p.it.y = p.y;
+    const d = Math.abs(p.y - p.it.anchorY);
+    if (d > 0.5){ report.moved++; p.it.leader = true; }
+    if (d > report.worst) report.worst = d;
+  }
+  return {placed: live, report};
+}
+
+
+// ---------------------------------------------------------------- layout ---
+// Labels place at their anchor, then a single order-preserving pass pushes
+// them apart to a minimum gap, MINIMISING THE WORST DISPLACEMENT rather than
+// the total: one label shoved 40 units reads as wrong, eight shoved 5 do not.
+//
+// Order is never allowed to change. A label that overtakes its neighbour now
+// points at the wrong band, and a misattributed label is worse than an
+// overlapping one because overlap looks broken while misattribution looks
+// fine. Anything displaced grows a leader back to its anchor -- the idiom the
+// paper already uses for the HR-1 bites.
+
+// ===================================================================== fan ===
+// STEP 4 OF THE PORT. outflows._place / fan_rows, translated rather than
+// approximated. The engine previously stepped rows by a constant, which is why
+// the fan ran off the bottom of the page; the real solver pushes a terminal
+// below ONLY what it actually conflicts with, so two tributaries far apart
+// horizontally may share a height, and that is what keeps the fan shallow.
+const FAN = () => GEOM.fan;
+
+function _textW(s, size, pad){ return s.length*size*0.56 + (pad===undefined?4:pad)*2; }
+function _blockH(it){ return it.compact ? FAN().label_h_tight : FAN().label_h; }
+function _labelW(it){
+  // the PRINTED name, not the key, and the RENDERER'S metric. a solver
+  // measuring a string the artifact never shows is working on the wrong diagram.
+  let nm = it.label || it.name;
+  if (it.compact) nm = `${nm}  \u2212$${it.amt.toFixed(2)}`;
+  return Math.max(_textW(nm,12), _textW(it.sub||'',10), 40);
+}
+function _labelSpan(it, anchor){
+  const w=_labelW(it);
+  if ((anchor||it.anchor)==='end') return [it.xt-8-w, it.xt-8];
+  return [it.xt, it.xt+w];
+}
+const _ov = (a0,a1,b0,b1) => !(a1<=b0 || b1<=a0);
+
+function _clearObstacles(it, y, anchor, obstacles){
+  const [l0,l1]=_labelSpan(it,anchor);
+  const x0=Math.min(l0,it.xt), x1=Math.max(l1,it.xt+6);
+  for (let n=0;n<=obstacles.length;n++){
+    let moved=false;
+    for (const [o0,oy0,o1,oy1] of obstacles){
+      if (!_ov(x0,x1,o0,o1)) continue;
+      if (oy1>y && oy0 < y+it.th+_blockH(it)){ y=oy1+8; moved=true; }
+    }
+    if (!moved) break;
+  }
+  return y;
+}
+
+function _place(items, top, gap, obstacles){
+  const order=items.slice().sort((a,b)=>a.y_src-b.y_src);
+  const y_of={}, anchors={}, placed=[];
+  for (const it of order) if (it.fixed_y!=null){
+    y_of[it.name]=it.fixed_y; anchors[it.name]=it.anchor||'start'; placed.push(it);
+  }
+  for (const it of order){
+    if (it.fixed_y!=null) continue;
+    let best=null, best_y=null;
+    for (const cand of (it.anchor?[it.anchor]:['start','end'])){
+      const [l0,l1]=_labelSpan(it,cand);
+      if (l0 < GEOM.cols.FEDERAL[0]) continue;
+      if (l1 > GEOM.canvas.w - 20) continue;
+      let y=top, ceiling=null;
+      for (const pz of placed){
+        if (_ov(it.xb,it.xt,pz.xb,pz.xt)){
+          if (pz.y_src > it.y_src){
+            // pz leaves BELOW this one and must stay below: cap above it
+            const [p0b,p1b]=_labelSpan(pz,anchors[pz.name]);
+            const room = _ov(l0,l1,p0b,p1b) ? (_blockH(pz)+6) : gap;
+            ceiling = Math.min(ceiling==null?1e9:ceiling, y_of[pz.name]-it.th-room);
+          } else {
+            y = Math.max(y, y_of[pz.name]+pz.th+gap);
+          }
+        }
+        const [p0,p1]=_labelSpan(pz,anchors[pz.name]);
+        if (_ov(l0,l1,p0,p1)) y=Math.max(y, y_of[pz.name]+pz.th+_blockH(pz)+6);
+      }
+      y=_clearObstacles(it,y,cand,obstacles);
+      if (ceiling!=null && y>ceiling) y=Math.max(top,ceiling);
+      if (best_y==null || y < best_y-1.0){ best=cand; best_y=y; }
+    }
+    anchors[it.name]=best||'start';
+    y_of[it.name]=best_y==null?top:best_y;
+    placed.push(it);
+  }
+  const warnings=[];
+  for (const it of items){
+    const bottom=y_of[it.name]+it.th+_blockH(it);
+    if (bottom > FAN().floor) warnings.push(`${it.name}: reaches y=${bottom.toFixed(0)}, past the floor`);
+  }
+  return [y_of, anchors, warnings];
+}
+
+function fanRows(items, top, obstacles){
+  const obs=obstacles||[];
+  const solve=(compact,gap)=>{ items.forEach(it=>it.compact=compact.has(it.name)); return _place(items,top,gap,obs); };
+  const sweep=compact=>{
+    let last=null;
+    for (let gap=FAN().min_gap; gap>=FAN().tight_gap; gap-=2){
+      last=solve(compact,gap);
+      if (!last[2].length) return [last,true];
+    }
+    return [last,false];
+  };
+  let [res,ok]=sweep(new Set());
+  if (ok) return res.concat([new Set()]);
+
+  // deepest first. folding is NOT monotonically better -- a folded label is
+  // wider and past a point folding one more row creates a fresh x-overlap and
+  // the stack gets DEEPER -- so every attempt is scored and the shallowest kept.
+  const depth=res[0];
+  const byDepth=items.map(it=>it.name).sort((a,b)=>(depth[b]||0)-(depth[a]||0));
+  const deepest=r=>Math.max(...items.map(it=>r[0][it.name]+it.th+_blockH(it)));
+  let best=res, bestD=null, bestC=new Set();
+  for (let k=1;k<=byDepth.length;k++){
+    const compact=new Set(byDepth.slice(0,k));
+    const [cand,ok2]=sweep(compact);
+    if (ok2) return cand.concat([compact]);
+    items.forEach(it=>it.compact=compact.has(it.name));
+    const d=deepest(cand);
+    if (bestD==null || d<bestD){ best=cand; bestD=d; bestC=compact; }
+  }
+  items.forEach(it=>it.compact=bestC.has(it.name));
+  return best.concat([bestC]);
+}
+
+// STEP 3. resolve_bite_order: the same invariant on the other axis. For the
+// ordinary peels the TERMINALS are pinned and the sources are free, so the x
+// slots stay fixed and the outflows are dealt into them in terminal-height
+// order, topmost terminal first. Administration and Medicare premiums peel off
+// the same trunk edge; whichever peels first sits above the other for the rest
+// of its life, and dealing by terminal height is what stops them swapping.
+function resolveBiteOrder(rises){
+  const slots = rises.map(r=>r.slotY).sort((a,b)=>a-b);
+  const byTerm = rises.slice().sort((a,b)=>a.termY-b.termY);
+  byTerm.forEach((r,i)=>{ r.slotY = slots[i]; });
+  return rises;
+}
+
+function placeLabels(items, gap){
+  // items: [{y, h, ...}] in anchor order. Returns the same objects with .ly
+  const n = items.length;
+  if (!n) return items;
+  const anchors = items.map(it => it.y);
+  let clusters = anchors.map((a,i) => ({i0:i, i1:i, d:[a]}));
+
+  const place = c => {
+    // within a cluster the slots are fixed at `gap`; choose the start that
+    // minimises max |slot - anchor|  ->  start = (max d + min d) / 2
+    const d = c.d.map((a,k) => a - k*gap);
+    return (Math.max(...d) + Math.min(...d)) / 2;
+  };
+
+  let merged = true;
+  while (merged){
+    merged = false;
+    for (let k = 0; k < clusters.length - 1; k++){
+      const a = clusters[k], b = clusters[k+1];
+      const aEnd = place(a) + (a.d.length - 1) * gap;
+      if (aEnd + gap > place(b) + 1e-9){
+        clusters.splice(k, 2, {i0:a.i0, i1:b.i1, d:a.d.concat(b.d)});
+        merged = true;
+        break;
+      }
+    }
+  }
+
+  let moved = 0, worst = 0;
+  for (const c of clusters){
+    const start = place(c);
+    for (let k = 0; k < c.d.length; k++){
+      const it = items[c.i0 + k];
+      it.ly = start + k*gap;
+      it.disp = it.ly - it.y;
+      if (Math.abs(it.disp) > 0.5){ moved++; worst = Math.max(worst, Math.abs(it.disp)); }
+    }
+  }
+  items.moved = moved; items.worst = worst;
+  return items;
+}
+
+// A band below the floor is drawn at the floor and SAID SO, every time, on the
+// panel. PACE at $0.34 against MedStar at $8.85 is two pixels at any honest
+// scale; a reader comparing them by eye would be wrong by a factor of twenty
+// and that is exactly the misreading this project exists to prevent.
+const FLOOR_PX = 7;
+function bandH(v, S, offscale, label){
+  const t = v * S;
+  if (t >= FLOOR_PX) return t;
+  offscale.push({label, v});
+  return FLOOR_PX;
+}
+
+function halo(x, y, s2, fs, fill, weight){
+  // the paper sets in-band labels in a white box so the band does not eat them
+  const w = s2.length*(fs*0.56)+16, h2 = fs+10;
+  return `<rect x="${x-8}" y="${y-fs-1}" width="${w}" height="${h2}" rx="2" fill="var(--panel)" opacity="0.92"/>`
+       + `<text x="${x}" y="${y}" font-size="${fs}" fill="${fill||'currentColor'}" font-weight="${weight||500}" font-family="Jost,sans-serif">${s2}</text>`;
+}
+
+function leader(x, y0, y1, col){
+  if (Math.abs(y1 - y0) < 0.6) return '';
+  return `<path d="M ${x} ${y0} L ${x+7} ${y1}" stroke="${col}" stroke-width="1" fill="none" opacity="0.65"/>`;
+}
+
+function ribbon(x0,y0,x1,y1,t,fill,op){
+  const xm=(x0+x1)/2;
+  return `<path d="M ${x0} ${y0} C ${xm} ${y0} ${xm} ${y1} ${x1} ${y1} L ${x1} ${y1+t} C ${xm} ${y1+t} ${xm} ${y0+t} ${x0} ${y0+t} Z" fill="${fill}" opacity="${op}"/>`;
+}
+
+// A tributary leaves the river where the dollar is CHARGED and runs out to the
+// column it would have REACHED. Both come from the ledger. Collapsing them --
+// dropping every tributary at the agency, as the first spike did -- throws away
+// the whole of what the panel teaches about where a dollar died.
+function tributary(x0,y0,t,xEnd,yEnd,fill,op){
+  const run = Math.max(70, xEnd-x0);
+  const x1 = x0+run, xm = x0+run*0.55;
+  return `<path d="M ${x0} ${y0} C ${xm} ${y0} ${xm} ${yEnd} ${x1} ${yEnd} L ${x1} ${yEnd+t} C ${xm} ${yEnd+t} ${xm} ${y0+t} ${x0} ${y0+t} Z" fill="${fill}" opacity="${op}"/>`;
+}
+
+window.LAST_REPORT = null;
+let LAST_REPORT = null;
+const MODE = 'interactive';
+
+function draw(M, zoom){
+  // STEP 2 OF THE PORT. Drawn in the paper's own coordinate system, from
+  // engine/geometry.json, with CONTIGUOUS stacking: every band abuts its
+  // neighbour and a column sums exactly to the node that feeds it. The gaps
+  // this engine used to insert between bands were the whole of the "janky
+  // drop-offs" -- a ribbon left a contiguous edge and arrived at an offset one.
+  const C0=GEOM.cols, ys=GEOM.ys, bw=GEOM.bw, cY=GEOM.centre_y, SX=GEOM.source_x;
+  const xFED=C0.FEDERAL, xSG=C0.STATE_GOVT, xSA=C0.STATE_AGENCY, xDI=C0.DISBURSE,
+        xPA=C0.PAYER, xCL=C0.CLAIMS, xPR=C0.PROVIDERS, xBE=C0.BENEFICIARY;
+  const W=GEOM.canvas.w;
+  const offscale=[];
+  const h = v => v*ys;
+  const hb = (v,label) => { const t=v*ys; if(t>=3) return t; offscale.push({label,v}); return 3; };
+  let g='', t='', lead='';
+  const txt=(x,y,s2,fs,fill,anchor,w2,italic)=>`<text x="${x}" y="${y}" font-size="${fs||13}" fill="${fill||'currentColor'}" text-anchor="${anchor||'start'}" font-weight="${w2||400}"${italic?' font-style="italic"':''} font-family="Jost,sans-serif">${s2}</text>`;
+  const halo2=(x,y,s2,fs,fill,w2)=>{
+    const wd=s2.length*(fs*0.55)+14;
+    return `<rect x="${x-7}" y="${y-fs-1}" width="${wd}" height="${fs+9}" rx="2" fill="var(--panel)" opacity="0.93"/>`+txt(x,y,s2,fs,fill,'start',w2||500);
+  };
+  // §2 the ribbon. control points at half the run, capped, so a long tributary
+  // falls early and travels flat and low beneath its neighbours.
+  const cx = (x0,x1) => x0 + Math.min((x1-x0)/2, GEOM.ctrl_max);
+  function band(x0,x1,y0,y1,h0,h1,fill,op){
+    const c0=cx(x0,x1), c1=x1-(c0-x0);
+    const f2=n=>Number(n).toFixed(1);
+    return `<path d="M${f2(x0)},${f2(y0)} C${f2(c0)},${f2(y0)} ${f2(c1)},${f2(y1)} ${f2(x1)},${f2(y1)} L${f2(x1)},${f2(y1+h1)} C${f2(c1)},${f2(y1+h1)} ${f2(c0)},${f2(y0+h0)} ${f2(x0)},${f2(y0+h0)} Z" fill="${fill}" opacity="${op||0.82}"/>`;
+  }
+
+  // ---- sources. the two bars, at the paper's own tops
+  const fed = M.P.sources.federal, state = M.P.sources.state;
+  const fedTop = GEOM.source_tops.federal, stTop = GEOM.source_tops.state;
+  g+=`<rect x="${SX}" y="${fedTop}" width="${bw}" height="${h(fed)}" fill="${C.federal}"/>`;
+  g+=`<rect x="${SX}" y="${stTop}" width="${bw}" height="${h(state)}" fill="${C.local}"/>`;
+  t+=halo2(SX, fedTop-9, `Federal  ${money(fed)}`, 15, C.federal, 600);
+  t+=halo2(SX, stTop+h(state)+19, `State  ${money(state)}`, 15, '#5f7f8c', 600);
+
+  // ---- the trunk. what arrives at the state agency: everything that entered
+  // less anything that peeled before the hundred was struck.
+  const fo = M.peels.filter(p=>p.charged==='FEDERAL' && (p.kind==='admin'||p.kind==='return'))
+                    .reduce((a,b)=>a+b.v,0);
+  const fb = M.peels.filter(p=>p.charged==='FEDERAL' && p.kind==='hr1')
+                    .reduce((a,b)=>a+b.v,0);
+  const ENTER = fed+state, ARRIVE = ENTER-fo;
+  const T0 = cY-ARRIVE*ys/2, TB = cY+ARRIVE*ys/2;
+  const fedLane=[T0, T0+(fed-fb-fo)*ys];
+  const stLane =[T0+(fed-fo)*ys, TB];
+  const fm = (SX+bw+xSG[0])/2, fmy=(fedTop+fedLane[0])/2;
+  g+=band(SX+bw, fm, fedTop+fo*ys, fmy, (fed-fo)*ys, (fed-fo)*ys, C.federal, .8);
+  g+=band(fm, xSG[0], fmy, fedLane[0], (fed-fo)*ys, (fed-fb-fo)*ys, C.federal, .8);
+  g+=band(SX+bw, xSG[0], stTop, stLane[0], h(state), h(state), C.local, .8);
+
+  // the blended dollar crosses STATE GOVERNMENT as one body, contiguous
+  const hundred = M.hundred;
+  const H0 = cY-hundred*ys/2;
+  g+=band(xSG[0], xSA[0], fedLane[0], H0, (fed-fb-fo)*ys, (fed-fb-fo)*ys, C.federal, .8);
+  g+=band(xSG[0], xSA[0], stLane[0], H0+(fed-fb-fo)*ys, h(state), h(state), C.local, .8);
+  t+=txt((xSG[0]+xSA[0])/2, H0+(fed-fb-fo)*ys/2+5, `Federal ${(100*(fed-fb-fo)/hundred).toFixed(1)}%`, 15,'#FFFFFF','middle',600);
+  t+=txt((xSG[0]+xSA[0])/2, H0+(fed-fb-fo)*ys+h(state)/2+5, `State ${(100*state/hundred).toFixed(1)}%`, 15,'#1A2733','middle',600);
+
+  // ---- the state agency node: the hundred, one contiguous block
+  g+=`<rect x="${xSA[0]}" y="${H0}" width="${bw}" height="${h(hundred)}" fill="${C.agency}"/>`;
+  t+=txt(xSA[0]+bw+((xDI[0]-xSA[0])/2), H0+h(hundred)/2-8,'100 Dollars of',16,'#FFFFFF','middle',600);
+  t+=txt(xSA[0]+bw+((xDI[0]-xSA[0])/2), H0+h(hundred)/2+13,'Medicaid Spending',16,'#FFFFFF','middle',600);
+
+  // ---- outflows take slices of the trunk edge, top down: rises, then what is
+  // disbursed, then the law. contiguous, so the trunk is exactly accounted for.
+  const rises = M.rises.slice().sort((a,b)=>b.v-a.v);
+  const riseH = rises.reduce((a,b)=>a+b.v,0)*ys;
+  const disbTop = H0+riseH;
+  const disb = M.disb;
+
+  g+=band(xSA[0]+bw, xDI[0], disbTop, disbTop, h(disb), h(disb), C.agency, .8);
+  g+=`<rect x="${xDI[0]}" y="${disbTop}" width="${bw}" height="${h(disb)}" fill="${C.agency}"/>`;
+  t+=halo2(xDI[0], disbTop-10, `Disbursed ${money(disb)}`, 15, 'currentColor', 600);
+
+  // terminals are pinned heights here; the slots on the trunk edge are free
+  let _sy=H0, _ty=H0-150;
+  const riseItems = rises.map(p=>{
+    const it={p, th:h(p.v), slotY:_sy, termY:_ty};
+    _sy+=h(p.v); _ty-=Math.max(h(p.v),18)+8; return it;
+  });
+  resolveBiteOrder(riseItems);
+  for (const r of riseItems){
+    const col = r.p.kind==='admin'?C.admin:C.ret;
+    g+=band(xSA[0]+bw, xSA[0]+bw+150, r.slotY, r.termY, r.th, r.th, col, .85);
+    t+=txt(xSA[0]+bw+162, r.termY+r.th/2+4, `${r.p.label} ${money(r.p.v)}`, 13.5, C.ret,'start',500);
+  }
+
+  // ---- payer lanes. contiguous in AND out: a lane is a parallelogram.
+  let ly=disbTop, sy=disbTop, c3=[];
+  for (const l of M.lanes){
+    const col=l.kind==='ffs'?C.ffs:(l.kind==='dual'?C.dual:C.mco);
+    const bh=hb(l.cap, l.label);
+    g+=band(xDI[0]+bw, xPA[0], sy, ly, h(l.cap), bh, col, .72);
+    g+=`<rect x="${xPA[0]}" y="${ly}" width="${bw}" height="${bh}" fill="${col}"/>`;
+    t+=halo2(xPA[0]+bw+10, ly+Math.max(15,bh/2+4), `${l.label} ${money(l.cap)}`, 14);
+    c3.push({l,y:ly,bh,col}); ly+=bh; sy+=h(l.cap);
+  }
+
+  // ---- retention leaves at the payer column, off the bottom of each lane
+  let rgy=H0-150;
+  for (const c of c3){
+    const keep=c.l.cap-c.l.care;
+    if (keep<=0.005) continue;
+    // out along the top of its own column, one fold, terminal. the money is
+    // not lost, it is held, and it never travels across the claims fan to say so.
+    const kx=xPA[0]+bw+70;
+    g+=band(xPA[0]+bw, kx, c.y, rgy, h(keep), h(keep), C.admin, .85);
+    t+=txt(kx+12, rgy+h(keep)/2+4, `${c.l.label} retention ${money(keep)}`, 13, C.ret,'start',500);
+    rgy+=Math.max(h(keep),16)+8;
+  }
+
+  // ---- claims to providers. pinned at BOTH ends; the tangle is the finding
+  // (outflows.py) and the port does not touch it.
+  let ay=disbTop, c4=[];
+  if (M.absent>0.02){
+    const bh=hb(M.absent,'Service allocation absent');
+    g+=`<rect x="${xPR[0]}" y="${ay}" width="${bw}" height="${bh}" fill="url(#ab)"/>`;
+    let cu=ay;
+    for (const c of c3){
+      const has=Object.keys(M.P.cells).some(k=>k.startsWith(c.l.key+'|'));
+      if (has||!c.l.care) continue;
+      g+=band(xPA[0]+bw, xPR[0], c.y, cu, h(c.l.care), h(c.l.care),'url(#ab)',.5); cu+=h(c.l.care);
+    }
+    t+=halo2(xPR[0]+bw+10, ay+bh/2-2,'Service allocation', 14, C.vio, 600);
+    t+=halo2(xPR[0]+bw+10, ay+bh/2+16,`ABSENT · ${money(M.absent)}`, 14, C.vio, 600);
+    ay+=bh;
+  }
+  const withCells=c3.filter(c=>Object.keys(M.P.cells).some(k=>k.startsWith(c.l.key+'|')));
+  const _k0=withCells.length?(withCells[0].l.cap-withCells[0].l.care):0;
+  let fy=(withCells.length?withCells[0].y:disbTop)+h(Math.max(_k0,0)), i=0;
+  const svcOrder=Object.entries(M.svc).sort((a,b)=>b[1]-a[1]);
+  for (const [name,v] of svcOrder){
+    const col=C.svc[i%C.svc.length], bh=hb(v, M.P.disp[name]||name);
+    g+=band(xPA[0]+bw, xPR[0], fy, ay, h(v), bh, col, .62);
+    g+=`<rect x="${xPR[0]}" y="${ay}" width="${bw}" height="${bh}" fill="${col}"/>`;
+    t+=halo2(xPR[0]+bw+10, ay+Math.max(13,bh/2+4), `${M.P.disp[name]||name} ${money(v)}`, 14);
+    fy+=h(v); ay+=bh; i++;
+  }
+
+  // ---- HR-1 fan, ordered by terminal x with origin slots dealt to match
+  const RULE_Y = Math.max(GEOM.fan.rule_y, ay+90, TB+90);
+  const REACHX={FEDERAL:xSG[0]-20, STATE_AGENCY:xSA[1], DISBURSE:xDI[1],
+                PAYER:xPA[1], CLAIMS:xCL[1], PROVIDERS:xPR[1], BENEFICIARY:xBE[0]+300};
+  const ANCH={FEDERAL:{x:xSG[0], y:fedLane[1]},
+              STATE_AGENCY:{x:xSA[0]+bw, y:disbTop+h(disb)},
+              CLAIMS:{x:xCL[0], y:disbTop+h(M.careTot)},
+              PROVIDERS:{x:xPR[0]+bw, y:ay}};
+  const falls=M.falls.concat(M.late)
+      .map(p=>({p, h:h(p.v), tx:REACHX[p.reach]}))
+      // outflows.py: whatever stops sooner must peel sooner, and whatever peels
+      // first leaves LOWEST on the trunk edge and stays lowest for the rest of
+      // its life -- so the SHORTEST-REACHING tributary is the DEEPEST row.
+      // Stacked longest-first, therefore, with the short ones below them.
+      .sort((a,b)=>b.tx-a.tx);
+  const stk={};
+  falls.forEach(f=>{
+    const a=ANCH[f.p.charged]||ANCH.STATE_AGENCY;
+    stk[f.p.charged]=(stk[f.p.charged] ?? a.y);
+    f.x0=a.x; f.from=stk[f.p.charged]; stk[f.p.charged]+=f.h;
+  });
+  // rank for the row solver: terminal x across every fan, deepest row to the
+  // shortest reach. y_src is only meaningful within a fan, so it cannot be the
+  // cross-fan key.
+  const byTx=falls.slice().sort((a,b)=>b.tx-a.tx);
+  byTx.forEach((f,i)=>{ f.rank=i; });
+  g+=`<line x1="${xFED[0]}" y1="${RULE_Y}" x2="${W-20}" y2="${RULE_Y}" stroke="${C.loss}" stroke-width="1" stroke-dasharray="5 4" opacity="0.85"/>`;
+  t+=txt(xFED[0], RULE_Y-8,'HR-1 TAKES THESE OUT',12,C.loss,'start',600);
+  const fanItems = falls.map(f=>({
+    name:f.p.label, label:PAPERNAME[f.p.label]||f.p.label,
+    sub:PAPERCLAUSE[f.p.label]||REACHWORD[f.p.reach]||'',
+    amt:f.p.v, xb:f.x0, xt:f.tx, y_src:f.rank, th:f.h,
+    fixed_y: f.p.kind==='fraud' ? f.from-8 : null,
+    anchor: f.p.kind==='fraud' ? 'start' : null, f
+  }));
+  const [fanY, fanAnchor, fanWarn, folded] = fanRows(fanItems, RULE_Y+40, []);
+  for (const it of fanItems){
+    const f=it.f;
+    const isFraud=f.p.kind==='fraud';
+    const col=isFraud?'#C0392B':(f.p.moved?'#8B5A5A':C.loss);
+    const endY=fanY[it.name];
+    g+=band(f.x0, f.tx, f.from, endY, f.h, f.h, isFraud?col:'url(#hr1)', .92);
+    g+=`<circle cx="${f.tx+4}" cy="${endY+f.h/2}" r="3.5" fill="${col}"/>`;
+    const nm=it.label;
+    if (it.compact){
+      t+=txt(f.tx+14, endY+f.h/2-3, `${nm}  \u2212${money(f.p.v)}`, 14, col,'start',600);
+      t+=txt(f.tx+14, endY+f.h/2+13, it.sub, 12,'var(--muted)','start',400,true);
+    } else {
+      t+=txt(f.tx+14, endY+f.h/2-3, nm, 14, col,'start',600);
+      t+=txt(f.tx+14, endY+f.h/2+13, it.sub, 12,'var(--muted)','start',400,true);
+      t+=txt(f.tx+14, endY+f.h/2+29, `\u2212${money(f.p.v)}`, 13.5, col,'start',600);
+    }
+  }
+  const fanBottom = Math.max(...fanItems.map(it=>fanY[it.name]+it.th+_blockH(it)));
+
+  // ---- headings
+  const heads=[['FEDERAL','federal appropriation',xFED],['STATE GOVERNMENT','blended cost allocation',xSG],
+    ['STATE AGENCY','budgeted to Medicaid',xSA],['DISBURSEMENTS','payment mechanisms',xDI],
+    ['PAYER','MCO administration',xPA],['CLAIMS','claims paid to providers',xCL],
+    ['PROVIDERS','sized by spend',xPR]];
+  let hd='';
+  const BOTTOM=fanBottom+50;
+  for (const [n,sub,cx2] of heads){
+    hd+=txt(cx2[0]+6,58,n,15,'currentColor','start',700);
+    hd+=txt(cx2[0]+6,77,sub,11.5,'var(--muted)','start',400,true);
+    hd+=`<line x1="${cx2[0]}" y1="90" x2="${cx2[0]}" y2="${BOTTOM-30}" stroke="var(--rule)"/>`;
+  }
+  hd+=`<line x1="${xFED[0]}" y1="90" x2="${W-20}" y2="90" stroke="var(--rule)" stroke-width="1.2"/>`;
+
+  let decl='';
+  if (offscale.length){
+    decl=txt(xFED[0], BOTTOM-6,
+      `NOT TO SCALE: ${offscale.map(o=>`${o.label} ${money(o.v)}`).join(', ')} drawn at a minimum visible height`,
+      12.5,'#8B5A5A','start',600);
+  }
+
+  const ZOOM={all:[xFED[0]-20,W], state:[xFED[0]-20,xDI[0]+60], agency:[xSG[0],xPA[0]+120],
+              payer:[xDI[0],xPR[0]+200], provider:[xPA[0],W]};
+  const z=ZOOM[zoom]||ZOOM.all;
+  return {svg:`<svg viewBox="${z[0]} 40 ${z[1]-z[0]} ${BOTTOM-40}" width="100%" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink)">
+    <defs><pattern id="hr1" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#C9A9A4"/><rect width="3" height="7" fill="#8B5A5A"/></pattern>
+    <pattern id="ab" width="9" height="9" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="${C.viol}"/><rect width="4.5" height="9" fill="${C.vio}"/></pattern></defs>
+    ${hd}${g}${lead}${t}${decl}</svg>`,
+    offscale, movedN:folded.size, worst:0, height:BOTTOM, warn:fanWarn, folded:[...folded]};
+}
+
+function render(){
+  const P = DATA[panelKey()];
+  const stage = document.querySelector('.stage');
+  if (!P){
+    // An empty panel is a statement, not a blank screen.
+    document.getElementById('plate').innerHTML =
+      `<div style="padding:60px 20px;max-width:760px">
+         <div style="font-family:Jost,sans-serif;font-size:11px;letter-spacing:.14em;color:var(--muted)">
+           DISTRICT OF COLUMBIA &#183; FY2030</div>
+         <h2 style="font-family:Jost,sans-serif;font-size:26px;font-weight:600;margin:12px 0 0;color:var(--vio)">
+           This panel does not exist yet.</h2>
+         <p style="font-size:16px;line-height:1.55;color:var(--ink);max-width:62ch">
+           There is no FY2030 ledger for the District. The national FY2030 panel is not a
+           stand-in for one: the District's own levers are measured for a single provision
+           and absent for the rest, so projecting the national shape onto it would invent
+           six figures nobody has.</p>
+         <p style="font-size:15px;line-height:1.55;color:var(--muted);max-width:62ch">
+           What exists today is the FY2024 actual panel. Switch the year to see it.</p>
+       </div>`;
+    document.getElementById('trk').innerHTML = '';
+    document.getElementById('layoutq').textContent = 'nothing drawn';
+    document.getElementById('checkv').textContent = '\u2014';
+    document.getElementById('checkn').textContent = 'no ledger to conserve';
+    document.getElementById('check').className = 'check';
+    document.getElementById('moved').textContent = '\u2014';
+    const sl = document.getElementById('wr');
+    sl.disabled = true; sl.style.opacity = .3;
+    document.getElementById('wrval').textContent = '\u2014';
+    document.getElementById('wrnote').textContent =
+      'No panel, so no assumption to move.';
+    return;
+  }
+  const base = P.peels.find(p=>p.label==='Work reporting');
+  const M = model(panelKey(), base ? wr : null);
+  const L = draw(M, zoomLevel);
+  document.getElementById('plate').innerHTML = L.svg;
+  document.getElementById('layoutq').innerHTML =
+    `canvas ${Math.round(L.height)}px tall · ${L.movedN} label${L.movedN===1?'':'s'} displaced`
+    + (L.movedN ? `, worst ${Math.round(L.worst)}px, each with a leader back to its band` : '')
+    + (L.offscale.length ? `<br><b style="color:#8B5A5A">${L.offscale.length} band${L.offscale.length===1?'':'s'} below the visible floor, declared on the panel</b>` : '');
+
+  // stations, and what falls between each pair
+  const fraud = M.peels.filter(p=>p.kind==='fraud').reduce((a,b)=>a+b.v,0);
+  const retention = M.lanes.reduce((a,l)=>a+((l.cap||0)-(l.care||0)),0);
+  const at = s2 => M.peels.filter(p=>p.charged===s2);
+  const delivered = M.allocated - fraud;
+  const stations = [
+    ['Projected under prior law', M.inflow, []],
+    ['Budgeted to Medicaid', M.hundred, at('FEDERAL')],
+    ['Funding Disbursed', M.disb, at('STATE_AGENCY')],
+    ['Claims Paid', M.careTot, retention>0.005
+        ? [{label:'Plan retention', v:retention, kind:'admin'}] : []],
+    ['Health Services Delivered', delivered,
+        at('CLAIMS').concat(at('PROVIDERS'))]
+  ];
+  const priorLaw = 100;
+  const MARK = {hr1:'diamond', admin:'square', return:'square', fraud:'triangle'};
+  document.getElementById('trk').innerHTML = stations.map(([cap,v,drops],i)=>{
+    const less = i ? `${((priorLaw-v)/priorLaw*100).toFixed(2)}% less` : '';
+    const dd = drops.map(d=>{
+      const shape = MARK[d.kind]||'diamond';
+      const col = d.kind==='fraud' ? '#C0392B'
+                : (d.kind==='admin'||d.kind==='return') ? '#8E9BA6' : '#8B5A5A';
+      const glyph = shape==='square' ? '\u25a0' : shape==='triangle' ? '\u25b2' : '\u25c6';
+      return `<div class="drop"><span style="color:${col}">${glyph}</span> `
+           + `<span style="color:${col}">\u2212${money(d.v)}</span> ${d.label}</div>`;
+    }).join('');
+    return `<div class="stn">
+       ${dd ? `<div class="drops">${dd}</div>` : ''}
+       <b>${money(v)}</b><span>${cap}</span>
+       ${less ? `<span class="less">${less}</span>` : ''}
+     </div>`;
+  }).join('');
+
+  // live conservation: every stage must close
+  const fed = M.peels.filter(p=>p.charged==='FEDERAL').reduce((a,b)=>a+b.v,0);
+  const ag  = M.peels.filter(p=>p.charged==='STATE_AGENCY').reduce((a,b)=>a+b.v,0);
+  const checks = [
+    ['source → budgeted', M.inflow - fed, M.hundred],
+    ['budgeted → disbursed', M.hundred - ag, M.disb],
+    ['disbursed → lanes', M.lanes.reduce((a,l)=>a+l.cap,0), M.disb],
+    ['care → services + late + absent', M.allocated + M.lateAll + M.absent, M.careTot]
+  ];
+  const worst = Math.max(...checks.map(c=>Math.abs(c[1]-c[2])));
+  const el=document.getElementById('check');
+  el.className = 'check ' + (worst < 0.005 ? 'ok' : 'bad');
+  document.getElementById('checkv').textContent = worst < 0.005 ? 'CLOSES' : 'BREAKS by ' + worst.toFixed(4);
+  document.getElementById('checkn').innerHTML = checks.map(c=>
+    `${c[0]} &#183; <span class="mono">${(c[1]-c[2]).toFixed(4)}</span>`).join('<br>');
+
+  const moved = M.peels.filter(p=>p.moved);
+  document.getElementById('moved').innerHTML = moved.length
+    ? moved.map(p=>`${p.label}: ${money(P.peels.find(q=>q.label===p.label).v)} → <b>${money(p.v)}</b>`).join('<br>')
+      + `<br>lanes rescaled ×${M.f.toFixed(4)}`
+    : 'nothing — this is the published panel';
+
+  const slider=document.getElementById('wr');
+  if (base){
+    slider.disabled=false; slider.style.opacity=1;
+    document.getElementById('wrval').textContent = money(wr);
+    document.getElementById('wrnote').textContent = 'CBO range $2.90 – $5.40. Central estimate $4.11.';
+  } else {
+    slider.disabled=true; slider.style.opacity=.35;
+    document.getElementById('wrval').textContent = 'ABSENT';
+    document.getElementById('wrnote').textContent =
+      'FY2024 is as-is: the law is not in this panel, so there is no work-reporting figure to move.';
+  }
+}
+
+document.getElementById('wr').addEventListener('input', e=>{ wr=parseFloat(e.target.value); render(); });
+document.getElementById('reset').addEventListener('click', ()=>{ resetAssumption(); render(); });
+document.querySelectorAll('#zoom button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    zoomLevel=b.dataset.z;
+    document.querySelectorAll('#zoom button').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+    render();
+  });
+});
+function resetAssumption(){
+  const P = DATA[panelKey()];
+  const base = P ? P.peels.find(p=>p.label==='Work reporting') : null;
+  wr = base ? base.v : null;
+  if (wr) document.getElementById('wr').value = wr;
+}
+document.querySelectorAll('#place button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    place=b.dataset.k;
+    document.querySelectorAll('#place button').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+    resetAssumption(); render();
+  });
+});
+document.querySelectorAll('#year button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    year=b.dataset.y;
+    document.querySelectorAll('#year button').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+    resetAssumption(); render();
+  });
+});
+
+resetAssumption();
+render();
+</script>
+</body>
+</html>

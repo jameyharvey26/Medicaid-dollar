@@ -51,8 +51,8 @@ V_DC = View(
     kicker="AS IS  \u00b7  DISTRICT OF COLUMBIA  \u00b7  FY2024",
     title="$100 of DC Medicaid spending, before P.L. 119-21",
     strap="REDUCED FIDELITY. CMS-64 / MACStats FY2024 DC spine; payer peel DHCF "
-          "CY2023; MCO service mix is a national proxy (modelled). Vintages need "
-          "re-checking.",
+          "CY2023; the District publishes no managed-care service mix, so that "
+          "fan is absent. Vintages need re-checking.",
 )
 
 

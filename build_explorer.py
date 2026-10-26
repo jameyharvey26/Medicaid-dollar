@@ -155,10 +155,17 @@ def main():
     # network. The thumbnail is page 1 of the very PDF beside it, rasterized
     # here rather than kept as a separate image that could drift from it.
     import pymupdf
-    paper = os.path.join(OUT, f"Medicaid_Dollars_National_v{release.VERSION}.pdf")
+    # ORDERING DEFECT, 8 October. This read OUT, which only publish.py writes
+    # to — and publish.py requires the built explorer, so the two could never
+    # be ordered. render_v8_0.py writes the paper into the REPO; read it there,
+    # where it exists before either of them runs, and fall back to OUT for a
+    # warm working copy whose repo build has been cleaned.
+    paper = os.path.join(REPO, f"Medicaid_Dollars_National_v{release.VERSION}.pdf")
     if not os.path.exists(paper):
-        raise SystemExit("publish.py has not written the paper; "
-                         "build_explorer.py cannot embed it")
+        paper = os.path.join(OUT, f"Medicaid_Dollars_National_v{release.VERSION}.pdf")
+    if not os.path.exists(paper):
+        raise SystemExit("the paper has not been rendered; run render_v8_0.py "
+                         "before build_explorer.py")
     _d = pymupdf.open(paper)
     _thumb = _d[0].get_pixmap(dpi=110).tobytes("png")
     # D-117, JW 28 September. The whitepaper's own address, given by JW for

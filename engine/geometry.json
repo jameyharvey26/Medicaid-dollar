@@ -1,0 +1,59 @@
+{
+ "cols": {
+  "FEDERAL": [
+   160,
+   350
+  ],
+  "STATE_GOVT": [
+   350,
+   584
+  ],
+  "STATE_AGENCY": [
+   584,
+   844
+  ],
+  "DISBURSE": [
+   844,
+   1060
+  ],
+  "PAYER": [
+   1060,
+   1300
+  ],
+  "CLAIMS": [
+   1300,
+   1560
+  ],
+  "PROVIDERS": [
+   1560,
+   1760
+  ],
+  "BENEFICIARY": [
+   1760,
+   2180
+  ]
+ },
+ "source_x": 200.0,
+ "canvas": {
+  "w": 2200,
+  "h": 1416
+ },
+ "ys": 4.4,
+ "bw": 18,
+ "centre_y": 540,
+ "ctrl_max": 340.0,
+ "fan": {
+  "top": 800.0,
+  "min_gap": 40.0,
+  "tight_gap": 8.0,
+  "label_h": 45.0,
+  "label_h_tight": 30.0,
+  "rule_y": 1146.0,
+  "floor": 1140.0,
+  "stack_top": 806.0
+ },
+ "source_tops": {
+  "federal": 126.0,
+  "state": 655.0
+ }
+}

@@ -49,12 +49,6 @@ EXPECT = {
                (r"tracker line adds up as printed", 3,
                 "every panel's tracker line reconciles on its printed figures")],
     ),
-    "crossings.py": dict(
-        must=["dc_2024", "national_2024", "national_2030_holds",
-              "national_2030_mixed", "national_2030_scales"],
-        regex=[(r"0 crossing\(s\) in the margin", 5, "five panels clean")],
-        forbid=["ORPHAN"],
-    ),
     # FALSE GREEN, 27 September. This suite runs build.py, which renders the
     # FY2030 mixed panel only; the two sensitivity variants are behind
     # `build.py sensitivity` and nothing ran it. renderproof.py compares the
@@ -66,6 +60,17 @@ EXPECT = {
     "build.py sensitivity": dict(
         must=["build complete."],
         slow=True,
+    ),
+    # ORDERING DEFECT, 8 October. crossings.py sat second, above the gate that
+    # draws two of the five panels it measures. On a clean clone it reported
+    # three clean and two MISSING and the suite read it as a content failure.
+    # Same class as the renderproof defect below, and the same fix: build the
+    # panel before measuring it.
+    "crossings.py": dict(
+        must=["dc_2024", "national_2024", "national_2030_holds",
+              "national_2030_mixed", "national_2030_scales"],
+        regex=[(r"0 crossing\(s\) in the margin", 5, "five panels clean")],
+        forbid=["ORPHAN"],
     ),
     # ORDERING DEFECT, 7 October. The FALSE GREEN fix above added
     # `build.py sensitivity` as a gate but placed it BELOW renderproof.py,
@@ -119,35 +124,13 @@ EXPECT = {
     # proof renders the built page rather than reading the template, because
     # the failure it exists to catch is arithmetic in the page's own script,
     # which no static read can see.
-    "build_explorer.py": dict(
-        must=["medicaid_dollar_explorer.html", "explorer_data.json"],
-        slow=True,
-    ),
-    "explorerchrome.py": dict(
-        # JW, 27 September: new chrome only. palette.py is not measured here
-        # and the sankey and paper palettes are not to be changed.
-        must=["meet WCAG 2.1 AA, measured not asserted"],
-        forbid=["UNMEASURED"],
-    ),
-    # D-107. All three artifacts take one version, from release.VERSION, and
-    # this builds every one of them HTML and PDF. It runs the paper renderer
-    # itself, whose layout gates are honestly red; publish.py reports those
-    # and writes the artifact anyway, because the alternative is that the only
-    # way to ship is to green a detector that is telling the truth.
-    "publish.py": dict(
-        must=["Medicaid_Dollars_National_v", "MHPA_Board_Deck_v",
-              "medicaid_dollar_explorer_v"],
-        regex=[(r"_v\d+\.\d+\.(?:html|pdf)", 5, "five artifacts at one "
-                "version: paper HTML and PDF, deck HTML and PDF, explorer HTML")],
-        slow=True,
-    ),
-    "explorerproof.py": dict(
-        must=["every figure on screen is one the ledger serialized",
-              "no dollar literal in the template"],
-        regex=[(r"swept \d+ page states", 1,
-                "every year, variant, lever and cumulative selection swept")],
-        slow=True,
-    ),
+    # ORDERING DEFECT, 8 October. render_v8_0.py writes the paper PDF into the
+    # repo and build_explorer.py embeds page 1 of it, so the renderer has to
+    # run first. It was last in the suite. build_explorer.py also read the
+    # copy in the outputs directory, which only publish.py writes and which
+    # requires the built explorer in turn — a cycle no ordering could satisfy.
+    # Fixed in build_explorer.py to read the repo copy. The paper's own layout
+    # gates stay honestly red; that is D-107 and not this.
     "render_v8_0.py": dict(
         # 2026-09-26b, D-93. This gate is RED and is expected to be red.
         #
@@ -186,6 +169,63 @@ EXPECT = {
               "no generated figure carries more than",
               "every leader lands where the rule says"],
         forbid=["mismatch(es)"],
+        slow=True,
+    ),
+    "build_explorer.py": dict(
+        must=["medicaid_dollar_explorer.html", "explorer_data.json"],
+        slow=True,
+    ),
+    # D-118, JW 8 October. The refactor to one engine moves the drawing into
+    # the browser, and the thing most easily lost in that move is not a figure
+    # — prove.py defends those — but a SENTENCE. 591 strings across five
+    # panels, of which 400 are the labels and prose that tell a reader what a
+    # band means. None of it lives in the ledger, so a second renderer drops
+    # it silently and the panel still looks finished. This gate pins every
+    # string to a verdict and fails on any string nobody has classified.
+    # UPDATED 8 October, same session. The engine now renders headless via
+    # engine_texts.py, so `ported` is measured on the two panels the engine
+    # draws and still only declared on the other three — the gate names which
+    # is which rather than averaging them into one number. Measuring it the
+    # first time demoted 25 strings from ported to pending, including the pie
+    # key and every per-service loss bar, which had been claimed on the
+    # strength of the spike looking finished.
+    #
+    # A large `pending` count is expected for the whole refactor; that is the
+    # burndown, not a fault. Failure means a string nobody has classified, or
+    # a string claimed ported that is not on the engine's reading surface.
+    "engine_texts.py": dict(
+        must=["wrote engine_texts.json"],
+        slow=True,
+    ),
+    "teachingproof.py": dict(
+        must=["every teaching string is classified",
+              "measured against the engine"],
+        regex=[(r"ported \d+ of \d+, \d+ pending", 1, "the burndown reports")],
+        forbid=["the register does not account for"],
+    ),
+    "explorerchrome.py": dict(
+        # JW, 27 September: new chrome only. palette.py is not measured here
+        # and the sankey and paper palettes are not to be changed.
+        must=["meet WCAG 2.1 AA, measured not asserted"],
+        forbid=["UNMEASURED"],
+    ),
+    # D-107. All three artifacts take one version, from release.VERSION, and
+    # this builds every one of them HTML and PDF. It runs the paper renderer
+    # itself, whose layout gates are honestly red; publish.py reports those
+    # and writes the artifact anyway, because the alternative is that the only
+    # way to ship is to green a detector that is telling the truth.
+    "publish.py": dict(
+        must=["Medicaid_Dollars_National_v", "MHPA_Board_Deck_v",
+              "medicaid_dollar_explorer_v"],
+        regex=[(r"_v\d+\.\d+\.(?:html|pdf)", 5, "five artifacts at one "
+                "version: paper HTML and PDF, deck HTML and PDF, explorer HTML")],
+        slow=True,
+    ),
+    "explorerproof.py": dict(
+        must=["every figure on screen is one the ledger serialized",
+              "no dollar literal in the template"],
+        regex=[(r"swept \d+ page states", 1,
+                "every year, variant, lever and cumulative selection swept")],
         slow=True,
     ),
 }
