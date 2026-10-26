@@ -27,7 +27,13 @@ Also ruled this session:
 - Zoom by column, so a small lane can be read at its true proportion rather
   than only at a floor.
 - Where the ledger, the engine and the paper disagree, **the paper's anchoring
-  and termination are correct**.
+  and termination are correct — FOR NOW.** This is a port-phase rule, not a
+  permanent one. The paper wins because it is the only artifact reasoned
+  through end to end while the engine is a partial reimplementation. Once the
+  engine renders every panel the paper does, it becomes the baseline point of
+  truth and new papers are generated downstream of it; after that, a
+  disagreement means the panel is stale, not that the engine is wrong. See
+  GEOMETRY_CONTRACT.md, "Which source wins".
 
 ## What landed
 

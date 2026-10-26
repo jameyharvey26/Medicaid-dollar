@@ -16,6 +16,35 @@ detail has to be found now rather than at render time.
 
 ---
 
+## Which source wins — and this changes when the port finishes
+
+**During the port, the paper wins.** Where the ledger, the engine and the
+published diagram disagree on anchoring, termination or wording, the v8.0
+FY2030 panel is correct and the engine is wrong. That is not because the paper
+is inherently authoritative. It is because it is the only artifact that has
+been reasoned through end to end, and the engine is a partial reimplementation
+being brought up to it. A disagreement today is a port defect.
+
+**Once the engine is working, this reverses.** The engine becomes the baseline
+point of truth: new papers and new renders match the engine's internal logic,
+and future paper diagrams are generated downstream of it — which is the whole
+point of ONE ENGINE (JW, 2026-10-23). At that moment a disagreement between the
+engine and a published panel means the panel is out of date, not that the
+engine is wrong.
+
+**The handover is when steps 1–6 of the port are done and the engine renders
+every panel the paper does.** Until then, defer to the paper. After it, stop —
+and in particular stop treating v8.0's hand-tuning as a specification. Some of
+it (the staggered pie columns, the declared nudge at `sankey.py:958`, the
+Rx-drugs 30-unit offset) exists because a human was correcting a renderer that
+could not yet solve those cases. Once the solver handles them, reproducing the
+workaround would be preserving a scar.
+
+JW, 2026-10-26: *"Later once the engine is working, new papers and new renders
+should match the internal logic of the engine as a baseline point of truth."*
+
+---
+
 ## 1. The spine. Frozen, and not derived from anything.
 
 `outflows.COLS` is the single declaration; `sankey.py` imports it rather than
