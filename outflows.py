@@ -136,7 +136,14 @@ OUTFLOWS = {
         # it cuts them. The solver places by bite order and cannot know that;
         # directed payment caps bites higher and lands at 932, so an unpinned
         # row put this one 11 units under it and the two curves met at x=1475.
-        term_col="BENEFICIARY", term_y=1012.0, ret=False, label_side="end",
+        # Declared as an offset BELOW THE FAN'S FIRST ROW, not as an absolute
+        # canvas y. It was `term_y=1012.0`, which is only the right height on a
+        # panel whose flow floor happens to put the HR-1 rule at 913.6. The
+        # pin is a statement about this tributary's position relative to the
+        # fan — far enough under directed payment caps that the two curves
+        # clear — and that statement has to survive the rule moving. It did not
+        # travel to the engine at all, whose rule sits elsewhere.
+        term_col="BENEFICIARY", term_dy=80.4, ret=False, label_side="end",
         reach="BENEFICIARY", label="Medicare Savings rule suspended",
         # JW, 2026-09-25. This dollar would have paid a Medicare premium for a
         # dual eligible; when it is taken, the beneficiary pays it. It used to

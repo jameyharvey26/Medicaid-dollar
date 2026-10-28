@@ -210,5 +210,78 @@ heading is omitted and the absence stated below.
 - **The paper's names differ from the ledger's.** "Other" vs "Everything else",
   "Medicare Savings rule suspended" vs "Blocked senior enrollment rule". The
   plate's terminal sub-label is what a reader sees and the paper is
-  authoritative; that mapping currently lives in a JavaScript constant in the
-  engine and belongs in the ledger.
+  authoritative. CLOSED for the printed NAME on 26 Oct: `label` is declared in
+  `outflows.OUTFLOWS`, exported, and read by the engine. The terminal
+  SUB-CLAUSE is still a JavaScript constant (`PAPERCLAUSE`); it lives in
+  `instances.hr1_term` on the paper side and has not been moved.
+- **A hand-typed input reads as an algorithm defect.** Every crossing chased on
+  26 Oct looked like a bug in `_place` and not one of them was. `REACHX`,
+  `ANCH`, the bite x's and the HR-1 rule height were all typed into the engine
+  instead of exported, and each wrong number surfaced as a ribbon crossing
+  somewhere else entirely. Before touching the solver, check that what it is
+  being fed came out of `geometry_export.py`.
+
+## 10. MOSTLY CLOSED: clearance is measured along the curve now
+
+**27 Oct.** The ribbon case is solved, and not where we expected. `_place` was
+never going to fix it: the row ORDER was already right and a pin can only move
+a terminal, not the curve between. What decides whether two ribbons cross is
+how steeply the longer one leaves — and shortening its leading control point
+does nothing, because the trailing one moves with it and the curve stays
+symmetric.
+
+The fall has to be made ASYMMETRIC. `ctrlPair(x0,x1,drop)` pulls both control
+points up against the departure as `drop` goes to 1, so the ribbon dives at
+once and runs flat the rest of the way. `dropFor` derives it per ribbon from
+what that ribbon actually passes under: wherever it crosses the terminal of
+something that stops sooner and sits higher, it must already be `CLEAR` units
+below that terminal when it gets there. It takes the gentlest drop that
+satisfies every such constraint, so a ribbon with nothing to clear keeps the
+plate's default shape.
+
+All three panels are at zero crossings with no pin doing the work.
+
+What this leaves open, which is the rest of the old §10:
+
+- The label metric. `_blockH` / `_labelW` approximate what the halo paints, and
+  the Python comment records an amount sitting invisibly under another label's
+  background while the solver reported 25 units of clearance. Labels, unlike
+  ribbons, are rectangles and the drop rule does not touch them.
+- `outflows.OUTFLOWS["Blocked senior enrollment rule"].term_dy`, the pin, is no
+  longer load-bearing in the engine. Whether the PAPER still needs it is a
+  question for after the handover, and removing it there is a decision, not a
+  cleanup.
+
+## 10a. HISTORICAL: `_place` measures clearance at the wrong place
+
+`_place` keeps one terminal clear of another by comparing their TERMINAL
+heights and flooring the second by `gap`. That is not where two ribbons
+conflict. They conflict out along the curve — typically where the
+longer-reaching ribbon passes the shorter one's terminal x, which may be a
+thousand units upstream of its own terminal and far below the height the
+solver compared.
+
+Three things in this system are workarounds for that one gap:
+
+- `outflows.OUTFLOWS["Blocked senior enrollment rule"].term_dy`, the pin. Its
+  own comment says the solver "places by bite order and cannot know" that
+  directed payment caps bites higher. A solver that measured the curve would
+  know, and the pin could go.
+- The right-edge constraint added to the engine's `_place` but absent from the
+  Python, which has only a left-edge test.
+- The label metric. `_blockH` / `_labelW` approximate what the halo paints, and
+  the Python comment records an amount sitting invisibly under another label's
+  background while the solver reported 25 units of clearance. Three labels on
+  the engine's US×2030 panel currently sit over their own ribbons — visible,
+  not reported.
+
+**When to do it:** after the pies (§8 step 6) and after the engine is pointed
+at `national_2030_holds` and `national_2030_scales`, so that five panels are
+measured rather than three — a clearance solver is only as good as the cases it
+is tested against. Do it BEFORE the handover declaration, not after: once the
+engine is the baseline, a hand-tuned pin in the paper becomes a specification
+rather than a workaround, and v8.0's hand-tuning is explicitly not that.
+
+Estimated a day. It replaces the pin, the right-edge special case and the label
+metric with one measurement, and it is the last thing standing between the
+engine's fan and the paper's.

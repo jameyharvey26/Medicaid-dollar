@@ -76,15 +76,31 @@ def load(svg):
 
 
 def envelope(curves, step=4.0):
-    """Vertical extent of the main flow body, per x bucket."""
+    """Vertical extent of the main flow body, per x bucket.
+
+    Every bucket a band SPANS is filled, not only the ones its samples happen
+    to land in. A curve is sampled SAMPLES times over its own width, so a wide
+    band steps about three units at a time and leaves the occasional four-unit
+    bucket empty; a crossing landing in one of those holes was reported as
+    being out in the margin when it was in the middle of the flow. The hole was
+    an artefact of the sampling rate, never a fact about the drawing.
+    """
     env = {}
+
+    def put(k, yt, yb):
+        lo, hi = env.get(k, (1e9, -1e9))
+        env[k] = (min(lo, yt), max(hi, yb))
+
     for top, bot, _mid, col, _lab in curves:
         if col not in BODY:
             continue
-        for (x, yt), (_x2, yb) in zip(top, bot):
-            k = int(x // step)
-            lo, hi = env.get(k, (1e9, -1e9))
-            env[k] = (min(lo, yt), max(hi, yb))
+        pts = list(zip(top, bot))
+        for ((xa, ta), (_xa2, ba)), ((xb, tb), (_xb2, bb)) in zip(pts, pts[1:]):
+            k0, k1 = int(min(xa, xb) // step), int(max(xa, xb) // step)
+            for k in range(k0, k1 + 1):
+                put(k, min(ta, tb), max(ba, bb))
+        (xl, tl), (_xl2, bl) = pts[-1]
+        put(int(xl // step), tl, bl)
     return env
 
 

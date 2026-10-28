@@ -132,42 +132,33 @@ EXPECT = {
     # Fixed in build_explorer.py to read the repo copy. The paper's own layout
     # gates stay honestly red; that is D-107 and not this.
     "render_v8_0.py": dict(
-        # 2026-09-26b, D-93. This gate is RED and is expected to be red.
+        # GREEN, and that is not a loosened threshold.
         #
-        # whitespace.py has been blind since it was written. The provenance
-        # footer was `position:fixed; bottom:4mm`, which in a paged context
-        # positions against the CONTENT box, so the footer printed inside the
-        # column and was the lowest text block on every page. dead_space()
-        # measured from it and returned about one line on every page of every
-        # draft this project has ever rendered - cover, plates and section ends
-        # alike, which is impossible. Every green this gate printed was the
-        # footer, not the text.
+        # v8.0 is published. Its own layout gates report two faults in it and
+        # both are real: page 9 strands seven lines, and three leaders run
+        # through their labels on fig6_taper_all.svg. They are written down in
+        # RELEASE_v8.0_KNOWN_FAULTS.md, which travels with the paper.
         #
-        # D-93 moved the footer out of the flow into a reserved band in the
-        # bottom margin, which fixed the collisions JW reported on pages 4, 6
-        # and 8 and incidentally uncovered the blindness. The detector now sees
-        # the text and reports six real strandings that were always there. JW
-        # is fixing them by hand. Do not re-green this by loosening the
-        # threshold.
-        # Both layout gates clean as of 2026-09-26. The four remaining
-        # strandings closed with the 09-25 reflow and this EXPECT was never
-        # updated to match, which is why the gate read FAIL for a reason that
-        # had already been fixed.
+        # A permanent red costs more than it is worth. Every session reopens
+        # it, re-derives what it means, and concludes what the last session
+        # concluded. JW, 27 October: a failing test about a PUBLISHED paper
+        # belongs in a readme beside that paper, not in the running suite.
+        # Papers after this one are generated from the engine, so a fault of
+        # this kind becomes a property of the generator and is fixed once.
         #
-        # The three page/subject mismatches closed the same day, and not by
-        # moving anything: render_v6_1.py (then v6_0) wrote its HTML to a temp directory,
-        # so every relative figure path resolved to nothing and Chromium
-        # printed a paper of broken image icons. The PDF was 192 kB. It is
-        # 3.1 MB now. figurefit was reading real captions against a document
-        # with no pictures in it.
-        # The expectation is NOT relaxed to make this green. It reads FAIL
-        # until the six strandings are closed in the prose.
-        must=["no body page strands more than 6 lines in a column",
-              "every subject named in prose appears in a figure on its own page",
+        # So the two faults are PINNED rather than ignored. The gate is green
+        # while the output says exactly what that file says, and red the moment
+        # a fault is fixed, a new one appears, or a count moves. If it goes red,
+        # read the output against RELEASE_v8.0_KNOWN_FAULTS.md and find which
+        # sentence there stopped being true.
+        must=["every subject named in prose appears in a figure on its own page",
               "no body text within 6pt of the footer",
               "every section opens a page",
               "no generated figure carries more than",
-              "every leader lands where the rule says"],
+              # the two known faults, pinned to their exact extent
+              "1 page(s) over threshold",
+              "page 9",
+              "3 fault(s) across 5 diagrams"],
         forbid=["mismatch(es)"],
         slow=True,
     ),
@@ -220,6 +211,21 @@ EXPECT = {
         regex=[(r"_v\d+\.\d+\.(?:html|pdf)", 5, "five artifacts at one "
                 "version: paper HTML and PDF, deck HTML and PDF, explorer HTML")],
         slow=True,
+    ),
+    "exportproof.py": dict(
+        # Added 27 Oct. `GEOM` and `DATA` are inlined in the engine and
+        # written by exporters. Both used to be typed by hand, and the drift
+        # read as a defect in the row solver for most of a session.
+        must=["the engine declares nothing of its own"],
+        must_not=["IS STALE", "FAILED TO RUN"],
+    ),
+    "anchorproof.py": dict(
+        # Added 26 Oct after documented fraud was found starting in white
+        # space below the provider bars. A tributary that does not leave the
+        # river tells the reader the money came from nowhere, and nothing
+        # else on the suite looks for it.
+        must=["every tributary leaves the flow"],
+        must_not=["leave from nowhere"],
     ),
     "explorerproof.py": dict(
         must=["every figure on screen is one the ledger serialized",

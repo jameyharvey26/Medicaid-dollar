@@ -879,6 +879,9 @@ def _solve_pies(order, node, gt):
     return {p:[M[p][g]/sum(M[p].values()) for g in G] for p in order}
 
 # --------------------------------------------------------------------------
+FAN_TOP_OFF = 18.0   # the fan's first row, below the HR-1 rule. One place.
+
+
 def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
     """HR-1 tributaries. Each leaves flush with the edge it comes from and
     terminates downstream of its own bite x (S-055, S-057). Terminal geometry
@@ -897,6 +900,19 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
     # Solve the fan: terminals are placed so no tributary crosses another
     # (STYLE_GUIDE 2.9). Nothing here is hand-positioned.
     items=[]
+
+    def _pin_y(name, fan_top):
+        """A declared terminal height, absolute or relative to the fan.
+
+        `term_dy` is the one that travels: an absolute `term_y` is only correct
+        on a panel whose flow floor puts the rule where it was written for, and
+        it cannot be exported to a renderer whose rule sits elsewhere.
+        """
+        d = OUTFLOWS.get(name, {})
+        if d.get("term_dy") is not None:
+            return fan_top + d["term_dy"]
+        return d.get("term_y")
+
     for name,xb,yb,v in bites:
         xt,sub = cfg.hr1_term[name]
         assert xt > xb, f"{name}: terminal {xt} is upstream of its bite {xb} (S-057)"
@@ -909,7 +925,7 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
                           # solver cannot place correctly from bite order alone.
                           # The mechanism already existed for the ordinary
                           # outflows; the HR-1 fan simply never read it.
-                          fixed_y=OUTFLOWS.get(name,{}).get("term_y")))
+                          fixed_y=_pin_y(name, rule_y + FAN_TOP_OFF)))
     # Tributaries that share a terminal column stack CONTIGUOUSLY there, so the
     # reader can add their thicknesses by eye and get the column's subtraction.
     # Their labels become a keyed list beside the stack rather than a block under
@@ -926,7 +942,8 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
     # terminal. Every tributary is placed by the solver, individually.
     STACKS={}
     solo=list(items)
-    YT, ANCH, fan_warn, COMPACT = fan_rows(solo + list(pinned), top=rule_y+18,
+    YT, ANCH, fan_warn, COMPACT = fan_rows(solo + list(pinned),
+                                           top=rule_y + FAN_TOP_OFF,
                                            obstacles=obstacles)
     for w in fan_warn:
         print(f"  WARNING  fan layout: {w}")

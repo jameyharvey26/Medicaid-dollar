@@ -35,8 +35,22 @@ PANELS = {("US", "2024"): "national_2024",
           ("US", "2030"): "national_2030_mixed",
           ("DC", "2024"): "dc_2024"}
 
-# The engine's main-flow lanes, the same six the paper's BODY names.
-ENGINE_BODY = {"#3D6E8C", "#A8BFCE", "#1F7A5A", "#4A54A8", "#6F80C4", "#8494A6"}
+# The engine's main flow, which is what the envelope is derived from. The first
+# six are the lanes the paper's own BODY names: federal, state, trunk, MCO, dual,
+# fee-for-service.
+#
+# The rest are the service fan. They belong here and their absence was a
+# detector defect, not a finding. The paper carries lane-coloured bands all the
+# way to the CLAIMS column and only then fans out by service, so a tributary
+# leaving the claims block crosses BODY on its way down and is exempt under
+# S-076 -- sankey.py says so in as many words: "The ribbon then crosses the FFS
+# lane on its way down, which is a body crossing and correct." The engine draws
+# no claims node, so the same region is service-coloured, and with these hexes
+# missing the envelope simply stopped at x=1300 and every body crossing past it
+# was reported as a crossing in the margin. The rule is unchanged; the palette
+# it is measured against is now the one actually on the page.
+ENGINE_BODY = {"#3D6E8C", "#A8BFCE", "#1F7A5A", "#3f8f8a", "#9a6fa6", "#5f7f96",
+               "#2E8B6B", "#57A98C", "#83C3A8", "#AEDAC6", "#D2EAE0"}
 
 
 def dump():

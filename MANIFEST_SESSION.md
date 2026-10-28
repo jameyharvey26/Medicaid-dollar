@@ -2671,3 +2671,85 @@ scroll at either, all ten figures loading.
 and the Download button in the explorer's Summary point there. Declared in
 `build_explorer.py` beside the file it names, so the two cannot drift; the
 landing URL stays in `landing.py` and remains a different thing.
+
+**D-118 · The engine stopped being hand-typed.** 26–27 October.
+
+Two declarations in `engine/explorer_engine.html` were maintained by hand:
+`GEOM` and `DATA`. Both are now written by exporters — `geometry_export.py`
+rewrites the `const GEOM` line, `engine_data_export.py` rewrites `const DATA` —
+and neither is edited directly again.
+
+This was not housekeeping. The hand-typed spine had drifted from
+`instances.T_SLOT` in three of seven tracker slots and carried an invented
+PROVIDERS slot the lattice does not have, which is what dragged directed
+payment caps downstream into the fan and made it cross. Every crossing chased
+on 26 October looked like a defect in `_place` and not one of them was. And
+because nothing carried a ledger figure to the engine, public-company earnings
+could not be drawn at all: the paper draws it, the ledger holds it, the engine
+had no way of being told.
+
+`engine_data_export.py` refuses to write if a lane's retention does not equal
+its administration plus its margin. A split the ledger does not stand behind is
+worse than no split.
+
+**D-119 · `anchorproof.py`, a new gate.** Added after documented fraud was
+found leaving from white space below the provider bars — anchored to the bottom
+of the bar stack, which is under the river and has gaps in it. A tributary that
+does not leave the flow tells the reader the money came from nowhere, and no
+other gate looks for it. It caught a second one immediately: the directed
+payment caps bite was starting fifteen units above the care body, in the gap
+the retention had opened.
+
+A tributary may also leave another tributary — plan administration and
+shareholder earnings come out of the retention pool, not out of the hundred
+directly — so the ends of tributaries count as ground.
+
+**D-120 · Clearance is measured along the curve.** Contract §10 is rewritten.
+Two ribbons cross when the longer one is still high where the shorter one
+stops; row order cannot fix that because the order is already right, and the
+pin could only move a terminal. `ctrlPair(x0,x1,drop)` front-loads the fall and
+`dropFor` derives the drop per ribbon from what that ribbon passes under. All
+three panels are at zero crossings with no pin doing the work.
+
+`OUTFLOWS["Blocked senior enrollment rule"].term_dy` was changed from an
+absolute `term_y` to an offset below the fan top — the absolute value was only
+correct on the one panel it was written for — and the engine now ignores it
+entirely (JW, 27 October). The paper still reads it and still needs it. The
+renders moved 0.1–1.1px and were re-blessed with that as the reason.
+
+**D-121 · Two detector defects, both found while chasing figures.**
+`crossings.envelope` bucketed x at four units while a band samples about every
+three, so wide bands left empty buckets and any crossing landing in one was
+reported as being out in the margin. Every bucket a band spans is filled now;
+the paper is still zero across all five panels. And `ENGINE_BODY` was missing
+the engine's own service palette, so the envelope stopped at x=1300 and every
+body crossing past it was reported.
+
+**D-122 · `exportproof.py`, a new gate.** 27 October. `GEOM` and `DATA` are
+inlined in the engine and written by exporters, and that rule needed a gate or
+it was a comment. It re-runs both exporters against a copy of the engine and
+compares — it never writes to the tree, so a red gate leaves everything exactly
+as it found it — and names the drift: a hand edit to one tracker slot comes
+back as `/term_slot/BENEFICIARY: engine 2060.0, export 2180.0`, which is the
+exact value that cost most of a session when nothing was watching for it.
+
+The exporters take `EXPORTPROOF_ENGINE` to write somewhere other than the
+engine. Nothing else sets it.
+
+**D-123 · A failing test about a published paper lives beside the paper.**
+JW, 27 October. `render_v8_0.py` had been honestly red for a month over two
+real faults in v8.0 — page 9 strands seven lines, three leaders run through
+their labels on `fig6_taper_all.svg`. A permanent red is a ghost: every session
+reopens it, re-derives what it means, and concludes what the last session
+concluded.
+
+The faults are now written down in `RELEASE_v8.0_KNOWN_FAULTS.md`, which
+travels with the paper, and `gates.py` PINS them to their exact extent — one
+page over threshold, page 9, seven lines; three leader faults across five
+diagrams. Green while that is true, red the moment a fault is fixed, a new one
+appears, or a count moves. It is an expectation, not a suppression, and the
+expectation is that file.
+
+This is a last-of-its-kind problem. v8.0 is the last paper assembled against a
+fixed layout; papers after it are generated from the engine, so a fault of this
+class becomes a property of the generator and is fixed once.

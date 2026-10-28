@@ -50,10 +50,154 @@
   "label_h_tight": 30.0,
   "rule_y": 1146.0,
   "floor": 1140.0,
-  "stack_top": 806.0
+  "stack_top": 806.0,
+  "top_off": 18.0
  },
  "source_tops": {
   "federal": 126.0,
   "state": 655.0
+ },
+ "term_slot": {
+  "FEDERAL": 350.0,
+  "STATE_AGENCY": 844.0,
+  "DISBURSE": 1060.0,
+  "PAYER": 1300.0,
+  "CLAIMS": 1560.0,
+  "BENEFICIARY": 2180.0
+ },
+ "term_fallback": "charged",
+ "outflows": {
+  "Administration": {
+   "cls": "ordinary",
+   "src": "STATE_AGENCY",
+   "edge": "top",
+   "src_x": 639.0,
+   "term_col": "STATE_AGENCY",
+   "term_y": 250,
+   "ret": false
+  },
+  "Federal oversight": {
+   "cls": "ordinary",
+   "src": "STATE_AGENCY",
+   "edge": "top",
+   "src_x": 689.0,
+   "term_col": "STATE_AGENCY",
+   "term_y": 206,
+   "ret": false
+  },
+  "Medicare premiums": {
+   "cls": "ordinary",
+   "src": "STATE_AGENCY",
+   "edge": "top",
+   "src_x": 739.0,
+   "term_col": "FEDERAL",
+   "term_y": 134,
+   "ret": true
+  },
+  "MCO plan administration": {
+   "cls": "ordinary",
+   "src": "PAYER",
+   "edge": "top",
+   "term_col": "PAYER",
+   "ret": false
+  },
+  "Dual MCO plan administration": {
+   "cls": "ordinary",
+   "src": "PAYER",
+   "edge": "top",
+   "term_col": "PAYER",
+   "ret": false
+  },
+  "Public-company earnings": {
+   "cls": "ordinary",
+   "src": "PAYER",
+   "edge": "top",
+   "term_col": "PAYER",
+   "ret": false
+  },
+  "Vaccines for Children": {
+   "cls": "ordinary",
+   "src": "FEDERAL",
+   "edge": "top",
+   "src_x": 218.0,
+   "term_col": "FEDERAL",
+   "ret": true
+  },
+  "Documented fraud": {
+   "cls": "ordinary",
+   "src": "CLAIMS",
+   "edge": "bottom",
+   "src_x": 1306.0,
+   "term_col": "PROVIDERS",
+   "term_y": 880,
+   "ret": false
+  },
+  "Provider tax limits": {
+   "cls": "hr1",
+   "src": "FEDERAL",
+   "edge": "fed_bottom",
+   "src_x": 300.0,
+   "term_col": "FEDERAL",
+   "ret": false,
+   "label_side": "end"
+  },
+  "Work reporting": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 688.0,
+   "term_col": "DISBURSE",
+   "ret": false,
+   "reach": "DISBURSE"
+  },
+  "Six-month renewals": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 722.0,
+   "term_col": "PAYER",
+   "ret": false,
+   "reach": "PAYER"
+  },
+  "Blocked Medicaid enrollment rule": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 756.0,
+   "term_col": "CLAIMS",
+   "ret": false,
+   "reach": "CLAIMS",
+   "label": "Medicaid enrollment rule suspended"
+  },
+  "Everything else": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 790.0,
+   "term_col": "STATE_AGENCY",
+   "ret": false,
+   "label": "Other"
+  },
+  "Blocked senior enrollment rule": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 824.0,
+   "term_col": "BENEFICIARY",
+   "ret": false,
+   "term_dy": 80.4,
+   "reach": "BENEFICIARY",
+   "label": "Medicare Savings rule suspended",
+   "label_side": "end"
+  },
+  "Directed payment caps": {
+   "cls": "hr1",
+   "src": "CLAIMS",
+   "edge": "bottom",
+   "src_x": 1302.0,
+   "term_col": "PROVIDERS",
+   "ret": false,
+   "label_dy": -30
+  }
  }
 }

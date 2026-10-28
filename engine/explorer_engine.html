@@ -146,11 +146,12 @@
 </main>
 
 <script>
-const GEOM = {"cols":{"FEDERAL":[160,350],"STATE_GOVT":[350,584],"STATE_AGENCY":[584,844],"DISBURSE":[844,1060],"PAYER":[1060,1300],"CLAIMS":[1300,1560],"PROVIDERS":[1560,1760],"BENEFICIARY":[1760,2180]},"source_x":200.0,"canvas":{"w":2200,"h":1416},"ys":4.4,"bw":18,"centre_y":540,"ctrl_max":340.0,"fan":{"top":800.0,"min_gap":40.0,"tight_gap":8.0,"label_h":45.0,"label_h_tight":30.0,"rule_y":1146.0,"floor":1140.0,"stack_top":806.0},"source_tops":{"federal":126.0,"state":655.0}};
-const DATA = {"US|2024":{"code":"US2024","name":"National","strap":"CMS-64 FY2024 national totals. Measured, except where flagged.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Administration","v":4.2477,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1016,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":2.9231,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Documented fraud","v":0.1511,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.367,"care":35.9234},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":10.9688,"care":9.7597},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":41.3919,"care":41.3919}],"cells":{"mco|Long-term care":7.08,"mco|Hospitals":7.53,"mco|Other":7.63,"mco|Physicians & clinics":6.61,"mco|Behavioral health":5.01,"mco|Rx drugs":2.06,"dual|Long-term care":1.92,"dual|Hospitals":2.04,"dual|Other":2.07,"dual|Physicians & clinics":1.8,"dual|Behavioral health":1.36,"dual|Rx drugs":0.56,"ffs|Long-term care":20.13,"ffs|Hospitals":8.33,"ffs|Other":5.74,"ffs|Physicians & clinics":2.47,"ffs|Behavioral health":3.21,"ffs|Rx drugs":1.52},"disp":{"Other":"Wrap around services"},"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":87.0749},"US|2030":{"code":"US2030_mixed","name":"National","strap":"Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Work reporting","v":4.1061,"kind":"hr1","charged":"STATE_AGENCY","reach":"DISBURSE"},{"label":"Six-month renewals","v":0.7513,"kind":"hr1","charged":"STATE_AGENCY","reach":"PAYER"},{"label":"Blocked Medicaid enrollment rule","v":1.0396,"kind":"hr1","charged":"STATE_AGENCY","reach":"CLAIMS"},{"label":"Everything else","v":1.0587,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Blocked senior enrollment rule","v":1.2801,"kind":"hr1","charged":"STATE_AGENCY","reach":"BENEFICIARY"},{"label":"Administration","v":4.28,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1023,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.6653,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Provider tax limits","v":1.2499,"kind":"hr1","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Directed payment caps","v":0.8517,"kind":"hr1","charged":"CLAIMS","reach":"PROVIDERS"},{"label":"Documented fraud","v":0.1389,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":36.7707,"care":32.723},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":9.9916,"care":8.8902},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":37.7044,"care":37.7044}],"cells":{"mco|Long-term care":6.2277,"mco|Hospitals":6.6236,"mco|Other":6.9503,"mco|Physicians & clinics":5.8143,"mco|Behavioral health":4.5637,"mco|Rx drugs":1.8765,"dual|Long-term care":1.6889,"dual|Hospitals":1.7944,"dual|Other":1.8856,"dual|Physicians & clinics":1.5833,"dual|Behavioral health":1.2388,"dual|Rx drugs":0.5101,"ffs|Long-term care":18.3367,"ffs|Hospitals":7.5879,"ffs|Other":5.2286,"ffs|Physicians & clinics":2.25,"ffs|Behavioral health":2.924,"ffs|Rx drugs":1.3846},"disp":{"Other":"Wrap around services"},"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":78.4689},"DC|2024":{"code":"DC2024","name":"DC","strap":"REDUCED FIDELITY. CMS-64 / MACStats FY2024 DC spine; payer peel DHCF CY2023; the District publishes no managed-care service mix, so that fan is absent. Vintages need re-checking.","sources":{"federal":73.17,"state":26.83},"peels":[{"label":"Administration","v":5.3522,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.9671,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.3019,"care":35.4529},{"key":"dual","label":"Dual and PACE capitation","kind":"dual","cap":0.9149,"care":0.9149},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":51.4639,"care":51.4639}],"cells":{"ffs|Long-term care":28.2708,"ffs|Hospitals":6.7932,"ffs|Physicians & clinics":9.2864,"ffs|Wrap around services":5.0778,"ffs|Rx drugs":2.0357},"disp":{},"cols":["Long-term care","Hospitals","Physicians & clinics","Wrap around services","Rx drugs"],"claims":87.8317},"DC|2030":null};
+const GEOM = {"cols":{"FEDERAL":[160,350],"STATE_GOVT":[350,584],"STATE_AGENCY":[584,844],"DISBURSE":[844,1060],"PAYER":[1060,1300],"CLAIMS":[1300,1560],"PROVIDERS":[1560,1760],"BENEFICIARY":[1760,2180]},"source_x":200.0,"canvas":{"w":2200,"h":1416},"ys":4.4,"bw":18,"centre_y":540,"ctrl_max":340.0,"fan":{"top":800.0,"min_gap":40.0,"tight_gap":8.0,"label_h":45.0,"label_h_tight":30.0,"rule_y":1146.0,"floor":1140.0,"stack_top":806.0,"top_off":18.0},"source_tops":{"federal":126.0,"state":655.0},"term_slot":{"FEDERAL":350.0,"STATE_AGENCY":844.0,"DISBURSE":1060.0,"PAYER":1300.0,"CLAIMS":1560.0,"BENEFICIARY":2180.0},"term_fallback":"charged","outflows":{"Administration":{"cls":"ordinary","src":"STATE_AGENCY","edge":"top","src_x":639.0,"term_col":"STATE_AGENCY","term_y":250,"ret":false},"Federal oversight":{"cls":"ordinary","src":"STATE_AGENCY","edge":"top","src_x":689.0,"term_col":"STATE_AGENCY","term_y":206,"ret":false},"Medicare premiums":{"cls":"ordinary","src":"STATE_AGENCY","edge":"top","src_x":739.0,"term_col":"FEDERAL","term_y":134,"ret":true},"MCO plan administration":{"cls":"ordinary","src":"PAYER","edge":"top","term_col":"PAYER","ret":false},"Dual MCO plan administration":{"cls":"ordinary","src":"PAYER","edge":"top","term_col":"PAYER","ret":false},"Public-company earnings":{"cls":"ordinary","src":"PAYER","edge":"top","term_col":"PAYER","ret":false},"Vaccines for Children":{"cls":"ordinary","src":"FEDERAL","edge":"top","src_x":218.0,"term_col":"FEDERAL","ret":true},"Documented fraud":{"cls":"ordinary","src":"CLAIMS","edge":"bottom","src_x":1306.0,"term_col":"PROVIDERS","term_y":880,"ret":false},"Provider tax limits":{"cls":"hr1","src":"FEDERAL","edge":"fed_bottom","src_x":300.0,"term_col":"FEDERAL","ret":false,"label_side":"end"},"Work reporting":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":688.0,"term_col":"DISBURSE","ret":false,"reach":"DISBURSE"},"Six-month renewals":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":722.0,"term_col":"PAYER","ret":false,"reach":"PAYER"},"Blocked Medicaid enrollment rule":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":756.0,"term_col":"CLAIMS","ret":false,"reach":"CLAIMS","label":"Medicaid enrollment rule suspended"},"Everything else":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":790.0,"term_col":"STATE_AGENCY","ret":false,"label":"Other"},"Blocked senior enrollment rule":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":824.0,"term_col":"BENEFICIARY","ret":false,"term_dy":80.4,"reach":"BENEFICIARY","label":"Medicare Savings rule suspended","label_side":"end"},"Directed payment caps":{"cls":"hr1","src":"CLAIMS","edge":"bottom","src_x":1302.0,"term_col":"PROVIDERS","ret":false,"label_dy":-30}}};
+const DATA = {"US|2024":{"code":"US2024","name":"National","strap":"CMS-64 FY2024 national totals. Measured, except where flagged.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Administration","v":4.2477,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1016,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":2.9231,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Documented fraud","v":0.1511,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.367,"care":35.9234,"adm":3.839,"margin":0.6046},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":10.9688,"care":9.7597,"adm":1.0479,"margin":0.1612},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":41.3919,"care":41.3919,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"}}],"cells":{"ffs|Long-term care":20.13,"ffs|Hospitals":8.33,"ffs|Other":5.74,"ffs|Physicians & clinics":2.47,"ffs|Rx drugs":1.52,"ffs|Behavioral health":3.21,"mco|Long-term care":7.08,"mco|Hospitals":7.53,"mco|Other":7.63,"mco|Physicians & clinics":6.61,"mco|Rx drugs":2.06,"mco|Behavioral health":5.01,"dual|Long-term care":1.92,"dual|Hospitals":2.04,"dual|Other":2.07,"dual|Physicians & clinics":1.8,"dual|Rx drugs":0.56,"dual|Behavioral health":1.36},"disp":{"Other":"Wrap around services"},"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":87.07},"US|2030":{"code":"US2030_mixed","name":"National","strap":"Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Work reporting","v":4.1061,"kind":"hr1","charged":"STATE_AGENCY","reach":"DISBURSE"},{"label":"Six-month renewals","v":0.7513,"kind":"hr1","charged":"STATE_AGENCY","reach":"PAYER"},{"label":"Blocked Medicaid enrollment rule","v":1.0396,"kind":"hr1","charged":"STATE_AGENCY","reach":"CLAIMS"},{"label":"Everything else","v":1.0587,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Blocked senior enrollment rule","v":1.2801,"kind":"hr1","charged":"STATE_AGENCY","reach":"BENEFICIARY"},{"label":"Administration","v":4.28,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1023,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.6653,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Provider tax limits","v":1.2499,"kind":"hr1","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Directed payment caps","v":0.8517,"kind":"hr1","charged":"CLAIMS","reach":"PROVIDERS"},{"label":"Documented fraud","v":0.1389,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":36.7707,"care":32.723,"adm":3.497,"margin":0.5507},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":9.9916,"care":8.8902,"adm":0.9546,"margin":0.1469},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":37.7044,"care":37.7044,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"}}],"cells":{"mco|Long-term care":6.2277,"mco|Hospitals":6.6236,"mco|Other":6.9503,"mco|Physicians & clinics":5.8143,"mco|Behavioral health":4.5637,"mco|Rx drugs":1.8765,"dual|Long-term care":1.6889,"dual|Hospitals":1.7944,"dual|Other":1.8856,"dual|Physicians & clinics":1.5833,"dual|Behavioral health":1.2388,"dual|Rx drugs":0.5101,"ffs|Long-term care":18.3367,"ffs|Hospitals":7.5879,"ffs|Other":5.2286,"ffs|Physicians & clinics":2.25,"ffs|Behavioral health":2.924,"ffs|Rx drugs":1.3846},"disp":{"Other":"Wrap around services"},"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":78.4689},"DC|2024":{"code":"DC2024","name":"DC","strap":"REDUCED FIDELITY. CMS-64 / MACStats FY2024 DC spine; payer peel DHCF CY2023; the District publishes no managed-care service mix, so that fan is absent. Vintages need re-checking.","sources":{"federal":73.17,"state":26.83},"peels":[{"label":"Administration","v":5.3522,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.9671,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.3019,"care":35.4529,"adm":{"absent":"No DC figure divides plan retention into administration and margin. The retention total is measured; its split is not published."},"margin":{"absent":"See admin."}},{"key":"dual","label":"Dual and PACE capitation","kind":"dual","cap":0.9149,"care":0.9149,"adm":{"absent":"No DC retention figure for the dual or PACE lanes."},"margin":{"absent":"See admin."}},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":51.4639,"care":51.4639,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"}}],"cells":{"ffs|Long-term care":28.2708,"ffs|Physicians & clinics":9.2864,"ffs|Hospitals":6.7932,"ffs|Wrap around services":5.0778,"ffs|Rx drugs":2.0357},"disp":{},"cols":["Long-term care","Hospitals","Physicians & clinics","Wrap around services","Rx drugs"],"claims":87.8317},"DC|2030":null};
 const C = {
-  federal:'#3D6E8C', local:'#A8BFCE', agency:'#1F7A5A', ffs:'#8494A6',
-  mco:'#4A54A8', dual:'#6F80C4', svc:['#1F7A5A','#2E8B6B','#57A98C','#83C3A8','#AEDAC6','#D2EAE0'],
+  federal:'#3D6E8C', local:'#A8BFCE', agency:'#1F7A5A',
+  // the paper's lane colours, read off its own render: teal, purple, slate
+  ffs:'#5f7f96', mco:'#3f8f8a', dual:'#9a6fa6', svc:['#1F7A5A','#2E8B6B','#57A98C','#83C3A8','#AEDAC6','#D2EAE0'],
   loss:'#A56E63', admin:'#9AA5AF', ret:'#8E9BA6', vio:'#7C3AED', viol:'#A78BFA'
 };
 let place = 'US';
@@ -160,11 +161,13 @@ let wr = null;
 let zoomLevel = 'all';
 
 const money = v => '$' + v.toFixed(2);
-const PAPERNAME = {
-  'Everything else':'Other',
-  'Blocked Medicaid enrollment rule':'Medicaid enrollment rule suspended',
-  'Blocked senior enrollment rule':'Medicare Savings rule suspended'
-};
+// The PRINTED name of a tributary, where it differs from its internal key.
+// This was three string pairs typed here, which is the same mistake that made
+// the teaching strings losable: the plate's label is what a reader sees, the
+// paper is authoritative about it, and it is declared in outflows.OUTFLOWS.
+// geometry_export.py carries it over; nothing is typed twice.
+const PAPERNAME = Object.fromEntries(
+  Object.entries(GEOM.outflows).filter(([,d])=>d.label).map(([k,d])=>[k,d.label]));
 const PAPERCLAUSE = {
   'Provider tax limits':'federal match never drawn',
   'Everything else':'e.g. home equity, cost sharing',
@@ -565,22 +568,78 @@ function draw(M, zoom){
   const xFED=C0.FEDERAL, xSG=C0.STATE_GOVT, xSA=C0.STATE_AGENCY, xDI=C0.DISBURSE,
         xPA=C0.PAYER, xCL=C0.CLAIMS, xPR=C0.PROVIDERS, xBE=C0.BENEFICIARY;
   const W=GEOM.canvas.w;
+  const PROV_W = 140;       // the paper's bar width, read off its own render
+  // The furthest right the engine actually DRAWS anything. The beneficiaries
+  // column has a heading and nothing in it until the pies are ported, and a
+  // ribbon running out into an empty column reads as running off the page.
+  // Terminals past here stop at the end of the provider bars instead, which is
+  // where fraud stops. Delete this when the pies land.
+  const DRAWN_TO = GEOM.cols.PROVIDERS[0] + PROV_W;
   const offscale=[];
   const h = v => v*ys;
   const hb = (v,label) => { const t=v*ys; if(t>=3) return t; offscale.push({label,v}); return 3; };
   let g='', t='', lead='';
   const txt=(x,y,s2,fs,fill,anchor,w2,italic)=>`<text x="${x}" y="${y}" font-size="${fs||13}" fill="${fill||'currentColor'}" text-anchor="${anchor||'start'}" font-weight="${w2||400}"${italic?' font-style="italic"':''} font-family="Jost,sans-serif">${s2}</text>`;
-  const halo2=(x,y,s2,fs,fill,w2)=>{
+  const halo2=(x,y,s2,fs,fill,w2,anch)=>{
     const wd=s2.length*(fs*0.55)+14;
-    return `<rect x="${x-7}" y="${y-fs-1}" width="${wd}" height="${fs+9}" rx="2" fill="var(--panel)" opacity="0.93"/>`+txt(x,y,s2,fs,fill,'start',w2||500);
+    const rx=(anch==='middle') ? x-wd/2 : x-7;
+    return `<rect x="${rx}" y="${y-fs-1}" width="${wd}" height="${fs+9}" rx="2" fill="var(--panel)" opacity="0.93"/>`+txt(x,y,s2,fs,fill,anch||'start',w2||500);
   };
   // §2 the ribbon. control points at half the run, capped, so a long tributary
   // falls early and travels flat and low beneath its neighbours.
   const cx = (x0,x1) => x0 + Math.min((x1-x0)/2, GEOM.ctrl_max);
-  function band(x0,x1,y0,y1,h0,h1,fill,op){
-    const c0=cx(x0,x1), c1=x1-(c0-x0);
+  // `drop` front-loads the fall. 0 is the symmetric default; 1 pulls BOTH
+  // control points up against the departure, so the ribbon dives at once and
+  // then runs flat the rest of the way. Shortening only the leading control
+  // does nothing useful, because the trailing one moves with it and the curve
+  // stays symmetric -- the fall has to be made asymmetric to happen early.
+  const ctrlPair=(x0,x1,drop)=>{
+    const d=x1-x0, w=cx(x0,x1)-x0, k=Math.max(0,Math.min(1,drop||0));
+    return [x0 + w*(1-k) + 12*k,
+            x1 - (w*(1-k) + Math.max(d-24,12)*k)];
+  };
+  function band(x0,x1,y0,y1,h0,h1,fill,op,drop){
+    const [c0,c1]=ctrlPair(x0,x1,drop);
     const f2=n=>Number(n).toFixed(1);
     return `<path d="M${f2(x0)},${f2(y0)} C${f2(c0)},${f2(y0)} ${f2(c1)},${f2(y1)} ${f2(x1)},${f2(y1)} L${f2(x1)},${f2(y1+h1)} C${f2(c1)},${f2(y1+h1)} ${f2(c0)},${f2(y0+h0)} ${f2(x0)},${f2(y0+h0)} Z" fill="${fill}" opacity="${op||0.82}"/>`;
+  }
+
+  // §2b how steeply a ribbon leaves.
+  //
+  // Two tributaries cross when the longer one is still high where the shorter
+  // one stops. Row order cannot fix that -- the order is already right -- and
+  // the pin could only move a terminal, not the curve between. What actually
+  // decides it is the LEAD: how far the ribbon holds its departure height
+  // before falling. Shorten the lead and it falls earlier and passes under.
+  //
+  // So the lead is derived per ribbon, from what it has to clear, rather than
+  // being one constant for the whole plate. The rule: wherever a ribbon passes
+  // the terminal of something that stops sooner and sits higher, it must
+  // already be below that terminal by `CLEAR` units when it gets there.
+  const CLEAR = 10;
+  // the top edge of a ribbon at a given x, for a given drop
+  function yAtX(x0,y0,x1,y1,drop,x){
+    const [c0,c1]=ctrlPair(x0,x1,drop);
+    // the cubic in x is monotone here, so bisect t rather than solve it
+    let lo=0, hi=1;
+    for (let i=0;i<40;i++){
+      const t=(lo+hi)/2, u=1-t;
+      const xx=u*u*u*x0 + 3*u*u*t*c0 + 3*u*t*t*c1 + t*t*t*x1;
+      if (xx<x) lo=t; else hi=t;
+    }
+    const t=(lo+hi)/2, u=1-t;
+    return u*u*u*y0 + 3*u*u*t*y0 + 3*u*t*t*y1 + t*t*t*y1;
+  }
+  // the gentlest drop that still clears everything this ribbon passes under
+  function dropFor(x0,y0,x1,y1,blockers){
+    const need=blockers.filter(b=>b.x>x0+2 && b.x<x1-2 && b.y<y1);
+    if (!need.length) return 0;
+    const ok=k=>need.every(b=>yAtX(x0,y0,x1,y1,k,b.x) >= b.y+CLEAR);
+    if (ok(0)) return 0;
+    if (!ok(1)) return 1;               // cannot be cleared; fall as early as it can
+    let lo=0, hi=1;
+    for (let i=0;i<24;i++){ const m=(lo+hi)/2; if (ok(m)) hi=m; else lo=m; }
+    return hi;
   }
 
   // ---- sources. the two bars, at the paper's own tops
@@ -626,135 +685,553 @@ function draw(M, zoom){
   const disbTop = H0+riseH;
   const disb = M.disb;
 
-  g+=band(xSA[0]+bw, xDI[0], disbTop, disbTop, h(disb), h(disb), C.agency, .8);
-  g+=`<rect x="${xDI[0]}" y="${disbTop}" width="${bw}" height="${h(disb)}" fill="${C.agency}"/>`;
-  t+=halo2(xDI[0], disbTop-10, `Disbursed ${money(disb)}`, 15, 'currentColor', 600);
-
-  // terminals are pinned heights here; the slots on the trunk edge are free
-  let _sy=H0, _ty=H0-150;
-  const riseItems = rises.map(p=>{
-    const it={p, th:h(p.v), slotY:_sy, termY:_ty};
-    _sy+=h(p.v); _ty-=Math.max(h(p.v),18)+8; return it;
-  });
-  resolveBiteOrder(riseItems);
-  for (const r of riseItems){
-    const col = r.p.kind==='admin'?C.admin:C.ret;
-    g+=band(xSA[0]+bw, xSA[0]+bw+150, r.slotY, r.termY, r.th, r.th, col, .85);
-    t+=txt(xSA[0]+bw+162, r.termY+r.th/2+4, `${r.p.label} ${money(r.p.v)}`, 13.5, C.ret,'start',500);
-  }
-
-  // ---- payer lanes. contiguous in AND out: a lane is a parallelogram.
-  let ly=disbTop, sy=disbTop, c3=[];
-  for (const l of M.lanes){
-    const col=l.kind==='ffs'?C.ffs:(l.kind==='dual'?C.dual:C.mco);
-    const bh=hb(l.cap, l.label);
-    g+=band(xDI[0]+bw, xPA[0], sy, ly, h(l.cap), bh, col, .72);
-    g+=`<rect x="${xPA[0]}" y="${ly}" width="${bw}" height="${bh}" fill="${col}"/>`;
-    t+=halo2(xPA[0]+bw+10, ly+Math.max(15,bh/2+4), `${l.label} ${money(l.cap)}`, 14);
-    c3.push({l,y:ly,bh,col}); ly+=bh; sy+=h(l.cap);
-  }
-
-  // ---- retention leaves at the payer column, off the bottom of each lane
-  let rgy=H0-150;
-  for (const c of c3){
-    const keep=c.l.cap-c.l.care;
-    if (keep<=0.005) continue;
-    // out along the top of its own column, one fold, terminal. the money is
-    // not lost, it is held, and it never travels across the claims fan to say so.
-    const kx=xPA[0]+bw+70;
-    g+=band(xPA[0]+bw, kx, c.y, rgy, h(keep), h(keep), C.admin, .85);
-    t+=txt(kx+12, rgy+h(keep)/2+4, `${c.l.label} retention ${money(keep)}`, 13, C.ret,'start',500);
-    rgy+=Math.max(h(keep),16)+8;
-  }
-
-  // ---- claims to providers. pinned at BOTH ends; the tangle is the finding
-  // (outflows.py) and the port does not touch it.
-  let ay=disbTop, c4=[];
-  if (M.absent>0.02){
-    const bh=hb(M.absent,'Service allocation absent');
-    g+=`<rect x="${xPR[0]}" y="${ay}" width="${bw}" height="${bh}" fill="url(#ab)"/>`;
-    let cu=ay;
-    for (const c of c3){
-      const has=Object.keys(M.P.cells).some(k=>k.startsWith(c.l.key+'|'));
-      if (has||!c.l.care) continue;
-      g+=band(xPA[0]+bw, xPR[0], c.y, cu, h(c.l.care), h(c.l.care),'url(#ab)',.5); cu+=h(c.l.care);
-    }
-    t+=halo2(xPR[0]+bw+10, ay+bh/2-2,'Service allocation', 14, C.vio, 600);
-    t+=halo2(xPR[0]+bw+10, ay+bh/2+16,`ABSENT · ${money(M.absent)}`, 14, C.vio, 600);
-    ay+=bh;
-  }
-  const withCells=c3.filter(c=>Object.keys(M.P.cells).some(k=>k.startsWith(c.l.key+'|')));
-  const _k0=withCells.length?(withCells[0].l.cap-withCells[0].l.care):0;
-  let fy=(withCells.length?withCells[0].y:disbTop)+h(Math.max(_k0,0)), i=0;
-  const svcOrder=Object.entries(M.svc).sort((a,b)=>b[1]-a[1]);
-  for (const [name,v] of svcOrder){
-    const col=C.svc[i%C.svc.length], bh=hb(v, M.P.disp[name]||name);
-    g+=band(xPA[0]+bw, xPR[0], fy, ay, h(v), bh, col, .62);
-    g+=`<rect x="${xPR[0]}" y="${ay}" width="${bw}" height="${bh}" fill="${col}"/>`;
-    t+=halo2(xPR[0]+bw+10, ay+Math.max(13,bh/2+4), `${M.P.disp[name]||name} ${money(v)}`, 14);
-    fy+=h(v); ay+=bh; i++;
-  }
-
-  // ---- HR-1 fan, ordered by terminal x with origin slots dealt to match
-  const RULE_Y = Math.max(GEOM.fan.rule_y, ay+90, TB+90);
-  const REACHX={FEDERAL:xSG[0]-20, STATE_AGENCY:xSA[1], DISBURSE:xDI[1],
-                PAYER:xPA[1], CLAIMS:xCL[1], PROVIDERS:xPR[1], BENEFICIARY:xBE[0]+300};
-  const ANCH={FEDERAL:{x:xSG[0], y:fedLane[1]},
-              STATE_AGENCY:{x:xSA[0]+bw, y:disbTop+h(disb)},
-              CLAIMS:{x:xCL[0], y:disbTop+h(M.careTot)},
-              PROVIDERS:{x:xPR[0]+bw, y:ay}};
+  // A terminal x is NOT a column coordinate and NOT a free choice: it is the
+  // tracker slot of the subtraction the tributary belongs to, so the ribbon
+  // lands where its money is accounted for (instances.py, S-075/S-085). This
+  // was a hand-built table off column edges and it disagreed with the lattice
+  // in three of seven slots -- FEDERAL 330 for 350, BENEFICIARY 2060 for 2180,
+  // and an invented PROVIDERS slot the lattice does not have, which is what
+  // dragged directed payment caps 200 units downstream into the fan and made
+  // it cross the Medicare Savings ribbon. The lattice now comes from the
+  // export, and a reach with no slot in it rides the slot of the column the
+  // peel is CHARGED at -- the rule the export declares, not one guessed here.
+  const termX = p => {
+    const S=GEOM.term_slot;
+    const clamp = x => Math.min(x, DRAWN_TO);
+    const d=GEOM.outflows[p.label]||{};
+    // A RETURN goes back where it came from, which is a statement about the
+    // terminal and not about reach: Medicare premiums are charged at the state
+    // agency and land in the FEDERAL slot, upstream of where they left. The
+    // payload's `reach` would send them downstream instead.
+    if (d.ret && d.term_col && S[d.term_col]!=null) return S[d.term_col];
+    if (p.reach && S[p.reach]!=null) return clamp(S[p.reach]);
+    const f=p[GEOM.term_fallback];
+    if (S[f]!=null) return clamp(S[f]);
+    // Not every outflow is a subtraction on the tracker. Fraud is charged and
+    // reaches PROVIDERS, a column the lattice deliberately has no slot for, and
+    // outflows.OUTFLOWS declares `term_col` for exactly this case.
+    const tc=(GEOM.outflows[p.label]||{}).term_col;
+    if (tc && GEOM.cols[tc]) return clamp(GEOM.cols[tc][1]);
+    throw new Error(`nowhere to terminate ${p.label}: reach ${p.reach} and `+
+      `${GEOM.term_fallback} ${f} have no tracker slot and no term_col is declared`);
+  };
+  // Where each tributary LEAVES. The x is its own `src_x`, declared in
+  // outflows.OUTFLOWS and exported -- the five state-agency levers are
+  // staggered along the trunk at 688/722/756/790/824, they do not all leave
+  // one point, and the stagger is what makes their source order readable.
+  // The y is the edge named in the declaration, computed here.
+  //
+  // CLAIMS leaves the TOP edge of the managed-care block, not the bottom.
+  // sankey.py records why: the bottom edge is shared with the fee-for-service
+  // lane and a bite taken there reads as either lane. Taking it off the bottom
+  // also departs BELOW the state-agency levers, and a ribbon that departs
+  // below them and terminates above them has to cut every one of them.
+  // FEDERAL: the middle of the federal lane where the bite is declared to
+  // leave it (JW, 26 Oct). `fedLane[1]` is the lane's bottom edge at the STATE
+  // GOVERNMENT boundary, which is nowhere near x=300 where the bite is
+  // declared, so provider tax limits was departing from empty canvas.
+  // CLAIMS leaves the top of the CARE body, which is below whatever the first
+  // lane retained -- not the top of the disbursed block. Fifteen units higher
+  // and the bite starts in the gap the retention opened.
+  const _k0=M.lanes.length?Math.max(M.lanes[0].cap-M.lanes[0].care,0):0;
+  const EDGEY={FEDERAL:fmy + (fed-fo)*ys/2, CLAIMS:disbTop+h(_k0)};
+  const srcX = p => {
+    const d=GEOM.outflows[p.label];
+    return (d && d.src_x!=null) ? d.src_x : GEOM.cols[p.charged][0];
+  };
+  // The declared `src_x` values of a column's peels are a POOL OF SLOTS, not a
+  // per-peel address. resolve_bite_order deals them in terminal order so that
+  // source order equals terminal order, which is the no-crossing theorem
+  // outflows.py states and the only reason the fan packs at all. Reading each
+  // peel's own `src_x` literally is NOT the port of that: in the paper's 2030
+  // panel "Everything else" departs at 688 though it declares 790, and work
+  // reporting departs at 722 though it declares 688.
+  //
+  // Dealt rightmost-to-longest, because the trunk edge rises left to right as
+  // peels leave it: the longest-reaching tributary departs highest and nearest
+  // the trunk, the shortest departs lowest and furthest out, and neither can
+  // then cut the other.
+  const dealSlots = group => {
+    const slots=group.map(f=>srcX(f.p)).sort((a,b)=>b-a);
+    group.forEach((f,i)=>{ f.x0=slots[i]; });
+  };
+  // Fraud is a tributary and is solved with the rest of them (JW, 26 Oct).
+  // The paper makes it a keep-out box instead, but the reason the port copied
+  // that was never fraud: it was that fraud came in PINNED at its trunk height
+  // while its rank came from terminal x, so `_place` was handed a ceiling no
+  // row could satisfy and silently collapsed two rows onto one height. Ranking
+  // by departure height removed that, and a pinned fraud is no longer needed:
+  // it takes a row like anything else.
   const falls=M.falls.concat(M.late)
-      .map(p=>({p, h:h(p.v), tx:REACHX[p.reach]}))
+      .map(p=>({p, h:h(p.v), tx:termX(p)}))
       // outflows.py: whatever stops sooner must peel sooner, and whatever peels
       // first leaves LOWEST on the trunk edge and stays lowest for the rest of
       // its life -- so the SHORTEST-REACHING tributary is the DEEPEST row.
       // Stacked longest-first, therefore, with the short ones below them.
       .sort((a,b)=>b.tx-a.tx);
-  const stk={};
-  falls.forEach(f=>{
-    const a=ANCH[f.p.charged]||ANCH.STATE_AGENCY;
-    stk[f.p.charged]=(stk[f.p.charged] ?? a.y);
-    f.x0=a.x; f.from=stk[f.p.charged]; stk[f.p.charged]+=f.h;
-  });
-  // rank for the row solver: terminal x across every fan, deepest row to the
-  // shortest reach. y_src is only meaningful within a fan, so it cannot be the
-  // cross-fan key.
-  const byTx=falls.slice().sort((a,b)=>b.tx-a.tx);
-  byTx.forEach((f,i)=>{ f.rank=i; });
-  g+=`<line x1="${xFED[0]}" y1="${RULE_Y}" x2="${W-20}" y2="${RULE_Y}" stroke="${C.loss}" stroke-width="1" stroke-dasharray="5 4" opacity="0.85"/>`;
-  t+=txt(xFED[0], RULE_Y-8,'HR-1 TAKES THESE OUT',12,C.loss,'start',600);
-  const fanItems = falls.map(f=>({
+  const byCol={};
+  falls.forEach(f=>{ (byCol[f.p.charged]=byCol[f.p.charged]||[]).push(f); });
+  Object.values(byCol).forEach(dealSlots);
+
+  // The trunk LOSES THICKNESS as it goes. Each bite leaves the bottom edge at
+  // its own x and the edge rises by what it took, so the river visibly
+  // decrements and the space the bite vacated is where the bite is. Drawing
+  // the trunk at its final thickness for the whole run -- which is what the
+  // port did -- made the bites appear to leave from BELOW a river that had
+  // already lost the money somewhere off-stage.
+  // The ordinary outflows leave the trunk too, off the TOP edge, each at its
+  // own declared x. They were all leaving one point at the left of the trunk,
+  // so WHERE IN THE LIFECYCLE a cost is charged -- the thing the column
+  // headings exist to say -- was not in the drawing at all.
+  const riseAll=M.rises.map(p=>({p, h:h(p.v), tx:termX(p), rise:true}))
+                       .sort((a,b)=>b.tx-a.tx);
+  const riseByCol={};
+  riseAll.forEach(f=>{ (riseByCol[f.p.charged]=riseByCol[f.p.charged]||[]).push(f); });
+  Object.values(riseByCol).forEach(dealSlots);
+  for (const f of (riseByCol.FEDERAL||[])) f.from = fedTop;   // off the top of the appropriation
+
+  const stAgUp=(riseByCol.STATE_AGENCY||[]).slice().sort((x,y)=>x.x0-y.x0);
+  const stAg=(byCol.STATE_AGENCY||[]).slice().sort((x,y)=>x.x0-y.x0);
+  // one stepped run, both edges: tops peel off the top, HR-1 off the bottom,
+  // each at the x it is declared to leave, and the trunk is whatever is left
+  // between them.
+  const events=stAgUp.map(f=>({x:f.x0, f, top:true}))
+               .concat(stAg.map(f=>({x:f.x0, f, top:false})))
+               .sort((a,b)=>a.x-b.x);
+  let trunkTopY=H0, trunkThk=h(hundred);
+  const trunkSteps=[];           // [x_from, x_to, top, thickness]
+  let tx0=xSA[0]+bw;
+  for (const e of events){
+    trunkSteps.push([tx0, e.x, trunkTopY, trunkThk]);
+    if (e.top){ e.f.from = trunkTopY; trunkTopY += e.f.h; }
+    else      { e.f.from = trunkTopY + trunkThk - e.f.h; }
+    trunkThk -= e.f.h; tx0 = e.x;
+  }
+  trunkSteps.push([tx0, xDI[0], trunkTopY, trunkThk]);
+
+  // CLAIMS bites the TOP of the care block; FEDERAL leaves the middle of its
+  // lane. Both are single-bite columns here, so no stepping to do.
+  let _cy=EDGEY.CLAIMS;
+  for (const f of (byCol.CLAIMS||[])){ f.from=_cy; _cy+=f.h; }
+  for (const f of (byCol.FEDERAL||[])) f.from=EDGEY.FEDERAL;
+
+  for (const [xa,xb2,ty,th] of trunkSteps)
+    g+=band(xa, xb2, ty, ty, th, th, C.agency, .8);
+  g+=`<rect x="${xDI[0]}" y="${disbTop}" width="${bw}" height="${h(disb)}" fill="${C.agency}"/>`;
+  t+=halo2(xDI[0], disbTop-10, `Disbursed ${money(disb)}`, 15, 'currentColor', 600);
+
+  // ---- the ordinary outflows, solved by the SAME row solver as the HR-1 fan
+  // and labelled the same way (JW, 26 Oct). They used to run 150 units to a
+  // fixed x and stop in the middle of whatever phase they happened to cross,
+  // with their own label idiom, which read as a different kind of object than
+  // the tributaries below. They are the same kind of object.
+  //
+  // The fan runs UPWARD here, so it is solved mirrored: a band at actual y
+  // occupies mirrored [-(y+th), -y], `_place` packs downward as always, and
+  // the answer is reflected back. The alternative was a second copy of the
+  // solver that counts the other way, which is how two solvers drift apart.
+  if (riseAll.length){
+    // The zone is the space ABOVE THE TRUNK, not above the whole drawing:
+    // these costs come off the hundred, so they belong against it. Taking the
+    // top of the appropriation instead put the whole fan off the canvas.
+    const RISE_RULE = H0 - 30;
+    const riseIts = riseAll.map(f=>{
+      const label=PAPERNAME[f.p.label]||f.p.label;
+      const sub=PAPERCLAUSE[f.p.label]||'';
+      // Labels read to the RIGHT of the terminal unless the declaration says
+      // otherwise. A return arrives from the right and 'end' would seem to
+      // follow, but at the FEDERAL slot that runs the block back across the
+      // appropriation band, where nothing can be read. The empty column to the
+      // right of the slot is the place for it.
+      // The row solver compares RIBBON spans, so two ribbons that merely touch
+      // at a shared terminal are free to take the same height -- and their
+      // label blocks, which are wider than the ribbons, then collide. The span
+      // the solver is given includes the block.
+      const anchor=(GEOM.outflows[f.p.label]||{}).label_side || 'start';
+      const lw = 9 + 7*Math.max(label.length, sub.length, 8);
+      // A return reaches from its arrowhead, back behind the origin, out to
+      // the far side of its fold. The solver has to be told the whole span or
+      // two returns will happily share a row and overprint each other.
+      const d0=GEOM.outflows[f.p.label]||{};
+      const home=GEOM.cols[(d0.term_col||f.p.charged)]||GEOM.cols.FEDERAL;
+      const x0 = d0.ret ? home[0]+76 : Math.min(f.x0,f.tx);
+      const x1 = d0.ret ? f.x0+182   : Math.max(f.x0,f.tx);
+      return {
+        // name and amount share a line here, so the row costs a compact block;
+        // four full blocks did not fit between the trunk and the headings and
+        // the top row walked off the canvas.
+        name:f.p.label, label, sub, th:f.h, y_src:0, fixed_y:null, anchor, f,
+        compact:true,
+        xb:(anchor==='end'? Math.min(x0, f.tx-lw) : x0),
+        xt:(anchor==='end'? x1 : Math.max(x1, f.tx+lw))
+      };
+    });
+    // highest departure takes the shallowest row, as below the trunk
+    riseIts.slice().sort((a,b)=>b.f.from-a.f.from).forEach((it,i)=>{ it.y_src=i; });
+    // mirrored keep-out for the column headings and their rule, so a terminal
+    // cannot stack up into them
+    // mirrored keep-out for the column headings and their rule, so a terminal
+    // cannot stack up into them
+    // A hard ceiling at the top of the canvas, not a box to be pushed past:
+    // the obstacle used to end at the headings and the top row simply stepped
+    // over it and off the plate.
+    // ... and a keep-out for the federal source label, which sits in exactly
+    // the band the returns fold back into. Vaccines for Children was landing
+    // on top of "Federal $65.29".
+    // the box is the label's halo plus air on both sides: landing a row five
+    // units under it is clear by the solver's arithmetic and crowded to a
+    // reader.
+    const srcObs = [[SX-10, -(fedTop+18), SX+230, -(fedTop-30)]];
+    const [rY] = fanRows(riseIts, -RISE_RULE, [[0, -44, W, 1e4]].concat(srcObs));
+    for (const it of riseIts){
+      const f=it.f, endY=-(rY[it.name]+it.th);
+      const d=GEOM.outflows[f.p.label]||{};
+      const col = d.ret ? C.ret : C.admin;
+      if (d.ret){
+        // A RETURN: the money leaves in the direction the river is flowing,
+        // then turns and goes back behind where it started, because that is
+        // where it goes -- Medicare premiums to the federal government,
+        // vaccines to the CDC. Drawn as one fold and no swirl: two reversals
+        // would say the money went somewhere and came back, and it does not.
+        // Invoked by the declaration, not by the geometry: `ret` is what makes
+        // a tributary a return, and the terminal then sits BEHIND the origin
+        // however far forward the fold runs.
+        // The forward leg stops short of the next tributary's slot. Running a
+        // fixed 96 units took it straight through the neighbour that leaves
+        // just downstream.
+        const nxt=riseAll.map(o=>o.x0).filter(v=>v>f.x0).sort((a,b)=>a-b)[0];
+        const k=Math.min(f.x0+96, nxt!=null ? nxt-6 : Infinity);
+        const mid=endY+f.h/2;
+        const home=GEOM.cols[(d.term_col||f.p.charged)] || GEOM.cols.FEDERAL;
+        const backX=home[0]+76;
+        g+=band(f.x0, k, f.from, f.from-12, f.h, f.h, col, .72);
+        const m2=f.from-12+f.h/2;
+        g+=`<path d="M${k},${m2} C${k+86},${m2} ${k+86},${mid} ${backX+10},${mid}" `+
+           `fill="none" stroke="${col}" stroke-width="${Math.max(f.h,2.4).toFixed(1)}" `+
+           `stroke-opacity="0.72" stroke-linecap="round"/>`;
+        g+=`<path d="M${backX},${mid} l16,-6 l0,12 Z" fill="${col}"/>`;
+        t+=txt(backX+22, mid-3, `${it.label}  ${money(f.p.v)}`, 13, col,'start',600);
+        if (it.sub) t+=txt(backX+22, mid+13, it.sub, 11.5,'var(--muted)','start',400,true);
+      } else {
+        // Terminates at the end of its phase, with the label AT the terminal:
+        // name and amount on the line above the band end, the clause under it.
+        // The block used to float 34 units clear with a dot on the end, which
+        // read as a separate object from the ribbon it belonged to.
+        g+=band(f.x0, f.tx, f.from, endY, f.h, f.h, col, .85);
+        const lx=f.tx-9;
+        t+=txt(lx, endY-23, `${it.label}  ${money(f.p.v)}`, 13.5, col,'end',600);
+        if (it.sub) t+=txt(lx, endY-8, it.sub, 11.5,'var(--muted)','end',400,true);
+      }
+    }
+  }
+
+  // ---- the disbursement lanes. The split happens AT the disbursements node,
+  // which is where the money is divided into payment mechanisms, and that is
+  // where the three are named. Naming them a column later says the division
+  // happened at the payer, which is a different claim about the programme.
+  let ny=disbTop; const c3=[];
+  for (const l of M.lanes){
+    const col=l.kind==='ffs'?C.ffs:(l.kind==='dual'?C.dual:C.mco);
+    const bh=hb(l.cap, l.label);
+    g+=`<rect x="${xDI[0]}" y="${ny}" width="${bw}" height="${bh}" fill="${col}"/>`;
+    t+=halo2(xDI[0]+bw+10, ny+Math.max(15,bh/2+4), `${l.label} ${money(l.cap)}`, 14);
+    c3.push({l,y:ny,bh,col}); ny+=bh;
+  }
+  // full capitation across the disbursements column, then the peel point
+  const PEELX = xPA[0]+90;
+  for (const c of c3) g+=band(xDI[0]+bw, PEELX, c.y, c.y, c.bh, c.bh, c.col, .72);
+
+  // ---- what the plans KEEP, and what becomes of it.
+  //
+  // Retention leaves each lane at the peel point and pools at the plan column.
+  // The pool then splits into what the plans spent administering the benefit
+  // and what shareholders took out of it -- public-company earnings, carved
+  // off the top because it is the share of margin that leaves the system
+  // altogether. The split is why this corner is worth drawing: the sum alone
+  // says only that the plans kept something.
+  //
+  // Where the split is not published the ledger says so and the drawing says
+  // so: one band, hatched, carrying the ledger's own words. Absence is drawn,
+  // never estimated (S-108).
+  const PLANX = xPA[0]+175, RET_END = xPA[1]-6;
+  const rets = c3.filter(c=>c.l.cap-c.l.care>0.005);
+  const retTot = rets.reduce((a,c)=>a+(c.l.cap-c.l.care),0);
+  const splitKnown = rets.length>0 && rets.every(c=>typeof c.l.adm === 'number');
+  const retObs=[];
+  // the pool sits just above the flow; its three terminals stack in the band
+  // between the column headings and the river, which is empty in this column
+  const poolTop = disbTop-60-h(retTot);
+  let pc=poolTop;
+  for (const c of rets){
+    const keep=c.l.cap-c.l.care;
+    g+=band(PEELX, PLANX, c.y, pc, h(keep), h(keep), C.admin, .85);
+    pc+=h(keep);
+  }
+  if (splitKnown){
+    const earn = rets.reduce((a,c)=>a+(typeof c.l.margin==='number'?c.l.margin:0),0);
+    const outs = [];
+    if (earn>0.0005) outs.push({label:'Public-company earnings', v:earn, col:'#2B2B2B',
+                                sub:'shareholder net earnings; leaves the system'});
+    for (const c of rets) outs.push({
+      label:`${c.l.label.replace(/ capitation$/,'')} plan administration`,
+      v:c.l.adm, col:C.admin,
+      sub:'the plan\u2019s own cost of running the benefit'});
+    // Solved by the SAME row solver as every other fan, mirrored upward, not
+    // stacked by hand. Three terminals a few units apart with two lines of
+    // text each do not fit on a hand-chosen 34-unit pitch, which is why this
+    // corner was crowded: the solver knows what a label block costs and a
+    // literal does not.
+    //
+    // Ordered by where each slice sits in the pool, reversed: the slice taken
+    // off the TOP of the pool gets the HIGHEST terminal, so the three fan out
+    // without crossing each other on the way.
+    const planIts = outs.map((o,i)=>({
+      name:'plan:'+o.label, label:o.label, sub:o.sub, th:h(o.v),
+      xb:PLANX, xt:RET_END+20+7*(o.label.length+8),
+      y_src:outs.length-1-i, fixed_y:null, anchor:'start', compact:true, o
+    }));
+    const [pY] = fanRows(planIts, -(disbTop-40), [[0, -44, W, 1e4]]);
+    let qc=poolTop;
+    for (const it of planIts){
+      const o=it.o, ty=-(pY[it.name]+it.th);
+      g+=band(PLANX, RET_END, qc, ty, h(o.v), h(o.v), o.col, .9);
+      // The block reads to the RIGHT of the terminal. Anchored left of it, it
+      // lay back along the run the bands take to get there, so the dual row's
+      // label sat across the MCO band and its label. The column to the right
+      // is empty at this height and is the place for it.
+      t+=txt(RET_END+14, ty-6, `${o.label}  ${money(o.v)}`, 13, o.col,'start',600);
+      t+=txt(RET_END+14, ty+9, o.sub, 11,'var(--muted)','start',400,true);
+      qc+=h(o.v);
+    }
+  } else if (rets.length) {
+    const src=rets.find(c=>c.l.adm && c.l.adm.absent);
+    const note=(src && src.l.adm.absent) || 'no published split';
+    g+=band(PLANX, RET_END, poolTop, poolTop, h(retTot), h(retTot), C.admin, .5);
+    g+=`<rect x="${PLANX}" y="${poolTop}" width="${RET_END-PLANX}" height="${h(retTot)}" fill="url(#ab)" opacity=".55"/>`;
+    t+=txt(RET_END-9, poolTop-22, `Plan retention  ${money(retTot)}`, 13, C.vio,'end',600);
+    t+=txt(RET_END-9, poolTop-7, 'ADMINISTRATION / MARGIN SPLIT ABSENT', 11.5, C.vio,'end',600);
+    t+=txt(RET_END-9, poolTop+h(retTot)+14, note, 11,'var(--muted)','end',400,true);
+    retObs.push([PLANX-240, poolTop-40, RET_END+8, poolTop+h(retTot)+20]);
+  }
+
+  // care continues to the claims column, below whatever its lane retained
+  const careTop={};
+  for (const c of c3){
+    const keep=Math.max(c.l.cap-c.l.care,0);
+    careTop[c.l.key]=c.y+h(keep);
+    if (c.l.care>0.005)
+      g+=band(PEELX, xCL[0], c.y+h(keep), careTop[c.l.key], h(c.l.care), h(c.l.care), c.col, .72);
+  }
+
+  // ---- claims to providers, CELL BY CELL: one band per capitation lane per
+  // service. Which lane pays for which service is the whole question a
+  // provider asks of this panel.
+  // 50, read off the paper's own render. The bars are nodes, not a conserved
+  // column, and the air between them is what lets each one be read as a thing
+  // in itself rather than as one more band in the fan.
+  const PROV_GAP = 50;
+  let ay=disbTop;
+  if (M.absent>0.02){
+    const bh=hb(M.absent,'Service allocation absent');
+    g+=`<rect x="${xPR[0]}" y="${ay}" width="${PROV_W}" height="${bh}" fill="url(#ab)"/>`;
+    let cu=ay;
+    for (const c of c3){
+      const has=Object.keys(M.P.cells).some(k=>k.startsWith(c.l.key+'|'));
+      if (has||!c.l.care) continue;
+      g+=band(xCL[0], xPR[0], careTop[c.l.key], cu, h(c.l.care), h(c.l.care),'url(#ab)',.5); cu+=h(c.l.care);
+    }
+    t+=halo2(xPR[0]+PROV_W/2, ay-24,'Service allocation', 14, C.vio, 600,'middle');
+    t+=halo2(xPR[0]+PROV_W/2, ay-8,`ABSENT \u00b7 ${money(M.absent)}`, 14, C.vio, 600,'middle');
+    ay+=bh+PROV_GAP;
+  }
+  const payCur={}; for (const c of c3) payCur[c.l.key]=careTop[c.l.key];
+  const svcOrder=Object.entries(M.svc).sort((a,b)=>b[1]-a[1]);
+  const provObs=[]; let provBars=[];
+  for (const [name,v] of svcOrder){
+    const bh=hb(v, M.P.disp[name]||name);
+    let cu=ay;
+    for (const c of c3){
+      const cell=M.P.cells[c.l.key+'|'+name];
+      if (!cell) continue;
+      const seg=bh*cell/v;               // the bar may be floored; the flow is true
+      g+=band(xCL[0], xPR[0], payCur[c.l.key], cu, h(cell), seg, c.col, .62);
+      // the BAR, in the claims colour scheme. The band is translucent and the
+      // bar is not, and a hairline divides the payers, so the column reads as
+      // a stack of bars AND says how much of each service came through which
+      // payer. That story is the point of the column.
+      g+=`<rect x="${xPR[0]}" y="${cu}" width="${PROV_W}" height="${seg}" fill="${c.col}"/>`;
+      payCur[c.l.key]+=h(cell); cu+=seg;
+    }
+    // the name sits ABOVE its bar, centred on it, as the paper has it
+    t+=halo2(xPR[0]+PROV_W/2, ay-8, `${M.P.disp[name]||name} ${money(v)}`, 14,
+             'currentColor', 700, 'middle');
+    provObs.push([xPR[0]-8, ay-26, xPR[0]+PROV_W+8, ay+bh+6]);
+    provBars.push([ay, bh]);
+    ay+=bh+PROV_GAP;
+  }
+  ay-=PROV_GAP;
+  // the bottom of the CARE FLOW, which is where fraud is charged from. Not the
+  // bottom of the provider bars: those carry gaps between them and are not the
+  // river.
+  const careBottom = Math.max(...Object.values(payCur));
+
+  // ---- HR-1 fan, ordered by terminal x with origin slots dealt to match
+  const _fraud = M.falls.concat(M.late).find(p=>p.kind==='fraud');
+  const _fraudPresent = !!_fraud;
+  // Where the HR-1 zone starts is DERIVED: the drawing's own lowest point
+  // decides it, so the rule can never cut through the service fan (sankey.py,
+  // JW 2026-09-04). `GEOM.fan.rule_y` is outflows.RULE_Y, a module default for
+  // a panel that has not been drawn yet, and using it as a floor here pushed
+  // the fan ~380 units below where the paper puts it on this panel. Every
+  // tributary then had that much further to fall, which is what turned the
+  // Medicare Savings / directed payment caps pair from clearing each other
+  // into crossing.
+  // the drawing's own lowest point: the provider stack or the care flow,
+  // whichever reaches further down
+  const RULE_Y = Math.max(ay, careBottom, ny) + 76;
+  // Fraud comes out of the hundred like everything else, so it leaves the
+  // BOTTOM EDGE OF THE CARE FLOW at the x it is declared to leave. It was
+  // anchored to the bottom of the provider bar stack, which is below the
+  // river and has gaps in it, so the ribbon started in empty space.
+  for (const f of (byCol.PROVIDERS||[])) f.from = careBottom - f.h;
+  const lastBar = provBars[provBars.length-1] || [ay, 0];
+  const PROV_BOTTOM = lastBar[0]+lastBar[1];
+  // Rank for the row solver: DEPARTURE HEIGHT. Within one fan the slots above
+  // are dealt longest-reach-first, so `from` ascending reproduces terminal-x
+  // order exactly. Across fans it does not, and terminal x is the wrong key
+  // there: the trunk edges sit at different heights, so a peel leaving the
+  // claims block departs far above one leaving the state agency, and a ribbon
+  // that departs higher must terminate higher or the two cross. y_src means a
+  // height again, which is what `_place`'s ceiling branch reads it as.
+  falls.slice().sort((a,b)=>a.from-b.from).forEach((f,i)=>{ f.rank=i; });
+  // No HR-1 peels, no HR-1 zone. sankey._draw_hr1 returns immediately when
+  // there are no bites; the engine was drawing the rule and its heading on
+  // every panel, which on FY2024 announced a law taking nothing out.
+  // fraud is in `falls` but is not an HR-1 provision, so it must not by itself
+  // bring the HR-1 rule onto a panel that has no HR-1 in it -- which is what
+  // FY2024 was doing.
+  if (falls.some(f=>f.p.kind!=='fraud')){
+    // The rule marks the ZONE, so it spans the trunk: from the leftmost bite to
+    // the last column the trunk occupies. Drawn edge to edge it ran under the
+    // source bars and their labels and out across the beneficiary side, which
+    // is the diagram stepping on itself.
+    // From the first tracker slot to the last column the trunk occupies. A
+    // bite may leave upstream of the slot -- provider tax limits does -- but
+    // the rule starts at the lattice, or it runs back under the source bars
+    // and their labels.
+    const r0=GEOM.term_slot.FEDERAL-20;
+    const r1=GEOM.term_slot.CLAIMS;
+    g+=`<line x1="${r0}" y1="${RULE_Y}" x2="${r1}" y2="${RULE_Y}" stroke="${C.loss}" stroke-width="1" stroke-dasharray="5 4" opacity="0.85"/>`;
+    t+=txt(r0+6, RULE_Y-8,'HR-1 TAKES THESE OUT',12,C.loss,'start',600);
+  }
+  // Fraud does not take a row in the HR-1 fan. It is not an HR-1 provision and
+  // it is not lost downstream: providers receive it, so it terminates at the
+  // END of the provider bars, just under the last of them, where a reader can
+  // see it belongs to that column. Solving it with the fan sent it below the
+  // rule and across three service lanes to get there (JW, 27 Oct).
+  const fanFalls = falls.filter(f=>f.p.kind!=='fraud');
+  const fraudF = falls.find(f=>f.p.kind==='fraud');
+  const fanItems = fanFalls.map(f=>({
     name:f.p.label, label:PAPERNAME[f.p.label]||f.p.label,
     sub:PAPERCLAUSE[f.p.label]||REACHWORD[f.p.reach]||'',
     amt:f.p.v, xb:f.x0, xt:f.tx, y_src:f.rank, th:f.h,
-    fixed_y: f.p.kind==='fraud' ? f.from-8 : null,
-    anchor: f.p.kind==='fraud' ? 'start' : null, f
+    // UNPINNED (JW, 27 Oct). `outflows.OUTFLOWS` still declares `term_dy` for
+    // Medicare Savings and the paper still needs it, because the paper has no
+    // way to make a ribbon fall early. The engine does -- `dropFor` derives it
+    // from what the ribbon passes under -- so a hand-chosen height here would
+    // override a solved one with a guess. The declaration is read for the
+    // paper and ignored here, deliberately.
+    fixed_y: null,
+    // the block is two lines now, so it costs the tight height. The solver's
+    // own fold step has nothing left to fold; that is the intent.
+    compact: true,
+    // `label_side` is declared in outflows.OUTFLOWS and exported; the engine
+    // was choosing freely for every row.
+    // `label_side: "end"` is declared for Medicare Savings because in the
+    // paper it terminates at the far right edge and the block has nowhere
+    // else to go. Clamped to the provider lane it has the whole beneficiary
+    // column to its right, so the declaration no longer applies and the
+    // solver picks the side.
+    anchor: (f.tx >= DRAWN_TO-1) ? null
+            : ((GEOM.outflows[f.p.label]||{}).label_side || null), f
   }));
-  const [fanY, fanAnchor, fanWarn, folded] = fanRows(fanItems, RULE_Y+40, []);
+  // The provider bars and their labels are furniture: a terminal must not land
+  // on them. Nothing else is a keep-out box now that fraud takes a row.
+  const fanObs = provObs;
+  // `top` is rule + 18, declared once in sankey._draw_hr1 and exported. It was
+  // typed as 40 here.
+  const [fanY, fanAnchor, fanWarn, folded] =
+        fanRows(fanItems, RULE_Y+GEOM.fan.top_off, fanObs);
+  // every terminal a ribbon might have to pass under: the bottom edge of each
+  // row, at the x where that row stops
+  const blockers = fanItems.map(o=>({x:o.f.tx, y:fanY[o.name]+o.th}))
+      .concat(fraudF ? [{x:xPR[0]+PROV_W, y:PROV_BOTTOM+26+fraudF.h}] : []);
   for (const it of fanItems){
     const f=it.f;
     const isFraud=f.p.kind==='fraud';
     const col=isFraud?'#C0392B':(f.p.moved?'#8B5A5A':C.loss);
     const endY=fanY[it.name];
-    g+=band(f.x0, f.tx, f.from, endY, f.h, f.h, isFraud?col:'url(#hr1)', .92);
+    const drop=dropFor(f.x0, f.from, f.tx, endY,
+                       blockers.filter(b=>Math.abs(b.x-f.tx)>2));
+    g+=band(f.x0, f.tx, f.from, endY, f.h, f.h, isFraud?col:'url(#hr1)', .92, drop);
     g+=`<circle cx="${f.tx+4}" cy="${endY+f.h/2}" r="3.5" fill="${col}"/>`;
     const nm=it.label;
-    if (it.compact){
-      t+=txt(f.tx+14, endY+f.h/2-3, `${nm}  \u2212${money(f.p.v)}`, 14, col,'start',600);
-      t+=txt(f.tx+14, endY+f.h/2+13, it.sub, 12,'var(--muted)','start',400,true);
-    } else {
-      t+=txt(f.tx+14, endY+f.h/2-3, nm, 14, col,'start',600);
-      t+=txt(f.tx+14, endY+f.h/2+13, it.sub, 12,'var(--muted)','start',400,true);
-      t+=txt(f.tx+14, endY+f.h/2+29, `\u2212${money(f.p.v)}`, 13.5, col,'start',600);
-    }
+    // The solver chooses a side and the renderer must draw on it. These were
+    // hard-coded to 'start': `_place` would reject a right-anchored label as
+    // running off the canvas, pick 'end', and the renderer would then draw it
+    // off the canvas anyway -- which is how Medicare Savings, the one label
+    // that declares `label_side: "end"`, ended up hanging past x=2200 with its
+    // text clipped while the solver reported it placed.
+    const an=fanAnchor[it.name]||'start';
+    const lx=(an==='end') ? f.tx-14 : f.tx+14;
+    const ta=(an==='end') ? 'end' : 'start';
+    // The block sits BELOW the band. `_place` reserves `_blockH` under
+    // `y + th` and keeps every other row clear of that rectangle; painting the
+    // text centred on the ribbon instead put it over the band the solver had
+    // just cleared, which is why Medicare Savings read as sitting on its own
+    // bar. The solver was right and the renderer was not drawing what it said.
+    // Two lines, like the ordinary outflows above the flow: name and amount
+    // together, the clause under them. Three lines put the amount a long way
+    // from the name it belonged to and made the fan cost half again as much
+    // vertical room as it needed.
+    const ly0=endY+f.h+13;
+    t+=txt(lx, ly0, `${nm}  \u2212${money(f.p.v)}`, 14, col,ta,600);
+    if (it.sub) t+=txt(lx, ly0+15, it.sub, 12,'var(--muted)',ta,400,true);
   }
-  const fanBottom = Math.max(...fanItems.map(it=>fanY[it.name]+it.th+_blockH(it)));
+  // The drawing's own lowest point, and it must survive an EMPTY fan: with
+  // fraud no longer a fan participant, FY2024 and DC have no fan at all and
+  // `Math.max()` of nothing is -Infinity, which propagated into the viewBox
+  // and collapsed both panels. Fraud is drawn below the provider stack now, so
+  // it has to be measured here rather than through the fan.
+  // Fraud, drawn at the end of the provider bars.
+  if (fraudF){
+    const f=fraudF, col='#C0392B';
+    const tx=xPR[0]+PROV_W, endY=PROV_BOTTOM+26;
+    g+=band(f.x0, tx, f.from, endY, f.h, f.h, col, .92);
+    g+=`<circle cx="${tx+4}" cy="${endY+f.h/2}" r="3.5" fill="${col}"/>`;
+    t+=txt(tx+14, endY+f.h+13, f.p.label, 14, col,'start',600);
+    t+=txt(tx+14, endY+f.h+28, PAPERCLAUSE[f.p.label]||'', 12,'var(--muted)','start',400,true);
+    t+=txt(tx+14, endY+f.h+44, `\u2212${money(f.p.v)}`, 13.5, col,'start',600);
+  }
+
+  const fanBottom = Math.max(
+    fanItems.length ? Math.max(...fanItems.map(it=>fanY[it.name]+it.th+_blockH(it))) : 0,
+    // fraud is drawn outside the fan now, so its block has to be measured
+    // here or the plate is cut off just under it -- which is what FY2024,
+    // where fraud is the lowest thing on the panel, was doing.
+    fraudF ? PROV_BOTTOM+26+fraudF.h+GEOM.fan.label_h : 0,
+    ay);
 
   // ---- headings
   const heads=[['FEDERAL','federal appropriation',xFED],['STATE GOVERNMENT','blended cost allocation',xSG],
     ['STATE AGENCY','budgeted to Medicaid',xSA],['DISBURSEMENTS','payment mechanisms',xDI],
     ['PAYER','MCO administration',xPA],['CLAIMS','claims paid to providers',xCL],
-    ['PROVIDERS','sized by spend',xPR]];
+    ['PROVIDERS','sized by spend',xPR],
+    // Drawn even though the engine has no pies yet. Tributaries terminate in
+    // this column -- Medicare Savings lands at the beneficiary slot -- and a
+    // terminal in a column the frame does not admit to having reads as a
+    // ribbon running off the edge of the diagram.
+    ['BENEFICIARIES','who consumes each service',xBE]];
   let hd='';
   const BOTTOM=fanBottom+50;
   for (const [n,sub,cx2] of heads){
