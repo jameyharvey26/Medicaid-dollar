@@ -66,17 +66,16 @@ if [ $GATES -eq 0 ]; then
 else
   echo "${ylw}${bold}At least one gate is not as expected. Read the list above.${off}"
   echo
-  echo "If the ONLY red is ${bold}renderproof${off}:"
-  echo "  That is expected ONCE, because the DC panel's data moved and its"
-  echo "  blessed picture is now stale. Look at the diffs it names, and if"
-  echo "  the change is the one you asked for, bless it by double-clicking"
-  echo "  ${bold}BLESS THE DC PANEL.command${off} — then run this file again."
+  echo "${bold}renderproof is EXPECTED to be red${off} until the six national"
+  echo "FY2030 panels are blessed. They moved at commit c518476 on 28"
+  echo "October, when HR-1 terminals were pinned to the fan instead of to"
+  echo "absolute canvas y so the geometry could be exported to the engine."
+  echo "No figure changed; the terminals move about a pixel. The reasoning"
+  echo "and the command that closes it are written down in ${bold}RENDER_DEFECTS.md${off}."
   echo
-  echo "  It should go GREEN here. It is red in Claude's cloud sandbox only,"
-  echo "  because Google Fonts is blocked there. If it stays red on this Mac"
-  echo "  after blessing, that is a real font problem worth chasing before"
-  echo "  the demo — every layout gate downstream is then measuring the"
-  echo "  wrong typeface."
+  echo "The three DC panels were blessed on 29 October and should read"
+  echo "unchanged. If they do NOT, the DC data has moved again and that is"
+  echo "worth looking at before a demo."
   echo
   echo "If anything ELSE is red, do not commit. Send me the list."
 fi

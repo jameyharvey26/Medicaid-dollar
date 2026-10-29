@@ -215,4 +215,4 @@ const doc = new Document({
   }],
 });
 
-Packer.toBuffer(doc).then(buf => { fs.writeFileSync("/home/claude/medicaid_dollar_methodology.docx", buf); console.log("saved docx"); });
+Packer.toBuffer(doc).then(buf => { fs.writeFileSync(require("path").join(__dirname, "medicaid_dollar_methodology.docx"), buf); console.log("saved docx"); });

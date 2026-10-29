@@ -13,11 +13,12 @@ This measures every slide in a real browser:
 
 Run after build_deck.py. Exits non-zero on any overflow.
 """
+import os
 import sys
 
 from playwright.sync_api import sync_playwright
 
-DECK = "file:///mnt/user-data/outputs/MHPA_Board_Deck.html"
+DECK = "file://" + os.path.join(os.path.dirname(os.path.abspath(__file__)), "MHPA_Board_Deck.html")
 STRAND_IN = 1.30          # inches of dead air before it counts as stranding
 DPI = 96.0
 

@@ -18,3 +18,5 @@ engine_vs_paper.html
 /medicaid_dollar_explorer_v8.0.*
 paper_figs/
 engine_texts.json
+build_out/
+reference_renders/diffs/

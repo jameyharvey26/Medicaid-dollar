@@ -30,6 +30,13 @@ from ledger import ABSENT, DERIVED, MODELLED
 import basis_dc as _B
 
 # ---- the seven levers, as the national model names them --------------------
+# The levers carrying a figure derived on a District input. Named once, so the
+# partition check below and the ledger agree without either typing the other's
+# list out again.
+DERIVED_LEVERS = {"Work reporting", "Provider tax limits",
+                  "Directed payment caps", "Six-month renewals",
+                  "Blocked senior enrollment rule"}
+
 LEVERS = ["Work reporting", "Provider tax limits", "Directed payment caps",
           "Blocked senior enrollment rule", "Six-month renewals",
           "Blocked Medicaid enrollment rule", "Everything else"]
@@ -252,6 +259,11 @@ NET_ACR_M = {2025: 307.0, 2026: 455.0, 2027: 299.0}
 # named, so acquisition has a target rather than a wish.
 # Work reporting and six-month renewals LEFT this dict on 2026-10-29: DHCF
 # publishes the population and the dollars, so both are now derived below.
+# The levers with no District figure. The seniors lane LEFT this set on
+# 2026-10-29 when it was derived on the District's own QMB-only count (Q2);
+# the paperwork lane is in it and stays in it, because the figure drawn for it
+# is an assumption rather than a derivation and vanishes when assumed_levers
+# is turned off.
 ABSENT_LEVERS = {
     "Blocked Medicaid enrollment rule": (
         "Section 71102 blocks the eligibility-and-enrolment rule. Its effect "
@@ -262,12 +274,6 @@ ABSENT_LEVERS = {
         "row in DHCF's enrolment report. JW, 2026-10-29: leave ABSENT and "
         "draw it as absence; a provision-by-provision mapping of our own "
         "would be a modelled step with no source behind it."),
-    "Blocked senior enrollment rule": (
-        "Section 71101 blocks the Medicare Savings Programs rule. Unlike "
-        "71102 this one HAS a measured District denominator — QMB-only "
-        "enrolment, 12,880 in January 2026, rising while total Medicaid fell "
-        "24,000. What is missing is the rate, and no direction has been taken "
-        "on it. The Q1 route would work here too."),
     "DC provisions not separately scored": (
         "Renamed from 'Everything else' on JW's call, 2026-10-29. Nationally "
         "that lane is a residual defined by what CBO scored, and a residual "
@@ -551,6 +557,150 @@ RENEWALS_RULE = ("expansion adults move from 12-month to six-month "
 # Section 71101's denominator is measured even though its rate is not.
 MSP_DENOMINATOR = 12_880                  # QMB only, January 2026
 
+# ---------------------------------------------------------------------------
+# THE SENIORS LANE — section 71101, DERIVED. JW, 2026-10-29 (Q2).
+# ---------------------------------------------------------------------------
+#
+# Done properly rather than folded in with the assumed lane, because unlike
+# 71102 this one has a measured District denominator. Same shape as work
+# reporting: a District count, one modelled step, and the modelled step
+# published as a band with a declared default inside it.
+#
+# THE DISTRICT RUNS THIS PROGRAMME UNLIKE ANYWHERE ELSE, and that is the whole
+# reason the lane cannot be scaled off the national one without saying so.
+# Most states offer three Medicare Savings tiers. The District offers only
+# QMB -- Part A and B premiums AND all Medicare cost sharing -- and offers it
+# up to 300% FPL where the federal floor is 100%.
+MSP_DC_STRUCTURE = (
+    "The District offers the QMB group only, at 300% FPL against a federal "
+    "floor of 100%. It operates no SLMB and no QI group. MACPAC, Medicare "
+    "Savings Programs: Enrollment Trends, June 2024, note 10.")
+
+# The QI carve-out that is OUTSTANDING on the national lane (fmap.py, D-44) is
+# SETTLED to zero here and for a District reason rather than a structural one:
+# there is no QI group in the District to carve out.
+MSP_QI_CARVE_OUT_DC = 0.0
+
+# The national denominator, on the same definition as the District's.
+MSP_NATIONAL_QMB_ONLY = 1_700_000
+MSP_NATIONAL_SOURCE = (
+    "MACPAC, Medicare Savings Programs: Enrollment Trends, June 2024, Table "
+    "3-2: QMB only (partial benefit) 1.7 million, CY2021. Published to a "
+    "tenth of a million, so the denominator is good to about three percent "
+    "and no better.")
+
+# THE DEFINITIONS WERE CHECKED RATHER THAN ASSUMED TO MATCH, which is the step
+# that usually goes wrong when a state figure meets a national one.
+MSP_DENOM_DEFINITION = (
+    "DHCF publishes 'Medicaid QMB only' as an eligibility category in a list "
+    "that sums to total Medicaid enrolment -- 12,276 in December 2025 against "
+    "36,362 duals in all -- so it is QMB WITHOUT full Medicaid benefits, "
+    "which is MACPAC's 'QMB only (partial benefit)'. Like for like. DHCF, "
+    "MCAC Enrollment Report, January 2026.")
+
+MSP_DC_SHARE = MSP_DENOMINATOR / MSP_NATIONAL_QMB_ONLY
+
+# THE ONE MODELLED STEP: that the lever's dollars fall in proportion to QMB-
+# only enrolment. Everything else in the chain is somebody's published count.
+MSP_MODELLED_STEP = (
+    "That section 71101's dollars fall in proportion to QMB-only enrolment. "
+    "The District's count and the national count are both measured; this is "
+    "the step that joins them.")
+
+# THE BAND, and both ends are arguments rather than measurements, which is
+# said on the plate rather than left to be noticed.
+#
+# The DEFAULT, at the top, is the neutral step: the District is exposed like
+# the rest of the country, per QMB-only enrollee.
+#
+# The FLOOR is zero, and it is not a throwaway. A blocked federal streamlining
+# rule only costs a jurisdiction the enrolment it would have produced that the
+# jurisdiction was not going to produce anyway. The District already enrols
+# this group to three times the poverty line under its own rules. If its own
+# generosity has already reached everyone the federal rule would have reached,
+# the District loses nothing and the lane is zero.
+#
+# So the figure we publish is an UPPER BOUND for the District, and the band
+# runs down from it rather than around it.
+MSP_EXPOSURE_DEFAULT = 1.0
+MSP_EXPOSURE_BAND = (0.0, 1.0)
+MSP_BAND_MEANING = (
+    "Share of the national per-enrollee exposure that reaches the District. "
+    "The default of 1.0 assumes the District is exposed like everywhere else. "
+    "The floor of zero is the case where the District's own 300% FPL QMB "
+    "programme has already enrolled everyone the blocked federal rule would "
+    "have reached. The published figure is therefore an upper bound.")
+
+# THE ACQUISITION THAT PUTS A REAL NUMBER INSIDE THE BAND. Named here the way
+# the exempt share is named for work reporting, so it is a target rather than
+# a regret.
+MSP_ABOVE_FEDERAL_FLOOR = None            # ABSENT
+MSP_ABOVE_FEDERAL_FLOOR_TARGET = (
+    "How many of the District's QMB-only enrollees sit above 100% FPL -- the "
+    "people the District covers and the federal floor would not. DHCF holds "
+    "it; it is not in the monthly enrolment report, which publishes the "
+    "category as a single count.")
+
+MSP_CUT_M = (_T30.tc30["Blocked senior enrollment rule"] * 1_000.0
+             * MSP_DC_SHARE * MSP_EXPOSURE_DEFAULT)
+MSP_PER100 = per100_30(MSP_CUT_M)
+
+
+# ---------------------------------------------------------------------------
+# THE PAPERWORK LANE — section 71102, ASSUMED, and only behind the switch.
+# ---------------------------------------------------------------------------
+#
+# JW, 2026-10-29 (Q2): draw it, say it is assumed, and keep the switch so the
+# honest panel is one flick away.
+#
+# THIS IS THE THING NO_HUNDRED SAYS NOT TO DO. ledger_dc_2030.NO_HUNDRED says
+# in terms that allocating a national score by a District share "would fill a
+# missing figure from somewhere else". That is exactly what this is. It is
+# done anyway, deliberately, for a drawn panel that declares it -- and it is
+# behind a named switch for the same reason, so that turning the switch off
+# returns the panel the rest of this file argues for.
+#
+# The assumption is the plainest one available: that the District loses the
+# same share of each Medicaid dollar as the country does. Not a population
+# model of our own, which would be a second modelled step wearing the clothes
+# of a finding. Derived from the national model in code, so it moves when the
+# national model moves.
+ASSUMED_PAPERWORK_PER100 = _T30.per100["Blocked Medicaid enrollment rule"]
+# The leftovers lane, assumed. JW, 2026-10-29 PM, for the explorer.
+#
+# The objection stands and is written down rather than dropped: nationally
+# this lane is a RESIDUAL -- whatever CBO scored that was not one of the named
+# levers -- and the District lane carries three named District provisions
+# instead. They are not the same quantity, so this figure is the national
+# remainder's size standing in for a District total nobody has computed. It is
+# drawn so the explorer can show FY2030 DC at all, it says ASSUMED wherever it
+# appears, and it is first on DC_ENGINE_TODO.md.
+ASSUMED_RESIDUAL_PER100 = _T30.per100["Everything else"]
+ASSUMED_RESIDUAL_NOTE = (
+    "ASSUMED, NOT MEASURED, AND NOT THE SAME QUANTITY. Drawn at the national "
+    "'everything else' lane's share of each Medicaid dollar. Nationally that "
+    "lane is a RESIDUAL -- what CBO scored less the named levers -- and a "
+    "residual cannot be re-derived from District sources because it is a "
+    "remainder rather than a thing. The District lane carries three named "
+    "District provisions instead: the LTSS home equity cap, the legal "
+    "immigrant eligibility restriction (under preliminary injunction, status "
+    "contested) and retroactive coverage. None of the three is sized. The "
+    "figure drawn is therefore a placeholder with a national number on it, "
+    "not a District estimate, and it is the first thing on the list to "
+    "replace. Turn assumed_levers off to see the lane as absence.")
+
+ASSUMED_PAPERWORK_NOTE = (
+    "ASSUMED, NOT MEASURED. No District figure exists for this lever and none "
+    "is derivable: section 71102's effect falls on process -- interviews, "
+    "renewal alignment, the reconsideration period, CHIP lockouts -- and the "
+    "people affected are those who WOULD HAVE enrolled or stayed enrolled "
+    "under easier mechanics, who are a counterfactual rather than a row in "
+    "DHCF's enrolment report. The figure drawn is the NATIONAL share of each "
+    "Medicaid dollar, applied to the District's hundred. It assumes the "
+    "District's enrolment mechanics behave like the national average, which "
+    "is the one thing this project otherwise refuses to assume. Turn "
+    "assumed_levers off to see the lane as absence.")
+
 
 # ===========================================================================
 # THE FY2030 HUNDRED'S SUPERSESSION — hunted, not found
@@ -597,9 +747,28 @@ def _check():
     assert FY30_HUNDRED_M > _B.DC_TOTAL_M, "FY2030 must exceed FY2024"
 
     # the lever set still partitions, with the lane renamed
-    assert set(ABSENT_LEVERS) | {"Directed payment caps", "Provider tax limits",
-                                 "Work reporting", "Six-month renewals"} == \
+    assert set(ABSENT_LEVERS) | DERIVED_LEVERS == \
         set(LEVERS) - {"Everything else"} | {"DC provisions not separately scored"}
+    assert "Blocked senior enrollment rule" in DERIVED_LEVERS, (
+        "the seniors lane is derived on the District's own QMB-only count; if "
+        "it is absent again, say why here rather than in a quiet edit")
+    assert "Blocked Medicaid enrollment rule" in ABSENT_LEVERS, (
+        "the paperwork lane is ASSUMED, never derived. If it leaves this set "
+        "somebody has turned an assumption into a finding")
+
+    # Q2: the seniors band. The default sits at the TOP because the figure is
+    # an upper bound for the District, and the floor is a real argument.
+    assert MSP_EXPOSURE_BAND[0] <= MSP_EXPOSURE_DEFAULT <= MSP_EXPOSURE_BAND[1]
+    assert MSP_ABOVE_FEDERAL_FLOOR is None, (
+        "once the above-floor count is acquired the band closes and this "
+        "assertion is what tells you to close it")
+    assert 0.0 < MSP_DC_SHARE < 0.02, (
+        "DC's share of national QMB-only enrolment; outside this range one of "
+        "the two counts has moved basis")
+    assert MSP_PER100 > _T30.per100["Blocked senior enrollment rule"], (
+        "DC is over-represented in QMB-only enrolment relative to its "
+        "Medicaid spending, so its per-$100 exposure must exceed the national "
+        "one. If this flips, check the denominators before the finding")
 
     # section 71116 timing, resolved on the rule
     assert not FIRST_AFFECTED_FY_DISPUTED
@@ -677,11 +846,23 @@ if __name__ == "__main__":
             ("Work reporting", WORK_REPORTING_CUT_M, WORK_REPORTING_PER100),
             ("Provider tax limits", PROVIDER_TAX_CUT_M, PROVIDER_TAX_PER100),
             ("Directed payment caps", DIRECTED_CUT_M, DIRECTED_CUT_PER100),
-            ("Six-month renewals", RENEWALS_CUT_M, RENEWALS_PER100)):
+            ("Six-month renewals", RENEWALS_CUT_M, RENEWALS_PER100),
+            ("Blocked senior enrollment rule", MSP_CUT_M, MSP_PER100)):
         print(f"  {name:<34} {m:>10,.2f} {p:>10.2f}")
     print(f"  {'(provider tax floor, measured)':<34} "
           f"{PROVIDER_TAX_CUT_FLOOR_M:>10,.2f} {PROVIDER_TAX_FLOOR_PER100:>10.2f}")
     print()
-    print(f"  levers derived: 4 of {len(LEVERS)}; absent: {len(ABSENT_LEVERS)}")
+    print()
+    print(f"  seniors lane, District share of national QMB-only "
+          f"{MSP_DC_SHARE*100:>6.3f}%")
+    print(f"  seniors lane exposure, default    {MSP_EXPOSURE_DEFAULT:>10.2f}"
+          f"   (band {MSP_EXPOSURE_BAND[0]:.2f} to {MSP_EXPOSURE_BAND[1]:.2f}; "
+          f"the published figure is an UPPER BOUND)")
+    print(f"  paperwork lane if assumed         "
+          f"{ASSUMED_PAPERWORK_PER100:>10.2f}   per $100, ASSUMED from the "
+          f"national share")
+    print()
+    print(f"  levers derived: {len(DERIVED_LEVERS)} of {len(LEVERS)}; "
+          f"absent: {len(ABSENT_LEVERS)}")
     for k in ABSENT_LEVERS:
         print(f"     ABSENT  {k}")

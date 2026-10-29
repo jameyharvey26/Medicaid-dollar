@@ -2,37 +2,95 @@
 <g id="baseline" display="none">
 </g>
 <g id="overlay-hr1">
-<rect x="1596.0" y="677.0" width="219.1" height="19.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="690.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#8B5A5A" text-anchor="start" font-weight="bold">NOT SHOWN, and not estimated:</text>
-<rect x="1596.0" y="704.5" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="716.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• claims row mco: DC does not publish managed-care spending by service category. The</text>
-<rect x="1596.0" y="722.0" width="283.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="734.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">fan out of the capitated lanes is absent.</text>
-<rect x="1596.0" y="743.5" width="391.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="755.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• claims row dual: as above, for the D-SNP wrap and PACE.</text>
-<rect x="1596.0" y="765.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="777.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• mco: plan retention is measured in total; its split into administration and margin</text>
-<rect x="1596.0" y="782.5" width="169.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="794.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">is not published for DC.</text>
-<rect x="1596.0" y="804.0" width="377.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="816.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• dual: no retention figure for the D-SNP wrap or PACE.</text>
-<rect x="1596.0" y="825.5" width="491.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="837.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• amerihealth, wellpoint, medstar, hscsn: retention split not published.</text>
-<rect x="1596.0" y="847.0" width="317.1" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="859.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• united, pace: retention split not published.</text>
-<rect x="1596.0" y="868.5" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="880.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Behavioral health is not a separate node. The DC source folds it into wrap-around</text>
-<rect x="1596.0" y="886.0" width="256.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="898.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">services and into the capitated lump.</text>
-<rect x="1596.0" y="907.5" width="229.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="919.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Documented fraud: no DC figure.</text>
-<rect x="1596.0" y="929.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="941.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Beneficiary shares: no matrix built. MACStats Exhibit 21 carries a state dimension</text>
-<rect x="1596.0" y="946.5" width="142.4" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="958.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">and is the route in.</text>
-<rect x="1596.0" y="979.0" width="537.8" height="17.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="990.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#6f6f6f" text-anchor="start" font-weight="None" font-style="italic">Absent data is left absent. Filling a gap with a share would produce a modelled figure</text>
-<rect x="1596.0" y="995.5" width="229.8" height="17.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
-<text x="1600.0" y="1006.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#6f6f6f" text-anchor="start" font-weight="None" font-style="italic">wearing a measured figure's clothes.</text>
+<rect x="1776.0" y="127.0" width="219.1" height="19.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="140.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#8B5A5A" text-anchor="start" font-weight="bold">NOT SHOWN, and not estimated:</text>
+<rect x="1776.0" y="154.5" width="344.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="166.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• ASSUMED, NOT MEASURED. The District publishes no</text>
+<rect x="1776.0" y="172.0" width="384.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="184.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">managed-care spending by service category. The capitated</text>
+<rect x="1776.0" y="189.5" width="397.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="201.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">rows carry the NATIONAL mix imposed on DC's dollars. HSCSN</text>
+<rect x="1776.0" y="207.0" width="377.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="219.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">is a paediatric special-needs plan and is drawn with an</text>
+<rect x="1776.0" y="224.5" width="317.1" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="236.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">adult comprehensive profile; DC's own measured</text>
+<rect x="1776.0" y="242.0" width="397.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="254.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">fee-for-service mix diverges sharply from national, so the</text>
+<rect x="1776.0" y="259.5" width="236.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="271.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">unmeasured half probably does too.</text>
+<rect x="1776.0" y="281.0" width="397.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="293.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• The capitated fan is an ASSUMPTION and the panel says so</text>
+<rect x="1776.0" y="298.5" width="149.1" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="310.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">wherever it is drawn.</text>
+<rect x="1776.0" y="320.0" width="397.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="332.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• mco: plan retention is measured in total; its split into</text>
+<rect x="1776.0" y="337.5" width="344.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="349.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">administration and margin is not published for DC.</text>
+<rect x="1776.0" y="359.0" width="377.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="371.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• dual: no retention figure for the D-SNP wrap or PACE.</text>
+<rect x="1776.0" y="380.5" width="364.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="392.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• amerihealth, wellpoint, medstar: administration and</text>
+<rect x="1776.0" y="398.0" width="370.9" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="410.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">margin are taken from each plan's own CY2024 Title XIX</text>
+<rect x="1776.0" y="415.5" width="384.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="427.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">reporting. Margin is a residual — premium less care less</text>
+<rect x="1776.0" y="433.0" width="350.7" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="445.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">administration — because nothing publishes a plan's</text>
+<rect x="1776.0" y="450.5" width="176.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="462.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">Medicaid margin directly.</text>
+<rect x="1776.0" y="472.0" width="391.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="484.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• MIXED VINTAGE ON THIS PLATE. Three plans are CY2024 and</text>
+<rect x="1776.0" y="489.5" width="330.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="501.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">HSCSN is CY2023. HSCSN predates the managed care</text>
+<rect x="1776.0" y="507.0" width="391.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="519.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">regulations and is not an MCO in the regulatory sense, so</text>
+<rect x="1776.0" y="524.5" width="384.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="536.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">it files no comparable annual statement and has no Title</text>
+<rect x="1776.0" y="542.0" width="377.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="554.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">XIX column to read. It reports to DHCF; that figure has</text>
+<rect x="1776.0" y="559.5" width="364.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="571.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">not been acquired. CY2023 stands in, and this plan is</text>
+<rect x="1776.0" y="577.0" width="276.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="589.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">therefore a year behind the other three.</text>
+<rect x="1776.0" y="598.5" width="391.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="610.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• The plans are scaled to the CMS-64 managed-care lane. A</text>
+<rect x="1776.0" y="616.0" width="357.4" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="628.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">plan's annual statement and the CMS-64 are different</text>
+<rect x="1776.0" y="633.5" width="337.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="645.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">accountings on different year boundaries, and the</text>
+<rect x="1776.0" y="651.0" width="370.9" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="663.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">statements carry locally funded Alliance and ICP money</text>
+<rect x="1776.0" y="668.5" width="357.4" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="680.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">that is outside this hundred. Scaling preserves each</text>
+<rect x="1776.0" y="686.0" width="377.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="698.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">plan's share and keeps the lane total the measured one.</text>
+<rect x="1776.0" y="707.5" width="391.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="719.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• MedStar Family Choice, Inc. is not a DC-only entity: it</text>
+<rect x="1776.0" y="725.0" width="364.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="737.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">writes $920.1M of Title XIX across two jurisdictions,</text>
+<rect x="1776.0" y="742.5" width="397.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="754.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">$545.0M of it in Maryland. Its District figure is Schedule</text>
+<rect x="1776.0" y="760.0" width="337.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="772.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">T, not its Title XIX column, and its expenses are</text>
+<rect x="1776.0" y="777.5" width="323.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="789.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">apportioned by DC's share of Title XIX premium.</text>
+<rect x="1776.0" y="799.0" width="317.1" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="811.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• united, pace: retention split not published.</text>
+<rect x="1776.0" y="820.5" width="391.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="832.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Behavioral health is not a separate node. The DC source</text>
+<rect x="1776.0" y="838.0" width="391.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="850.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">folds it into wrap-around services and into the capitated</text>
+<rect x="1776.0" y="855.5" width="75.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="867.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">     lump.</text>
+<rect x="1776.0" y="877.0" width="229.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="889.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Documented fraud: no DC figure.</text>
+<rect x="1776.0" y="898.5" width="397.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="910.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Beneficiary shares: no matrix built. MACStats Exhibit 21</text>
+<rect x="1776.0" y="916.0" width="317.1" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="928.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">carries a state dimension and is the route in.</text>
+<rect x="1776.0" y="948.5" width="377.6" height="17.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="959.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#6f6f6f" text-anchor="start" font-weight="None" font-style="italic">Absent data is left absent. Filling a gap with a share would</text>
+<rect x="1776.0" y="965.0" width="389.9" height="17.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1780.0" y="976.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#6f6f6f" text-anchor="start" font-weight="None" font-style="italic">produce a modelled figure wearing a measured figure's clothes.</text>
 </g>
 </svg>

@@ -788,11 +788,19 @@ def render(cfg):
     _flow_floor = (max(node_y[order[-1]]+node[order[-1]]*ys, ffs_y+ffs*ys)
                    if order else ffs_y+ffs*ys)
     _hr1_rule = _flow_floor + (76 if fraud > 0 else 30)
+    global EXTRA_H
+    if cfg.declarations_below and cfg.absent:
+        _band, _bh = _draw_declarations_band(cfg, H + 12)
+        EXTRA_H = _bh + 24
+        _decl = _band
+    else:
+        EXTRA_H = 0.0
+        _decl = _draw_absent(cfg,
+                             *((xCL[1]+40, cY+150) if cfg.truncated
+                               else (xBE[0]+20, _abs_y)))
     return svg, (_draw_hr1(cfg, bites, ys, TB, _obs, _pin, _hr1_rule)
                  + _draw_ben_key(_key_at)
-                 + _draw_absent(cfg,
-                                *((xCL[1]+40, cY+150) if cfg.truncated
-                                  else (xBE[0]+20, _abs_y))))
+                 + _decl)
 
 
 def _draw_ben_key(at):
@@ -863,6 +871,69 @@ def _draw_absent(cfg, ax, ay):
     return out
 
 
+
+# Extra canvas height the last render asked for, in SVG units. A full-width
+# declarations band is laid out at render time -- its height depends on how
+# many lines the text wraps to -- so the figure cannot be declared in advance.
+# Reset at the top of every render(); read by whatever wraps the document.
+EXTRA_H = 0.0
+
+
+def _draw_declarations_band(cfg, y0, cols=3, left=150, right=24, gutter=40):
+    """The declared-absence block as a full-width footer, in columns.
+
+    PAGINATION, NOT A SMALLER FONT (JW, 2026-10-29). The DC FY2030 block runs
+    about eighty lines. Beside the flow it had room for a third of them, so it
+    struck through the Medicare Savings terminal on its way past and ended up
+    underneath the tracker. Set in smaller type it would have fitted and
+    nobody would have read it, which is the same failure wearing a tidier
+    picture.
+
+    Returns (svg lines, height used). The height is measured, not declared:
+    the caller grows the canvas by what came back.
+    """
+    global svg
+    _saved, svg = svg, []
+    width = (W - right) - left
+    cw = (width - gutter * (cols - 1)) / cols
+
+    txt(left, y0 + 14, "NOT SHOWN, AND NOT ESTIMATED", 13, "#8B5A5A",
+        "start", "bold", halo=False)
+    add(f'<line x1="{left}" y1="{y0+22:.1f}" x2="{W-right}" y2="{y0+22:.1f}" '
+        f'stroke="#8B5A5A" stroke-width="0.8" stroke-opacity="0.45"/>')
+    top = y0 + 42
+
+    # Wrap everything first, then deal the lines into columns, so a column
+    # break never lands between a bullet and its continuation.
+    blocks = []
+    for a in cfg.absent:
+        blocks.append(_wrap("\u2022  " + a, 11.5, cw))
+    tail = _wrap("Absent data is left absent. Filling a gap with a share "
+                 "would produce a modelled figure wearing a measured "
+                 "figure's clothes.", 11, cw)
+
+    LH = 11.5 + 5.0
+    total = sum(len(b) for b in blocks) + len(tail) + 2 * len(blocks)
+    per = -(-total // cols)                     # ceiling
+
+    col, used, y = 0, 0, top
+    tallest = top
+    for b in blocks + [tail]:
+        if used and used + len(b) > per and col < cols - 1:
+            col += 1
+            y, used = top, 0
+        x = left + col * (cw + gutter)
+        for line in b:
+            txt(x, y, line, 11.5, MUT, "start", halo=False)
+            y += LH
+        y += 6
+        used += len(b) + 1
+        tallest = max(tallest, y)
+
+    out, svg = svg, _saved
+    return out, (tallest - y0) + 18
+
+
 def _solve_pies(order, node, gt):
     # Groups come off the ledger's own row margin, in its order, not from a
     # list carried here. S-105: two declarations of one set is how the adult
@@ -879,7 +950,21 @@ def _solve_pies(order, node, gt):
     return {p:[M[p][g]/sum(M[p].values()) for g in G] for p in order}
 
 # --------------------------------------------------------------------------
+import placeholder as _PH
+
 FAN_TOP_OFF = 18.0   # the fan's first row, below the HR-1 rule. One place.
+
+
+def _ph_of(cfg, name):
+    """The ledger's words for an absent lane, or None if the lane has a figure.
+
+    A placeholder is drawn at a declared WIDTH and labelled with what is
+    missing. It is never drawn from its value, because it has none: an absent
+    Fig arrives here as 0.0 and a zero-height band under a "−$0.00" label
+    says the lever costs nothing, which is the substitution this panel exists
+    to refuse (placeholder.py).
+    """
+    return getattr(cfg, "placeholders", {}).get(name)
 
 
 def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
@@ -893,7 +978,11 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
     _saved, svg = svg, []
     add('<defs><pattern id="hr1hatch" width="6" height="6" patternUnits="userSpaceOnUse" '
         'patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" '
-        'stroke="#6f4747" stroke-width="2.1" stroke-opacity="0.55"/></pattern></defs>')
+        'stroke="#6f4747" stroke-width="2.1" stroke-opacity="0.55"/></pattern>'
+        f'<pattern id="phhatch" width="6" height="6" patternUnits="userSpaceOnUse" '
+        f'patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" '
+        f'stroke="{_PH.VIOLET_HATCH}" stroke-width="2.1" stroke-opacity="0.85"/>'
+        '</pattern></defs>')
     add(f'<line x1="330" y1="{rule_y:.1f}" x2="1560" y2="{rule_y:.1f}" stroke="{WARM}" '
         f'stroke-width="1.1" stroke-dasharray="7 5" stroke-opacity="0.7"/>')
     txt(336,rule_y-8,"HR-1 TAKES THESE OUT",11,WARM,"start","bold",halo=False)
@@ -916,7 +1005,7 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
     for name,xb,yb,v in bites:
         xt,sub = cfg.hr1_term[name]
         assert xt > xb, f"{name}: terminal {xt} is upstream of its bite {xb} (S-057)"
-        th=max(v*ys,3.4)
+        th=(_PH.WIDTH*ys) if _ph_of(cfg,name) else max(v*ys,3.4)
         items.append(dict(name=name, label=OUTFLOWS_label(name), amt=v,
                           xb=xb, xt=xt, th=th, sub=sub,
                           y_src=(yb-v*ys)+th/2,
@@ -954,16 +1043,27 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
         it=next(i for i in items if i["name"]==name)
         xt,sub,th = it["xt"], it["sub"], it["th"]
         yt=YT[name]
-        y0=yb-v*ys                      # flush with the edge (S-057)
-        with trace(name,'provision',v):
-            band(xb,xt,y0,yt,th,th,WARM,0.74)
-        xm=ctrl_x(xb,xt)
-        add(f'<path d="M{xb:.1f},{y0:.1f} C{xm:.1f},{y0:.1f} {xm:.1f},{yt:.1f} {xt:.1f},{yt:.1f} '
-            f'L{xt:.1f},{yt+th:.1f} C{xm:.1f},{yt+th:.1f} {xm:.1f},{y0+th:.1f} {xb:.1f},{y0+th:.1f} Z" '
-            f'fill="url(#hr1hatch)"/>')
+        _why = _ph_of(cfg,name)
+        y0=yb-(th if _why else v*ys)    # flush with the edge (S-057)
+        if _why:
+            # NO trace(): trace records a quantity and this is not one.
+            band(xb,xt,y0,yt,th,th,_PH.VIOLET,0.30)
+            xm=ctrl_x(xb,xt)
+            add(f'<path d="M{xb:.1f},{y0:.1f} C{xm:.1f},{y0:.1f} {xm:.1f},{yt:.1f} '
+                f'{xt:.1f},{yt:.1f} L{xt:.1f},{yt+th:.1f} C{xm:.1f},{yt+th:.1f} '
+                f'{xm:.1f},{y0+th:.1f} {xb:.1f},{y0+th:.1f} Z" '
+                f'fill="url(#phhatch)" data-kind="placeholder" '
+                f'data-trace="{esc(name)}"/>')
+        else:
+            with trace(name,'provision',v):
+                band(xb,xt,y0,yt,th,th,WARM,0.74)
+            xm=ctrl_x(xb,xt)
+            add(f'<path d="M{xb:.1f},{y0:.1f} C{xm:.1f},{y0:.1f} {xm:.1f},{yt:.1f} {xt:.1f},{yt:.1f} '
+                f'L{xt:.1f},{yt+th:.1f} C{xm:.1f},{yt+th:.1f} {xm:.1f},{y0+th:.1f} {xb:.1f},{y0+th:.1f} Z" '
+                f'fill="url(#hr1hatch)"/>')
         if round(xt) in STACKS:
             continue                      # stacked group is labelled as a list below
-        rect(xt,yt,6,max(th,4),WARMD)
+        rect(xt,yt,6,max(th,4),_PH.VIOLET if _why else WARMD)
         # A declared anchor override, for the rare case where a label block
         # sits in the only route another mark has. "Other" set three lines to
         # the RIGHT of its terminal, straight across the lane the incidence
@@ -982,7 +1082,9 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
         # sits under the sub-label where it did not. Either way it stays inside
         # this tributary's own block, under this tributary's own terminal, so it
         # cannot read as belonging to the row beneath.
-        _amt = f"\u2212${v:.2f}"
+        # A placeholder says what is missing. It must not say a number, and
+        # it must not say "\u2212$0.00", which is a number.
+        _amt = _PH.LABEL if _why else f"\u2212${v:.2f}"
         if name in COMPACT:
             _head = f"{_lab}  {_amt}"
             lbg(lx,ly,_head,12,an)
@@ -993,7 +1095,7 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
             lbg(lx,ly,_lab,12,an);   txt(lx,ly,_lab,12,WARMD,an,"bold",halo=False)
             lbg(lx,ly+14,sub,10,an); txt(lx,ly+14,sub,10,MUT,an,halo=False,italic=True)
             lbg(lx,ly+28,_amt,12,an)
-            txt(lx,ly+28,_amt,12,WARM,an,"bold",halo=False)
+            txt(lx,ly+28,_amt,12,_PH.VIOLET if _why else WARM,an,"bold",halo=False)
 
     # keyed list beside each contiguous stack
     for k,v in STACKS.items():
@@ -1004,8 +1106,11 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
             amt=next(b[3] for b in bites if b[0]==it["name"])
             add(f'<line x1="{k+9:.0f}" y1="{ly+it["th"]/2:.1f}" x2="{k+22:.0f}" '
                 f'y2="{ly+14:.1f}" stroke="{WARMD}" stroke-width="0.9" stroke-opacity="0.6"/>')
-            lbg(k+26,ly+18,f"{it['name']}  \u2212${amt:.2f}",12,"start")
-            txt(k+26,ly+18,f"{it['name']}  \u2212${amt:.2f}",12,WARMD,"start","bold",halo=False)
+            _w2=_ph_of(cfg,it["name"])
+            _t2=(f"{it['name']}  {_PH.LABEL}" if _w2
+                 else f"{it['name']}  \u2212${amt:.2f}")
+            lbg(k+26,ly+18,_t2,12,"start")
+            txt(k+26,ly+18,_t2,12,_PH.VIOLET if _w2 else WARMD,"start","bold",halo=False)
             lbg(k+26,ly+31,it["sub"],10,"start")
             txt(k+26,ly+31,it["sub"],10,MUT,"start",halo=False,italic=True)
             ly+=max(it["th"],34)

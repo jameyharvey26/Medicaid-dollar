@@ -64,3 +64,40 @@ Vaccines for Children return label sits tight under the "Federal $65.29" source
 label. There is no room for a row between the column headings and that label,
 so the solver is doing the best the space allows. Moving the source label, or
 giving returns their own band above the headings, would be the fix.
+
+---
+
+## Six national FY2030 panels are unblessed on purpose — 29 October
+
+`renderproof` is red, and will stay red until this is closed. It is not a
+fault and it is not noise. Read this instead of re-deriving it every session.
+
+`national_2030_holds`, `national_2030_mixed` and `national_2030_scales`
+(combined and overlay, six files) stopped matching the register at commit
+**c518476, "Fully rendered web sankey", 28 October**. The register was blessed
+at 69f61bf on 28 September. Both facts were established by rebuilding at
+69f61bf, where all fifteen panels reproduce byte for byte, and then bisecting
+the five commits since.
+
+What moved: `_draw_hr1` stopped pinning HR-1 terminals to an absolute canvas
+`term_y` and started pinning them to the fan via `term_dy`, because an
+absolute y is only correct on a panel whose flow floor puts the rule where it
+was written for and cannot be exported to a renderer whose rule sits
+elsewhere. Terminals move about a pixel. **No figure changed** — every
+`data-val` on all six files is identical to the register's, and with numbers
+masked the files are token-for-token identical. The shift is invisible at
+print size; the crop JW looked at on 29 October was at 2x.
+
+So this is the ONE ENGINE port working as intended, caught by the gate that
+exists to catch exactly this.
+
+**Open, and JW's to close:** whether the ~1px terminal shift needs saying
+anywhere about the frozen v8.0 paper, whose FY2030 figures were rendered with
+the old geometry. JW chose on 29 October to leave the six unblessed until he
+has looked at that himself, rather than bless them and lose the flag. The DC
+panels were blessed separately the same day, with their own reason, using the
+`--only` switch added for this.
+
+To close it, once the v8.0 question is settled:
+
+    python3 renderproof.py --bless "c518476: HR-1 terminals pinned to the fan (term_dy) rather than absolute canvas y so the geometry exports to the engine; terminals move ~1px, no figure changed" --only national_2030

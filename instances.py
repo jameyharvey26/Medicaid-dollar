@@ -85,6 +85,12 @@ class Instance:
     # Terminal Y is NOT declared. It is solved per render by outflows.fan_rows so
     # that tributaries do not cross (STYLE_GUIDE 2.9). Hand-assigned rows were how
     # the fan came to cross itself in the first place.
+    # Lanes the ledger declares ABSENT, name -> the ledger's own words.
+    # Drawing geometry only: these carry no value and never enter a total.
+    # The renderer draws them violet and says so, rather than letting an
+    # absent figure arrive as a zero and read as "this costs nothing", which
+    # is the one substitution the DC panel exists to refuse (placeholder.py).
+    placeholders: Dict[str, str] = field(default_factory=dict)
     sa_hr1: float = 0.0             # HR-1 taken at the state agency
     claims_hr1: float = 0.0         # HR-1 taken at the claims fan
     claims_hr1_name: str = "Directed payment caps"
@@ -101,6 +107,7 @@ class Instance:
     # service allocation to draw. Not a style; a fact about the data. Set by
     # compose() off the claims matrix, never by hand.
     truncated: bool = False
+    declarations_below: bool = False
     # Lanes the ledger says are not there. A zero lane must DISAPPEAR, taking
     # its label, its node contribution and its tracker row with it, rather than
     # rendering as a hairline band with a $0.00 label (ARCHITECTURE 3, S-071).

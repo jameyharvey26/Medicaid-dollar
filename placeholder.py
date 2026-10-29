@@ -28,6 +28,12 @@ VIOLET = "#7C3AED"
 VIOLET_HATCH = "#A78BFA"       # hatch stroke, for print and greyscale
 LABEL = "placeholder — no figure acquired"
 
+# The drawing width, in the panel's own per-$100 units. One declaration: the
+# ledger that makes a placeholder and the renderer that draws one must agree,
+# and a second copy is how they come to disagree. Wide enough to be seen at
+# print size, narrow enough that nobody reads it as a quantity.
+WIDTH = 2.0
+
 
 class Placeholder:
     """Geometry for a lane whose figure is ABSENT.
@@ -56,7 +62,7 @@ class Placeholder:
         return f"Placeholder({self.key!r}, width={self.width}, VIOLET)"
 
 
-def for_absent(key: str, label: str, fig: Fig, width: float = 2.0):
+def for_absent(key: str, label: str, fig: Fig, width: float = WIDTH):
     """A placeholder for an ABSENT figure, or None if the figure is present.
 
     Refuses to stand in for a figure that exists: a placeholder over a real

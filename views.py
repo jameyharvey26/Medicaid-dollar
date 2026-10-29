@@ -196,13 +196,14 @@ V_DC_2030 = View(
         ("directed payment caps", PeelSum(("Directed payment caps",)), "hr1",
          "CLAIMS", "Payment Caps"),
     ],
+    declarations_below=True,
     hr1_sub=DC_SUB_2030,
     reach_slot=REACH_SLOT,
     show_beneficiaries=False,
     kicker="TO BE  \u00b7  DISTRICT OF COLUMBIA  \u00b7  FY2030",
     title="$100 of DC Medicaid spending under prior law, with P.L. 119-21 applied",
-    strap="DRAFT. Four of seven HR-1 lanes are derived on District inputs; "
-          "three carry no DC figure and are drawn as violet placeholders. "
-          "The FY2030 hundred and the disenrolment rate are modelled and "
-          "declared.",
+    strap="DRAFT. Five of seven HR-1 lanes are derived on District inputs. "
+          "One is ASSUMED from the national share and says so. One carries no "
+          "DC figure and is drawn as a violet placeholder. The FY2030 hundred "
+          "and the disenrolment rate are modelled and declared.",
 )

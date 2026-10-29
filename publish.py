@@ -14,7 +14,7 @@ the paper and is now that declaration for all of it.
 
     python3 publish.py
 
-Writes six files to /mnt/user-data/outputs, all stamped v{VERSION}.
+Writes six files to the repo folder, all stamped v{VERSION}.
 
 The explorer's PDF is a flat print of an interactive page, which is a lesser
 thing than the page itself and is meant as a record rather than as the
@@ -29,7 +29,7 @@ import sys
 
 import release
 
-OUT = "/mnt/user-data/outputs"
+OUT = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.abspath(__file__))
 V = release.VERSION
 

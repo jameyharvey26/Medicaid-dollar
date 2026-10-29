@@ -34,6 +34,12 @@ import tobe2030_dc as _T
 import ledger_dc_2024 as _AS_IS
 import placeholder as _PH
 
+# The plans carried onto this panel are the FY2024 plans, so their reserved
+# palette colours are the FY2024 ones. Re-exported rather than copied: two
+# copies of a colour map is how one panel comes to draw MedStar in Wellpoint's
+# purple (S-105).
+PLAN_PALETTE = _AS_IS.PLAN_PALETTE
+
 V30 = "FY2030"
 B30 = "total computable"
 
@@ -122,12 +128,75 @@ _DERIVED = {
         "Same population, same denominator, same modelled rate as work "
         "reporting, at the share CBO's own score implies for this lever. "
         "Effective 1 January 2027, twelve-month certification to six."),
+    "Blocked senior enrollment rule": (
+        _T.MSP_PER100, ("anchor.msp.dc_qmb_only", "anchor.msp.national_qmb_only",
+                        "scale"),
+        "The District's own QMB-only enrolment as a share of the national "
+        "QMB-only count, applied to CBO's score for the lever. Both counts "
+        "are published and both were checked to be the same definition "
+        "before they were divided. The ONE modelled step is that the lever's "
+        "dollars fall in proportion to QMB-only enrolment. "
+        "UPPER BOUND FOR THE DISTRICT, and the reason is a District one: the "
+        "District runs the QMB group only, to 300% FPL against a federal "
+        "floor of 100%, so it has already enrolled much of the population a "
+        "blocked federal streamlining rule would have reached. The band runs "
+        "from this figure DOWN to zero and the acquisition that closes it — "
+        "how many of those enrollees sit above the federal floor — is named "
+        "in tobe2030_dc. The District's per-$100 exposure comes out above "
+        "the national one because it is over-represented in this group "
+        "relative to its Medicaid spending, which is a finding, not a fault."),
 }
+
+
+# ---------------------------------------------------------------------------
+# assumed_levers — JW, 2026-10-29 (Q2). Explicit, named, and off by argument.
+#
+# With the switch ON, the paperwork lane carries the NATIONAL share of each
+# Medicaid dollar and says ASSUMED on the plate. With it OFF, the lane is
+# absence and the panel is the one the rest of this file argues for. Both are
+# built; the difference is the point.
+#
+# The leftovers lane is NOT in here and must not be put in here. Its label
+# promises named District provisions and the national lane it would borrow
+# from is a residual — a remainder, not a thing — so a figure there would be a
+# different quantity wearing the lane's name. It stays absent and the view
+# draws it as a hole.
+_ASSUMED = {
+    "Blocked Medicaid enrollment rule": (
+        _T.ASSUMED_PAPERWORK_PER100, _T.ASSUMED_PAPERWORK_NOTE),
+    # ADDED 2026-10-29 PM, on JW's instruction for the web explorer: where the
+    # District has no answer, assume it works like the national model, draw
+    # it, say so, and keep a list. The argument against this lane in
+    # particular is NOT withdrawn and is recorded in DC_ENGINE_TODO.md: the
+    # national lane is a residual defined by what CBO scored, the District
+    # lane carries three named District provisions, and they are not the same
+    # quantity. The lane is drawn here with the national residual's magnitude
+    # because an explorer that cannot show FY2030 DC at all is worth less
+    # than one that shows it and declares the assumption.
+    "DC provisions not separately scored": (
+        _T.ASSUMED_RESIDUAL_PER100, _T.ASSUMED_RESIDUAL_NOTE),
+}
+ASSUMED_LEVERS_DEFAULT = True
+_assumed_levers = ASSUMED_LEVERS_DEFAULT
+
+
+def set_assumed_levers(on: bool) -> None:
+    """Turn the drawn assumption on or off. build_dc_2030 renders both."""
+    global _assumed_levers
+    _assumed_levers = bool(on)
+
+
+def assumed_levers() -> bool:
+    return _assumed_levers
 
 
 def _peel(key: str, label: str) -> Peel:
     charged, reach = HR1_DC[key]
-    if key in _DERIVED:
+    if _assumed_levers and key in _ASSUMED:
+        value, note = _ASSUMED[key]
+        amount = Fig(value, basis="$ per $100 of the FY2030 prior-law DC "
+                                  "hundred", status=MODELLED, note=note)
+    elif key in _DERIVED:
         value, parents, note = _DERIVED[key]
         amount = Fig.derived(
             value, parents,
@@ -145,8 +214,16 @@ def _peel(key: str, label: str) -> Peel:
                 kind="hr1")
 
 
-def ledger() -> Ledger:
-    as_is = _AS_IS.build()
+def ledger(assumed_mix: bool = True) -> Ledger:
+    """The DC FY2030 to-be ledger.
+
+    `assumed_mix` travels to the FY2024 panel this one holds its composition
+    from. It defaults ON here because the FY2024 panel it carries forward now
+    draws its service fan on the assumed national mix (JW, 2026-10-29) and a
+    FY2030 panel built on the honest-blank FY2024 would have a provider
+    column its own as-is panel does not.
+    """
+    as_is = _AS_IS.build(assumed_mix=assumed_mix)
 
     HELD = ("MODELLED by composition-held. The FY2024 share is carried to "
             "FY2030 unchanged on the stated assumption that the shape of the "
@@ -238,6 +315,25 @@ def ledger() -> Ledger:
                  "Healthy DC Plan; the 134-210% band reads 1 against 16,417 "
                  "a year earlier. A panel built off the FY2024 bands would "
                  "overstate both enrolment levers by about a sixth."),
+        "msp.dc_qmb_only": Fig(
+            float(_T.MSP_DENOMINATOR), source=_T.ENROL_SOURCE,
+            vintage="January 2026",
+            basis="QMB-only enrolment, people", status=MEASURED,
+            note="DHCF publishes this as an eligibility category in a list "
+                 "that sums to total Medicaid, so it is QMB WITHOUT full "
+                 "Medicaid benefits. Rising while total Medicaid fell. "
+                 + _T.MSP_DC_STRUCTURE),
+        "msp.national_qmb_only": Fig(
+            float(_T.MSP_NATIONAL_QMB_ONLY), source=_T.MSP_NATIONAL_SOURCE,
+            vintage="CY2021",
+            basis="QMB-only (partial benefit) enrolment, people, national",
+            status=MEASURED,
+            note="The denominator the District's count is divided by. "
+                 "CHECKED TO BE THE SAME DEFINITION rather than assumed to "
+                 "be: " + _T.MSP_DENOM_DEFINITION + " Published to a tenth "
+                 "of a million, so this chain is good to about three per "
+                 "cent and no better, and the lane should never be quoted "
+                 "to the cent."),
         "rate.default": Fig(
             _T.RATE_DEFAULT, source=_T.RATE_DEFAULT_SOURCE, vintage=V30,
             basis="share of expansion-group spending lost to the two "
@@ -364,14 +460,91 @@ def ledger() -> Ledger:
     # and is wrong the moment anything draws it. Found 2026-10-29, the first
     # time anything built this panel.
     _rows = list(as_is.claims.rows)
+    # THE SERVICE FAN IS CARRIED FORWARD, 2026-10-29 PM (JW, for the explorer).
+    #
+    # It used to be unallocated here -- row margins absent, interior empty --
+    # which was right when the FY2024 panel it holds from was also blank. The
+    # FY2024 panel now draws its fan on the assumed national mix, so a FY2030
+    # panel with no fan was showing the engine an ABSENT provider column worth
+    # $76 beside a FY2024 panel that draws one. Two panels of one jurisdiction
+    # disagreeing about whether a thing is knowable is worse than either
+    # answer.
+    #
+    # The same proportional rule the lanes use: _scaled, so every cell moves
+    # onto the struck FY2030 disbursement and the shares are untouched. The
+    # assumption does not compound -- it is still the ONE assumed national mix
+    # from FY2024, now at FY2030's level -- and every cell carries the FY2024
+    # panel's own ASSUMED MIX note with the rescaling appended, so it says so
+    # wherever it is drawn.
+    # The directed-payment-cap bite lands INSIDE the matrix: it is charged at
+    # claims and reaches providers, so the fan must sum to care less that
+    # peel, not to care. The national FY2030 ledger strikes its row margins
+    # from cells for exactly this reason. Here the bite is spread across the
+    # cells proportionally -- the same narrow redistribution rule the lanes
+    # use, declared on the plate, and no more settled than that one. A cap
+    # that falls on hospital rates in particular does NOT fall evenly across
+    # long-term care and pharmacy, and saying so is on the list.
+    # ON THE CAPITATED LEG ONLY, as the national FY2030 ledger has it. A
+    # directed payment is a top-up a plan makes to a provider, so the bite
+    # cannot fall on fee-for-service: there is no plan in that lane to be
+    # stopped from making it. Spread across all three rows it took a dollar
+    # out of fee-for-service that the statute never reaches, and the
+    # conservation gate caught it within the minute.
+    _CAP_ROWS = ("mco", "dual")
+    _cap_tot = sum(p.care.n for p in payers
+                   if not p.parent and p.key in _CAP_ROWS)
+    _claims_peel = sum(x.amount.n for x in peels
+                       if x.charged == "CLAIMS" and not x.outside
+                       and not x.amount.is_absent)
+    _CLAIMS_REDIST = (1.0 if _cap_tot <= 0
+                      else (_cap_tot - _claims_peel) / _cap_tot)
+
+    def _fan(key, f: Fig) -> Fig:
+        g = _scaled(f)
+        if g.is_absent or key[0] not in _CAP_ROWS or _CLAIMS_REDIST == 1.0:
+            return g
+        return Fig(g.value * _CLAIMS_REDIST, source=g.source,
+                   vintage=g.vintage, basis=g.basis, status=MODELLED,
+                   note=g.note + " Reduced proportionally by the directed "
+                                 "payment caps, which are charged at claims "
+                                 "and land inside the capitated leg of this "
+                                 "fan.")
+
+    _cells = {k: _fan(k, v) for k, v in as_is.claims.cell.items()}
     claims = Matrix(
         "claims", rows=_rows, cols=nodes,
-        row_margin={r: _absent_share(NO_HUNDRED) for r in _rows},
-        col_margin={n: _held(as_is.claims.col_margin[n])
-                    if n in as_is.claims.col_margin
-                    else _absent_share(NO_HUNDRED) for n in nodes},
-        note="Interior unallocated, as in FY2024: DC publishes no service "
-             "allocation and none has been estimated.")
+        # Struck from the cells, as the national FY2030 ledger does, so a
+        # margin cannot disagree with the interior it is a margin of.
+        row_margin={r: Fig.derived(
+            sum(_cells[(r, n)].n for n in nodes if (r, n) in _cells),
+            tuple(f"claims.cell.{r}.{n}" for n in nodes if (r, n) in _cells),
+            basis="$ per $100 of the FY2030 prior-law DC hundred",
+            note="Struck from this row's cells.") for r in _rows},
+        col_margin={n: Fig.derived(
+            sum(_cells[(r, n)].n for r in _rows if (r, n) in _cells),
+            tuple(f"claims.cell.{r}.{n}" for r in _rows if (r, n) in _cells),
+            basis="$ per $100 of the FY2030 prior-law DC hundred",
+            note="Struck from this column's cells.") for n in nodes},
+        cell=_cells,
+        note="The FY2024 fan rescaled onto the FY2030 disbursement. DC "
+             "publishes no managed-care service mix, so the capitated rows "
+             "rest on the assumed national mix exactly as FY2024 does; this "
+             "panel adds a level, not a second assumption.")
+
+    # The counts in the declarations are COUNTED, not typed. They were typed
+    # once -- "four of the seven ... and three remain absent" -- and went
+    # stale the same day the seniors lane was derived and the other two were
+    # drawn as assumptions. A declaration that miscounts the panel it sits on
+    # is worse than no declaration (S-105).
+    _hr1 = [p for p in peels if p.kind == "hr1"]
+    _n_all = len(_hr1)
+    _n_absent = sum(1 for p in _hr1 if p.amount.is_absent)
+    _n_assumed = sum(1 for p in _hr1
+                     if p.key in _ASSUMED and _assumed_levers
+                     and not p.amount.is_absent)
+    _n_derived = _n_all - _n_absent - _n_assumed
+    _word = {0: "None", 1: "One", 2: "Two", 3: "Three", 4: "Four",
+             5: "Five", 6: "Six", 7: "Seven"}
 
     return Ledger(
         geography="District of Columbia",
@@ -395,7 +568,8 @@ def ledger() -> Ledger:
             # anything gated this ledger.
             *as_is.declared,
             "dc2030.hundred_modelled_national_rate",
-            "dc2030.levers_three_of_seven_absent",
+            "dc2030.lever_derivation_state",
+            "dc2030.seniors_lane_upper_bound",
             "dc2030.provider_tax_coupled_modelled_in_sequence",
             "dc2030.provider_tax_published_non_federal",
             "dc2030.directed_payment_first_year_resolved",
@@ -418,20 +592,35 @@ def ledger() -> Ledger:
             "its level; no lane is claimed to absorb more of a lever than "
             "another. A lever that falls on one lane in particular would "
             "break that, and would be drawn differently.",
-            "Four of the seven HR-1 tributaries are now derived on District "
-            "inputs and three remain absent. Nothing on this panel is "
-            "allocated from CBO's national score: the denominators are "
-            "DHCF's, the dollars are DHCF's, and where a rate is modelled it "
-            "is declared as one. The three absent levers are absent for "
-            "three different reasons, and each records what would be needed "
-            "to derive it from District sources.",
-            "Section 71102, the blocked eligibility-and-enrolment rule, is "
-            "left absent deliberately. Its effect falls on process rather "
-            "than on a nameable group, and the people affected are those who "
-            "would have enrolled or stayed enrolled under easier mechanics — "
-            "a counterfactual, not a row in any District report. A "
-            "provision-by-provision mapping of our own would be a modelled "
-            "step with no source behind it.",
+            f"{_word[_n_derived]} of the {_word[_n_all].lower()} HR-1 "
+            f"tributaries are derived on District inputs"
+            + (f", {_word[_n_assumed].lower()} "
+               f"{'is' if _n_assumed == 1 else 'are'} ASSUMED from the "
+               f"national model and said to be" if _n_assumed else "")
+            + (f", and {_word[_n_absent].lower()} "
+               f"{'carries' if _n_absent == 1 else 'carry'} no District "
+               f"figure and {'is' if _n_absent == 1 else 'are'} drawn as "
+               f"absence" if _n_absent else "")
+            + ". Where a lane is derived, nothing is allocated from CBO's "
+              "national score: the denominators are DHCF's, the dollars are "
+              "DHCF's, and where a rate is modelled it is declared as one. "
+              "Each lane that is not derived records what would be needed to "
+              "derive it from District sources.",
+            "The seniors lane is derived on a District denominator and is an "
+            "UPPER BOUND. The District's own QMB-only enrolment, as a share "
+            "of the national QMB-only count, applied to CBO's score for the "
+            "lever; both counts are published and both were checked to be "
+            "the same definition before they were divided. The District runs "
+            "the QMB group ONLY, to 300% of the poverty line against a "
+            "federal floor of 100%, so it has already enrolled much of the "
+            "population a blocked federal streamlining rule would have "
+            "reached. The band therefore runs from the figure drawn DOWN to "
+            "zero rather than around it. The District's per-$100 exposure "
+            "comes out above the national one because it is over-represented "
+            "in this group relative to its Medicaid spending — a finding, "
+            "not a fault. Closing the band needs one count DHCF holds and "
+            "does not publish: how many of those enrollees sit above the "
+            "federal floor.",
             "The residual lane is renamed for the District. Nationally it is "
             "a remainder defined by what CBO scored, which cannot be "
             "re-derived from District sources because it is not a thing. The "
@@ -554,3 +743,10 @@ if __name__ == "__main__":
         _PH.forbid_in_shipping(ph, "DC FY2030 panel")
     except _PH.PlaceholderInShippingArtifact as e:
         print(f"\n  shipping gate: REFUSED\n    {e}")
+
+
+def build(assumed_mix: bool = True) -> Ledger:
+    """The name every other ledger module uses. engine_data_export imports
+    panels by module name and calls `build`; this module called its builder
+    `ledger`, which is why it could not be exported without a special case."""
+    return ledger(assumed_mix=assumed_mix)

@@ -1,3 +1,4 @@
+import os
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
 
@@ -324,5 +325,5 @@ for i,(t,d,flag) in enumerate(asms,1):
         for c in ['A','B','C']: asm[f'{c}{r}'].fill=YEL
     asm.row_dimensions[r].height=58; r+=1
 
-wb.save("/home/claude/medicaid_dollar_data.xlsx")
+wb.save(os.path.join(os.path.dirname(os.path.abspath(__file__)), "medicaid_dollar_data.xlsx"))
 print("saved xlsx; provider total", round(sum(final.values()),2), "| nodes", {k:final[k] for k in order})

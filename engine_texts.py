@@ -30,9 +30,14 @@ OUT = os.path.join(REPO, "engine_texts.json")
 
 # The engine's own keys against the panel names the register and build.py use.
 # UPDATED 26 October: the engine's controls became two axes, place and year,
-# so a panel is a pair. DC|2030 is deliberately absent -- there is no FY2030
-# ledger for the District and the engine says so on screen rather than drawing
-# one, so there is nothing to compare against.
+# so a panel is a pair.
+#
+# DC|2030 IS IN THE ENGINE as of 29 October and is deliberately NOT in this
+# table. This gate compares the engine's teaching text against the BLESSED
+# paper panel of the same name, and there is no blessed dc_2030: that panel
+# is a draft, it lives in drafts/, and placeholder.py refuses to let it ship.
+# Adding it here would compare the engine against nothing and report green.
+# When the DC FY2030 panel is blessed, add it here in the same commit.
 PANELS = {
     ("US", "2024"): "national_2024",
     ("US", "2030"): "national_2030_mixed",

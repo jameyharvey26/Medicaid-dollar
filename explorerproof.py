@@ -29,7 +29,7 @@ import os
 import re
 import sys
 
-OUT = "/mnt/user-data/outputs"
+OUT = os.path.dirname(os.path.abspath(__file__))
 DEFAULT = os.path.join(OUT, "medicaid_dollar_explorer.html")
 
 # A dollar figure as the page prints it: $12.34, or −$1.25 with the minus sign

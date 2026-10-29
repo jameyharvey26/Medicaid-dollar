@@ -21,7 +21,7 @@ import incidence
 
 REPO = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(REPO, "reference_renders")
-OUT = "/home/claude/nat"
+OUT = os.path.join(REPO, "build_out", "nat")
 
 
 def wrap(body):
@@ -112,8 +112,19 @@ def emit_draft(tag, base, over):
     """Render a draft panel outside the blessed register."""
     import resvg_py
     os.makedirs(DRAFTS, exist_ok=True)
-    doc = wrap('<g id="baseline">\n' + "\n".join(base) + "\n</g>\n"
-               '<g id="overlay-hr1">\n' + "\n".join(over) + "\n</g>")
+    body = ('<g id="baseline">\n' + "\n".join(base) + "\n</g>\n"
+            '<g id="overlay-hr1">\n' + "\n".join(over) + "\n</g>")
+    # A declarations band is laid out at render time and the canvas grows by
+    # what it actually used. wrap() is for register panels, whose height is
+    # fixed on purpose; a draft may be as tall as it needs to be.
+    extra = getattr(sankey, "EXTRA_H", 0.0)
+    if extra:
+        doc = (f'<svg viewBox="0 0 {sankey.W} {sankey.H + extra:.0f}" '
+               f'width="100%" xmlns="http://www.w3.org/2000/svg">\n'
+               f'<rect width="{sankey.W}" height="{sankey.H + extra:.0f}" '
+               f'fill="#ffffff"/>\n{body}\n</svg>')
+    else:
+        doc = wrap(body)
     svg_p = os.path.join(DRAFTS, tag + ".svg")
     open(svg_p, "w").write(doc)
     png = resvg_py.svg_to_bytes(svg_string=doc, width=2600)
@@ -149,28 +160,33 @@ def build_dc_2030():
     # anything that disappears from it — fails the build. Acquiring one of the
     # three levers will trip this deliberately, and that is the signal to
     # re-pin and, when the last one lands, to go back to LD.gate.
-    EXPECTED = {
-        "disbursed cannot be struck",
-        "payer lanes sum to disbursed",
-        "claims matrix: row mco has no margin",
-        "claims matrix: row dual has no margin",
-        "claims matrix: row ffs has no margin",
-        "claims cannot be summed",
-    }
-    seen = LD.check(L)
-    unpinned = [x for x in seen
-                if not any(x.startswith(e) for e in EXPECTED)]
-    if unpinned:
-        raise LD.LedgerError(
-            "DC FY2030 to-be ledger has faults beyond the pinned set:\n  "
-            + "\n  ".join(unpinned))
-    missing = [e for e in EXPECTED
-               if not any(x.startswith(e) for x in seen)]
-    if missing:
-        raise LD.LedgerError(
-            "DC FY2030 to-be: a pinned fault has gone, which is good news "
-            "and still fails the build until the pin is updated:\n  "
-            + "\n  ".join(missing))
+    # 29 October PM: with every lever carrying a figure and the service fan
+    # carried forward, the pinned faults are GONE and this ledger conserves
+    # like any other. So it goes back to LD.gate, which is what the pin
+    # always said should happen when the last one landed.
+    #
+    # With assumed_levers OFF the panel returns to declared absence and the
+    # faults return with it, so the pinned set is kept for that path rather
+    # than deleted. Two routes, each gated on its own terms; neither can
+    # quietly become the other.
+    if DC30.assumed_levers():
+        LD.gate(L, "DC FY2030 to-be ledger [assumed levers]")
+    else:
+        EXPECTED = {
+            "disbursed cannot be struck",
+            "payer lanes sum to disbursed",
+            "claims matrix: row mco has no margin",
+            "claims matrix: row dual has no margin",
+            "claims matrix: row ffs has no margin",
+            "claims cannot be summed",
+        }
+        seen = LD.check(L)
+        unpinned = [x for x in seen
+                    if not any(x.startswith(e) for e in EXPECTED)]
+        if unpinned:
+            raise LD.LedgerError(
+                "DC FY2030 to-be ledger has faults beyond the pinned set:\n  "
+                + "\n  ".join(unpinned))
 
     # NO PRIOR. The national to-be panel passes its FY2024 ledger so the
     # drawing can show where each node sat before. DC cannot: its FY2024

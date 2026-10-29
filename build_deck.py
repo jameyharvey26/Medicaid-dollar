@@ -21,7 +21,7 @@ from ledger_2030 import ledger as _arith
 from tobe2030 import per100
 
 import release
-OUT = "/mnt/user-data/outputs/MHPA_Board_Deck.html"
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MHPA_Board_Deck.html")
 ALTS = "deck_alts"
 
 # ---- derived prose figures ---------------------------------------------

@@ -31,7 +31,7 @@ from landing import URL
 import release
 
 REPO = os.path.dirname(os.path.abspath(__file__))
-OUT = "/mnt/user-data/outputs"
+OUT = REPO
 TEMPLATE = os.path.join(REPO, "explorer_template.html")
 
 # JW, 27 September: banner, every figure and tooltip, and stamped on any
@@ -72,7 +72,7 @@ def payload():
 
     panels, provs = {}, {}
 
-    NAT = "/home/claude/nat"
+    NAT = os.path.join(REPO, "build_out", "nat")
 
     L24 = n24()
     panels["US2024"] = X.panel(

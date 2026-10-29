@@ -1,18 +1,18 @@
 {
   "dc_2024_baseline": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "efc24ebf984c2231"
+    "blessed": "2026-10-29",
+    "reason": "DC payer column re-based on CY2024 Title XIX reporting; service fan drawn on an assumed national mix and declared ASSUMED, NOT MEASURED on the plate; plans on reserved palette colours. No DC figure is signed.",
+    "sha": "79b0233c6af068fc"
   },
   "dc_2024_combined": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "637845f98ce5f98c"
+    "blessed": "2026-10-29",
+    "reason": "DC payer column re-based on CY2024 Title XIX reporting; service fan drawn on an assumed national mix and declared ASSUMED, NOT MEASURED on the plate; plans on reserved palette colours. No DC figure is signed.",
+    "sha": "ad3b81d9a4926ff8"
   },
   "dc_2024_overlay": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "b698020fcf5bc76c"
+    "blessed": "2026-10-29",
+    "reason": "DC payer column re-based on CY2024 Title XIX reporting; service fan drawn on an assumed national mix and declared ASSUMED, NOT MEASURED on the plate; plans on reserved palette colours. No DC figure is signed.",
+    "sha": "c74fd2441caefeb2"
   },
   "national_2024_baseline": {
     "blessed": "2026-09-28",

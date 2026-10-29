@@ -116,6 +116,12 @@ def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
 
     hr1 = _hr1(L, V) if V.hr1_sub else {}
 
+    # Which HR-1 lanes have no figure. Read off the ledger, so a lane that
+    # acquires one stops being a placeholder without anybody editing a list.
+    placeholders = {p.key: (p.amount.note or "no figure acquired")
+                    for p in L.peels
+                    if p.kind == "hr1" and p.amount.is_absent}
+
     # Prior-law provider totals for the beneficiary overlay, by reference to
     # the as-is ledger rather than copied (S-073, EN-46). Empty on a diagram
     # that carries no decrements, which is what switches the overlay off.
@@ -155,6 +161,8 @@ def compose(L: Ledger, V: View, prior: Ledger = None) -> Instance:
         steps=steps,
         subs_spec=subs,
         prior_node=prior_node,
+        placeholders=placeholders,
+        declarations_below=V.declarations_below,
         **hr1,
         order=list(nodes),
         disp=dict(V.disp),

@@ -28,6 +28,9 @@ and carries a reason, exactly like a signature.
 
     python3 renderproof.py                    check every panel
     python3 renderproof.py --bless "reason"   accept what changed
+    python3 renderproof.py --bless "reason" --only dc_2024
+                                              accept one group, with its own
+                                              reason, leaving the rest alone
 
 Two things this cannot do, stated so nobody expects them. It tells you a panel
 moved; it never tells you the movement was wrong. And it fires on every
@@ -139,29 +142,56 @@ def check():
     return 1
 
 
-def bless(reason):
+def bless(reason, only=None):
+    """Record the current panels as the ones to compare against.
+
+    `only` blesses a subset whose stem contains that string, leaving every
+    other entry in the register exactly as it was. Added 29 October, when
+    nine panels moved for two unrelated reasons in one session: the DC data
+    re-base and the 28 October term_y -> term_dy geometry refactor. Blessing
+    all nine under one reason would have filed a false reason against six
+    national panels, which is the opposite of what this register is for.
+    One fact, one declaration (S-105) applies to blessings too.
+    """
     if not reason.strip():
         print("a blessing needs a reason. Nothing written.")
         return 1
     stamp = subprocess.run(["date", "+%Y-%m-%d"], capture_output=True,
                            text=True).stdout.strip()
     REGISTER.mkdir(exist_ok=True)
-    reg = {}
-    for p in panels():
+    reg = load() if only else {}
+    taking = [p for p in panels() if only is None or only in p.stem]
+    if only and not taking:
+        print(f"no emitted panel matches --only {only!r}. Nothing written.")
+        return 1
+    for p in taking:
         shutil.copy2(p, REGISTER / p.name)
         reg[p.stem] = dict(sha=digest(p), blessed=stamp, reason=reason)
-    for stale in REGISTER.glob("*.svg"):
-        if stale.stem not in reg:
-            stale.unlink()
+    if only is None:
+        for stale in REGISTER.glob("*.svg"):
+            if stale.stem not in reg:
+                stale.unlink()
     INDEX.write_text(json.dumps(reg, indent=2, sort_keys=True) + "\n")
-    if DIFFS.exists():
+    if DIFFS.exists() and only is None:
         shutil.rmtree(DIFFS)
-    print(f"blessed {len(reg)} panel(s) at {stamp}")
+    print(f"blessed {len(taking)} panel(s) at {stamp}"
+          + (f", matching {only!r}" if only else ""))
     print(f"reason: {reason}")
+    for p in taking:
+        print(f"   {p.stem}")
     return 0
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--bless":
-        sys.exit(bless(" ".join(sys.argv[2:])))
+        argv = sys.argv[2:]
+        only = None
+        if "--only" in argv:
+            i = argv.index("--only")
+            only = argv[i + 1] if i + 1 < len(argv) else ""
+            del argv[i:i + 2]
+            if not only:
+                print("--only needs a panel name or a fragment of one.")
+                sys.exit(1)
+        sys.exit(bless(" ".join(argv), only))
     sys.exit(check())

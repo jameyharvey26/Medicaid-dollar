@@ -36,6 +36,14 @@ PANELS = [
     ("US|2024", "ledger_national_2024", None, "US2024", "National", "V_NAT"),
     ("US|2030", "ledger_national_2030", "mixed", "US2030_mixed", "National", "V_2030"),
     ("DC|2024", "ledger_dc_2024", None, "DC2024", "DC", "V_DC"),
+    # Added 2026-10-29 PM. The FY2030 DC panel was `None` here because three
+    # of its seven HR-1 lanes carried no figure and this engine has no way to
+    # draw absence, so they would have read as costing nothing. Two of the
+    # three are now drawn as declared assumptions off the national model and
+    # the third -- the seniors lane -- is derived on the District's own
+    # QMB-only count. Every assumption says so in its own note, and the notes
+    # travel. What is still owed is in DC_ENGINE_TODO.md.
+    ("DC|2030", "ledger_dc_2030", None, "DC2030", "DC", "V_DC_2030"),
 ]
 
 
@@ -187,13 +195,24 @@ def build():
         V = getattr(views, vname)
         out[key] = panel(L, code, name, V.strap, V.disp,
                          plan_colour_map(m, L))
-    # There IS an FY2030 DC ledger now (ledger_dc_2030), and four of its seven
-    # HR-1 lanes are derived on District inputs. It is still not exported, for
-    # a different reason than before: three lanes carry no figure and this
-    # engine has no way to DRAW absence, so they would read as costing zero.
-    # Teaching the engine placeholders is what unblocks it; until then the
-    # drafts/ panel is the DC FY2030 artifact.
-    out["DC|2030"] = None
+    # A lane that still carries no figure must not reach the engine as a
+    # zero. fig() turns an absent Fig into {"absent": "<why>"} and the engine
+    # is not yet taught to draw that in the HR-1 fan, so refuse here rather
+    # than ship a lane that reads as costing nothing. With assumed_levers on
+    # there are none; turning the switch off will trip this, which is the
+    # correct moment to teach the engine placeholders.
+    for key, p in out.items():
+        if not p:
+            continue
+        blank = [x["label"] for x in p["peels"]
+                 if x["kind"] == "hr1" and isinstance(x["v"], dict)]
+        if blank:
+            raise SystemExit(
+                "engine_data_export: %s carries HR-1 lane(s) with no figure "
+                "(%s). The engine cannot draw absence in the fan yet, and a "
+                "lane drawn at zero would say the provision costs nothing. "
+                "Either leave assumed_levers on or teach the engine "
+                "placeholders first." % (key, ", ".join(blank)))
     return out
 
 

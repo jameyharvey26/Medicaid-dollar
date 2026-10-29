@@ -40,6 +40,14 @@ class View:
     # Lanes to draw aggregate even though the ledger names their children.
     # An explicit decision, because the default is now to show what we know.
     collapse_payers: List[str] = field(default_factory=list)
+    # Draw the declared-absence block as a full-width banded footer BELOW the
+    # tracker instead of as a column beside the flow. Set where the block is
+    # too long for the column it would otherwise sit in: on the DC FY2030
+    # panel it ran 80 lines into a space that holds about 33, struck through
+    # the Medicare Savings terminal and finished underneath the tracker.
+    # Shrinking the type was rejected (JW, 2026-10-29) -- a declaration set in
+    # 8pt to make it fit is a declaration nobody reads.
+    declarations_below: bool = False
     collapse: List[str] = field(default_factory=list) # phases to fold shut
     show_beneficiaries: bool = True
     show_claims_fan: bool = True        # ribbons payer -> provider node
