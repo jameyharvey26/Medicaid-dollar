@@ -76,18 +76,70 @@ GROSS_BLENDED = gross_up(BLEND_ALL)              # 1.3667
 #
 # The two 1.000 lanes are not an oversight. The provider tax lane funds the
 # state's own match rather than drawing one, and directed payment financing is
-# split. DC's directed payments are provider-tax financed, so D-41 holds here
-# for the same reason it holds nationally — which is why the one DC lever we
-# have derived needs no gross-up at all.
+# split.
 GROSS_DC = {
     "Work reporting": GROSS_EXPANSION,
     "Six-month renewals": GROSS_EXPANSION,
     "Blocked senior enrollment rule": GROSS_REGULAR,
     "Blocked Medicaid enrollment rule": GROSS_REGULAR,
-    "Everything else": GROSS_BLENDED,
+    "DC provisions not separately scored": GROSS_BLENDED,
     "Provider tax limits": 1.000,
     "Directed payment caps": 1.000,
 }
+
+# ---------------------------------------------------------------------------
+# WHICH DC LEVERS ACTUALLY USE THIS TABLE — and it is fewer than it looks.
+#
+# The gross-up exists to convert a lever scored in FEDERAL dollars into total
+# computable dollars. That is the national route: CBO scores federal, the
+# panel is struck on total computable, so every lane is multiplied up.
+#
+# As of 2026-10-29 the four derived DC levers do not come that way. Each is
+# derived from a District figure that is ALREADY total computable — DHCF's
+# Group 8 program line, the Dedicated Taxes line, the SDP preprint total. A
+# gross-up applied on top of those would inflate every one of them by the
+# reciprocal of a match rate that has already been accounted for.
+#
+# So: this table governs any DC lever derived the NATIONAL way, and the levers
+# below bypass it. The distinction is mechanical, not stylistic, and it is the
+# kind of thing that silently doubles a lane if nobody writes it down.
+DERIVED_IN_TOTAL_COMPUTABLE = {
+    "Work reporting", "Six-month renewals",
+    "Provider tax limits", "Directed payment caps",
+}
+
+# D-41 AND THE MEASURED SPLIT. JW, 2026-10-29 (Q5): a state fact beats a
+# national decision taken in the absence of one. D-41 sets the national
+# directed-payment gross-up to 1.000 because SDP financing is split and the
+# split was not known. DC's split IS known — 77.51 percent federal on the
+# FY2025 preprint — so DC's 1.000 is no longer an inheritance. It is 1.000 for
+# a different and better reason: the DC figure is already total computable.
+# The measured split is carried for the federal / non-federal division of the
+# flow, which is where it actually bears.
+SDP_FEDERAL_SHARE_DC = 376_029_678.0 / 485_154_441.0
+SDP_SPLIT_SOURCE = ("CMS approved preprint "
+                    "DC_Fee_IPH.OPH_New_20241001-20250930: total up to "
+                    "$485,154,441, federal share $376,029,678")
+REOPEN_D41 = ("A measured financing split in the first state panel is "
+              "evidence about the NATIONAL model, not only about DC. D-41 "
+              "should be re-opened with this on the table.")
+
+# THE PROVIDER TAX LANE IS A DC DIVERGENCE, DECLARED NOT RESOLVED.
+# D-39 sets the provider tax gross-up to 1.000 nationally because the lane
+# funds the state's own match rather than drawing one. In the District the
+# dedicated tax IS the non-federal share and it DOES draw match, so a dollar
+# of tax that is never collected costs more than a dollar of Medicaid. The
+# multiplier is not established: the dedicated-tax line funds more than the
+# SDP, and the SDP's own non-federal share ($109.1M) is smaller than the tax
+# line ($235.3M), so the two cannot be divided into each other. Published at
+# the non-federal level, which is conservative and keeps the DC lane on the
+# same basis as the national one.
+PROVIDER_TAX_GROSS_DC = None              # ABSENT, declared
+PROVIDER_TAX_GROSS_NOTE = (
+    "DC's dedicated tax draws federal match, so the total-computable effect "
+    "exceeds the tax figure. The multiplier is not established and the lane "
+    "is published at the non-federal level. This is a divergence from D-39, "
+    "not an application of it.")
 
 # The national figures, for the comparison that is the point of the exercise.
 GROSS_NATIONAL = {
@@ -107,7 +159,17 @@ def _check():
     assert GROSS_REGULAR < GROSS_NATIONAL["Blocked senior enrollment rule"], (
         "DC's statutory 70% must make its regular-match gross-up SMALLER "
         "than the national blend; if this flips, something is wrong")
-    assert set(GROSS_DC) == set(GROSS_NATIONAL)
+    assert set(GROSS_DC) - {"DC provisions not separately scored"} == \
+        set(GROSS_NATIONAL) - {"Everything else"}, (
+            "the DC lever set differs from the national one only by the "
+            "renamed residual lane")
+    assert DERIVED_IN_TOTAL_COMPUTABLE <= set(GROSS_DC)
+    for _k in ("Provider tax limits", "Directed payment caps"):
+        assert GROSS_DC[_k] == 1.000
+    assert 0.70 < SDP_FEDERAL_SHARE_DC < 0.85
+    assert PROVIDER_TAX_GROSS_DC is None, (
+        "the DC provider tax multiplier is declared absent; if a figure is "
+        "set here the lane's basis changes and the panel note must change too")
 
 
 _check()
@@ -130,5 +192,17 @@ if __name__ == "__main__":
     print()
     print("gross-up, federal dollars -> total computable\n")
     print(f"  {'lever':<34}{'DC':>8}{'national':>11}")
+    _rename = {"Everything else": "DC provisions not separately scored"}
     for k in GROSS_NATIONAL:
-        print(f"  {k:<34}{GROSS_DC[k]:>8.4f}{GROSS_NATIONAL[k]:>11.3f}")
+        dc_key = _rename.get(k, k)
+        mark = "  (bypassed)" if dc_key in DERIVED_IN_TOTAL_COMPUTABLE else ""
+        print(f"  {dc_key:<40}{GROSS_DC[dc_key]:>8.4f}"
+              f"{GROSS_NATIONAL[k]:>11.3f}{mark}")
+    print()
+    print("  bypassed: derived from a District figure that is already total")
+    print("  computable, so the table does not apply. See "
+          "DERIVED_IN_TOTAL_COMPUTABLE.")
+    print(f"  SDP federal share, measured            "
+          f"{SDP_FEDERAL_SHARE_DC:>8.4f}")
+    print(f"  provider tax multiplier                  "
+          f"{'ABSENT':>8}  (D-39 divergence, declared)")

@@ -119,37 +119,148 @@ def _mc(v, note=""):
                status=MEASURED, note=(note + " " + STALE).strip())
 
 
-# ---- plan-level capitation ------------------------------------------------
-# HSCSN is anchored at its own Medicaid capitation and the residual is split
-# among the comprehensive plans by capitation-revenue share, because HSCSN's
-# revenue is pure Medicaid while the comprehensive plans' still carries
-# locally-funded Alliance and ICP enrollees. Splitting all four by raw revenue
-# under-weights HSCSN (STATE_PLAYBOOK 3.3, the basis-mismatch case).
-_rev = {"amerihealth": 841.0, "wellpoint": 425.3, "medstar": 411.2}
-_clm = {"amerihealth": 755.5, "wellpoint": 348.5, "medstar": 379.6,
-        "hscsn": 154.4}
-_hscsn_rev = 184.0
-
 mc_total = 1802 / SCALE
 pace = 15 / SCALE
 dsnp = 25 / SCALE
 mco_cap = mc_total - pace - dsnp
 ffs = 2250 / SCALE
 
-_hscsn_cap = _hscsn_rev / SCALE
-_resid = mco_cap - _hscsn_cap
-_revT = sum(_rev.values())
-_cap = {k: _rev[k] / _revT * _resid for k in _rev}
-_cap["hscsn"] = _hscsn_cap
-_care = {k: _cap[k] * (_clm[k] / (_rev[k] if k in _rev else _hscsn_rev))
-         for k in _cap}
+# ===========================================================================
+# PLAN-LEVEL FIGURES — each plan's own Title XIX line, CY2024
+# ===========================================================================
+#
+# REPLACES the capitation-revenue split of 2026-09. That split read each
+# plan's TOTAL capitation revenue off DHCF's CY2023 managed care report,
+# anchored HSCSN separately and apportioned the residual, because the
+# comprehensive plans' revenue carried locally funded Alliance and ICP
+# enrollees while HSCSN's did not — the basis-mismatch case in
+# STATE_PLAYBOOK 3.3.
+#
+# THAT PROBLEM DISSOLVES on the Title XIX column. Every plan's statement
+# reports Medicaid separately from everything else it writes, so all four sit
+# on one basis and no plan has to be anchored around the others. The special
+# case goes away rather than being worked around, which is why this is a
+# better split and not just a newer one.
+#
+# WHAT EACH PLAN'S FIGURE IS, because it is NOT the same line in each
+# statement and a reader is entitled to know which:
+#
+#   AmeriHealth  a DC-only entity. Its Analysis of Operations publishes the
+#                Title XIX column in full, so premium, care and both expense
+#                lines are read straight off it. Nothing is apportioned.
+#   Wellpoint    a DC-only entity writing commercial business as well. The
+#                Title XIX column carries premium and care; the two expense
+#                lines are published only for the entity, so they are
+#                apportioned by Title XIX's share of earned revenue. The
+#                apportionment is MODELLED and is declared.
+#   MedStar      NOT a DC-only entity. MedStar Family Choice, Inc. writes
+#                $920.1M of Title XIX across two jurisdictions, $545.0M of it
+#                in Maryland. The DC figure is Schedule T, whose own note
+#                reads "actual premiums per state". Expenses are published
+#                for the entity only and are apportioned by DC's share of
+#                Title XIX premium. Taking the entity's Title XIX column
+#                whole would put Maryland's Medicaid inside DC's hundred.
+#   HSCSN        CY2023, AND THIS IS A MIXED VINTAGE ON THE PLATE. See below.
+#
+# PREMIUM IS EARNED, not written. Wellpoint's Title XIX net premium income is
+# $337.6M against a $30.3M change in unearned reserves; the earned figure is
+# what the year's care was bought with and what the other plans' figures
+# already are.
+NAIC24 = ("NAIC annual statement, CY2024, Title XIX Medicaid column, "
+          "Analysis of Operations by Lines of Business")
+NAIC24_T = ("NAIC annual statement, CY2024, Schedule T, Premiums and Other "
+            "Considerations Allocated by States and Territories, District of "
+            "Columbia row, Medicaid Title XIX")
 
+# HSCSN, declared rather than quietly mixed. JW, 2026-10-29: HSCSN is not
+# really an MCO. It predates the managed care regulations and its reporting
+# obligations are different in kind, so there is no CY2024 annual statement to
+# read a Title XIX column off. It reports to DHCF, and that is where the
+# figure will come from; chasing it is on the acquisition list and is not done
+# here. Until then HSCSN sits on CY2023 while the other three sit on CY2024.
+#
+# This is a real defect in the panel, not a rounding matter: one plan of four
+# is a year behind the rest, and a plan president reading their own name will
+# be comparing it against figures from a different year.
+HSCSN_VINTAGE = "CY2023"
+HSCSN_WHY = ("HSCSN predates the managed care regulations and is not an MCO "
+             "in the regulatory sense, so it files no comparable annual "
+             "statement and has no Title XIX column to read. It reports to "
+             "DHCF; that figure has not been acquired. CY2023 stands in, and "
+             "this plan is therefore a year behind the other three.")
+
+# dollars, as filed. S-105: typed once here because they are read off a
+# source; every per-$100 figure below is derived.
+_PREM = {                                   # Title XIX, earned, DC
+    "amerihealth": 747_775_854,             # change in unearned reserves: 0
+    "wellpoint":   337_597_417 - 30_252_084,
+    "medstar":     375_055_803,             # Schedule T, DC row
+    "hscsn":       184_000_000,             # CY2023, DHCF managed care report
+}
+_CARE_D = {
+    "amerihealth": 649_036_647,             # total hospital and medical
+    "wellpoint":   253_829_876 - 863_824,   # subtotal less reinsurance recoveries
+    "hscsn":       154_400_000,             # CY2023, DHCF managed care report
+}
+# expense lines published for the ENTITY only, with the base they apportion by
+_ENTITY_ADMIN = {
+    "wellpoint": (14_661_826 + 30_930_821,
+                  (337_597_417 - 30_252_084) / (397_034_585 - 30_338_504)),
+    "medstar":   (23_370_822 + 69_514_545,
+                  375_055_803 / 920_065_573),
+}
+_MEDSTAR_ENTITY_CARE = 821_242_215           # Title XIX, both jurisdictions
+_PLAN_ADMIN = {                              # published by column
+    "amerihealth": 27_887_325 + 54_960_568,
+}
+
+_CARE_D["medstar"] = _MEDSTAR_ENTITY_CARE * _ENTITY_ADMIN["medstar"][1]
+for _k, (_tot, _sh) in _ENTITY_ADMIN.items():
+    _PLAN_ADMIN[_k] = _tot * _sh
+
+# ---- to the hundred -------------------------------------------------------
+# The plans are scaled to the managed-care lane, which is the CMS-64 figure
+# and is the number that belongs to this hundred. A plan's statement and the
+# CMS-64 do not agree and never will: different accountings, different year
+# boundaries, and the statements carry Alliance and ICP money that is outside
+# this hundred entirely (basis_dc, declaration 3). Scaling preserves each
+# plan's share of the whole and lets the lane total stay the measured one.
+_PREM_T = sum(_PREM.values())
+_TO_LANE = (mco_cap * SCALE * 1e6) / _PREM_T
+
+_cap = {k: v * _TO_LANE / 1e6 / SCALE for k, v in _PREM.items()}
+_care = {k: v * _TO_LANE / 1e6 / SCALE for k, v in _CARE_D.items()}
+_adm = {k: v * _TO_LANE / 1e6 / SCALE for k, v in _PLAN_ADMIN.items()}
+# margin is what is left of the premium after care and administration. It is a
+# residual and is labelled one; nothing publishes it directly.
+_mgn = {k: _cap[k] - _care[k] - _adm[k] for k in _adm}
+
+# retained for the legacy byte-identity path only
+_rev = {"amerihealth": 841.0, "wellpoint": 425.3, "medstar": 411.2}
+_clm = {"amerihealth": 755.5, "wellpoint": 348.5, "medstar": 379.6,
+        "hscsn": 154.4}
+_hscsn_rev = 184.0
+
+# The fourth field is the plan's RESERVED name in palette.py. A plan's colour
+# is held by its national parent across every state build, so a reader
+# following the series recognises AmeriHealth in DC and in Louisiana, and
+# multi-state comparisons work (JW ruling, 2026-08-18). The name is a fact
+# about the plan and belongs here with its other identity; the colour itself
+# lives in palette.py and nowhere else.
 PLANS = [
-    ("amerihealth", "AmeriHealth Caritas DC", "AmeriHealth Caritas District of Columbia, Inc."),
-    ("wellpoint", "Wellpoint DC (formerly Amerigroup)", "Amerigroup District of Columbia, Inc."),
-    ("medstar", "MedStar Family Choice DC", "MedStar Family Choice DC"),
-    ("hscsn", "HSCSN", "Health Services for Children with Special Needs, Inc."),
+    ("amerihealth", "AmeriHealth Caritas DC",
+     "AmeriHealth Caritas District of Columbia, Inc.", "AmeriHealth Caritas"),
+    ("wellpoint", "Wellpoint DC (formerly Amerigroup)",
+     "Amerigroup District of Columbia, Inc.", "Elevance / Wellpoint"),
+    ("medstar", "MedStar Family Choice DC", "MedStar Family Choice DC",
+     "MedStar Family Choice"),
+    ("hscsn", "HSCSN", "Health Services for Children with Special Needs, Inc.",
+     "Children's National / HSCSN"),
 ]
+
+# the dual lane's two, which the palette holds by TYPE rather than by parent
+PLAN_PALETTE = {k: n for k, _l, _e, n in PLANS}
+PLAN_PALETTE.update({"united": "D-SNP", "pace": "PACE"})
 
 RENAME = ("Amerigroup DC was renamed Wellpoint DC on 1 July 2025. A plan carries "
           "its present-day name with the former name in parentheses, so a reader "
@@ -185,8 +296,79 @@ def _legacy_alloc():
     return mco_n, dual_n
 
 
-def _cells(ffs_n, legacy):
+# ===========================================================================
+# THE ASSUMED SERVICE MIX — JW, 2026-10-29
+# ===========================================================================
+#
+# D-109 withdrew the national managed-care mix from this panel on 27 September
+# and compose() has truncated the fan ever since. JW has asked for it back as
+# an explicit assumption for the demo, with the DC data stipulated as not
+# proofread and not final.
+#
+# THIS IS NOT A MEASUREMENT AND MUST NEVER BE READ AS ONE. The District
+# publishes no managed-care spending by service category. Every capitated cell
+# below is the NATIONAL shape imposed on DC's dollars.
+#
+# WHAT IT GETS WRONG, named rather than left for a reader to discover:
+#
+#   HSCSN is a paediatric plan for children with special needs. Giving it the
+#   national mix draws it with the same long-term-care and hospital profile as
+#   three comprehensive adult plans. It is the figure on this panel most
+#   likely to be wrong, and most likely to be spotted by someone who knows DC.
+#
+#   DC's own fee-for-service mix is nothing like the national one — 55 percent
+#   of its FFS dollar is long-term care against about 20 percent nationally.
+#   A jurisdiction whose measured half diverges that far is unlikely to match
+#   on the half we cannot see.
+#
+#   Behavioral health is not a DC node. The District folds it into wrap-around
+#   services, so the national BH and Other columns are folded there too rather
+#   than being dropped or given a node DC does not have.
+#
+# S-105: derived from ledger_national_2024, never typed. If the national mix
+# is re-acquired, DC's assumption moves with it instead of silently aging.
+ASSUMED_MIX_NOTE = (
+    "ASSUMED, NOT MEASURED. The District publishes no managed-care spending "
+    "by service category. The capitated rows carry the NATIONAL mix imposed "
+    "on DC's dollars. HSCSN is a paediatric special-needs plan and is drawn "
+    "with an adult comprehensive profile; DC's own measured fee-for-service "
+    "mix diverges sharply from national, so the unmeasured half probably "
+    "does too.")
+
+# national Other and Behavioral health both land in DC's wrap-around node
+_FOLD = {"Other": "Wrap around services",
+         "Behavioral health": "Wrap around services"}
+
+
+def _assumed_shares():
+    """The national capitated mix as shares of one, on DC's five nodes."""
+    import ledger_national_2024 as _N
+    _L = _N.build()
+    tot = {}
+    for (r, c), v in _L.claims.cell.items():
+        if r in ("mco", "dual"):
+            tot[c] = tot.get(c, 0.0) + float(v.n)
+    whole = sum(tot.values())
+    out = {n: 0.0 for n in NODES}
+    for c, v in tot.items():
+        out[_FOLD.get(c, c)] += v / whole
+    return out
+
+
+def _cells(ffs_n, legacy, assumed=False):
     c = {("ffs", k): _s(v) for k, v in ffs_n.items()}
+    if assumed and not legacy:
+        sh = _assumed_shares()
+        mco_care, dual_care = sum(_care.values()), pace + dsnp
+        for n in NODES:
+            c[("mco", n)] = Fig(mco_care * sh[n], source="ledger_national_2024",
+                                vintage="FY2024", basis=B, status=MODELLED,
+                                note=ASSUMED_MIX_NOTE)
+            c[("dual", n)] = Fig(dual_care * sh[n],
+                                 source="ledger_national_2024",
+                                 vintage="FY2024", basis=B, status=MODELLED,
+                                 note=ASSUMED_MIX_NOTE)
+        return c
     if not legacy:
         return c
     mco_n, dual_n = _legacy_alloc()
@@ -197,7 +379,15 @@ def _cells(ffs_n, legacy):
     return c
 
 
-def _cols(ffs_n, legacy):
+def _cols(ffs_n, legacy, assumed=False):
+    if assumed and not legacy:
+        sh = _assumed_shares()
+        mco_care, dual_care = sum(_care.values()), pace + dsnp
+        return {n: Fig.derived(
+                    ffs_n[n] + mco_care * sh[n] + dual_care * sh[n],
+                    tuple(f"claims.cell.{r}.{n}" for r in ("mco", "dual", "ffs")),
+                    basis=B, note=ASSUMED_MIX_NOTE)
+                for n in NODES}
     if not legacy:
         return {}
     mco_n, dual_n = _legacy_alloc()
@@ -207,7 +397,7 @@ def _cols(ffs_n, legacy):
             for k in NODES}
 
 
-def build(legacy_mix: bool = False) -> Ledger:
+def build(legacy_mix: bool = False, assumed_mix: bool = False) -> Ledger:
     """`legacy_mix=True` reproduces exactly what `ledger_dc.py` carried: the
     national managed-care service mix applied to DC's plan care, and the
     undeclared 75/25 split of the dual and PACE lanes. It exists so the
@@ -223,22 +413,61 @@ def build(legacy_mix: bool = False) -> Ledger:
         admin=(Fig(mco_cap - sum(_care.values()), status=MODELLED,
                    note="legacy: whole retention labelled plan administration")
                if legacy_mix else
-               Fig.absent("No DC figure divides plan retention into "
-                          "administration and margin. The retention total is "
-                          "measured; its split is not published.")),
+               Fig.absent("Three of the four plans now publish their "
+                          "administration and margin on their Title XIX "
+                          "column, but HSCSN does not, so the LANE total is "
+                          "still not known. Published as absent rather than "
+                          "as the sum of three, which would be a floor "
+                          "presented as a total. " + HSCSN_WHY)),
         margin=(Fig(0.0, status=MODELLED, note="legacy: no earnings carve")
                 if legacy_mix else Fig.absent("See admin."))))
 
-    for key, label, entity in PLANS:
-        note = RENAME if key == "wellpoint" else ""
+    PLAN_BASIS = {
+        "amerihealth": ("Title XIX column, published in full. Nothing "
+                        "apportioned.", NAIC24, MEASURED),
+        "wellpoint":   ("Title XIX column for premium and care; the two "
+                        "expense lines are published for the entity and are "
+                        "apportioned by Title XIX's share of earned revenue.",
+                        NAIC24, MEASURED),
+        "medstar":     ("Schedule T, District of Columbia row — the entity "
+                        "writes Title XIX in Maryland as well and its "
+                        "Title XIX column is both jurisdictions. Expenses "
+                        "apportioned by DC's share of Title XIX premium.",
+                        NAIC24_T, MEASURED),
+        "hscsn":       (HSCSN_WHY, MCR, MODELLED),
+    }
+    for key, label, entity, _pal in PLANS:
+        why, src, st = PLAN_BASIS[key]
+        note = ((RENAME + " ") if key == "wellpoint" else "") + why
+        vint = HSCSN_VINTAGE if key == "hscsn" else "CY2024"
+        scaled = (" Scaled to the CMS-64 managed-care lane, which is the "
+                  "figure that belongs to this hundred; a plan's statement "
+                  "and the CMS-64 do not agree and never will.")
+
+        def _f(v, extra=""):
+            return Fig(v, source=src, vintage=vint, basis=B, status=st,
+                       note=(note + " " + extra + scaled).strip())
+
+        if key in _adm:
+            admin = _f(_adm[key], "Claims adjustment plus general "
+                                  "administrative expenses.")
+            margin = Fig.derived(
+                _mgn[key], (f"payer.{key}.capitation", f"payer.{key}.care",
+                            f"payer.{key}.admin"),
+                basis=B,
+                note="Residual: premium less care less administration. "
+                     "Nothing publishes a plan's Medicaid margin directly.")
+        else:
+            admin = Fig.absent(
+                f"{key}: retention is measured, its split into administration "
+                f"and margin is not published. " + HSCSN_WHY)
+            margin = Fig.absent(f"{key}: see admin.")
+
         payers.append(Payer(
             key, label, "mco", parent="mco",
-            capitation=_mc(_cap[key], note),
-            care=_mc(_care[key], "Care fraction is the plan's own incurred "
-                                 "claims over its capitation revenue."),
-            admin=Fig.absent(f"{key}: retention is measured, its split into "
-                             f"administration and margin is not published."),
-            margin=Fig.absent(f"{key}: see admin."),
+            capitation=_f(_cap[key]),
+            care=_f(_care[key], "Incurred benefits."),
+            admin=admin, margin=margin,
             entity=entity))
 
     payers.append(Payer(
@@ -287,8 +516,8 @@ def build(legacy_mix: bool = False) -> Ledger:
         row_margin={"mco": Fig.derived(sum(_care.values()), ("payer.mco.care",)),
                     "dual": Fig.derived(pace + dsnp, ("payer.dual.care",)),
                     "ffs": Fig.derived(ffs, ("payer.ffs.care",))},
-        col_margin=_cols(_ffs_n, legacy_mix),
-        cell=_cells(_ffs_n, legacy_mix),
+        col_margin=_cols(_ffs_n, legacy_mix, assumed_mix),
+        cell=_cells(_ffs_n, legacy_mix, assumed_mix),
         note="Fee-for-service itemises from the spine. The capitated rows are "
              "unallocated: DC does not publish managed-care spending by service "
              "category, and the national mix is not a substitute at plan "
@@ -375,18 +604,37 @@ def build(legacy_mix: bool = False) -> Ledger:
         nodes=NODES,
         claims=claims,
         beneficiaries=None,
-        declared=([] if legacy_mix else
+        declared=([] if (legacy_mix or assumed_mix) else
                   ["claims:mco", "claims:dual"]) + [
             "mco", "dual", "ffs", "amerihealth", "wellpoint", "medstar",
             "hscsn", "united", "pace"],
         declarations=LEGACY_ABSENT if legacy_mix else [
-            "claims row mco: DC does not publish managed-care spending by "
-            "service category. The fan out of the capitated lanes is absent.",
-            "claims row dual: as above, for the D-SNP wrap and PACE.",
+            (ASSUMED_MIX_NOTE if assumed_mix else
+             "claims row mco: DC does not publish managed-care spending by "
+             "service category. The fan out of the capitated lanes is absent."),
+            ("The capitated fan is an ASSUMPTION and the panel says so "
+             "wherever it is drawn." if assumed_mix else
+             "claims row dual: as above, for the D-SNP wrap and PACE."),
             "mco: plan retention is measured in total; its split into "
             "administration and margin is not published for DC.",
             "dual: no retention figure for the D-SNP wrap or PACE.",
-            "amerihealth, wellpoint, medstar, hscsn: retention split not published.",
+            "amerihealth, wellpoint, medstar: administration and margin are "
+            "taken from each plan's own CY2024 Title XIX reporting. Margin is "
+            "a residual — premium less care less administration — because "
+            "nothing publishes a plan's Medicaid margin directly.",
+            "MIXED VINTAGE ON THIS PLATE. Three plans are CY2024 and HSCSN is "
+            "CY2023. " + HSCSN_WHY,
+            "The plans are scaled to the CMS-64 managed-care lane. A plan's "
+            "annual statement and the CMS-64 are different accountings on "
+            "different year boundaries, and the statements carry locally "
+            "funded Alliance and ICP money that is outside this hundred. "
+            "Scaling preserves each plan's share and keeps the lane total the "
+            "measured one.",
+            "MedStar Family Choice, Inc. is not a DC-only entity: it writes "
+            "$920.1M of Title XIX across two jurisdictions, $545.0M of it in "
+            "Maryland. Its District figure is Schedule T, not its Title XIX "
+            "column, and its expenses are apportioned by DC's share of "
+            "Title XIX premium.",
             "united, pace: retention split not published.",
             "Behavioral health is not a separate node. The DC source folds it "
             "into wrap-around services and into the capitated lump.",

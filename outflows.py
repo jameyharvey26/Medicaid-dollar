@@ -185,6 +185,24 @@ TRACKER_COL = {
     "Directed payment caps": "CLAIMS",
 }
 
+# ---------------------------------------------------------------------------
+# DC ALIAS. The District edition renames the residual lane (JW, 2026-10-29):
+# nationally "Everything else" is a remainder defined by what CBO scored, and
+# the DC lane carries three named District provisions instead. The rename is
+# editorial. Where the lane LEAVES and how far it REACHES are claims about the
+# flow and are unchanged, so the DC name is registered here as an alias onto
+# the same geometry rather than given its own declaration.
+#
+# If the DC lane is ever found to leave somewhere else, that is a finding
+# about the District and it earns a real entry here — not an edit to this one.
+# ALIASES is public and the national agreement check reads it: a name in here
+# is a rename of a lane that already has a declaration, so it is NOT a
+# tributary the national ledger has forgotten to carry.
+ALIASES = {"DC provisions not separately scored": "Everything else"}
+for _dc, _nat in ALIASES.items():
+    OUTFLOWS[_dc] = dict(OUTFLOWS[_nat])
+    TRACKER_COL[_dc] = TRACKER_COL[_nat]
+
 # Tracker checkpoints. Shared furniture, identical on every artifact (S-060).
 # $100 sits under the FEDERAL column, before federal and state combine.
 # Health services delivered sits on the providers / beneficiaries boundary.

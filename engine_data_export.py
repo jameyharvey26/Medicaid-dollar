@@ -48,7 +48,54 @@ def fig(f):
     return round(float(f.n), 4)
 
 
-def panel(L, code, name, strap, disp):
+def plan_colour_map(mod, L):
+    import palette as PAL
+    names = getattr(mod, "PLAN_PALETTE", None)
+    if not names:
+        return {}
+    size = {}
+    for p in L.payers:
+        if getattr(p, "parent", None) and p.key in names:
+            size[names[p.key]] = float(p.capitation.n)
+    plans = [{"name": n, "size": size.get(n, 0.0)} for n in set(names.values())]
+    assigned, warnings = PAL.audit_state_palette(plans)
+    hard = [w for w in warnings if w.startswith("COLLISION")]
+    if hard:
+        raise SystemExit(
+            "engine_data_export: the state palette collides, so nothing was "
+            "written. Two plans a reader cannot tell apart is worse than no "
+            "split at all:\n  " + "\n  ".join(hard))
+    for w in warnings:
+        print("  palette note: " + w)
+    return {k: assigned[n] for k, n in names.items() if n in assigned}
+
+
+def plans_of(L, lane_key, cols=None):
+    """The named plans inside a lane, in the order the ledger holds them.
+
+    These were dropped on the floor by this exporter until 28 October: the
+    ledger has held them as Payers with `parent` set since the DC panel was
+    built, and the engine was never told. A state panel whose payer column
+    says only "MCO capitation" is answering a question nobody asks. In a
+    state, the plans ARE the payer column.
+    """
+    out = []
+    for p in L.payers:
+        if getattr(p, "parent", None) != lane_key:
+            continue
+        out.append({
+            "key": p.key, "label": p.label,
+            "entity": getattr(p, "entity", "") or "",
+            # the reserved colour travels with the plan, so the engine never
+            # has to invent one
+            "col": (cols or {}).get(p.key),
+            "cap": fig(p.capitation), "care": fig(p.care),
+            "adm": fig(p.admin), "margin": fig(p.margin),
+        })
+    return out
+
+
+def panel(L, code, name, strap, disp, cols=None):
     lanes = []
     for p in L.payers:
         if getattr(p, "parent", None):
@@ -59,16 +106,31 @@ def panel(L, code, name, strap, disp):
             # the two halves of what the lane kept. Public-company earnings is
             # carved out of margin, so the engine needs the split, not the sum.
             "adm": fig(p.admin), "margin": fig(p.margin),
+            "plans": plans_of(L, p.key, cols),
         })
     cells = {f"{r}|{c}": round(float(v.n), 4)
              for (r, c), v in L.claims.cell.items()}
     return {
         "code": code, "name": name, "strap": strap,
         "sources": {k: round(float(v.n), 4) for k, v in L.sources.items()},
-        "peels": [{"label": p.label, "v": round(float(p.amount.n), 4),
+        # ABSENCE TRAVELS HERE TOO. `p.amount.n` is 0.0 for an absent figure,
+        # so this line turns "no DC figure for this lever" into "this lever
+        # costs nothing" the moment a panel with absent peels is exported. No
+        # national panel has one, so it never fired; the DC FY2030 panel has
+        # three. fig() carries the ledger's own words instead.
+        "peels": [{"label": p.label, "v": fig(p.amount),
                    "kind": p.kind, "charged": p.charged, "reach": p.reach}
                   for p in L.peels],
         "lanes": lanes, "cells": cells, "disp": dict(disp),
+        # Does the service fan rest on an ASSUMPTION? The cells export as bare
+        # numbers, so their status would be lost on the way here and the
+        # engine would draw an assumed mix exactly as it draws a measured one.
+        # The panel that used to say THE FLOW STOPS HERE now draws a fan; it
+        # has to say, just as plainly, what that fan is.
+        "mix_assumed": any(
+            v.status == ledger.MODELLED
+            for (r, _c), v in L.claims.cell.items()
+            if r in ("mco", "dual")),
         "cols": list(L.claims.cols),
         # what reached a claim. The service mix totals it where the mix is
         # published; where it is not -- DC -- the lane care does, because a
@@ -97,6 +159,16 @@ def reconcile(data):
             if abs(l["adm"] + l["margin"] - kept) > 0.0015:
                 bad.append("%s %s: kept %.4f, adm+margin %.4f"
                            % (key, l["key"], kept, l["adm"] + l["margin"]))
+            # the plans inside a lane must account for the whole lane, or the
+            # payer column would draw a sliver of unnamed money with no owner
+            ps = [q for q in l.get("plans", [])
+                  if not isinstance(q["care"], dict)]
+            if ps and len(ps) == len(l.get("plans", [])):
+                for field in ("cap", "care"):
+                    tot = sum(q[field] for q in ps)
+                    if abs(tot - l[field]) > 0.0015:
+                        bad.append("%s %s: plans %s %.4f, lane %.4f"
+                                   % (key, l["key"], field, tot, l[field]))
     return bad
 
 
@@ -106,11 +178,23 @@ def build():
     out = {}
     for key, mod, variant, code, name, vname in PANELS:
         m = importlib.import_module(mod)
-        L = m.build(variant) if variant else m.build()
+        # DC carries the assumed national service mix (JW, 2026-10-29). It is
+        # an assumption and every cell it produces says so in its own note,
+        # which travels to the engine through fig().
+        L = (m.build(variant) if variant
+             else m.build(assumed_mix=True) if key.startswith("DC|")
+             else m.build())
         V = getattr(views, vname)
-        out[key] = panel(L, code, name, V.strap, V.disp)
-    out["DC|2030"] = None     # no FY2030 DC ledger, and the national shape is
-    return out                # not a stand-in for one
+        out[key] = panel(L, code, name, V.strap, V.disp,
+                         plan_colour_map(m, L))
+    # There IS an FY2030 DC ledger now (ledger_dc_2030), and four of its seven
+    # HR-1 lanes are derived on District inputs. It is still not exported, for
+    # a different reason than before: three lanes carry no figure and this
+    # engine has no way to DRAW absence, so they would read as costing zero.
+    # Teaching the engine placeholders is what unblocks it; until then the
+    # drafts/ panel is the DC FY2030 artifact.
+    out["DC|2030"] = None
+    return out
 
 
 def main():
@@ -133,7 +217,10 @@ def main():
     absent = sum(1 for k in live for l in data[k]["lanes"]
                  for f in ("adm", "margin") if isinstance(l[f], dict))
     print("  rewrote the DATA line in engine/explorer_engine.html")
+    named = sum(len(l.get("plans", [])) for k in live
+                for l in data[k]["lanes"])
     print("  %d panels, %d lane splits declared absent" % (len(live), absent))
+    print("  %d named plans inside the payer lanes" % named)
     print("  every published split reconciles with what its lane kept")
 
 

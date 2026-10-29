@@ -103,7 +103,13 @@ EXPECT = {
         must=["22 verified", "5 modelled", "2 unverified", "3 missing"],
     ),
     "coverage.py dc": dict(
-        must=["0 verified", "0 modelled", "15 unverified", "26 missing"],
+        # 2026-10-29: six figures acquired. The four comprehensive plans moved
+        # onto their own CY2024 Title XIX reporting, which brought three
+        # plans' administration and margin with them. 15/26 -> 21/20.
+        # Still 0 verified: acquiring a figure is not the same as a person
+        # opening its source and agreeing with it, and no DC figure has been
+        # signed. See DC_PROVENANCE.md.
+        must=["0 verified", "0 modelled", "21 unverified", "20 missing"],
     ),
     # ORDERING DEFECT, 27 September. This suite ran build.py and then went
     # straight to render_v7_1.py, whose figurefit and artwhite sub-gates read

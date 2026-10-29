@@ -92,7 +92,7 @@ def agreement():
     does not fix the duplication; it makes the duplication unable to drift
     quietly, which is the part that bites. Returns a list of failures.
     """
-    from outflows import OUTFLOWS
+    from outflows import OUTFLOWS, ALIASES
     out = []
     for name, (charged, reach) in HR1.items():
         o = OUTFLOWS.get(name)
@@ -103,6 +103,10 @@ def agreement():
         if theirs != reach:
             out.append(f"{name}: ledger reach {reach}, outflows {theirs}")
     for name, o in OUTFLOWS.items():
+        if name in ALIASES:
+            # a state edition's rename of a lane that IS in the ledger under
+            # its national name. Not a missing tributary.
+            continue
         if o.get("cls") == "hr1" and name not in HR1:
             out.append(f"{name}: in OUTFLOWS, not in the ledger")
     return out

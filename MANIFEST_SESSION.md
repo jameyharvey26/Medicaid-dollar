@@ -2753,3 +2753,60 @@ expectation is that file.
 This is a last-of-its-kind problem. v8.0 is the last paper assembled against a
 fixed layout; papers after it are generated from the engine, so a fault of this
 class becomes a property of the generator and is fixed once.
+
+---
+
+# Session addendum — 2026-10-29 · the DC payer column, re-based
+
+## What changed in the data
+
+The four comprehensive plans moved off DHCF's CY2023 managed care report and
+onto **each plan's own CY2024 Title XIX reporting**. That dissolves the
+basis-mismatch workaround rather than patching it: the old split had to anchor
+HSCSN separately and apportion the residual, because the comprehensive plans'
+total capitation revenue carried locally funded Alliance and ICP enrollees and
+HSCSN's did not. On the Title XIX column every plan is on one basis and the
+special case disappears.
+
+Not the same line in every statement, and the ledger says which per plan:
+
+| plan | premium | care | administration |
+|---|---|---|---|
+| AmeriHealth | Title XIX column, as filed | Title XIX column | Title XIX column |
+| Wellpoint | Title XIX column, **earned** (net premium less the $30.25M change in unearned reserves) | Title XIX column less reinsurance recoveries | entity lines, apportioned by Title XIX's share of earned revenue |
+| MedStar | **Schedule T, DC row** — the entity writes $920.1M of Title XIX across two jurisdictions, $545.0M of it in Maryland | entity Title XIX, apportioned by DC's share of Title XIX premium | as care |
+| HSCSN | CY2023, DHCF managed care report | CY2023 | **absent** |
+
+Margin is a residual throughout — premium less care less administration.
+Nothing publishes a plan's Medicaid margin directly.
+
+## The mixed vintage, declared
+
+HSCSN is a year behind the other three. JW, 2026-10-29: HSCSN is not really an
+MCO — it predates the managed care regulations and its reporting obligations
+differ in kind, so there is no comparable annual statement and no Title XIX
+column to read. It reports everything to DHCF, and that is the acquisition;
+it has not been chased. The strap, the ledger note and the provenance record
+all say so.
+
+The MCO LANE's administration and margin stay ABSENT even though three of four
+plans now publish theirs. The sum of three is a floor, and a floor is not
+published as a total.
+
+## Gate expectations moved
+
+- `coverage.py dc`: **15 unverified / 26 missing → 21 / 20.** Six figures
+  acquired. Still **0 verified** — acquiring a figure is not a person opening
+  its source and agreeing with it, and no District figure is in the signature
+  register.
+- `teaching_register.json`, `dc_2024`: 65 → 80 entries. Four strings the panel
+  no longer draws were removed; nineteen new ones entered as `pending`. Every
+  surviving verdict carried forward unchanged and nothing was upgraded, so the
+  burndown is not flattered by a data change (254 ported of 606).
+
+## Still red
+
+`renderproof.py`, in the cloud sandbox only: Google Fonts is blocked there and
+the national 2030 panels render on a fallback face. Red on a clean tree too —
+verified by stashing. **It should be green on a local machine; if it is not,
+that is a real finding.**

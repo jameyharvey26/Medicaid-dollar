@@ -147,7 +147,7 @@
 
 <script>
 const GEOM = {"cols":{"FEDERAL":[160,350],"STATE_GOVT":[350,584],"STATE_AGENCY":[584,844],"DISBURSE":[844,1060],"PAYER":[1060,1300],"CLAIMS":[1300,1560],"PROVIDERS":[1560,1760],"BENEFICIARY":[1760,2180]},"source_x":200.0,"canvas":{"w":2200,"h":1416},"ys":4.4,"bw":18,"centre_y":540,"ctrl_max":340.0,"fan":{"top":800.0,"min_gap":40.0,"tight_gap":8.0,"label_h":45.0,"label_h_tight":30.0,"rule_y":1146.0,"floor":1140.0,"stack_top":806.0,"top_off":18.0},"source_tops":{"federal":126.0,"state":655.0},"term_slot":{"FEDERAL":350.0,"STATE_AGENCY":844.0,"DISBURSE":1060.0,"PAYER":1300.0,"CLAIMS":1560.0,"BENEFICIARY":2180.0},"term_fallback":"charged","outflows":{"Administration":{"cls":"ordinary","src":"STATE_AGENCY","edge":"top","src_x":639.0,"term_col":"STATE_AGENCY","term_y":250,"ret":false},"Federal oversight":{"cls":"ordinary","src":"STATE_AGENCY","edge":"top","src_x":689.0,"term_col":"STATE_AGENCY","term_y":206,"ret":false},"Medicare premiums":{"cls":"ordinary","src":"STATE_AGENCY","edge":"top","src_x":739.0,"term_col":"FEDERAL","term_y":134,"ret":true},"MCO plan administration":{"cls":"ordinary","src":"PAYER","edge":"top","term_col":"PAYER","ret":false},"Dual MCO plan administration":{"cls":"ordinary","src":"PAYER","edge":"top","term_col":"PAYER","ret":false},"Public-company earnings":{"cls":"ordinary","src":"PAYER","edge":"top","term_col":"PAYER","ret":false},"Vaccines for Children":{"cls":"ordinary","src":"FEDERAL","edge":"top","src_x":218.0,"term_col":"FEDERAL","ret":true},"Documented fraud":{"cls":"ordinary","src":"CLAIMS","edge":"bottom","src_x":1306.0,"term_col":"PROVIDERS","term_y":880,"ret":false},"Provider tax limits":{"cls":"hr1","src":"FEDERAL","edge":"fed_bottom","src_x":300.0,"term_col":"FEDERAL","ret":false,"label_side":"end"},"Work reporting":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":688.0,"term_col":"DISBURSE","ret":false,"reach":"DISBURSE"},"Six-month renewals":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":722.0,"term_col":"PAYER","ret":false,"reach":"PAYER"},"Blocked Medicaid enrollment rule":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":756.0,"term_col":"CLAIMS","ret":false,"reach":"CLAIMS","label":"Medicaid enrollment rule suspended"},"Everything else":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":790.0,"term_col":"STATE_AGENCY","ret":false,"label":"Other"},"Blocked senior enrollment rule":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":824.0,"term_col":"BENEFICIARY","ret":false,"term_dy":80.4,"reach":"BENEFICIARY","label":"Medicare Savings rule suspended","label_side":"end"},"Directed payment caps":{"cls":"hr1","src":"CLAIMS","edge":"bottom","src_x":1302.0,"term_col":"PROVIDERS","ret":false,"label_dy":-30}}};
-const DATA = {"US|2024":{"code":"US2024","name":"National","strap":"CMS-64 FY2024 national totals. Measured, except where flagged.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Administration","v":4.2477,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1016,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":2.9231,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Documented fraud","v":0.1511,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.367,"care":35.9234,"adm":3.839,"margin":0.6046},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":10.9688,"care":9.7597,"adm":1.0479,"margin":0.1612},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":41.3919,"care":41.3919,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"}}],"cells":{"ffs|Long-term care":20.13,"ffs|Hospitals":8.33,"ffs|Other":5.74,"ffs|Physicians & clinics":2.47,"ffs|Rx drugs":1.52,"ffs|Behavioral health":3.21,"mco|Long-term care":7.08,"mco|Hospitals":7.53,"mco|Other":7.63,"mco|Physicians & clinics":6.61,"mco|Rx drugs":2.06,"mco|Behavioral health":5.01,"dual|Long-term care":1.92,"dual|Hospitals":2.04,"dual|Other":2.07,"dual|Physicians & clinics":1.8,"dual|Rx drugs":0.56,"dual|Behavioral health":1.36},"disp":{"Other":"Wrap around services"},"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":87.07},"US|2030":{"code":"US2030_mixed","name":"National","strap":"Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Work reporting","v":4.1061,"kind":"hr1","charged":"STATE_AGENCY","reach":"DISBURSE"},{"label":"Six-month renewals","v":0.7513,"kind":"hr1","charged":"STATE_AGENCY","reach":"PAYER"},{"label":"Blocked Medicaid enrollment rule","v":1.0396,"kind":"hr1","charged":"STATE_AGENCY","reach":"CLAIMS"},{"label":"Everything else","v":1.0587,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Blocked senior enrollment rule","v":1.2801,"kind":"hr1","charged":"STATE_AGENCY","reach":"BENEFICIARY"},{"label":"Administration","v":4.28,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1023,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.6653,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Provider tax limits","v":1.2499,"kind":"hr1","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Directed payment caps","v":0.8517,"kind":"hr1","charged":"CLAIMS","reach":"PROVIDERS"},{"label":"Documented fraud","v":0.1389,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":36.7707,"care":32.723,"adm":3.497,"margin":0.5507},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":9.9916,"care":8.8902,"adm":0.9546,"margin":0.1469},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":37.7044,"care":37.7044,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"}}],"cells":{"mco|Long-term care":6.2277,"mco|Hospitals":6.6236,"mco|Other":6.9503,"mco|Physicians & clinics":5.8143,"mco|Behavioral health":4.5637,"mco|Rx drugs":1.8765,"dual|Long-term care":1.6889,"dual|Hospitals":1.7944,"dual|Other":1.8856,"dual|Physicians & clinics":1.5833,"dual|Behavioral health":1.2388,"dual|Rx drugs":0.5101,"ffs|Long-term care":18.3367,"ffs|Hospitals":7.5879,"ffs|Other":5.2286,"ffs|Physicians & clinics":2.25,"ffs|Behavioral health":2.924,"ffs|Rx drugs":1.3846},"disp":{"Other":"Wrap around services"},"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":78.4689},"DC|2024":{"code":"DC2024","name":"DC","strap":"REDUCED FIDELITY. CMS-64 / MACStats FY2024 DC spine; payer peel DHCF CY2023; the District publishes no managed-care service mix, so that fan is absent. Vintages need re-checking.","sources":{"federal":73.17,"state":26.83},"peels":[{"label":"Administration","v":5.3522,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.9671,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.3019,"care":35.4529,"adm":{"absent":"No DC figure divides plan retention into administration and margin. The retention total is measured; its split is not published."},"margin":{"absent":"See admin."}},{"key":"dual","label":"Dual and PACE capitation","kind":"dual","cap":0.9149,"care":0.9149,"adm":{"absent":"No DC retention figure for the dual or PACE lanes."},"margin":{"absent":"See admin."}},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":51.4639,"care":51.4639,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"}}],"cells":{"ffs|Long-term care":28.2708,"ffs|Physicians & clinics":9.2864,"ffs|Hospitals":6.7932,"ffs|Wrap around services":5.0778,"ffs|Rx drugs":2.0357},"disp":{},"cols":["Long-term care","Hospitals","Physicians & clinics","Wrap around services","Rx drugs"],"claims":87.8317},"DC|2030":null};
+const DATA = {"US|2024":{"code":"US2024","name":"National","strap":"CMS-64 FY2024 national totals. Measured, except where flagged.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Administration","v":4.2477,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1016,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":2.9231,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Documented fraud","v":0.1511,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.367,"care":35.9234,"adm":3.839,"margin":0.6046,"plans":[]},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":10.9688,"care":9.7597,"adm":1.0479,"margin":0.1612,"plans":[]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":41.3919,"care":41.3919,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"},"plans":[]}],"cells":{"ffs|Long-term care":20.13,"ffs|Hospitals":8.33,"ffs|Other":5.74,"ffs|Physicians & clinics":2.47,"ffs|Rx drugs":1.52,"ffs|Behavioral health":3.21,"mco|Long-term care":7.08,"mco|Hospitals":7.53,"mco|Other":7.63,"mco|Physicians & clinics":6.61,"mco|Rx drugs":2.06,"mco|Behavioral health":5.01,"dual|Long-term care":1.92,"dual|Hospitals":2.04,"dual|Other":2.07,"dual|Physicians & clinics":1.8,"dual|Rx drugs":0.56,"dual|Behavioral health":1.36},"disp":{"Other":"Wrap around services"},"mix_assumed":true,"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":87.07},"US|2030":{"code":"US2030_mixed","name":"National","strap":"Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Work reporting","v":4.1061,"kind":"hr1","charged":"STATE_AGENCY","reach":"DISBURSE"},{"label":"Six-month renewals","v":0.7513,"kind":"hr1","charged":"STATE_AGENCY","reach":"PAYER"},{"label":"Blocked Medicaid enrollment rule","v":1.0396,"kind":"hr1","charged":"STATE_AGENCY","reach":"CLAIMS"},{"label":"Everything else","v":1.0587,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Blocked senior enrollment rule","v":1.2801,"kind":"hr1","charged":"STATE_AGENCY","reach":"BENEFICIARY"},{"label":"Administration","v":4.28,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1023,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.6653,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Provider tax limits","v":1.2499,"kind":"hr1","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Directed payment caps","v":0.8517,"kind":"hr1","charged":"CLAIMS","reach":"PROVIDERS"},{"label":"Documented fraud","v":0.1389,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":36.7707,"care":32.723,"adm":3.497,"margin":0.5507,"plans":[]},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":9.9916,"care":8.8902,"adm":0.9546,"margin":0.1469,"plans":[]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":37.7044,"care":37.7044,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"},"plans":[]}],"cells":{"mco|Long-term care":6.2277,"mco|Hospitals":6.6236,"mco|Other":6.9503,"mco|Physicians & clinics":5.8143,"mco|Behavioral health":4.5637,"mco|Rx drugs":1.8765,"dual|Long-term care":1.6889,"dual|Hospitals":1.7944,"dual|Other":1.8856,"dual|Physicians & clinics":1.5833,"dual|Behavioral health":1.2388,"dual|Rx drugs":0.5101,"ffs|Long-term care":18.3367,"ffs|Hospitals":7.5879,"ffs|Other":5.2286,"ffs|Physicians & clinics":2.25,"ffs|Behavioral health":2.924,"ffs|Rx drugs":1.3846},"disp":{"Other":"Wrap around services"},"mix_assumed":true,"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":78.4689},"DC|2024":{"code":"DC2024","name":"DC","strap":"CMS-64 / MACStats FY2024 DC spine. The payer column is the four plans: AmeriHealth, Wellpoint and MedStar on their own CY2024 Title XIX reporting, each with its administration and margin; HSCSN on CY2023, with no published split. The District publishes no managed-care service mix, so that fan is absent.","sources":{"federal":73.17,"state":26.83},"peels":[{"label":"Administration","v":5.3522,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.9671,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.3019,"care":34.7341,"adm":{"absent":"Three of the four plans now publish their administration and margin on their Title XIX column, but HSCSN does not, so the LANE total is still not known. Published as absent rather than as the sum of three, which would be a floor presented as a total. HSCSN predates the managed care regulations and is not an MCO in the regulatory sense, so it files no comparable annual statement and has no Title XIX column to read. It reports to DHCF; that figure has not been acquired. CY2023 stands in, and this plan is therefore a year behind the other three."},"margin":{"absent":"See admin."},"plans":[{"key":"amerihealth","label":"AmeriHealth Caritas DC","entity":"AmeriHealth Caritas District of Columbia, Inc.","col":"#5C68AB","cap":18.6701,"care":16.2048,"adm":2.0685,"margin":0.3968},{"key":"wellpoint","label":"Wellpoint DC (formerly Amerigroup)","entity":"Amerigroup District of Columbia, Inc.","col":"#3C3A71","cap":7.6736,"care":6.3159,"adm":0.9541,"margin":0.4036},{"key":"medstar","label":"MedStar Family Choice DC","entity":"MedStar Family Choice DC","col":"#673479","cap":9.3642,"care":8.3584,"adm":0.9454,"margin":0.0604},{"key":"hscsn","label":"HSCSN","entity":"Health Services for Children with Special Needs, Inc.","col":"#A55BC8","cap":4.594,"care":3.855,"adm":{"absent":"hscsn: retention is measured, its split into administration and margin is not published. HSCSN predates the managed care regulations and is not an MCO in the regulatory sense, so it files no comparable annual statement and has no Title XIX column to read. It reports to DHCF; that figure has not been acquired. CY2023 stands in, and this plan is therefore a year behind the other three."},"margin":{"absent":"hscsn: see admin."}}]},{"key":"dual","label":"Dual and PACE capitation","kind":"dual","cap":0.9149,"care":0.9149,"adm":{"absent":"No DC retention figure for the dual or PACE lanes."},"margin":{"absent":"See admin."},"plans":[{"key":"united","label":"UnitedHealthcare District Dual Choice","entity":"UnitedHealthcare Insurance Company","col":"#26323C","cap":0.5718,"care":0.5718,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"pace","label":"PACE","entity":"","col":"#9CACB4","cap":0.3431,"care":0.3431,"adm":{"absent":"no split"},"margin":{"absent":"no split"}}]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":51.4639,"care":51.4639,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"},"plans":[]}],"cells":{"ffs|Long-term care":28.2708,"ffs|Physicians & clinics":9.2864,"ffs|Hospitals":6.7932,"ffs|Wrap around services":5.0778,"ffs|Rx drugs":2.0357,"mco|Long-term care":6.8449,"dual|Long-term care":0.1803,"mco|Hospitals":7.2784,"dual|Hospitals":0.1917,"mco|Physicians & clinics":6.3962,"dual|Physicians & clinics":0.1685,"mco|Wrap around services":12.222,"dual|Wrap around services":0.3219,"mco|Rx drugs":1.9926,"dual|Rx drugs":0.0525},"disp":{},"mix_assumed":true,"cols":["Long-term care","Hospitals","Physicians & clinics","Wrap around services","Rx drugs"],"claims":87.1129},"DC|2030":null};
 const C = {
   federal:'#3D6E8C', local:'#A8BFCE', agency:'#1F7A5A',
   // the paper's lane colours, read off its own render: teal, purple, slate
@@ -161,6 +161,21 @@ let wr = null;
 let zoomLevel = 'all';
 
 const money = v => '$' + v.toFixed(2);
+
+// A lane's colour, stepped for the named plans inside it. One hue, several
+// weights: the payer column has to read as ONE lane divided, not as four
+// lanes that happen to be adjacent. Steps alternate lighter and darker about
+// the lane colour so no two neighbours share a weight and none of them
+// strays far enough to look like a different mechanism.
+function tint(hex, i){
+  const n=parseInt(hex.slice(1),16), r=n>>16&255, g=n>>8&255, b=n&255;
+  // Widened 2026-10-29: the original steps read as one band with hairlines
+  // in it on a projector. Still one hue — a reader must see ONE lane divided,
+  // not four mechanisms — but far enough apart to be told apart across a room.
+  const k=[-.30, .34, -.08, .60, -.46, .14][i % 6] || 0;
+  const m=c => Math.round(k>=0 ? c+(255-c)*k : c*(1+k));
+  return '#'+[m(r),m(g),m(b)].map(c=>c.toString(16).padStart(2,'0')).join('');
+}
 // The PRINTED name of a tributary, where it differs from its internal key.
 // This was three string pairs typed here, which is the same mistake that made
 // the teaching strings losable: the plate's label is what a reader sees, the
@@ -207,7 +222,12 @@ function model(key, wrValue){
   // declared assumption: lanes rescale proportionally with what is disbursed
   const baseCap = P.lanes.reduce((a,l)=>a+l.cap,0);
   const f = baseCap ? disb / baseCap : 0;
-  const lanes = P.lanes.map(l => ({...l, cap: l.cap*f, care: (l.care||0)*f}));
+  // the named plans inside a lane rescale with it, or the payer column would
+  // draw yesterday's plan shares against today's lane
+  const lanes = P.lanes.map(l => ({...l, cap: l.cap*f, care: (l.care||0)*f,
+    plans: (l.plans||[]).map(q => ({...q,
+      cap: (typeof q.cap==='number'? q.cap*f : q.cap),
+      care: (typeof q.care==='number'? q.care*f : q.care)}))}));
   const careTot = lanes.reduce((a,l)=>a+l.care,0);
 
   const svc = {};
@@ -937,9 +957,79 @@ function draw(M, zoom){
     t+=halo2(xDI[0]+bw+10, ny+Math.max(15,bh/2+4), `${l.label} ${money(l.cap)}`, 14);
     c3.push({l,y:ny,bh,col}); ny+=bh;
   }
-  // full capitation across the disbursements column, then the peel point
-  const PEELX = xPA[0]+90;
-  for (const c of c3) g+=band(xDI[0]+bw, PEELX, c.y, c.y, c.bh, c.bh, c.col, .72);
+  // full capitation across the disbursements column to the PAYER NODE, which
+  // is where the lane forks.
+  //
+  // The fork belongs at the opening of the payer column, not part-way along
+  // it (JW, 28 October). A lane that runs into the column whole and divides
+  // in the middle says the division happened somewhere inside the payer,
+  // which is not what happened: the District pays four plans, separately,
+  // from the first dollar. In a state the plans ARE the payer column, and a
+  // band labelled only "MCO capitation" answers a question nobody asks.
+  //
+  // The ledger has held them as Payers with `parent` set since the DC panel
+  // was built; `engine_data_export.py` dropped them on the way out until this
+  // session, which is why the engine never drew them.
+  const FORKX = xPA[0], PEELX = xPA[0]+90;
+  for (const c of c3) g+=band(xDI[0]+bw, FORKX, c.y, c.y, c.bh, c.bh, c.col, .72);
+
+  // SEGMENTS. One ribbon per named plan where the ledger names them and their
+  // capitation accounts for the whole lane, one ribbon for the lane itself
+  // where it does not. Everything downstream -- the retention peel, the care
+  // run, the service fan -- works off segs, so a plan peels its OWN retention
+  // rather than having the lane's share allotted to it.
+  //
+  // No figure is invented here. `engine_data_export.py` refuses to write a
+  // panel whose plans do not add up to their lane in both capitation and
+  // care, so a fork that draws is a fork the ledger stood behind.
+  const SPLIT_PAYER_BY_PLAN = true;   // user toggle later; default on for now
+  const segs=[], planTight=[];
+  for (const c of c3){
+    const ps=(c.l.plans||[]).filter(q=>typeof q.cap==='number' && q.cap>0.0005
+                                       && typeof q.care==='number');
+    const whole = ps.length>1 && ps.length===(c.l.plans||[]).length &&
+      Math.abs(ps.reduce((a,q)=>a+q.cap,0)-c.l.cap) < 0.002;
+    if (!(SPLIT_PAYER_BY_PLAN && whole)){
+      segs.push({label:c.l.label, cap:c.l.cap, care:c.l.care, col:c.col,
+                 y:c.y, lane:c, named:false});
+      continue;
+    }
+    // the node the fork leaves from, so the division has a visible origin in
+    // the same idiom as the disbursements node
+    g+=`<rect x="${FORKX}" y="${c.y}" width="${bw}" height="${c.bh}" fill="${c.col}"/>`;
+    let off=0;
+    ps.forEach((q,i)=>{
+      // THE PLAN'S OWN COLOUR, held for it in palette.py by its national
+      // parent and exported with it. Not a step off the lane's hue: a tint
+      // ramp invented here says nothing about WHAT KIND of payer a plan is
+      // and does not survive the reader meeting the same plan in another
+      // state. tint() remains only as a fallback for a payload that predates
+      // the colour travelling with the plan.
+      segs.push({label:q.label, cap:q.cap, care:q.care,
+                 col:q.col || tint(c.col,i),
+                 y:c.y+off, lane:c, named:true});
+      off+=h(q.cap);
+    });
+  }
+  // AIR BETWEEN THE PLANS. A hairline is not a division a reader sees across
+  // a room, and this panel is driven live in front of one. Each named segment
+  // is inset by half a gap top and bottom, exactly as the provider bars are
+  // given PROV_GAP of air below: the heights still encode the dollars, every
+  // band loses the same absolute sliver, and nothing is rescaled. Drawing,
+  // not quantity.
+  const PLAN_GAP = 4, PG = PLAN_GAP/2;
+  const inset = hh => Math.max(hh - PLAN_GAP, 1.5);
+  for (const s of segs){
+    const x0=s.named?FORKX+bw:FORKX;
+    const hb0 = s.named ? inset(h(s.cap)) : h(s.cap);
+    const y0  = s.named ? s.y + PG : s.y;
+    g+=band(x0, PEELX, y0, y0, hb0, hb0, s.col, s.named?.92:.72);
+    if (!s.named) continue;
+    if (h(s.cap)>13) t+=halo2(x0+10, y0+hb0/2-1,
+                              `${s.label} ${money(s.cap)}`, 12.5,
+                              'currentColor', 600, 'start');
+    else planTight.push(`${s.label} ${money(s.cap)}`);
+  }
 
   // ---- what the plans KEEP, and what becomes of it.
   //
@@ -954,6 +1044,16 @@ function draw(M, zoom){
   // so: one band, hatched, carrying the ledger's own words. Absence is drawn,
   // never estimated (S-108).
   const PLANX = xPA[0]+175, RET_END = xPA[1]-6;
+  // Retention leaves the LANE, as one ribbon, not each plan as its own.
+  //
+  // Tried it per plan first and it was wrong twice over: four thin ribbons
+  // crossing each other into one pool is a tangle, and `anchorproof.py`
+  // caught the real fault underneath it -- three of the four leave from the
+  // middle of the river, where no tributary ends, so the plate was showing
+  // flow appearing from nowhere. The lane-level peel is also what the figure
+  // behind it actually is: administration and margin are measured per plan
+  // but the panel teaches the lane total, and the per-plan split is on the
+  // band labels at the fork.
   const rets = c3.filter(c=>c.l.cap-c.l.care>0.005);
   const retTot = rets.reduce((a,c)=>a+(c.l.cap-c.l.care),0);
   const splitKnown = rets.length>0 && rets.every(c=>typeof c.l.adm === 'number');
@@ -1014,14 +1114,32 @@ function draw(M, zoom){
     retObs.push([PLANX-240, poolTop-40, RET_END+8, poolTop+h(retTot)+20]);
   }
 
-  // care continues to the claims column, below whatever its lane retained
+  // care continues to the claims column, below whatever its lane retained.
+  // Drawn per segment, so each plan's care is its own ribbon all the way to
+  // the claims column and the fork holds for the width of the payer.
   const careTop={};
-  for (const c of c3){
-    const keep=Math.max(c.l.cap-c.l.care,0);
-    careTop[c.l.key]=c.y+h(keep);
-    if (c.l.care>0.005)
-      g+=band(PEELX, xCL[0], c.y+h(keep), careTop[c.l.key], h(c.l.care), h(c.l.care), c.col, .72);
+  for (const c of c3) careTop[c.l.key]=c.y+h(Math.max(c.l.cap-c.l.care,0));
+  const laneCur={}; for (const c of c3) laneCur[c.l.key]=careTop[c.l.key];
+  const srcCur={}; for (const c of c3) srcCur[c.l.key]=careTop[c.l.key];
+  // Each plan's care is its own ribbon to the claims column, and `arrive`
+  // remembers where it lands so the fork can be carried onward instead of
+  // being rebuilt from the lane.
+  const arrive=[];
+  for (const s of segs){
+    if (!(s.care>0.005)) continue;
+    const k=s.lane.l.key, y0=srcCur[k], y1=laneCur[k];
+    const hc=h(s.care), hi=s.named?inset(hc):hc, pad=s.named?PG:0;
+    g+=band(PEELX, xCL[0], y0+pad, y1+pad, hi, hi, s.col, s.named?.9:.72);
+    arrive.push({seg:s, lane:k, y:y1, h:hc});
+    srcCur[k]=y0+hc; laneCur[k]=y1+hc;
   }
+
+  // a plan too thin to carry its own label is named once, under the column,
+  // rather than dropped: a small plan is still a plan
+  if (planTight.length)
+    t+=txt(FORKX+8, disbTop+h(M.disb)+34,
+           'also in this column: '+planTight.join('   '), 11.5,
+           'var(--muted)','start',400,true);
 
   // ---- claims to providers, CELL BY CELL: one band per capitation lane per
   // service. Which lane pays for which service is the whole question a
@@ -1031,14 +1149,34 @@ function draw(M, zoom){
   // in itself rather than as one more band in the fan.
   const PROV_GAP = 50;
   let ay=disbTop;
+  if (M.P.mix_assumed){
+    t+=halo2(xPR[0]+PROV_W/2, ay-54, 'SERVICE MIX ASSUMED', 13, C.vio, 700, 'middle');
+    t+=halo2(xPR[0]+PROV_W/2, ay-40,
+             'national shape on District dollars \u2014 not a DC measurement',
+             11, C.vio, 500, 'middle');
+  }
   if (M.absent>0.02){
     const bh=hb(M.absent,'Service allocation absent');
     g+=`<rect x="${xPR[0]}" y="${ay}" width="${PROV_W}" height="${bh}" fill="url(#ab)"/>`;
+    // ONE RIBBON PER PLAN, not one per lane. This loop used to walk `c3`,
+    // so the four plans forked at the payer and then collapsed back into a
+    // single lane-wide band on the hop to the providers — the fork died at
+    // the claims column and the reader saw one mass of absence. The plans
+    // are what pays the claim, so they carry through to where the knowledge
+    // actually stops.
+    //
+    // Each plan keeps its own tint UNDER the absence hatch, so the division
+    // stays legible while the hatch says, over all of it, that no District
+    // source allocates any of this to a service.
     let cu=ay;
-    for (const c of c3){
-      const has=Object.keys(M.P.cells).some(k=>k.startsWith(c.l.key+'|'));
-      if (has||!c.l.care) continue;
-      g+=band(xCL[0], xPR[0], careTop[c.l.key], cu, h(c.l.care), h(c.l.care),'url(#ab)',.5); cu+=h(c.l.care);
+    for (const a of arrive){
+      const has=Object.keys(M.P.cells).some(k=>k.startsWith(a.lane+'|'));
+      if (has||!a.h) continue;
+      const hi=a.seg.named?inset(a.h):a.h, pad=a.seg.named?PG:0;
+      if (a.seg.named)
+        g+=band(xCL[0], xPR[0], a.y+pad, cu+pad, hi, hi, a.seg.col, .55);
+      g+=band(xCL[0], xPR[0], a.y+pad, cu+pad, hi, hi, 'url(#ab)', .5);
+      cu+=a.h;
     }
     t+=halo2(xPR[0]+PROV_W/2, ay-24,'Service allocation', 14, C.vio, 600,'middle');
     t+=halo2(xPR[0]+PROV_W/2, ay-8,`ABSENT \u00b7 ${money(M.absent)}`, 14, C.vio, 600,'middle');
@@ -1054,6 +1192,31 @@ function draw(M, zoom){
       const cell=M.P.cells[c.l.key+'|'+name];
       if (!cell) continue;
       const seg=bh*cell/v;               // the bar may be floored; the flow is true
+
+      // THE FORK CARRIES INTO THE FAN. A lane whose plans are named sends one
+      // ribbon per PLAN to each service, not one for the lane: the question a
+      // provider asks is which plan pays them, and a single lane-coloured
+      // ribbon answers a question nobody asked.
+      //
+      // Each plan takes its share of the lane's cell in proportion to its own
+      // care. That is the SAME assumption the cell itself rests on — one
+      // service mix for the whole lane — so this adds no new one. It is also
+      // why the four profiles come out identical, which is the visible tell
+      // that the mix is assumed and not measured.
+      const kids=(c.l.plans||[]).filter(q=>typeof q.care==='number' && q.care>0.005);
+      const kidTot=kids.reduce((a,q)=>a+q.care,0);
+      if (SPLIT_PAYER_BY_PLAN && kids.length>1 && Math.abs(kidTot-c.l.care)<0.01){
+        let sub=cu;
+        kids.forEach((q,i)=>{
+          const part=cell*q.care/kidTot, pseg=seg*q.care/kidTot;
+          const qc = q.col || tint(c.col,i);
+          g+=band(xCL[0], xPR[0], payCur[c.l.key], sub, h(part), pseg, qc, .66);
+          g+=`<rect x="${xPR[0]}" y="${sub}" width="${PROV_W}" height="${pseg}" fill="${qc}"/>`;
+          payCur[c.l.key]+=h(part); sub+=pseg;
+        });
+        cu+=seg;
+        continue;
+      }
       g+=band(xCL[0], xPR[0], payCur[c.l.key], cu, h(cell), seg, c.col, .62);
       // the BAR, in the claims colour scheme. The band is translucent and the
       // bar is not, and a hairline divides the payers, so the column reads as
@@ -1065,6 +1228,14 @@ function draw(M, zoom){
     // the name sits ABOVE its bar, centred on it, as the paper has it
     t+=halo2(xPR[0]+PROV_W/2, ay-8, `${M.P.disp[name]||name} ${money(v)}`, 14,
              'currentColor', 700, 'middle');
+    // AN ASSUMED FAN SAYS SO, on every bar it drew. This panel used to carry
+    // "THE FLOW STOPS HERE" where the fan could not be drawn; now that it is
+    // drawn on an assumption, silence here would be worse than the absence
+    // was. One short line per bar, in the violet the panel uses for
+    // everything it does not know.
+    // under the bar, in the air PROV_GAP already leaves, not on top of it
+    if (M.P.mix_assumed)
+      t+=halo2(xPR[0]+PROV_W/2, ay+bh+15, 'mix assumed', 10.5, C.vio, 600, 'middle');
     provObs.push([xPR[0]-8, ay-26, xPR[0]+PROV_W+8, ay+bh+6]);
     provBars.push([ay, bh]);
     ay+=bh+PROV_GAP;
@@ -1268,14 +1439,20 @@ function render(){
          <div style="font-family:Jost,sans-serif;font-size:11px;letter-spacing:.14em;color:var(--muted)">
            DISTRICT OF COLUMBIA &#183; FY2030</div>
          <h2 style="font-family:Jost,sans-serif;font-size:26px;font-weight:600;margin:12px 0 0;color:var(--vio)">
-           This panel does not exist yet.</h2>
+           The engine cannot draw this panel yet.</h2>
          <p style="font-size:16px;line-height:1.55;color:var(--ink);max-width:62ch">
-           There is no FY2030 ledger for the District. The national FY2030 panel is not a
-           stand-in for one: the District's own levers are measured for a single provision
-           and absent for the rest, so projecting the national shape onto it would invent
-           six figures nobody has.</p>
+           There IS an FY2030 ledger for the District now, and four of its seven HR-1
+           lanes are derived on District inputs &#8212; work reporting, provider tax
+           limits, directed payment caps and six-month renewals. Three lanes carry no
+           District figure at all.</p>
+         <p style="font-size:16px;line-height:1.55;color:var(--ink);max-width:62ch">
+           What stops it being drawn here is this engine, not the data: it has no way to
+           draw ABSENCE. Those three lanes would render as costing nothing, which is the
+           one substitution this panel exists to refuse. The paper renderer draws them as
+           violet placeholders; teaching the engine to do the same is what unblocks this.</p>
          <p style="font-size:15px;line-height:1.55;color:var(--muted);max-width:62ch">
-           What exists today is the FY2024 actual panel. Switch the year to see it.</p>
+           The FY2024 actual panel is complete. Switch the year to see it &#8212; that is
+           where the payer lane forks into the named plans.</p>
        </div>`;
     document.getElementById('trk').innerHTML = '';
     document.getElementById('layoutq').textContent = 'nothing drawn';
@@ -1293,7 +1470,14 @@ function render(){
   const base = P.peels.find(p=>p.label==='Work reporting');
   const M = model(panelKey(), base ? wr : null);
   const L = draw(M, zoomLevel);
-  document.getElementById('plate').innerHTML = L.svg;
+  // If we landed here by falling back from a year with no panel, say so. A
+  // view the reader did not choose has to announce itself.
+  const fellBack = YEAR_FELL_BACK
+    ? `<div style="font-family:Jost,sans-serif;font-size:12.5px;color:var(--vio);`
+      + `padding:6px 0 2px">FY${YEAR_FELL_BACK} has no ${P.name} panel yet \u2014 `
+      + `showing FY${year}. Choose FY${YEAR_FELL_BACK} to read why.</div>`
+    : '';
+  document.getElementById('plate').innerHTML = fellBack + L.svg;
   document.getElementById('layoutq').innerHTML =
     `canvas ${Math.round(L.height)}px tall · ${L.movedN} label${L.movedN===1?'':'s'} displaced`
     + (L.movedN ? `, worst ${Math.round(L.worst)}px, each with a leader back to its band` : '')
@@ -1386,12 +1570,37 @@ document.querySelectorAll('#place button').forEach(b=>{
   b.addEventListener('click', ()=>{
     place=b.dataset.k;
     document.querySelectorAll('#place button').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+    // DON'T LAND ON A DEAD CELL. The year persists across a change of place,
+    // and DC has no FY2030 panel, so choosing the District while FY2030 is
+    // selected — which is the default, so it is the FIRST thing anyone does —
+    // put the reader on an explanation card instead of the District's data.
+    // Several people read that card as "the DC work is not here".
+    //
+    // Fall to the year that has a panel, say so on the plate, and leave the
+    // card reachable by choosing that year deliberately. Nothing is hidden;
+    // the default path just stops being a dead end.
+    fallbackYear();
     resetAssumption(); render();
   });
 });
+let YEAR_FELL_BACK = null;
+function fallbackYear(){
+  YEAR_FELL_BACK = null;
+  if (DATA[place + '|' + year]) return;
+  const other = Object.keys(DATA)
+    .filter(k => k.startsWith(place + '|') && DATA[k])
+    .map(k => k.split('|')[1])[0];
+  if (!other) return;
+  YEAR_FELL_BACK = year;
+  year = other;
+  document.querySelectorAll('#year button').forEach(
+    x => x.setAttribute('aria-pressed', String(x.dataset.y === year)));
+}
+
 document.querySelectorAll('#year button').forEach(b=>{
   b.addEventListener('click', ()=>{
     year=b.dataset.y;
+    YEAR_FELL_BACK = null;   // choosing a year is deliberate; no fallback
     document.querySelectorAll('#year button').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
     resetAssumption(); render();
   });

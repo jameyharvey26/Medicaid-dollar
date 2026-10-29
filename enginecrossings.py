@@ -49,8 +49,30 @@ PANELS = {("US", "2024"): "national_2024",
 # missing the envelope simply stopped at x=1300 and every body crossing past it
 # was reported as a crossing in the margin. The rule is unchanged; the palette
 # it is measured against is now the one actually on the page.
-ENGINE_BODY = {"#3D6E8C", "#A8BFCE", "#1F7A5A", "#3f8f8a", "#9a6fa6", "#5f7f96",
-               "#2E8B6B", "#57A98C", "#83C3A8", "#AEDAC6", "#D2EAE0"}
+_BODY_BASE = {"#3D6E8C", "#A8BFCE", "#1F7A5A", "#3f8f8a", "#9a6fa6", "#5f7f96",
+              "#2E8B6B", "#57A98C", "#83C3A8", "#AEDAC6", "#D2EAE0"}
+
+# A DIVIDED RIVER IS STILL THE RIVER.
+#
+# The engine draws a state's payer lane as its named plans, each in the colour
+# palette.py reserves for that plan's national parent. Those are not lane
+# colours, so every plan band read as a TRIBUTARY to anchorproof — money
+# leaving the hundred — and six were reported adrift the first time the fork
+# carried through to the claims column. The bands are the flow, not departures
+# from it.
+#
+# Read from palette.py rather than listed here, so a plan added to the
+# reserved tables is body colour on the next run without anyone remembering
+# to come back to this file.
+def _payer_family():
+    import palette as PAL
+    out = set(PAL.PAYER_CARRIER.values()) | set(PAL.PAYER_HEALTH_SYSTEM.values())
+    out |= set(PAL.PAYER_TYPE.values()) | set(PAL.PAYER_ALTERNATES.values())
+    out |= set(PAL.PAYER_LOCAL_RAMP) | set(PAL.STRUCTURAL.values())
+    return {c.lower() for c in out} | {c.upper() for c in out}
+
+
+ENGINE_BODY = _BODY_BASE | _payer_family()
 
 
 def dump():

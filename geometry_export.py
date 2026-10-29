@@ -114,9 +114,15 @@ def main():
         # BELOW the fan's first row so that it survives the rule moving. Any
         # remaining absolute `term_y` belongs to an ordinary outflow that is
         # not a fan participant and is not a pin for this purpose.
+        # ALIASES ARE EXCLUDED. A state edition that renames a lane adds a key
+        # to OUTFLOWS pointing at geometry that is already exported under the
+        # national name. Exporting both would put a second entry in the
+        # engine's spine for one position on the flow, and the engine would
+        # carry a District editorial decision as though it were geometry.
+        # The rename belongs to the view, not to the spine.
         "outflows": {
             name: {k: d[k] for k in _OF_KEYS if d.get(k) is not None}
-            for name, d in OF.OUTFLOWS.items()
+            for name, d in OF.OUTFLOWS.items() if name not in OF.ALIASES
         },
     }
     # The fan's first row sits this far below the HR-1 rule. sankey._draw_hr1

@@ -1,0 +1,369 @@
+<svg viewBox="0 0 2200 1416" width="100%" xmlns="http://www.w3.org/2000/svg">
+<g id="baseline">
+<rect x="0" y="0" width="2200" height="1416" fill="#ffffff"/>
+<text x="166.0" y="58.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#272727" text-anchor="start" font-weight="bold">FEDERAL</text>
+<text x="166.0" y="77.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">federal appropriation</text>
+<line x1="160" y1="90" x2="160" y2="1030" stroke="#e2dccf" stroke-width="1"/>
+<text x="356.0" y="58.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#272727" text-anchor="start" font-weight="bold">STATE GOVERNMENT</text>
+<text x="356.0" y="77.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">blended cost allocation</text>
+<line x1="350" y1="90" x2="350" y2="1030" stroke="#e2dccf" stroke-width="1"/>
+<text x="590.0" y="58.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#272727" text-anchor="start" font-weight="bold">STATE AGENCY</text>
+<text x="590.0" y="77.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">budgeted to Medicaid</text>
+<line x1="584" y1="90" x2="584" y2="1030" stroke="#e2dccf" stroke-width="1"/>
+<text x="850.0" y="58.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#272727" text-anchor="start" font-weight="bold">DISBURSEMENTS</text>
+<text x="850.0" y="77.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">payment mechanisms</text>
+<line x1="844" y1="90" x2="844" y2="1030" stroke="#e2dccf" stroke-width="1"/>
+<text x="1066.0" y="58.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#272727" text-anchor="start" font-weight="bold">PAYER</text>
+<text x="1066.0" y="77.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">MCO administration</text>
+<line x1="1060" y1="90" x2="1060" y2="1030" stroke="#e2dccf" stroke-width="1"/>
+<text x="1306.0" y="58.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#272727" text-anchor="start" font-weight="bold">CLAIMS</text>
+<text x="1306.0" y="77.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">claims paid to providers</text>
+<line x1="1300" y1="90" x2="1300" y2="1030" stroke="#e2dccf" stroke-width="1"/>
+<line x1="1560" y1="90" x2="1560" y2="1030" stroke="#e2dccf" stroke-width="1"/>
+<line x1="160" y1="90" x2="2180" y2="90" stroke="#e2dccf" stroke-width="1.2"/>
+<rect x="200.0" y="126.0" width="18.0" height="321.9" rx="2" fill="#2f5d74" fill-opacity="1.0"/>
+<rect x="200.0" y="655.0" width="18.0" height="118.1" rx="2" fill="#9bb8c4" fill-opacity="1.0"/>
+<rect x="196.0" y="103.0" width="125.6" height="20.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="200.0" y="117.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" fill="#2f5d74" text-anchor="start" font-weight="bold">Federal  $73.17</text>
+<rect x="196.0" y="777.1" width="109.9" height="20.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="200.0" y="791.1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" fill="#5f7f8c" text-anchor="start" font-weight="bold">State  $26.83</text>
+<path d="M218.0,126.0 C259.0,126.0 259.0,223.0 300.0,223.0 L300.0,544.9 C259.0,544.9 259.0,447.9 218.0,447.9 Z" fill="#2f5d74" fill-opacity="0.8" stroke="#2f5d74" stroke-opacity="0.45" stroke-width="0.6" data-trace="federal" data-kind="source" data-val="73.1700"/>
+<path d="M300.0,223.0 C325.0,223.0 325.0,320.0 350.0,320.0 L350.0,633.4 C325.0,633.4 325.0,544.9 300.0,544.9 Z" fill="#2f5d74" fill-opacity="0.8" stroke="#2f5d74" stroke-opacity="0.45" stroke-width="0.6" data-trace="federal" data-kind="source" data-val="73.1700"/>
+<path d="M218.0,655.0 C284.0,655.0 284.0,641.9 350.0,641.9 L350.0,760.0 C284.0,760.0 284.0,773.1 218.0,773.1 Z" fill="#9bb8c4" fill-opacity="0.8" stroke="#9bb8c4" stroke-opacity="0.45" stroke-width="0.6" data-trace="state" data-kind="source" data-val="26.8300"/>
+<path d="M350.0,320.0 C467.0,320.0 467.0,320.0 584.0,320.0 L584.0,633.4 C467.0,633.4 467.0,633.4 350.0,633.4 Z" fill="#2f5d74" fill-opacity="0.82" stroke="#2f5d74" stroke-opacity="0.45" stroke-width="0.6" data-trace="federal" data-kind="source" data-val="73.1700"/>
+<path d="M350.0,641.9 C467.0,641.9 467.0,641.9 584.0,641.9 L584.0,760.0 C467.0,760.0 467.0,760.0 350.0,760.0 Z" fill="#9bb8c4" fill-opacity="0.82" stroke="#9bb8c4" stroke-opacity="0.45" stroke-width="0.6" data-trace="state" data-kind="source" data-val="26.8300"/>
+<rect x="350.0" y="320.0" width="18.0" height="313.4" rx="2" fill="#2f5d74" fill-opacity="1.0"/>
+<rect x="350.0" y="641.9" width="18.0" height="118.1" rx="2" fill="#9bb8c4" fill-opacity="1.0"/>
+<text x="380.0" y="480.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#ffffff" text-anchor="start" font-weight="bold">Federal 73.2%</text>
+<text x="380.0" y="705.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#33474f" text-anchor="start" font-weight="bold">State 26.8%</text>
+<rect x="584.0" y="320.0" width="18.0" height="431.4" rx="2" fill="#1a6b40" fill-opacity="1.0"/>
+<path d="M602.0,320.0 C620.5,320.0 620.5,320.0 639.0,320.0 L639.0,751.4 C620.5,751.4 620.5,751.4 602.0,751.4 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M639.0,328.7 C663.5,328.7 663.5,328.7 688.0,328.7 L688.0,751.4 C663.5,751.4 663.5,751.4 639.0,751.4 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M688.0,328.7 C705.0,328.7 705.0,328.7 722.0,328.7 L722.0,751.4 C705.0,751.4 705.0,751.4 688.0,751.4 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M722.0,328.7 C730.5,328.7 730.5,328.7 739.0,328.7 L739.0,738.4 C730.5,738.4 730.5,738.4 722.0,738.4 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M739.0,352.2 C747.5,352.2 747.5,352.2 756.0,352.2 L756.0,738.4 C747.5,738.4 747.5,738.4 739.0,738.4 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M756.0,352.2 C773.0,352.2 773.0,352.2 790.0,352.2 L790.0,736.1 C773.0,736.1 773.0,736.1 756.0,736.1 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M790.0,352.2 C807.0,352.2 807.0,352.2 824.0,352.2 L824.0,736.1 C807.0,736.1 807.0,736.1 790.0,736.1 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M824.0,352.2 C834.0,352.2 834.0,352.2 844.0,352.2 L844.0,736.1 C834.0,736.1 834.0,736.1 824.0,736.1 Z" fill="#1a6b40" fill-opacity="0.82" stroke="#1a6b40" stroke-opacity="0.45" stroke-width="0.6"/>
+<path d="M739.0,328.7 C788.5,328.7 788.5,250.0 838.0,250.0 L838.0,273.5 C788.5,273.5 788.5,352.2 739.0,352.2 Z" fill="#9a9a9a" fill-opacity="0.88" stroke="#9a9a9a" stroke-opacity="0.45" stroke-width="0.6" data-trace="admin" data-kind="peel" data-val="5.3522"/>
+<rect x="838.0" y="250.0" width="5.0" height="23.5" rx="2" fill="#9a9a9a" fill-opacity="1.0" data-trace="admin" data-kind="peel" data-val="5.3522"/>
+<rect x="672.1" y="232.0" width="160.9" height="19.0" rx="3" fill="#ffffff" fill-opacity="0.82" data-trace="admin" data-kind="peel" data-val="5.3522"/>
+<text x="829.0" y="245.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#9a9a9a" text-anchor="end" font-weight="bold" data-trace="admin" data-kind="peel" data-val="5.3522">Administration  $5.35</text>
+<rect x="683.9" y="249.5" width="149.1" height="16.5" rx="3" fill="#ffffff" fill-opacity="0.82" data-trace="admin" data-kind="peel" data-val="5.3522"/>
+<text x="829.0" y="260.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10.5" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic" data-trace="admin" data-kind="peel" data-val="5.3522">state / program overhead</text>
+<path d="M639.0,320.0 C671.0,320.0 671.0,272.0 703.0,272.0 L703.0,280.7 C671.0,280.7 671.0,328.7 639.0,328.7 Z" fill="#9aa0a6" fill-opacity="0.72" stroke="#9aa0a6" stroke-opacity="0.45" stroke-width="0.6" data-trace="medicare" data-kind="peel" data-val="1.9671"/>
+<path d="M703.0,276.3 C503.0,196.3 470,199 236,205" fill="none" stroke="#9aa0a6" stroke-width="8.7" stroke-opacity="0.72" stroke-linecap="round" data-trace="medicare" data-kind="peel" data-val="1.9671"/>
+<path d="M226,205 l16,-6 l0,12 Z" fill="#9aa0a6"/>
+<rect x="248.0" y="169.0" width="169.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="252.0" y="181.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#5f6166" text-anchor="start" font-weight="bold">Medicare premiums  $1.97</text>
+<rect x="248.0" y="186.0" width="316.0" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="252.0" y="196.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">returns to the federal government (Medicaid → Medicare)</text>
+<rect x="844.0" y="352.2" width="18.0" height="383.9" rx="2" fill="#1a6b40" fill-opacity="1.0"/>
+<text x="720.0" y="536.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">100 Dollars of</text>
+<text x="720.0" y="556.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">DC Medicaid Spending</text>
+<path d="M862.0,352.2 C1006.0,352.2 1006.0,352.2 1150.0,352.2 L1150.0,519.1 C1006.0,519.1 1006.0,519.1 862.0,519.1 Z" fill="#3f8f8a" fill-opacity="0.82" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" data-trace="mco" data-kind="payer" data-val="37.9365"/>
+<path d="M862.0,519.1 C1006.0,519.1 1006.0,519.1 1150.0,519.1 L1150.0,522.9 C1006.0,522.9 1006.0,522.9 862.0,522.9 Z" fill="#9a6fa6" fill-opacity="0.82" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" data-trace="dual" data-kind="payer" data-val="0.8612"/>
+<path d="M862.0,522.9 C1081.0,522.9 1081.0,522.9 1300.0,522.9 L1300.0,736.1 C1081.0,736.1 1081.0,736.1 862.0,736.1 Z" fill="#5f7f96" fill-opacity="0.82" stroke="#5f7f96" stroke-opacity="0.45" stroke-width="0.6" data-trace="ffs" data-kind="payer" data-val="48.4433"/>
+<rect x="844.0" y="352.2" width="18.0" height="166.9" rx="2" fill="#3f8f8a" fill-opacity="1.0"/>
+<rect x="844.0" y="519.1" width="18.0" height="3.8" rx="2" fill="#9a6fa6" fill-opacity="1.0"/>
+<rect x="844.0" y="522.9" width="18.0" height="213.2" rx="2" fill="#5f7f96" fill-opacity="1.0"/>
+<rect x="864.0" y="427.7" width="168.2" height="19.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="868.0" y="440.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#1f5b57" text-anchor="start" font-weight="bold">MCO capitation  $37.94</text>
+<rect x="864.0" y="513.0" width="197.3" height="19.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="868.0" y="526.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#5a3d63" text-anchor="start" font-weight="bold">Dual MCO capitation  $0.86</text>
+<rect x="864.0" y="621.5" width="175.4" height="19.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="868.0" y="634.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#36505f" text-anchor="start" font-weight="bold">Fee-for-service  $48.44</text>
+<path d="M1150.0,372.3 C1225.0,372.3 1225.0,372.3 1300.0,372.3 L1300.0,519.1 C1225.0,519.1 1225.0,519.1 1150.0,519.1 Z" fill="#3f8f8a" fill-opacity="0.82" stroke="#3f8f8a" stroke-opacity="0.45" stroke-width="0.6" data-trace="mco" data-kind="payer" data-val="33.3721"/>
+<path d="M1150.0,519.1 C1225.0,519.1 1225.0,519.1 1300.0,519.1 L1300.0,522.9 C1225.0,522.9 1225.0,522.9 1150.0,522.9 Z" fill="#9a6fa6" fill-opacity="0.82" stroke="#9a6fa6" stroke-opacity="0.45" stroke-width="0.6" data-trace="dual" data-kind="payer" data-val="0.8612"/>
+<path d="M1150.0,352.2 C1192.5,352.2 1192.5,250.0 1235.0,250.0 L1235.0,270.1 C1192.5,270.1 1192.5,372.3 1150.0,372.3 Z" fill="#5e5e5e" fill-opacity="0.88" stroke="#5e5e5e" stroke-opacity="0.45" stroke-width="0.6" data-trace="mco" data-kind="payer" data-also="retention_mco" data-val="4.5644"/>
+<path d="M1150.0,519.1 C1192.5,519.1 1192.5,270.1 1235.0,270.1 L1235.0,270.1 C1192.5,270.1 1192.5,519.1 1150.0,519.1 Z" fill="#5e5e5e" fill-opacity="0.88" stroke="#5e5e5e" stroke-opacity="0.45" stroke-width="0.6" data-trace="dual" data-kind="payer" data-also="retention_dual" data-val="0.0000"/>
+<text x="1600.0" y="420.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" fill="#6f4747" text-anchor="start" font-weight="bold">THE FLOW STOPS HERE</text>
+<text x="1600.0" y="446.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">What these claims buy is not in this ledger.</text>
+<text x="1600.0" y="465.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">The payer lanes are measured; the split across</text>
+<text x="1600.0" y="484.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">services is not published for this jurisdiction</text>
+<text x="1600.0" y="503.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">and has not been estimated.</text>
+<text x="1600.0" y="522.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic"></text>
+<text x="1600.0" y="541.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">A share carried from another jurisdiction would</text>
+<text x="1600.0" y="560.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">be an invention, not a finding. The columns to</text>
+<text x="1600.0" y="579.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12.5" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">the right are absent, not empty.</text>
+<path d="M1568.0,470.0 L1568.0,650.0" stroke="#6f4747" stroke-width="1.6" stroke-dasharray="2 5" fill="none"/>
+<line x1="110" y1="1146" x2="2180" y2="1146" stroke="#e2dccf" stroke-width="1.2"/>
+<line x1="200" y1="1228.0" x2="1970" y2="1228.0" stroke="#111418" stroke-width="3.4" stroke-opacity="0.85"/>
+<text x="20.0" y="1242.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="40" fill="#17325c" text-anchor="start" font-weight="bold">2030</text>
+<polygon points="325.0,1217.0 336.0,1228.0 325.0,1239.0 314.0,1228.0" fill="#8B5A5A" data-trace="Provider Tax" data-kind="group" data-val="1.9500"/>
+<line x1="325.0" y1="1243.0" x2="325.0" y2="1304.0" stroke="#8B5A5A" stroke-width="1.1" stroke-opacity="0.55" data-trace="Provider Tax" data-kind="group" data-val="1.9500"/>
+<text x="325.0" y="1318.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#8B5A5A" text-anchor="middle" font-weight="bold" data-trace="Provider Tax" data-kind="group" data-val="1.9500">−$1.95</text>
+<text x="325.0" y="1340.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="middle" font-weight="bold" data-trace="Provider Tax" data-kind="group" data-val="1.9500">Provider Tax</text>
+<rect x="731.8" y="1218.3" width="19.4" height="19.4" fill="#5c6169" data-trace="State Admin" data-kind="group" data-val="7.3200"/>
+<line x1="741.5" y1="1243.0" x2="741.5" y2="1304.0" stroke="#5c6169" stroke-width="1.1" stroke-opacity="0.55" data-trace="State Admin" data-kind="group" data-val="7.3200"/>
+<text x="741.5" y="1318.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#5c6169" text-anchor="middle" font-weight="bold" data-trace="State Admin" data-kind="group" data-val="7.3200">−$7.32</text>
+<text x="741.5" y="1340.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#5c6169" text-anchor="middle" font-weight="bold" data-trace="State Admin" data-kind="group" data-val="7.3200">State Admin</text>
+<polygon points="766.0,1217.0 777.0,1228.0 766.0,1239.0 755.0,1228.0" fill="#8B5A5A" data-trace="Eligibility Rules" data-kind="group" data-val="3.4900"/>
+<line x1="766.0" y1="1243.0" x2="766.0" y2="1360.0" stroke="#8B5A5A" stroke-width="1.1" stroke-opacity="0.55" data-trace="Eligibility Rules" data-kind="group" data-val="3.4900"/>
+<text x="766.0" y="1374.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#8B5A5A" text-anchor="middle" font-weight="bold" data-trace="Eligibility Rules" data-kind="group" data-val="3.4900">−$3.49</text>
+<text x="766.0" y="1396.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="middle" font-weight="bold" data-trace="Eligibility Rules" data-kind="group" data-val="3.4900">Eligibility Rules</text>
+<rect x="1170.3" y="1218.3" width="19.4" height="19.4" fill="#5c6169" data-trace="MCO Admin" data-kind="group" data-val="4.5600"/>
+<line x1="1180.0" y1="1243.0" x2="1180.0" y2="1304.0" stroke="#5c6169" stroke-width="1.1" stroke-opacity="0.55" data-trace="MCO Admin" data-kind="group" data-val="4.5600"/>
+<text x="1180.0" y="1318.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#5c6169" text-anchor="middle" font-weight="bold" data-trace="MCO Admin" data-kind="group" data-val="4.5600">−$4.56</text>
+<text x="1180.0" y="1340.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#5c6169" text-anchor="middle" font-weight="bold" data-trace="MCO Admin" data-kind="group" data-val="4.5600">MCO Admin</text>
+<polygon points="1431.0,1217.0 1442.0,1228.0 1431.0,1239.0 1420.0,1228.0" fill="#8B5A5A" data-trace="Payment Caps" data-kind="group" data-val="1.6300"/>
+<line x1="1431.0" y1="1243.0" x2="1431.0" y2="1304.0" stroke="#8B5A5A" stroke-width="1.1" stroke-opacity="0.55" data-trace="Payment Caps" data-kind="group" data-val="1.6300"/>
+<text x="1431.0" y="1318.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#8B5A5A" text-anchor="middle" font-weight="bold" data-trace="Payment Caps" data-kind="group" data-val="1.6300">−$1.63</text>
+<text x="1431.0" y="1340.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" fill="#8B5A5A" text-anchor="middle" font-weight="bold" data-trace="Payment Caps" data-kind="group" data-val="1.6300">Payment Caps</text>
+<circle cx="200" cy="1228.0" r="18.0" fill="#17325c" data-trace="$100 Medicaid" data-kind="anchor" data-val="100.0000"/>
+<text x="200.0" y="1192.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$100.00</text>
+<text x="200.0" y="1268.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Projected under</text>
+<text x="200.0" y="1296.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">prior law</text>
+<circle cx="584" cy="1228.0" r="18.0" fill="#17325c" data-trace="Budgeted to Medicaid" data-kind="anchor" data-val="98.0532"/>
+<text x="584.0" y="1192.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$98.05</text>
+<text x="584.0" y="1268.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Budgeted to Medicaid</text>
+<text x="584.0" y="1296.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#111418" text-anchor="middle" font-weight="bold">1.95% less</text>
+<circle cx="844" cy="1228.0" r="18.0" fill="#17325c" data-trace="Funding Disbursed" data-kind="anchor" data-val="87.2410"/>
+<text x="844.0" y="1192.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$87.24</text>
+<text x="844.0" y="1268.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Funding Disbursed</text>
+<text x="844.0" y="1296.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#111418" text-anchor="middle" font-weight="bold">12.76% less</text>
+<circle cx="1300" cy="1228.0" r="18.0" fill="#17325c" data-trace="Claims Paid" data-kind="anchor" data-val="82.6766"/>
+<text x="1300.0" y="1192.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$82.68</text>
+<text x="1300.0" y="1268.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Claims Paid</text>
+<text x="1300.0" y="1296.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#111418" text-anchor="middle" font-weight="bold">17.32% less</text>
+<circle cx="1970" cy="1228.0" r="18.0" fill="#17325c" data-trace="Health Services" data-kind="anchor" data-val="81.0458"/>
+<text x="1970.0" y="1192.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" fill="#111418" text-anchor="middle" font-weight="bold">$81.05</text>
+<text x="1970.0" y="1268.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Health Services</text>
+<text x="1970.0" y="1296.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="23" fill="#111418" text-anchor="middle" font-weight="bold">Delivered</text>
+<text x="1970.0" y="1324.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" fill="#111418" text-anchor="middle" font-weight="bold">18.95% less</text>
+</g>
+<g id="overlay-hr1">
+<defs><pattern id="hr1hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#6f4747" stroke-width="2.1" stroke-opacity="0.55"/></pattern></defs>
+<line x1="330" y1="766.1" x2="1560" y2="766.1" stroke="#8B5A5A" stroke-width="1.1" stroke-dasharray="7 5" stroke-opacity="0.7"/>
+<text x="336.0" y="758.1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#8B5A5A" text-anchor="start" font-weight="bold">HR-1 TAKES THESE OUT</text>
+<path d="M300.0,536.4 C325.0,536.4 325.0,784.1 350.0,784.1 L350.0,792.6 C325.0,792.6 325.0,544.9 300.0,544.9 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Provider tax limits" data-kind="provision" data-val="1.9468"/>
+<path d="M300.0,536.4 C325.0,536.4 325.0,784.1 350.0,784.1 L350.0,792.6 C325.0,792.6 325.0,544.9 300.0,544.9 Z" fill="url(#hr1hatch)"/>
+<rect x="350.0" y="784.1" width="6.0" height="8.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="210.3" y="795.6" width="135.7" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="342.0" y="807.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Provider tax limits</text>
+<rect x="198.0" y="811.6" width="148.0" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="342.0" y="821.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">federal match never drawn</text>
+<rect x="297.7" y="823.6" width="48.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="342.0" y="835.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$1.95</text>
+<path d="M688.0,751.4 C766.0,751.4 766.0,1058.7 844.0,1058.7 L844.0,1062.1 C766.0,1062.1 766.0,754.8 688.0,754.8 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="DC provisions not separately scored" data-kind="provision" data-val="0.0000"/>
+<path d="M688.0,751.4 C766.0,751.4 766.0,1058.7 844.0,1058.7 L844.0,1062.1 C766.0,1062.1 766.0,754.8 688.0,754.8 Z" fill="url(#hr1hatch)"/>
+<rect x="844.0" y="1058.7" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="798.4" y="1065.7" width="41.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="836.0" y="1077.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Other</text>
+<rect x="434.4" y="1081.7" width="405.6" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="836.0" y="1091.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">home equity cap, immigrant eligibility (enjoined), retroactive coverage</text>
+<rect x="791.7" y="1093.7" width="48.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="836.0" y="1105.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$0.00</text>
+<path d="M722.0,738.4 C891.0,738.4 891.0,1005.7 1060.0,1005.7 L1060.0,1018.7 C891.0,1018.7 891.0,751.4 722.0,751.4 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Work reporting" data-kind="provision" data-val="2.9527"/>
+<path d="M722.0,738.4 C891.0,738.4 891.0,1005.7 1060.0,1005.7 L1060.0,1018.7 C891.0,1018.7 891.0,751.4 722.0,751.4 Z" fill="url(#hr1hatch)"/>
+<rect x="1060.0" y="1005.7" width="6.0" height="13.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1056.0" y="1021.7" width="102.1" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1060.0" y="1033.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Work reporting</text>
+<rect x="1056.0" y="1037.7" width="282.4" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1060.0" y="1047.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not enroll; would have reached disbursements</text>
+<rect x="1056.0" y="1049.7" width="48.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1060.0" y="1061.7" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$2.95</text>
+<path d="M756.0,736.1 C1028.0,736.1 1028.0,951.3 1300.0,951.3 L1300.0,954.7 C1028.0,954.7 1028.0,739.5 756.0,739.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Six-month renewals" data-kind="provision" data-val="0.5402"/>
+<path d="M756.0,736.1 C1028.0,736.1 1028.0,951.3 1300.0,951.3 L1300.0,954.7 C1028.0,954.7 1028.0,739.5 756.0,739.5 Z" fill="url(#hr1hatch)"/>
+<rect x="1300.0" y="951.3" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1167.0" y="958.3" width="129.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1292.0" y="970.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Six-month renewals</text>
+<rect x="985.6" y="974.3" width="310.4" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1292.0" y="984.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not survive renewal; would have reached the payer</text>
+<rect x="1247.7" y="986.3" width="48.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1292.0" y="998.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$0.54</text>
+<path d="M790.0,736.1 C1130.0,736.1 1130.0,907.9 1560.0,907.9 L1560.0,911.3 C1130.0,911.3 1130.0,739.5 790.0,739.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Blocked Medicaid enrollment rule" data-kind="provision" data-val="0.0000"/>
+<path d="M790.0,736.1 C1130.0,736.1 1130.0,907.9 1560.0,907.9 L1560.0,911.3 C1130.0,911.3 1130.0,739.5 790.0,739.5 Z" fill="url(#hr1hatch)"/>
+<rect x="1560.0" y="907.9" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1556.0" y="914.9" width="236.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1560.0" y="926.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Medicaid enrollment rule suspended</text>
+<rect x="1556.0" y="930.9" width="243.2" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1560.0" y="940.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">2024 rule; would have reached a paid claim</text>
+<rect x="1556.0" y="942.9" width="48.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1560.0" y="954.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="start" font-weight="bold">−$0.00</text>
+<path d="M824.0,736.1 C1164.0,736.1 1164.0,864.5 2180.0,864.5 L2180.0,867.9 C1164.0,867.9 1164.0,739.5 824.0,739.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Blocked senior enrollment rule" data-kind="provision" data-val="0.0000"/>
+<path d="M824.0,736.1 C1164.0,736.1 1164.0,864.5 2180.0,864.5 L2180.0,867.9 C1164.0,867.9 1164.0,739.5 824.0,739.5 Z" fill="url(#hr1hatch)"/>
+<rect x="2180.0" y="864.5" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1959.7" y="871.5" width="216.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="2172.0" y="883.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Medicare Savings rule suspended</text>
+<rect x="1826.4" y="887.5" width="349.6" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="2172.0" y="897.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">2023 rule; dual eligibles pay these Medicare costs themselves</text>
+<rect x="2127.7" y="899.5" width="48.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="2172.0" y="911.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$0.00</text>
+<path d="M1302.0,372.3 C1431.0,372.3 1431.0,784.1 1560.0,784.1 L1560.0,791.2 C1431.0,791.2 1431.0,379.5 1302.0,379.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Directed payment caps" data-kind="provision" data-val="1.6307"/>
+<path d="M1302.0,372.3 C1431.0,372.3 1431.0,784.1 1560.0,784.1 L1560.0,791.2 C1431.0,791.2 1431.0,379.5 1302.0,379.5 Z" fill="url(#hr1hatch)"/>
+<rect x="1560.0" y="784.1" width="6.0" height="7.2" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1406.9" y="764.2" width="149.1" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1552.0" y="776.2" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Directed payment caps</text>
+<rect x="1223.2" y="780.2" width="332.8" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1552.0" y="790.2" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not top up hospital, nursing facility, academic rates</text>
+<rect x="1507.7" y="792.2" width="48.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1552.0" y="804.2" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$1.63</text>
+<rect x="1596.0" y="677.0" width="219.1" height="19.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="690.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#8B5A5A" text-anchor="start" font-weight="bold">NOT SHOWN, and not estimated:</text>
+<rect x="1596.0" y="704.5" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="716.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• MODELLED. DC's FY2024 hundred grown to FY2030 at the prior-law rate implied by the</text>
+<rect x="1596.0" y="722.0" width="525.4" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="734.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">national model's own counterfactual — basis_national's FY2024 hundred against</text>
+<rect x="1596.0" y="739.5" width="545.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="751.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">tobe2030's FY2030 prior-law total, CBO January 2025 baseline vintage. Derived in</text>
+<rect x="1596.0" y="757.0" width="552.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="769.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">code, never typed. Corroborated by, not derived from, DC's own observed growth of</text>
+<rect x="1596.0" y="774.5" width="559.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="786.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">5.49% on Exhibit 16 FY2022-24. SUPERSESSION HUNTED AND NOT FOUND, 2026-10-29: both</text>
+<rect x="1596.0" y="792.0" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="804.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">DHCF agency chapters, the FY2026 budget testimony, the FY2026 budget slides and the</text>
+<rect x="1596.0" y="809.5" width="545.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="821.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">June 2025 MCAC budget presentation all stop at the budget year, and the District</text>
+<rect x="1596.0" y="827.0" width="545.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="839.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">publishes its four-year plan at District and fund level rather than as an agency</text>
+<rect x="1596.0" y="844.5" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="856.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">Medicaid trajectory. Not proved absent — the Executive Summary volume of the FY2026</text>
+<rect x="1596.0" y="862.0" width="505.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="874.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">Proposed budget is unchecked. The national-implied rate stands until then.</text>
+<rect x="1596.0" y="883.5" width="431.4" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="895.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Public-company earnings and dual-plan retention: no DC figure</text>
+<rect x="1596.0" y="905.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="917.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• The payer lanes are the FY2024 composition rescaled proportionally onto the FY2030</text>
+<rect x="1596.0" y="922.5" width="559.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="934.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">disbursement, which the HR-1 levers have already reduced. Proportional because the</text>
+<rect x="1596.0" y="940.0" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="952.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">stated assumption is that the shape of the dollar does not move, only its level; no</text>
+<rect x="1596.0" y="957.5" width="552.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="969.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">lane is claimed to absorb more of a lever than another. A lever that falls on one</text>
+<rect x="1596.0" y="975.0" width="465.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="987.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">lane in particular would break that, and would be drawn differently.</text>
+<rect x="1596.0" y="996.5" width="552.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1008.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Four of the seven HR-1 tributaries are now derived on District inputs and three</text>
+<rect x="1596.0" y="1014.0" width="545.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1026.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">remain absent. Nothing on this panel is allocated from CBO's national score: the</text>
+<rect x="1596.0" y="1031.5" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1043.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">denominators are DHCF's, the dollars are DHCF's, and where a rate is modelled it is</text>
+<rect x="1596.0" y="1049.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1061.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">declared as one. The three absent levers are absent for three different reasons, and</text>
+<rect x="1596.0" y="1066.5" width="471.7" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1078.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">each records what would be needed to derive it from District sources.</text>
+<rect x="1596.0" y="1088.0" width="512.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1100.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Section 71102, the blocked eligibility-and-enrolment rule, is left absent</text>
+<rect x="1596.0" y="1105.5" width="559.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1117.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">deliberately. Its effect falls on process rather than on a nameable group, and the</text>
+<rect x="1596.0" y="1123.0" width="552.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1135.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">people affected are those who would have enrolled or stayed enrolled under easier</text>
+<rect x="1596.0" y="1140.5" width="444.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1152.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">mechanics — a counterfactual, not a row in any District report. A</text>
+<rect x="1596.0" y="1158.0" width="552.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1170.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">provision-by-provision mapping of our own would be a modelled step with no source</text>
+<rect x="1596.0" y="1175.5" width="75.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1187.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">behind it.</text>
+<rect x="1596.0" y="1197.0" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1209.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• The residual lane is renamed for the District. Nationally it is a remainder defined</text>
+<rect x="1596.0" y="1214.5" width="559.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1226.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">by what CBO scored, which cannot be re-derived from District sources because it is</text>
+<rect x="1596.0" y="1232.0" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1244.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">not a thing. The DC lane carries three named District provisions instead — the LTSS</text>
+<rect x="1596.0" y="1249.5" width="525.4" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1261.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">home equity cap, the legal immigrant eligibility restriction, and retroactive</text>
+<rect x="1596.0" y="1267.0" width="552.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1279.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">coverage — and is NOT comparable lane-to-lane with the national residual. None is</text>
+<rect x="1596.0" y="1284.5" width="518.7" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1296.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">sized, so the lane's amount stays absent. The immigrant provision is under a</text>
+<rect x="1596.0" y="1302.0" width="350.7" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1314.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">preliminary injunction and its status is contested.</text>
+<rect x="1596.0" y="1323.5" width="545.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1335.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• The two enrolment levers rest on one modelled step: the share of the expansion</text>
+<rect x="1596.0" y="1341.0" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1353.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">group that does not survive them. It is published as a band with a declared default</text>
+<rect x="1596.0" y="1358.5" width="538.9" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1370.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">inside it, and the default is the rate implied by CBO's own score rather than a</text>
+<rect x="1596.0" y="1376.0" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1388.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">figure of our choosing. THE BAND'S ENDS ARE NOT LIKE-FOR-LIKE WITH ITS DEFAULT: the</text>
+<rect x="1596.0" y="1393.5" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1405.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">default is a share of expansion-group spending, which includes people the requirement</text>
+<rect x="1596.0" y="1411.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1423.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">exempts, while the Arkansas and New Hampshire outcomes are coverage loss among those</text>
+<rect x="1596.0" y="1428.5" width="545.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1440.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">subject to the requirement. Until the District's exempt share is established the</text>
+<rect x="1596.0" y="1446.0" width="196.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1458.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">upper end is an upper bound.</text>
+<rect x="1596.0" y="1467.5" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1479.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Provider tax limits and directed payment caps are coupled in the District and are</text>
+<rect x="1596.0" y="1485.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1497.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">not coupled in the national model. DC's directed payments are financed by a hospital</text>
+<rect x="1596.0" y="1502.5" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1514.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">provider tax, the tax freeze returns the programme to its FY2025 level in FY2027, and</text>
+<rect x="1596.0" y="1520.0" width="538.9" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1532.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">the phase-down then runs on that reverted base from FY2029. The coupling is now</text>
+<rect x="1596.0" y="1537.5" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1549.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">MODELLED IN SEQUENCE. The two lanes do not double-count because they are not the same</text>
+<rect x="1596.0" y="1555.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1567.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">dollar: the tax lever is non-federal FINANCING that will not be collected and leaves</text>
+<rect x="1596.0" y="1572.5" width="559.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1584.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">at state government, the directed payment lever is a PAYMENT that will not be made</text>
+<rect x="1596.0" y="1590.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1602.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">and leaves at claims. Two stages of one event, drawn where the money actually stops.</text>
+<rect x="1596.0" y="1611.5" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1623.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• The provider tax lever is published at the NON-FEDERAL level. In the District the</text>
+<rect x="1596.0" y="1629.0" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1641.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">dedicated tax is the non-federal share and it draws federal match, so a dollar of tax</text>
+<rect x="1596.0" y="1646.5" width="512.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1658.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">never collected costs more than a dollar of Medicaid. The multiplier is not</text>
+<rect x="1596.0" y="1664.0" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1676.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">established and is declared absent rather than guessed. This is a divergence from the</text>
+<rect x="1596.0" y="1681.5" width="310.4" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1693.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">national treatment, not an application of it.</text>
+<rect x="1596.0" y="1703.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1715.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• Section 71115's rate taper does not reach the District at all. The expansion-state</text>
+<rect x="1596.0" y="1720.5" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1732.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">safe harbour steps down to 3.5 percent by FY2032 and DC's hospital tax is 3 percent</text>
+<rect x="1596.0" y="1738.0" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1750.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">of net patient revenue, below every step including the floor. The District's entire</text>
+<rect x="1596.0" y="1755.5" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1767.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">exposure is the freeze on taxes not imposed as of 4 July 2025. A jurisdiction can be</text>
+<rect x="1596.0" y="1773.0" width="552.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1785.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">fully exposed to the section while sitting under every threshold in its schedule.</text>
+<rect x="1596.0" y="1794.5" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1806.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• The first year of the directed payment phase-down is FY2029, resolved on the rule.</text>
+<rect x="1596.0" y="1812.0" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1824.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">CMS-2449-P states that the phase-down begins with the first rating period starting on</text>
+<rect x="1596.0" y="1829.5" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1841.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">or after 1 January 2028, and DC's rating period is the federal fiscal year, confirmed</text>
+<rect x="1596.0" y="1847.0" width="545.6" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1859.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">on two documents. A period beginning 1 October 2027 starts too early. DHCF's own</text>
+<rect x="1596.0" y="1864.5" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1876.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">budget materials say FY2028, which would make FY2030 the third step and the reduction</text>
+<rect x="1596.0" y="1882.0" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1894.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">$145.56M; the disagreement is recorded rather than averaged, and the model does not</text>
+<rect x="1596.0" y="1899.5" width="115.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1911.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">move to meet it.</text>
+<rect x="1596.0" y="1921.0" width="525.4" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1933.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• The phase-down does not terminate by FY2030. KFF's analysis of the approved</text>
+<rect x="1596.0" y="1938.5" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1950.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">preprints puts 100 percent of the District's hospital directed payment above the new</text>
+<rect x="1596.0" y="1956.0" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1968.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">limit, because the base rate alone already exceeds the Medicare-based ceiling, so the</text>
+<rect x="1596.0" y="1973.5" width="518.7" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="1985.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">programme runs down over ten steps and FY2030 at two is partial. Stating the</text>
+<rect x="1596.0" y="1991.0" width="532.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2003.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">termination YEAR on District evidence rather than on KFF's conversion needs DC</text>
+<rect x="1596.0" y="2008.5" width="565.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2020.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">hospitals' commercial price as a percentage of Medicare, which is not yet acquired.</text>
+<rect x="1596.0" y="2030.0" width="559.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2042.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• No DC service allocation is published and none has been estimated, so the claims</text>
+<rect x="1596.0" y="2047.5" width="229.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2059.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">fan is unallocated, as in FY2024.</text>
+<rect x="1596.0" y="2069.0" width="559.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2081.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">• The prior-law FY2030 flow holds the FY2024 composition and grows only the level.</text>
+<rect x="1596.0" y="2086.5" width="579.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2098.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">Every trunk and lane figure on this panel is that assumption, not a projection: no DC</text>
+<rect x="1596.0" y="2104.0" width="572.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2116.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">source projects them. It ignores known shape changes — enrolment growth concentrated</text>
+<rect x="1596.0" y="2121.5" width="559.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2133.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">among people aged 65+, dual-eligible capitation rising faster than the rest of the</text>
+<rect x="1596.0" y="2139.0" width="404.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2151.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f6f6f" text-anchor="start" font-weight="None">book, and the District's own FY2026 eligibility reductions.</text>
+<rect x="1596.0" y="2171.5" width="537.8" height="17.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2182.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#6f6f6f" text-anchor="start" font-weight="None" font-style="italic">Absent data is left absent. Filling a gap with a share would produce a modelled figure</text>
+<rect x="1596.0" y="2188.0" width="229.8" height="17.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1600.0" y="2199.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#6f6f6f" text-anchor="start" font-weight="None" font-style="italic">wearing a measured figure's clothes.</text>
+</g>
+</svg>

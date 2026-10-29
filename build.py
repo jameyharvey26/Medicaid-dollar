@@ -92,12 +92,101 @@ def build_dc():
     # knowledge stops. When DC's service allocation is acquired, this reverts
     # to a full panel with no code change — the predicate reads the matrix.
     import ledger_dc_2024 as DC
-    L = DC.build(legacy_mix=False)
+    # The assumed national mix, JW 2026-10-29. D-109 withdrew it on
+    # 27 September; it is back as a declared assumption for the demo, with the
+    # DC data stipulated as not proofread. It is NOT legacy_mix: that path
+    # also folds retention into plan administration and zeroes margin, which
+    # would throw away the CY2024 administration and margin work.
+    L = DC.build(legacy_mix=False, assumed_mix=True)
     LD.gate(L, "DC FY2024 as-is ledger")
     cfg = compose(L, views.V_DC)
     gate(cfg, "DC FY2024 as-is")
     base, over = sankey.render(cfg)
     emit("dc_2024", base, over)
+
+
+DRAFTS = "drafts"
+
+
+def emit_draft(tag, base, over):
+    """Render a draft panel outside the blessed register."""
+    import resvg_py
+    os.makedirs(DRAFTS, exist_ok=True)
+    doc = wrap('<g id="baseline">\n' + "\n".join(base) + "\n</g>\n"
+               '<g id="overlay-hr1">\n' + "\n".join(over) + "\n</g>")
+    svg_p = os.path.join(DRAFTS, tag + ".svg")
+    open(svg_p, "w").write(doc)
+    png = resvg_py.svg_to_bytes(svg_string=doc, width=2600)
+    open(os.path.join(DRAFTS, tag + ".png"), "wb").write(bytes(png))
+    print(f"  draft  {svg_p} and {tag}.png  (not blessed, not compared)")
+
+
+def build_dc_2030():
+    """The DC FY2030 to-be panel. DRAFT.
+
+    Added 2026-10-29. The view has existed since the DC 2030 ledger was stood
+    up; nothing built it, because with one lever of seven derived there was
+    nothing to look at. With four derived there is.
+
+    It does NOT go in the render register yet. A panel carrying three violet
+    placeholders is for looking at, not for blessing, and placeholder.py
+    refuses to let it ship. Blessing it would pin an unfinished picture as the
+    thing every later render is compared against.
+    """
+    import ledger_dc_2024 as DC
+    import ledger_dc_2030 as DC30
+    L = DC30.ledger()
+
+    # THE CONSERVING GATE CANNOT PASS AND SHOULD NOT. Three of the seven HR-1
+    # lanes carry no figure, so disbursed cannot be struck and the lanes
+    # cannot be summed against it. That is the panel's whole point: it says
+    # what it does not know. Forcing LD.gate green would mean giving the three
+    # absent lanes a value, which is the substitution this edition exists to
+    # refuse.
+    #
+    # So the faults are PINNED to their exact extent, per JW's rule of
+    # 27 October: the check still runs, and anything beyond this list — or
+    # anything that disappears from it — fails the build. Acquiring one of the
+    # three levers will trip this deliberately, and that is the signal to
+    # re-pin and, when the last one lands, to go back to LD.gate.
+    EXPECTED = {
+        "disbursed cannot be struck",
+        "payer lanes sum to disbursed",
+        "claims matrix: row mco has no margin",
+        "claims matrix: row dual has no margin",
+        "claims matrix: row ffs has no margin",
+        "claims cannot be summed",
+    }
+    seen = LD.check(L)
+    unpinned = [x for x in seen
+                if not any(x.startswith(e) for e in EXPECTED)]
+    if unpinned:
+        raise LD.LedgerError(
+            "DC FY2030 to-be ledger has faults beyond the pinned set:\n  "
+            + "\n  ".join(unpinned))
+    missing = [e for e in EXPECTED
+               if not any(x.startswith(e) for x in seen)]
+    if missing:
+        raise LD.LedgerError(
+            "DC FY2030 to-be: a pinned fault has gone, which is good news "
+            "and still fails the build until the pin is updated:\n  "
+            + "\n  ".join(missing))
+
+    # NO PRIOR. The national to-be panel passes its FY2024 ledger so the
+    # drawing can show where each node sat before. DC cannot: its FY2024
+    # service allocation is withdrawn (legacy_mix=False), so there are no
+    # prior node margins to compare against. Passing the as-is ledger anyway
+    # fails on the first node it reads, which is the right behaviour — the
+    # comparison does not exist and is not drawn.
+    cfg = compose(L, views.V_DC_2030)
+    gate(cfg, "DC FY2030 to-be")
+    base, over = sankey.render(cfg)
+    # NOT through emit(). emit() copies into reference_renders, which is the
+    # blessed register, and a draft panel there reads as a NEW panel to
+    # renderproof and as an ORPHAN to crossings — which is exactly what it
+    # did the first time this ran. A draft is for looking at. It goes to
+    # drafts/ and nothing compares it to anything.
+    emit_draft("dc_2030_draft", base, over)
 
 
 def build_2030(variant="mixed"):
