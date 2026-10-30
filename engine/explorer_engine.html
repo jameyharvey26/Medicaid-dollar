@@ -34,8 +34,12 @@
     background:var(--navy);color:#f8f8f8;border:1px solid #1a1a1a;
     letter-spacing:.01em;
   }
-  .pill.on{background:var(--orange);color:var(--navy);border-width:3px}
   .pill.ph,.pill:disabled{background:var(--grey);color:#f8f8f8;cursor:default;border-width:1px}
+  /* a lit pill stays lit even when it cannot be clicked: on the two paper
+     figures the picture IS national, so National reads as selected while the
+     rest of the row is greyed. This rule must follow :disabled to win. */
+  .pill.on,.pill.on:disabled{background:var(--orange);color:var(--navy);
+    border-width:3px;cursor:default}
   .pills{display:flex;gap:12px;flex-wrap:wrap}
 
   /* ---- top strip ---- */
@@ -112,6 +116,31 @@
   .sl.ranged .slval{color:var(--navy)}
   .sl.moved .slval{color:#7a5200}
   .slnote{font-size:11.5px;color:var(--muted);line-height:1.35}
+  /* what a lane actually contains, where its name says only what it is not */
+  .sllist{margin:5px 0 0;padding:0 0 0 13px;list-style:none;font-size:11.5px;
+          line-height:1.42;color:var(--muted)}
+  .sllist li{position:relative;margin-bottom:2px}
+  .sllist li::before{content:"\00b7";position:absolute;left:-10px;color:var(--vio);font-weight:700}
+  .sllist li b{color:#1a1a1a;font-weight:600}
+  .sllist li.why{margin-top:5px;color:var(--vio)}
+  .sllist li.why::before{content:""}
+  /* the published value, marked on the slider's own scale, so a dragged
+     handle always has the figure it left behind in view */
+  .tick{position:relative;height:17px}
+  .tick span{position:absolute;top:0;transform:translateX(-50%);padding-top:7px;
+    font-family:Jost,system-ui,sans-serif;color:var(--muted);
+    font-variant-numeric:tabular-nums;white-space:nowrap;text-align:center}
+  .tick span b{font-size:11px;font-weight:600;display:block}
+  .tick span i{font-size:9.5px;font-style:normal;display:block;color:#8c99a4;
+    letter-spacing:.01em;margin-top:-1px}
+  .tick span::before{content:"";position:absolute;left:50%;top:0;width:1px;height:5px;
+    background:#9aa7b2;transform:translateX(-50%)}
+  .sl.ranged .tick span::before{background:var(--orange);width:2px;height:6px}
+  .tick span.at-start{transform:translateX(0);text-align:left}
+  .tick span.at-start::before{left:1px}
+  .tick span.at-end{transform:translateX(-100%);text-align:right}
+  .tick span.at-end::before{left:auto;right:1px}
+  .sl.ranged .tick{height:30px}
   .sl.ranged .slnote{color:#1F5A7A}
   .sl.struck .slname,.sl.struck .slval{text-decoration:line-through;color:var(--grey)}
   .tabnote{font-size:12px;color:var(--muted);line-height:1.45;
@@ -122,6 +151,23 @@
   /* ---- context panel ---- */
   .ctx{border:3px solid #1a1a1a;border-radius:2px;background:var(--panelgrey);
        padding:14px 16px;display:flex;flex-direction:column;gap:11px}
+  /* display:flex beats the browser's own [hidden] rule, so say it here */
+  .ctx[hidden]{display:none}
+  /* the three lenses, inside the panel they act on: one row, each pair held
+     together by a hairline so the radio grouping is visible without labels */
+  .lens{display:flex;align-items:center;justify-content:space-between;
+        flex-wrap:nowrap;white-space:nowrap;
+        border-top:1px solid #c9c9c9;padding-top:10px;margin-top:1px}
+  .lens[hidden]{display:none}
+  .pair{display:flex;gap:3px}
+  .pair + .pair{border-left:1px solid #c3c3c3;padding-left:9px;margin-left:5px}
+  .minipill{
+    font-family:Jost,system-ui,sans-serif;font-size:10.5px;font-weight:600;
+    letter-spacing:.01em;min-height:26px;padding:0 8px;border-radius:999px;
+    cursor:pointer;background:var(--navy);color:#f8f8f8;border:1px solid #1a1a1a;
+  }
+  .minipill.on{background:var(--orange);color:var(--navy);border-width:2px}
+  .minipill:disabled{background:var(--grey);color:#f0f0f0;cursor:default}
   .ctxkick{font-family:Jost,system-ui,sans-serif;font-size:11px;letter-spacing:.14em;
            color:var(--navy);font-weight:600}
   .ctxname{font-family:Jost,system-ui,sans-serif;font-size:19px;font-weight:600;
@@ -257,7 +303,23 @@
         <div class="rackfoot"><button type="button" class="resetbtn" id="reset">RESET</button></div>
       </div>
 
-      <div class="ctx" id="ctx"></div>
+      <div class="ctx" id="ctx">
+        <div id="ctxbody"></div>
+        <div class="lens" id="lens">
+          <div class="pair" data-g="sign">
+            <button type="button" class="minipill on" data-v="pos">Positive</button>
+            <button type="button" class="minipill" data-v="neg">Negative</button>
+          </div>
+          <div class="pair" data-g="unit">
+            <button type="button" class="minipill on" data-v="usd">Dollars</button>
+            <button type="button" class="minipill" data-v="pct">Percent</button>
+          </div>
+          <div class="pair" data-g="frame">
+            <button type="button" class="minipill on" data-v="eco">Ecosystem</button>
+            <button type="button" class="minipill" data-v="self">Itself</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -504,6 +566,8 @@ function placeLabels(labels, opts){
 // horizontally may share a height, and that is what keeps the fan shallow.
 const FAN = () => GEOM.fan;
 
+// the right edge the label solver will not cross; draw() sets it per panel
+let CANVAS_W = GEOM.canvas.w;
 function _textW(s, size, pad){ return s.length*size*0.56 + (pad===undefined?4:pad)*2; }
 function _blockH(it){ return it.compact ? FAN().label_h_tight : FAN().label_h; }
 function _labelW(it){
@@ -546,7 +610,7 @@ function _place(items, top, gap, obstacles){
     for (const cand of (it.anchor?[it.anchor]:['start','end'])){
       const [l0,l1]=_labelSpan(it,cand);
       if (l0 < GEOM.cols.FEDERAL[0]) continue;
-      if (l1 > GEOM.canvas.w - 20) continue;
+      if (l1 > CANVAS_W - 20) continue;
       let y=top, ceiling=null;
       for (const pz of placed){
         if (_ov(it.xb,it.xt,pz.xb,pz.xt)){
@@ -717,8 +781,11 @@ function draw(M, zoom){
   // drop-offs" -- a ribbon left a contiguous edge and arrived at an offset one.
   const C0=GEOM.cols, ys=GEOM.ys, bw=GEOM.bw, cY=GEOM.centre_y, SX=GEOM.source_x;
   const xFED=C0.FEDERAL, xSG=C0.STATE_GOVT, xSA=C0.STATE_AGENCY, xDI=C0.DISBURSE,
-        xPA=C0.PAYER, xCL=C0.CLAIMS, xPR=C0.PROVIDERS, xBE=C0.BENEFICIARY;
-  const W=GEOM.canvas.w;
+        xPA=C0.PAYER, xCL=C0.CLAIMS, xPR=C0.PROVIDERS;
+  // the beneficiary column is cropped to the provider column's width
+  const xBE=[C0.BENEFICIARY[0], C0.BENEFICIARY[0] + (C0.PROVIDERS[1]-C0.PROVIDERS[0])];
+  const W=xBE[1];
+  CANVAS_W = W;
   const PROV_W = 140;       // the paper's bar width, read off its own render
   // The furthest right the engine actually DRAWS anything. The beneficiaries
   // column has a heading and nothing in it until the pies are ported, and a
@@ -801,8 +868,8 @@ function draw(M, zoom){
   // ---- sources. the two bars, at the paper's own tops
   const fed = M.P.sources.federal, state = M.P.sources.state;
   const fedTop = GEOM.source_tops.federal, stTop = GEOM.source_tops.state;
-  g+=`<rect x="${SX}" y="${fedTop}" width="${bw}" height="${h(fed)}" fill="${C.federal}"/>`;
-  g+=`<rect x="${SX}" y="${stTop}" width="${bw}" height="${h(state)}" fill="${C.local}"/>`;
+  g+=`<rect data-pick="src:federal" x="${SX}" y="${fedTop}" width="${bw}" height="${h(fed)}" fill="${C.federal}"/>`;
+  g+=`<rect data-pick="src:state" x="${SX}" y="${stTop}" width="${bw}" height="${h(state)}" fill="${C.local}"/>`;
   t+=halo2(SX, fedTop-9, `Federal  ${money(fed)}`, 15, C.federal, 600);
   t+=halo2(SX, stTop+h(state)+19, `State  ${money(state)}`, 15, '#5f7f8c', 600);
 
@@ -816,7 +883,12 @@ function draw(M, zoom){
   const T0 = cY-ARRIVE*ys/2, TB = cY+ARRIVE*ys/2;
   const fedLane=[T0, T0+(fed-fb-fo)*ys];
   const stLane =[T0+(fed-fo)*ys, TB];
-  const fm = (SX+bw+xSG[0])/2, fmy=(fedTop+fedLane[0])/2;
+  const _fbp = M.peels.find(p => p.charged==='FEDERAL' && p.kind==='hr1');
+  const _fbx = _fbp ? (GEOM.outflows[_fbp.label]||{}).src_x : null;
+  const fm = (fb > 0 && _fbx != null)
+           ? Math.min(xSG[0]-14, Math.max(SX+bw+24, _fbx))
+           : (SX+bw+xSG[0])/2;
+  const fmy=(fedTop+fedLane[0])/2;
   g+=band(SX+bw, fm, fedTop+fo*ys, fmy, (fed-fo)*ys, (fed-fo)*ys, C.federal, .8);
   g+=band(fm, xSG[0], fmy, fedLane[0], (fed-fo)*ys, (fed-fb-fo)*ys, C.federal, .8);
   g+=band(SX+bw, xSG[0], stTop, stLane[0], h(state), h(state), C.local, .8);
@@ -830,7 +902,7 @@ function draw(M, zoom){
   t+=txt((xSG[0]+xSA[0])/2, H0+(fed-fb-fo)*ys+h(state)/2+5, `State ${(100*state/hundred).toFixed(1)}%`, 15,'#1A2733','middle',600);
 
   // ---- the state agency node: the hundred, one contiguous block
-  g+=`<rect x="${xSA[0]}" y="${H0}" width="${bw}" height="${h(hundred)}" fill="${C.agency}"/>`;
+  g+=`<rect data-pick="stn:Budgeted to Medicaid" x="${xSA[0]}" y="${H0}" width="${bw}" height="${h(hundred)}" fill="${C.agency}"/>`;
   t+=txt(xSA[0]+bw+((xDI[0]-xSA[0])/2), H0+h(hundred)/2-8,'100 Dollars of',16,'#FFFFFF','middle',600);
   // The jurisdiction belongs in the label. It said "Medicaid Spending" on
   // every panel, so a screenshot of the District's hundred was
@@ -859,7 +931,8 @@ function draw(M, zoom){
   // export, and a reach with no slot in it rides the slot of the column the
   // peel is CHARGED at -- the rule the export declares, not one guessed here.
   const termX = p => {
-    const S=GEOM.term_slot;
+    // the beneficiary slot moves in with the cropped column
+    const S=Object.assign({}, GEOM.term_slot, {BENEFICIARY: W});
     const clamp = x => Math.min(x, DRAWN_TO);
     const d=GEOM.outflows[p.label]||{};
     // A RETURN goes back where it came from, which is a statement about the
@@ -974,13 +1047,15 @@ function draw(M, zoom){
 
   // CLAIMS bites the TOP of the care block; FEDERAL leaves the middle of its
   // lane. Both are single-bite columns here, so no stepping to do.
-  let _cy=EDGEY.CLAIMS;
-  for (const f of (byCol.CLAIMS||[])){ f.from=_cy; _cy+=f.h; }
-  for (const f of (byCol.FEDERAL||[])) f.from=EDGEY.FEDERAL;
+  let _cy = disbTop + h(disb);
+  for (const f of (byCol.CLAIMS||[])){ _cy -= f.h; f.from = _cy; }
+  // the underside of the flow where the taper starts, which is now the point
+  // the bite leaves -- so the ribbon and the river share an edge
+  for (const f of (byCol.FEDERAL||[])) f.from = fmy + (fed-fo)*ys - f.h;
 
   for (const [xa,xb2,ty,th] of trunkSteps)
     g+=band(xa, xb2, ty, ty, th, th, C.agency, .8);
-  g+=`<rect x="${xDI[0]}" y="${disbTop}" width="${bw}" height="${h(disb)}" fill="${C.agency}"/>`;
+  g+=`<rect data-pick="stn:Funding Disbursed" x="${xDI[0]}" y="${disbTop}" width="${bw}" height="${h(disb)}" fill="${C.agency}"/>`;
   t+=halo2(xDI[0], disbTop-10, `Disbursed ${money(disb)}`, 15, 'currentColor', 600);
 
   // ---- the ordinary outflows, solved by the SAME row solver as the HR-1 fan
@@ -1067,7 +1142,7 @@ function draw(M, zoom){
         const mid=endY+f.h/2;
         const home=GEOM.cols[(d.term_col||f.p.charged)] || GEOM.cols.FEDERAL;
         const backX=home[0]+76;
-        g+=band(f.x0, k, f.from, f.from-12, f.h, f.h, col, .72);
+        g+=`<g data-pick="peel:${f.p.label}">`+band(f.x0, k, f.from, f.from-12, f.h, f.h, col, .72)+`</g>`;
         const m2=f.from-12+f.h/2;
         g+=`<path d="M${k},${m2} C${k+86},${m2} ${k+86},${mid} ${backX+10},${mid}" `+
            `fill="none" stroke="${col}" stroke-width="${Math.max(f.h,2.4).toFixed(1)}" `+
@@ -1080,7 +1155,7 @@ function draw(M, zoom){
         // name and amount on the line above the band end, the clause under it.
         // The block used to float 34 units clear with a dot on the end, which
         // read as a separate object from the ribbon it belonged to.
-        g+=band(f.x0, f.tx, f.from, endY, f.h, f.h, col, .85);
+        g+=`<g data-pick="peel:${f.p.label}">`+band(f.x0, f.tx, f.from, endY, f.h, f.h, col, .85)+`</g>`;
         const lx=f.tx-9;
         t+=txt(lx, endY-23, `${it.label}  ${money(f.p.v)}`, 13.5, col,'end',600);
         if (it.sub) t+=txt(lx, endY-8, it.sub, 11.5,'var(--muted)','end',400,true);
@@ -1096,7 +1171,7 @@ function draw(M, zoom){
   for (const l of M.lanes){
     const col=l.kind==='ffs'?C.ffs:(l.kind==='dual'?C.dual:C.mco);
     const bh=hb(l.cap, l.label);
-    g+=`<rect x="${xDI[0]}" y="${ny}" width="${bw}" height="${bh}" fill="${col}"/>`;
+    g+=`<rect data-pick="lane:${l.label}" x="${xDI[0]}" y="${ny}" width="${bw}" height="${bh}" fill="${col}"/>`;
     t+=halo2(xDI[0]+bw+10, ny+Math.max(15,bh/2+4), `${l.label} ${money(l.cap)}`, 14);
     c3.push({l,y:ny,bh,col}); ny+=bh;
   }
@@ -1139,7 +1214,7 @@ function draw(M, zoom){
     }
     // the node the fork leaves from, so the division has a visible origin in
     // the same idiom as the disbursements node
-    g+=`<rect x="${FORKX}" y="${c.y}" width="${bw}" height="${c.bh}" fill="${c.col}"/>`;
+    g+=`<rect data-pick="lane:${c.l.label}" x="${FORKX}" y="${c.y}" width="${bw}" height="${c.bh}" fill="${c.col}"/>`;
     let off=0;
     ps.forEach((q,i)=>{
       // THE PLAN'S OWN COLOUR, held for it in palette.py by its national
@@ -1496,7 +1571,7 @@ function draw(M, zoom){
     const endY=fanY[it.name];
     const drop=dropFor(f.x0, f.from, f.tx, endY,
                        blockers.filter(b=>Math.abs(b.x-f.tx)>2));
-    g+=band(f.x0, f.tx, f.from, endY, f.h, f.h, isFraud?col:'url(#hr1)', .92, drop);
+    g+=`<g data-pick="peel:${f.p.label}">`+band(f.x0, f.tx, f.from, endY, f.h, f.h, isFraud?col:'url(#hr1)', .92, drop)+`</g>`;
     g+=`<circle cx="${f.tx+4}" cy="${endY+f.h/2}" r="3.5" fill="${col}"/>`;
     const nm=it.label;
     // The solver chooses a side and the renderer must draw on it. These were
@@ -1530,11 +1605,21 @@ function draw(M, zoom){
   if (fraudF){
     const f=fraudF, col='#C0392B';
     const tx=xPR[0]+PROV_W, endY=PROV_BOTTOM+26;
-    g+=band(f.x0, tx, f.from, endY, f.h, f.h, col, .92);
+    // the lower envelope of the service fan, sampled across the span the
+    // ribbon has to cross: stay below this and it crosses nothing
+    const env=[];
+    for (let i=1;i<=5;i++){ const q=i/5;
+      env.push({x: f.x0 + (xPR[0]-f.x0)*q, y: f.from + (PROV_BOTTOM-f.from)*q}); }
+    const fdrop = dropFor(f.x0, f.from, tx, endY, env);
+    g+=`<g data-pick="peel:${f.p.label}">`+band(f.x0, tx, f.from, endY, f.h, f.h, col, .92, fdrop)+`</g>`;
     g+=`<circle cx="${tx+4}" cy="${endY+f.h/2}" r="3.5" fill="${col}"/>`;
-    t+=txt(tx+14, endY+f.h+13, f.p.label, 14, col,'start',600);
-    t+=txt(tx+14, endY+f.h+28, PAPERCLAUSE[f.p.label]||'', 12,'var(--muted)','start',400,true);
-    t+=txt(tx+14, endY+f.h+44, `\u2212${money(f.p.v)}`, 13.5, col,'start',600);
+    const _fc = PAPERCLAUSE[f.p.label]||'';
+    const _fw = 9 + 7*Math.max(f.p.label.length, _fc.length, 8);
+    const _end = (tx + 14 + _fw) > (W - 20);
+    const _lx = _end ? tx - 14 : tx + 14, _ta = _end ? 'end' : 'start';
+    t+=txt(_lx, endY+f.h+13, f.p.label, 14, col,_ta,600);
+    t+=txt(_lx, endY+f.h+28, _fc, 12,'var(--muted)',_ta,400,true);
+    t+=txt(_lx, endY+f.h+44, `\u2212${money(f.p.v)}`, 13.5, col,_ta,600);
   }
 
   const fanBottom = Math.max(
@@ -1608,6 +1693,19 @@ let view = 'eco';
 let tab  = 'admin';
 let leversOn = true;              // DC FY2030: the borrowed lanes, drawn
 let pick = null;                  // {t,n}
+// The two paper figures are national, whatever the pills were set to when the
+// reader arrived at them. Everything that reasons about what is on screen --
+// the lit pill, the question box, the retrieval -- asks this, not `place`.
+const effPlace = () => (view === 'eco' ? place : 'US');
+
+// THREE LENSES ON THE CONTEXT PANEL.
+//   sign   what it holds, or what it loses between FY2024 and FY2030
+//   unit   dollars of the hundred, or the proportion
+//   frame  its share of the ecosystem's hundred, or its own hundred rebased
+// Everything in this model is already per $100, so dollars and percent carry
+// the same digits except in negative-ecosystem, where one is points of the
+// hundred and the other is the proportion of itself. Declared, not hidden.
+let sign = 'pos', unit = 'usd', frame = 'eco';
 const OV  = {};                   // panelKey -> {peel label: value}
 const MIX = {};                   // panelKey -> {service name: factor}
 const RET = {};                   // panelKey -> {lane key: dollars kept by the payer}
@@ -1617,6 +1715,26 @@ const mixOf = k => (MIX[k] || (MIX[k] = {}));
 const retOf = k => (RET[k] || (RET[k] = {}));
 
 // the two District lanes that carry a national number under a District label
+// what a selected thing is called on screen, where the key is not the name
+const PICKNAME = {'src:federal':'Federal share', 'src:state':'State share'};
+
+// WHAT IS ACTUALLY IN THAT LANE. The name says only what it is not. These are
+// the three provisions the District lane carries, with the dates they bite --
+// taken from DC_NAMED_PROVISIONS in tobe2030_dc.py. None of the three is
+// sized, which is exactly why the figure drawn is the national residual's
+// rate: a different quantity wearing this lane's label.
+//
+// Typed here because engine_data_export does not carry the dict across. It
+// should: these are declarations, and a declaration that lives in two places
+// drifts.
+const LANE_CONTENTS = {
+  'DC provisions not separately scored': [
+    ['Home equity cap for LTSS', 'from 1 January 2028'],
+    ['Legal immigrant eligibility', 'from 1 October 2026 \u2014 under preliminary '
+     + 'injunction, status contested'],
+    ['Retroactive eligibility', 'from 1 January 2027']
+  ]
+};
 const BORROWED = ['Blocked Medicaid enrollment rule',
                   'DC provisions not separately scored'];
 const borrowedHere = () => panelKey() === 'DC|2030';
@@ -1683,18 +1801,41 @@ function modelFor(key, ovm, mixm, retm){
 // SLIDERS
 //
 // Ranged, where a source published a band. Excursion, where nobody did.
-const NAT_WR = (ORIG['US|2030'].peels.find(p=>p.label==='Work reporting')||{}).v;
 function spec(key, p){
-  const s = {label:p.label, v:p.v, kind:p.kind};
-  if (p.label === 'Work reporting' && NAT_WR){
-    // CBO's national band, carried onto this panel on the same basis as its
-    // central figure -- derived from the ratio, never typed.
-    const r = p.v / NAT_WR;
-    s.ranged = true; s.lo = 2.90*r; s.hi = 5.40*r;
-    s.note = (key.startsWith('US') ? 'CBO range $2.90 – $5.40.'
-             : 'CBO’s national band $2.90 – $5.40, carried onto this panel '
-             + 'on the same basis as its central figure — '
-             + money(s.lo) + ' – ' + money(s.hi) + '.');
+  const s = {label:p.label, v:p.v, kind:p.kind, charged:p.charged};
+  if (p.label === 'Work reporting'){
+    // ONE BAND, BOTH PANELS (JW, 29 Oct, Q1: publish a range with a declared
+    // default inside it, and let both become the slider).
+    //
+    // The band is in RATES, not dollars. Nationally the default IS the rate:
+    // CBO's lever dollars over new-adult-group spending comes back to CBO's
+    // lever dollars exactly, so $4.11 is 18.1% of that spending by
+    // construction. On the District the same rate is carried onto the
+    // District's own expansion spending. The ends are the only two times a
+    // work requirement has run at scale.
+    //
+    // per100 is linear in the rate, so each end is the drawn default scaled
+    // by the rate ratio -- no dollar figure is typed, and if a ledger moves
+    // its figure the band moves with it. The three rates ARE typed, and the
+    // implied one is derived in tobe2030_dc.py: engine_data_export should
+    // carry the band across rather than leaving it declared in two places.
+    const IMPLIED = 0.181112, ARK = 0.25, NH = 0.40;
+    const at = r => p.v * r / IMPLIED;
+    const dc = key.startsWith('DC');
+    s.ranged = true; s.lo = p.v; s.hi = at(NH);
+    s.marks = [{v: p.v,     top: money(p.v),     bot: 'CBO implied'},
+               {v: at(ARK), top: money(at(ARK)), bot: 'Arkansas \u201918'},
+               {v: at(NH),  top: money(at(NH)),  bot: 'N.H. \u201919'}];
+    s.note = (dc
+        ? 'CBO\u2019s implied rate, ' + (IMPLIED*100).toFixed(1) + '% of expansion-group '
+          + 'spending, carried onto the District\u2019s own expansion spending. '
+        : money(p.v) + ' IS ' + (IMPLIED*100).toFixed(1) + '% of new-adult-group '
+          + 'spending \u2014 CBO\u2019s own score, read as a rate. ')
+      + 'It sits BELOW both times this has been done: Arkansas 2018 lost about a '
+      + 'quarter of those subject, New Hampshire 2019 about 40 percent. Those ends '
+      + 'are coverage loss among those SUBJECT to the requirement, a smaller group '
+      + 'than expansion spending \u2014 not like-for-like until the exempt share is '
+      + 'established. The band runs up from the default, not down.';
   } else if (p.label === 'Blocked senior enrollment rule' && key.startsWith('DC')){
     // The District runs the QMB group only, at 300% FPL against a federal
     // floor of 100%, so the figure drawn is an upper bound and the band runs
@@ -1755,6 +1896,8 @@ function valueOf(M, key, p){
   if (p.t === 'svc'){ const v = M.svc[p.n]; return v === undefined ? null : v; }
   if (p.t === 'peel'){ const q = M.peels.find(x=>x.label===p.n); return q ? q.v : null; }
   if (p.t === 'stn'){ const r = stationsOf(M, key).find(s=>s[0]===p.n); return r ? r[1] : null; }
+  if (p.t === 'src'){ const s = M.P.sources || {};
+                      return s[p.n] === undefined ? null : s[p.n]; }
   return null;
 }
 function picksFor(M, key){
@@ -1895,11 +2038,25 @@ function render(fast){
   }
 
   // pills and rack go grey wherever they cannot act
-  document.querySelectorAll('#place button, #year button').forEach(b => {
-    if (b.disabled && !b.dataset.k && !b.dataset.y) return;
+  // On the two paper figures the picture IS national, so the National pill
+  // reads as selected rather than greyed with the rest. The year pills go
+  // grey either way: Figure 1 carries both years and Figure 6 carries one
+  // against the other, so neither pill alone would be true.
+  const ep = effPlace();
+  document.querySelectorAll('#place button').forEach(b => {
+    const mine = !!b.dataset.k && b.dataset.k === ep;
+    b.classList.toggle('on', mine);
+    b.classList.toggle('ph', !b.dataset.k || (!live && !mine));
+    b.disabled = !b.dataset.k || !live;
+  });
+  document.querySelectorAll('#year button').forEach(b => {
+    b.classList.toggle('on', live && b.dataset.y === year);
     b.classList.toggle('ph', !live);
     b.disabled = !live;
   });
+  // nothing on the plate to select, so the panel has nothing to hold
+  const ctxEl = document.querySelector('.ctx');
+  if (ctxEl) ctxEl.hidden = !live;
   document.querySelectorAll('#tabs button').forEach(b => { b.disabled = !live; });
 
   const strip = document.getElementById('strip');
@@ -1982,16 +2139,39 @@ function tagPicks(root, M){
 // retention leaves at the payer column. Ordering the rack by it means the
 // list down the side reads in the same order as the picture across the top,
 // so a finger on the plate and a finger on the rack travel together.
-function leaveX(label){
+function leaveX(label, charged){
   const d = (GEOM.outflows||{})[label];
   if (d){
     if (typeof d.src_x === 'number') return d.src_x;
     const col = (GEOM.cols||{})[d.src];
     if (col) return col[0];
   }
+  // A lane the geometry has no entry for -- the District's own provisions,
+  // for one -- still leaves from a known column. Put it at that column's far
+  // edge, so it sorts after the outflows whose exact x is recorded, rather
+  // than falling off the end of the list.
+  const col = (GEOM.cols||{})[charged];
+  if (col) return col[1] - 1;
   return 9999;
 }
 const PAYER_X = ((GEOM.cols||{}).PAYER || [1060])[0];
+
+// WHERE THE FIGURE WAS PUBLISHED, marked on the slider's own scale. The
+// repeated sentence under every grey slider said the same thing eleven times
+// down one panel; the tab says it once and each row carries its own number.
+function tickHTML(lo, hi, marks){
+  if (!Array.isArray(marks)) marks = [{v: marks, top: money(marks)}];
+  const pos = v => (hi > lo) ? Math.min(1, Math.max(0, (v - lo) / (hi - lo))) : 0.5;
+  // a label centred on a handle at either end hangs off the panel, so the
+  // outermost marks align inward instead
+  return '<div class="tick">' + marks.map(m => {
+    const f = pos(m.v);
+    const edge = f < 0.14 ? ' at-start' : f > 0.86 ? ' at-end' : '';
+    return '<span class="' + (m.cls||'') + edge + '" style="left:calc(11px + (100% - 22px) * '
+      + f.toFixed(4) + ')"><b>' + (m.top||money(m.v)) + '</b>'
+      + (m.bot ? '<i>' + m.bot + '</i>' : '') + '</span>';
+  }).join('') + '</div>';
+}
 
 function rack(){
   const key = panelKey(), o = ORIG[key], body = document.getElementById('rackbody');
@@ -1999,6 +2179,7 @@ function rack(){
 
   if (tab === 'mix'){
     const M = modelFor(key, ovOf(key), mixOf(key), retOf(key));
+    const M0 = modelFor(key, null, null, null);
     const mx = mixOf(key);
     const names = Object.keys(M.svc);
     let h = names.map(n => {
@@ -2008,9 +2189,11 @@ function rack(){
         + '<div class="slrow"><span class="slname">' + disp + '</span>'
         + '<span class="slval">' + money(M.svc[n]) + '</span></div>'
         + '<input type="range" min="0.5" max="1.6" step="0.01" value="' + f + '">'
+        + tickHTML(0.5, 1.6, [{v:1, top: money(M0.svc[n])}])
         + '</div>';
     }).join('');
-    h += '<p class="tabnote">Move one service and the other five absorb the difference '
+    h += '<p class="tabnote">The tick marks what each service was published at. '
+       + 'Move one service and the other five absorb the difference '
        + 'in proportion, so the total reaching services never changes — only its shape. '
        + 'That is a declared rule, not a measurement. '
        + (key.startsWith('DC')
@@ -2056,9 +2239,7 @@ function rack(){
         + '<span class="slval">' + money(now) + '</span></div>'
         + '<input type="range" min="0" max="' + Math.max(pub*2, 0.4).toFixed(3)
         + '" step="0.01" value="' + cur + '">'
-        + '<div class="slnote">Administration and margin inside the lane. '
-        + 'Published at ' + money(pub) + '. No source publishes a range for it \u2014 '
-        + 'anything else is your figure. Lowering it sends the difference on to claims.</div></div>'};
+        + tickHTML(0, Math.max(pub*2, 0.4), pub) + '</div>'};
     }).filter(Boolean);
   }
   if (!ss.length && !retRows.length){
@@ -2079,8 +2260,16 @@ function rack(){
       + '<span class="slval">' + money(cur) + '</span></div>'
       + '<input type="range" min="' + s.lo.toFixed(3) + '" max="' + s.hi.toFixed(3)
       + '" step="0.01" value="' + cur + '">'
-      + '<div class="slnote">' + s.note + '</div></div>';
-    return {x: leaveX(s.label), html: html};
+      + tickHTML(s.lo, s.hi, s.marks || s.v)
+      + (LANE_CONTENTS[s.label]
+         ? '<ul class="sllist">'
+           + LANE_CONTENTS[s.label].map(([n2,w2]) =>
+               '<li><b>' + n2 + '</b> \u2014 ' + w2 + '</li>').join('')
+           + '<li class="why">None of the three is sized. The figure drawn is the '
+           + 'national residual\u2019s rate, which is a different quantity.</li></ul>'
+         : '')
+      + '</div>';
+    return {x: leaveX(s.label, s.charged), html: html};
   });
   // every tab reads in the order the money leaves the picture, so a finger on
   // the plate and a finger on the rack travel together. On HR-1 that puts
@@ -2089,8 +2278,11 @@ function rack(){
   const rows = peelRows.concat(tab === 'admin' ? retRows : [])
                        .sort((a,b) => a.x - b.x);
   body.innerHTML = rows.map(r => r.html).join('')
-  + '<p class="tabnote">Orange carries a published band and names its source. '
-  + 'Grey does not: it moves freely, and the picture says so when it has.</p>';
+  + '<p class="tabnote">The tick under each slider marks what the figure was published at. '
+  + 'Orange carries a published band and names its source. Grey does not: anything but the '
+  + 'published figure is yours, not a source\u2019s, and the picture says so when one has moved.'
+  + (tab === 'admin'
+     ? ' Lowering what a payer keeps sends the difference on to claims.' : '') + '</p>';
   body.querySelectorAll('[data-ret] input').forEach(inp => {
     inp.addEventListener('input', e => {
       const row = e.target.closest('[data-ret]'), v = parseFloat(e.target.value);
@@ -2113,42 +2305,86 @@ function rack(){
 // ---------------------------------------------------------------------------
 // THE CONTEXT PANEL -- three numbers, one organisation
 function drawCtx(M, key){
-  const el = document.getElementById('ctx');
+  const el = document.getElementById('ctxbody');
   const pl = key.split('|')[0];
   const k24 = pl + '|2024', k30 = pl + '|2030';
-  const M24 = modelFor(k24, null, null);
-  const M30 = modelFor(k30, null, null);
+  // Each year's column answers to that year's dials. The third column was the
+  // only one wired to the controls, and the panel opens on FY2024 -- so every
+  // slider on the default screen moved the picture and left the panel sitting
+  // there. A reader editing FY2024 is editing the FY2024 column.
+  const M24  = modelFor(k24, ovOf(k24), mixOf(k24), retOf(k24));
+  const M24p = modelFor(k24, null, null, null);
+  const M30  = modelFor(k30, null, null, null);
   const MYOU = modelFor(k30, ovOf(k30), mixOf(k30), retOf(k30));
   const base = M || M30 || M24;
   if (!base){ el.innerHTML = '<div class="ctxkick">NOTHING TO SHOW</div>'; return; }
-
-  if (!pick || !valueOf(base, key, pick)){
-    const def = picksFor(base, key).find(p => p.t === 'svc') || picksFor(base, key)[0];
-    pick = pick && valueOf(base, key, pick) !== null ? pick : {t:'stn', n:'Health Services Delivered'};
-    if (valueOf(base, key, pick) === null && def) pick = def;
-  }
+  if (!pick || valueOf(base, key, pick) === null)
+    pick = {t:'stn', n:'Health Services Delivered'};
 
   const v24 = valueOf(M24, k24, pick);
   const v30 = valueOf(M30, k30, pick);
   const vyou = valueOf(MYOU, k30, pick);
-  const cell = (v, cap, cls) => '<div class="' + (cls||'') + '"><b>'
-    + (v === null ? '—' : money(v)) + '</b><span>' + cap + '</span></div>';
+
+  // Rebasing needs a FY2024 figure to rebase onto, and a loss needs something
+  // to have been lost from. A lane the law creates has neither.
+  const rebasable = (v24 !== null && v24 !== undefined && Math.abs(v24) > 0.0005);
+  // the plate writes a loss as \u2212$2.88, not $-2.88; the panel matches it
+  const fmt = x => (x < -0.000001 ? '\u2212' : '')
+    + (unit === 'pct' ? Math.abs(x).toFixed(2) + '%' : money(Math.abs(x)));
+  function cellText(v, first){
+    if (v === null || v === undefined) return '\u2014';
+    if (frame === 'self'){
+      if (!rebasable) return '\u2014';
+      const r = v / v24 * 100;
+      return sign === 'neg' ? (first ? '\u2014' : fmt(r - 100)) : fmt(r);
+    }
+    if (sign === 'neg'){
+      if (!rebasable) return '\u2014';
+      if (first) return '\u2014';
+      return unit === 'pct' ? fmt((v - v24) / v24 * 100) : fmt(v - v24);
+    }
+    return fmt(v);
+  }
+
+  const moved24 = (valueOf(M24p, k24, pick) !== null && v24 !== null
+                   && Math.abs(valueOf(M24p, k24, pick) - v24) > 0.0005);
+  const caps = sign === 'neg'
+    ? [(moved24 ? 'FY2024<br>as you set it' : 'FY2024<br>baseline'),
+       'lost by<br>FY2030', 'lost as<br>you set it']
+    : [(moved24 ? 'FY2024<br>as you set it' : 'FY2024<br>actual'),
+       'FY2030<br>as scored', 'FY2030<br>as you set it'];
+  const cell = (v, capt, first, cls) => '<div class="' + (cls||'') + '"><b>'
+    + cellText(v, first) + '</b><span>' + capt + '</span></div>';
+
+  const kick = frame === 'self'
+    ? (sign === 'neg' ? 'WHAT IT LOSES OF ITS OWN $100' : 'ITS OWN HUNDRED DOLLARS')
+    : (sign === 'neg' ? 'WHAT IT LOSES, PER $100' : 'WHAT IT HOLDS, PER $100');
+  const name = PICKNAME[pick.t + ':' + pick.n] || ((base.P.disp||{})[pick.n]) || pick.n;
+  const where = pl === 'DC' ? 'District of Columbia' : 'National';
+  const sub = frame === 'self'
+    ? where + ' \u00b7 its own FY2024 figure rebased to one hundred dollars'
+    : where + ' \u00b7 share of one hundred Medicaid dollars, not a dollar total';
 
   const note = pick.t === 'plan' ? plannote(pl, pick.n) : '';
+  const cantRebase = !rebasable && (frame === 'self' || sign === 'neg')
+    ? (frame === 'self'
+       ? 'This has no FY2024 figure to rebase onto \u2014 the law creates it, so it '
+         + 'has no hundred of its own to start from.'
+       : 'This has no FY2024 figure to have lost anything from \u2014 the law creates it.')
+    : '';
 
   el.innerHTML =
-      '<div class="ctxkick">WHAT IT HOLDS, PER $100</div>'
-    + '<div class="ctxname">' + (((base.P.disp||{})[pick.n]) || pick.n) + '</div>'
-    + '<div class="ctxsub">' + (pl === 'DC' ? 'District of Columbia' : 'National')
-    + ' · share of one hundred Medicaid dollars, not a dollar total</div>'
+      '<div class="ctxkick">' + kick + '</div>'
+    + '<div class="ctxname">' + name + '</div>'
+    + '<div class="ctxsub">' + sub + '</div>'
     + '<div class="three">'
-    + cell(v24,  'FY2024<br>actual')
-    + cell(v30,  'FY2030<br>as scored')
-    + cell(vyou, 'FY2030<br>as you set it', 'you')
+    + cell(v24,  caps[0], true)
+    + cell(v30,  caps[1], false)
+    + cell(vyou, caps[2], false, 'you')
     + '</div>'
+    + (cantRebase ? '<div class="ctxfoot">' + cantRebase + '</div>' : '')
     + (note ? '<div class="ctxfoot">' + note + '</div>' : '');
 }
-
 
 // ---------------------------------------------------------------------------
 // DIAGNOSTICS -- the d key. Yours, not the room's.
@@ -2214,6 +2450,19 @@ document.querySelectorAll('#tabs button[data-t]').forEach(b =>
     document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x===b));
     render();
   }));
+// A lens is not a change of view: it reframes the same selection, so the
+// question box keeps whatever it has been told.
+document.querySelectorAll('#lens .pair').forEach(pair => {
+  pair.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => {
+      const g = pair.dataset.g, v = b.dataset.v;
+      if (g === 'sign') sign = v; else if (g === 'unit') unit = v; else frame = v;
+      pair.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+      render();
+    });
+  });
+});
+
 document.getElementById('reset').addEventListener('click', () => {
   OV[panelKey()] = {}; MIX[panelKey()] = {}; RET[panelKey()] = {};
   const k30 = place + '|2030'; OV[k30] = {}; MIX[k30] = {}; RET[k30] = {};
@@ -2271,7 +2520,7 @@ function expandQuery(q){
   const nums = (q.match(/\d+\.\d+/g) || []);
   const extra = [];
   if (nums.length){
-    const key = panelKey();
+    const key = askKey();
     const M = ORIG[key] ? modelFor(key, ovOf(key), mixOf(key), retOf(key)) : null;
     if (M){
       const named = [];
@@ -2309,7 +2558,7 @@ function retrieve(q, n, phrases){
     phrases.forEach(ph => { if (head.indexOf(ph)>=0) s += 34;
                             else if (hay.indexOf(ph)>=0) s += 20; });
     const isDC = DCDOC.test(c.d);
-    s += (place==='DC') ? (isDC ? 12 : -6) : (isDC ? -26 : 5);
+    s += (effPlace()==='DC') ? (isDC ? 12 : -6) : (isDC ? -26 : 5);
     return {s, c};
   }).filter(x => x.s > 0).sort((a,b) => b.s - a.s);
   const out = [], perDoc = {}, perHead = {};
@@ -2328,82 +2577,141 @@ function retrieve(q, n, phrases){
 }
 
 // ---------------------------------------------------------------------------
-// WHAT IS DRAWN. This is the primary context, not an afterthought. It is
-// written the way the panel reads, phase by phase, with the reach clause the
-// paper prints under each outflow, so an answer about a lane can say what that
-// lane actually is.
+// WHAT IS DRAWN. The primary context: the panel the reader is pointing at,
+// phase by phase, with the reach clause the paper prints under each outflow.
+//
+// On the two paper figures the picture is NATIONAL whatever the pills said on
+// the way in, and it carries its own years -- Figure 1 both of them, Figure 6
+// one against the other. The box is told that in terms, and told not to
+// discuss the District, because the District is not in the picture.
 const WHERE = {FEDERAL:'before the money reaches the state agency',
                STATE_GOVT:'at the state government',
                STATE_AGENCY:'at the state agency',
                CLAIMS:'at the claim',
                PROVIDERS:'at the provider'};
 const cap1 = s => s.charAt(0).toUpperCase() + s.slice(1);
+const askKey = () => view === 'eco' ? panelKey()
+                   : (view === 'exec' ? 'US|2030' : 'US|2024');
+
+function describe(key, M, head){
+  const L = [], yr = key.split('|')[1];
+  L.push('\n' + head);
+  const st = stationsOf(M, key);
+  L.push('  The spine, phase by phase:');
+  st.forEach((s,i) => L.push('    ' + s[0] + ': ' + money(s[1])
+    + (i ? '  (' + (100-s[1]).toFixed(2) + ' below one hundred)' : '')));
+  L.push('  Where the money is paid through:');
+  M.lanes.forEach(l => {
+    L.push('    ' + l.label + ': ' + money(l.cap)
+      + ' of which ' + money(l.care) + ' reached a claim, '
+      + money(l.cap-l.care) + ' kept by the payer.');
+    (l.plans||[]).forEach(q => { if (typeof q.cap === 'number')
+      L.push('      - ' + q.label + ': ' + money(q.cap)
+        + (typeof q.care === 'number' ? ', ' + money(q.care) + ' to claims' : '')
+        + (q.adm && q.adm.absent ? ' [administration/margin split ABSENT]' : '')); });
+  });
+  L.push('  What the claims bought:');
+  Object.entries(M.svc).sort((a,b)=>b[1]-a[1]).forEach(([n,v]) =>
+    L.push('    ' + ((M.P.disp&&M.P.disp[n])||n) + ': ' + money(v)));
+  if (M.absent > 0.02) L.push('    Service allocation ABSENT: ' + money(M.absent) + '.');
+  const hr1 = M.peels.filter(p => p.kind === 'hr1');
+  if (hr1.length){
+    L.push('  What the law takes out:');
+    hr1.forEach(p => L.push('    ' + p.label + ': ' + money(p.v) + '.'
+      + (PAPERCLAUSE[p.label] ? ' ' + cap1(PAPERCLAUSE[p.label]) + '.' : '')
+      + ' Taken ' + WHERE[p.charged] + '.'));
+  }
+  const rest = M.peels.filter(p => p.kind !== 'hr1');
+  if (rest.length){
+    L.push('  What leaves for other reasons:');
+    rest.forEach(p => L.push('    ' + p.label + ': ' + money(p.v) + '.'
+      + (PAPERCLAUSE[p.label] ? ' ' + cap1(PAPERCLAUSE[p.label]) + '.' : '')
+      + (p.kind === 'return' ? ' This leaves the ecosystem.' : '')));
+  }
+  return L.join('\n');
+}
+
 function liveState(){
+  const L = [];
+  L.push('Every figure is dollars out of one hundred dollars of Medicaid spending, '
+       + 'struck at the state agency where money has been budgeted and cost-allocated. '
+       + 'Not dollar totals.');
+
+  if (view !== 'eco'){
+    const isLine = view === 'line';
+    L.push(isLine
+      ? '\nTHE PICTURE IS FIGURE 1 FROM THE PAPER, "the same hundred dollars, twice": '
+        + 'the NATIONAL flow in fiscal 2024 above and fiscal 2030 under P.L. 119-21 below, '
+        + 'exactly as published. It is a fixed image and the controls do not move it.'
+      : '\nTHE PICTURE IS FIGURE 6 FROM THE PAPER, "where the money stops": the NATIONAL '
+        + 'fiscal 2030 flow under P.L. 119-21, drawn against the fiscal 2024 line, exactly '
+        + 'as published. It is a fixed image and the controls do not move it.');
+    L.push('ANSWER ONLY ABOUT THE NATIONAL FIGURES. The District of Columbia is not in '
+         + 'this picture, and no District figure belongs in an answer here. If the question '
+         + 'is about the District, say the District is not in this view and that the '
+         + 'Ecosystem view carries it.');
+    if (isLine){
+      L.push(describe('US|2024', modelFor('US|2024', null, null, null),
+             'THE UPPER LINE \u2014 national, fiscal 2024, as it happened:'));
+      L.push(describe('US|2030', modelFor('US|2030', null, null, null),
+             'THE LOWER LINE \u2014 national, fiscal 2030 under P.L. 119-21:'));
+    } else {
+      L.push(describe('US|2030', modelFor('US|2030', null, null, null),
+             'NATIONAL, FISCAL 2030 under P.L. 119-21 \u2014 what the figure draws:'));
+      const M24 = modelFor('US|2024', null, null, null);
+      L.push('\nTHE FY2024 REFERENCE LINE the figure is drawn against: '
+           + stationsOf(M24, 'US|2024').map(s => s[0] + ' ' + money(s[1])).join('; ') + '.');
+    }
+    return L.join('\n');
+  }
+
   const key = panelKey(), o = ORIG[key];
   const pl = key.split('|')[0], yr = key.split('|')[1];
-  const where = pl === 'DC' ? 'the District of Columbia' : 'the United States';
   if (!o) return 'Nothing is drawn: there is no panel for this combination.';
   const M = modelFor(key, ovOf(key), mixOf(key), retOf(key));
-  const L = [];
-
-  L.push('The panel on screen is ' + where + ', fiscal year ' + yr
+  L.unshift('The panel on screen is '
+    + (pl === 'DC' ? 'the District of Columbia' : 'the United States')
+    + ', fiscal year ' + yr
     + (yr === '2030' ? ', projected under P.L. 119-21 (HR-1).' : ', as it happened.'));
-  L.push('Every figure is dollars out of one hundred dollars of Medicaid spending, struck '
-       + 'at the state agency where money has been budgeted and cost-allocated. Not dollar totals.');
-  L.push('The view is: ' + (VIEWS[view] || view) + '.');
 
   if (pick){
-    const M24 = modelFor(pl+'|2024', null, null), M30 = modelFor(pl+'|2030', null, null);
+    L.push('\nThe panel is set to show ' + (sign === 'neg' ? 'what is LOST' : 'what is HELD')
+      + ', in ' + (unit === 'pct' ? 'proportions' : 'dollars of the hundred')
+      + ', framed ' + (frame === 'self'
+          ? 'against the selected thing\u2019s OWN FY2024 figure rebased to one hundred'
+          : 'as a share of the ecosystem\u2019s hundred') + '.');
+    const M24 = modelFor(pl+'|2024', null, null, null);
+    const M30 = modelFor(pl+'|2030', null, null, null);
     const MY  = modelFor(pl+'|2030', ovOf(pl+'|2030'), mixOf(pl+'|2030'), retOf(pl+'|2030'));
-    const f = m => { const v = valueOf(m, pl+'|'+(m===M24?'2024':'2030'), pick);
-                     return v===null ? 'not in this panel' : money(v); };
-    L.push('\nTHE USER HAS SELECTED: ' + pick.n + '.');
-    L.push('  FY2024 actual: ' + f(M24)
-         + ' | FY2030 as scored: ' + f(M30)
-         + ' | FY2030 with the dials as they now stand: ' + f(MY) + '.');
+    const f = (m, k2) => { const v = valueOf(m, k2, pick);
+                           return v === null ? 'not in this panel' : money(v); };
+    L.push('\nTHE USER HAS SELECTED: '
+         + (PICKNAME[pick.t + ':' + pick.n] || pick.n) + '.');
+    L.push('  FY2024 actual: ' + f(M24, pl+'|2024')
+         + ' | FY2030 as scored: ' + f(M30, pl+'|2030')
+         + ' | FY2030 with the dials as they now stand: ' + f(MY, pl+'|2030') + '.');
     if (pick.t === 'plan'){
       const n2 = plannote(pl, pick.n);
       if (n2) L.push('  Recorded about this plan: ' + n2);
     }
   }
 
-  const st = stationsOf(M, key);
-  L.push('\nTHE SPINE, phase by phase:');
-  st.forEach((s,i) => L.push('  ' + s[0] + ': ' + money(s[1])
-    + (i ? '  (' + ((100-s[1])/100*100).toFixed(2) + '% below one hundred)' : '')));
+  L.push(describe(key, M, 'WHAT IS DRAWN:'));
 
-  L.push('\nWHAT THE MONEY IS PAID THROUGH:');
-  M.lanes.forEach(l => {
-    L.push('  ' + l.label + ': ' + money(l.cap)
-      + ' of which ' + money(l.care) + ' reached a claim, ' + money(l.cap-l.care) + ' kept by the payer.');
-    (l.plans||[]).forEach(q => { if (typeof q.cap === 'number')
-      L.push('    - ' + q.label + ': ' + money(q.cap)
-        + (typeof q.care === 'number' ? ', ' + money(q.care) + ' to claims' : '')
-        + (q.adm && q.adm.absent ? ' [administration/margin split ABSENT]' : '')); });
-  });
-
-  L.push('\nWHAT THE CLAIMS BOUGHT:');
-  Object.entries(M.svc).sort((a,b)=>b[1]-a[1]).forEach(([n,v]) =>
-    L.push('  ' + ((M.P.disp&&M.P.disp[n])||n) + ': ' + money(v)));
-  if (M.absent > 0.02)
-    L.push('  Service allocation ABSENT: ' + money(M.absent) + '.');
-  if (M.P.mix_assumed && pl === 'DC')
-    L.push('  The service split is the national shape applied to District dollars. '
-         + 'The District publishes no managed-care split by service.');
-
-  const hr1 = M.peels.filter(p => p.kind === 'hr1');
-  if (hr1.length){
-    L.push('\nWHAT THE LAW TAKES OUT (these are what HR-1 removes):');
-    hr1.forEach(p => L.push('  ' + p.label + ': ' + money(p.v) + '.'
-      + (PAPERCLAUSE[p.label] ? ' ' + cap1(PAPERCLAUSE[p.label]) + '.' : '')
-      + ' Taken ' + WHERE[p.charged] + '.'));
-  }
-  const rest = M.peels.filter(p => p.kind !== 'hr1');
-  if (rest.length){
-    L.push('\nWHAT LEAVES FOR OTHER REASONS:');
-    rest.forEach(p => L.push('  ' + p.label + ': ' + money(p.v) + '.'
-      + (PAPERCLAUSE[p.label] ? ' ' + cap1(PAPERCLAUSE[p.label]) + '.' : '')
-      + (p.kind === 'return' ? ' This leaves the ecosystem.' : '')));
+  // WHAT THE CONTROL RACK SHOWS. The sliders carry no prose any more -- only a
+  // tick and a tag -- so the reader asking "what is Arkansas" is reading a
+  // two-word label and expecting this box to know the rest.
+  const ss = (typeof slidersFor === 'function') ? slidersFor(key) : [];
+  if (ss.length){
+    L.push('\nTHE CONTROL RACK is on the ' + tab.toUpperCase() + ' tab. What it offers:');
+    ss.forEach(s => L.push('  ' + s.label + ': published at ' + money(s.v)
+      + (s.ranged
+         ? '. Band ' + money(s.lo) + ' to ' + money(s.hi)
+           + (s.marks ? ', marked at ' + s.marks.map(m =>
+               (m.top||'') + ' = ' + (m.bot||'')).join('; ') : '')
+           + (s.note ? '. ' + s.note : '')
+         : '. No published range: anything but the published figure is the '
+           + 'user\u2019s own.')));
   }
 
   const hm = handMoved(key), ov = ovOf(key);
@@ -2412,13 +2720,18 @@ function liveState(){
     L.push('\nTHE USER HAS MOVED THESE OFF THEIR PUBLISHED VALUES:');
     chg.forEach(p => L.push('  ' + p.label + ': published ' + money(p.v)
       + ', now showing ' + money(ov[p.label])
-      + (hm.indexOf(p.label)>=0 ? ' — no source published a range for this one, so the '
-         + 'figure on screen is the user’s' : ' — within the published range')));
-  } else {
+      + (hm.indexOf(p.label)>=0 ? ' \u2014 no source published a range for this one, so the '
+         + 'figure on screen is the user\u2019s' : ' \u2014 within the published range')));
+  } else if (!handMoved(key).length){
     L.push('\nNothing has been moved: these are the published figures.');
   }
+  if (handMoved(key).length)
+    L.push('Moved by hand, with no published range behind them: ' + handMoved(key).join(', ') + '.');
+  if (M.P.mix_assumed && pl === 'DC')
+    L.push('The service split is the national shape applied to District dollars. '
+         + 'The District publishes no managed-care split by service.');
   if (borrowedHere())
-    L.push('\nTwo lanes here carry national numbers under District labels: the blocked '
+    L.push('Two lanes here carry national numbers under District labels: the blocked '
          + 'Medicaid enrolment rule, and District provisions not separately scored. '
          + 'No District figure exists for either.'
          + (leversOn ? '' : ' The user has just struck them through on the plate.'));
