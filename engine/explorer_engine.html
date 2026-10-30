@@ -24,6 +24,8 @@
     -webkit-font-smoothing:antialiased;
   }
   .app{display:flex;flex-direction:column;gap:10px;padding:14px 16px 16px;min-height:100vh}
+  /* the middle band takes whatever height the page has spare, so the
+     question box fills the gutter instead of leaving it white */
 
   /* ---- pills, the Agilian idiom: navy off, orange on, grey inert ---- */
   .pill{
@@ -49,8 +51,8 @@
   .brand span{font-size:11.5px;color:#5A6B7A}
 
   /* ---- columns ---- */
-  .cols{display:flex;gap:12px;align-items:flex-start}
-  .leftcol{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:8px}
+  .cols{display:flex;gap:12px;align-items:stretch;flex:1 1 auto;min-height:0}
+  .leftcol{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:8px;min-height:0}
   .rightcol{flex:0 0 376px;display:flex;flex-direction:column;gap:12px}
 
   .picture{
@@ -83,6 +85,7 @@
   }
   .tabs button.on{background:var(--orange);color:var(--navy)}
   .tabs button:disabled{background:var(--grey);color:#f8f8f8;cursor:default}
+  .tabs button[hidden]{display:none}
   .rackbody{padding:14px 15px;display:flex;flex-direction:column;gap:15px;
             background:#fff;margin:0 3px;flex:1 1 auto;overflow:auto;max-height:560px}
   .rackfoot{padding:10px 15px;display:flex;justify-content:flex-end}
@@ -161,15 +164,17 @@
 
   /* ---- the question box ---- */
   .ask{border:3px solid #1a1a1a;border-radius:2px;background:var(--panelgrey);
-       padding:12px 15px 13px;display:flex;flex-direction:column;gap:9px}
+       padding:12px 15px 13px;display:flex;flex-direction:column;gap:9px;
+       flex:1 1 auto;min-height:150px}
   .askkick{font-family:Jost,system-ui,sans-serif;font-size:11px;letter-spacing:.14em;
            color:var(--navy);font-weight:600;display:flex;align-items:baseline;gap:10px;
            flex-wrap:wrap}
   .askkick span{letter-spacing:0;font-weight:400;font-size:11.5px;
                 color:var(--muted);text-transform:none}
-  .asklog{display:flex;flex-direction:column;gap:9px;max-height:196px;overflow:auto;
-          overscroll-behavior:contain}
-  .asklog:empty{display:none}
+  /* the log takes the box's spare height and scrolls inside it: an answer
+     never changes the size of anything on the page */
+  .asklog{display:flex;flex-direction:column;gap:9px;flex:1 1 auto;min-height:0;
+          overflow:auto;overscroll-behavior:contain}
   .qa{background:#fff;border:1px solid #d6d6d6;border-radius:2px;padding:10px 12px}
   .qa .q{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;
          color:var(--navy);margin-bottom:5px}
@@ -215,8 +220,8 @@
     <div class="grp">
       <span class="glab">Timeframe</span>
       <div class="pills" id="year">
-        <button type="button" class="pill" data-y="2024">2024</button>
-        <button type="button" class="pill on" data-y="2030">2030</button>
+        <button type="button" class="pill on" data-y="2024">2024</button>
+        <button type="button" class="pill" data-y="2030">2030</button>
       </div>
     </div>
     <div class="brand">
@@ -232,20 +237,20 @@
       <div class="ask" id="ask">
         <div class="askkick">ASK THE DATA<span>answers come from this project&#8217;s own
           provenance files &#8212; if a thing is not written down, it says so</span></div>
-        <div class="asklog" id="asklog"></div>
         <form class="askbar" id="askform" autocomplete="off">
           <input id="askin" type="text"
                  placeholder="Where does $4.11 come from? What is a QMB-only enrollee? What is assumed in the service fan?">
           <button type="submit" class="askgo">Ask</button>
         </form>
+        <div class="asklog" id="asklog"></div>
       </div>
     </div>
 
     <div class="rightcol">
       <div class="rack">
         <div class="tabs" id="tabs">
-          <button type="button" data-t="admin">Admin</button>
-          <button type="button" data-t="hr1" class="on">HR-1</button>
+          <button type="button" data-t="admin" class="on">Admin</button>
+          <button type="button" data-t="hr1">HR-1</button>
           <button type="button" data-t="mix">Service Mix</button>
         </div>
         <div class="rackbody" id="rackbody"></div>
@@ -281,7 +286,7 @@ const C = {
   loss:'#A56E63', admin:'#9AA5AF', ret:'#8E9BA6', vio:'#7C3AED', viol:'#A78BFA'
 };
 let place = 'US';
-let year = '2030';
+let year = '2024';
 const panelKey = () => place + '|' + year;
 let wr = null;
 let zoomLevel = 'all';
@@ -1600,14 +1605,16 @@ const PACK = [{"d":"Acquisition notes","h":"Acquiring a territory's FY2024 basel
 const ORIG = JSON.parse(JSON.stringify(DATA));
 const VIEWS = {line:'Number line', exec:'Exec Summary', eco:'Ecosystem'};
 let view = 'eco';
-let tab  = 'hr1';
+let tab  = 'admin';
 let leversOn = true;              // DC FY2030: the borrowed lanes, drawn
 let pick = null;                  // {t,n}
 const OV  = {};                   // panelKey -> {peel label: value}
 const MIX = {};                   // panelKey -> {service name: factor}
+const RET = {};                   // panelKey -> {lane key: dollars kept by the payer}
 
 const ovOf  = k => (OV[k]  || (OV[k]  = {}));
 const mixOf = k => (MIX[k] || (MIX[k] = {}));
+const retOf = k => (RET[k] || (RET[k] = {}));
 
 // the two District lanes that carry a national number under a District label
 const BORROWED = ['Blocked Medicaid enrollment rule',
@@ -1621,10 +1628,34 @@ const borrowedHere = () => panelKey() === 'DC|2030';
 // service's cells and renormalises the rest, so the total allocated to
 // services never moves -- only its shape. That is the same proportional rule
 // the engine already declares for the lanes, applied one column later.
-function buildPanel(o, ovm, mixm){
+function buildPanel(o, ovm, mixm, retm){
   const P = JSON.parse(JSON.stringify(o));
   P.peels = P.peels.map(p => (ovm && ovm[p.label] !== undefined)
                              ? Object.assign({}, p, {v: ovm[p.label]}) : p);
+  // WHAT THE PAYER KEEPS. Lowering a lane's retention does not create money;
+  // it moves money from the payer to the claim. So the service fan for that
+  // lane is scaled by the same ratio, or the panel would draw dollars reaching
+  // claims that no service accounts for and call the difference absence.
+  if (retm){
+    const ratio = {};
+    P.lanes = P.lanes.map(l => {
+      const r = retm[l.key];
+      if (r === undefined || !(l.cap > 0)) return l;
+      const care = Math.max(0, Math.min(l.cap, l.cap - r));
+      ratio[l.key] = l.care > 0 ? care / l.care : 1;
+      return Object.assign({}, l, {care: care,
+        plans: (l.plans||[]).map(q => Object.assign({}, q,
+          {care: typeof q.care === 'number' ? q.care * ratio[l.key] : q.care}))});
+    });
+    if (Object.keys(ratio).length){
+      const c2 = {};
+      for (const [k,v] of Object.entries(P.cells)){
+        const lane = k.split('|')[0];
+        c2[k] = ratio[lane] !== undefined ? v * ratio[lane] : v;
+      }
+      P.cells = c2;
+    }
+  }
   const names = [...new Set(Object.keys(P.cells).map(k => k.split('|')[1]))];
   const fac = {}; let touched = false;
   names.forEach(n => { fac[n] = (mixm && mixm[n] !== undefined) ? mixm[n] : 1;
@@ -1639,10 +1670,10 @@ function buildPanel(o, ovm, mixm){
   }
   return P;
 }
-function modelFor(key, ovm, mixm){
+function modelFor(key, ovm, mixm, retm){
   const o = ORIG[key]; if (!o) return null;
   const save = DATA[key];
-  DATA[key] = buildPanel(o, ovm, mixm);
+  DATA[key] = buildPanel(o, ovm, mixm, retm);
   const M = model(key, null);
   DATA[key] = save;
   return M;
@@ -1694,6 +1725,12 @@ const handMoved = key => {
     if (!spec(key, p).ranged) out.push(p.label);
   });
   Object.entries(mx).forEach(([n,f]) => { if (f !== 1) out.push(n + ' share'); });
+  const rv = retOf(key);
+  o.lanes.forEach(l => {
+    const pub = l.cap - l.care;
+    if (rv[l.key] !== undefined && Math.abs(rv[l.key] - pub) > 0.0005)
+      out.push(l.label + ' retention');
+  });
   return out;
 };
 
@@ -1782,6 +1819,44 @@ function strikeBorrowed(svg){
 // So a drag redraws the picture and leaves the rack alone, updating the
 // figures already printed in it rather than reprinting them. Frames are
 // coalesced, so holding a slider down draws once per frame and no more.
+// FILL THE GUTTER, THEN STOP.
+//
+// Flexbox will stretch the question box into the space the picture and the
+// control rack leave between them, but it will also keep stretching once the
+// answers outgrow it, which pushes the view pills off the bottom. There is no
+// CSS expression for "as tall as the other column and no taller", so the
+// available height is measured and the log is capped at it. Answers then
+// scroll inside a box that never changes size.
+function fitAsk(){
+  const ask = document.getElementById('ask'), log = document.getElementById('asklog');
+  if (!ask || !log) return;
+  // Two passes. Collapse the log, let flexbox stretch the empty box into
+  // whatever the picture and the control rack have left between them, measure
+  // that, then cap the log at the room inside it. The box is sized by the
+  // page; the answers are sized by the box; neither moves the other.
+  log.style.maxHeight = '0px';
+  const kick = ask.querySelector('.askkick');
+  const bar  = ask.querySelector('.askbar') || ask.querySelector('.askoff');
+  const cs   = getComputedStyle(ask);
+  const gap  = parseFloat(cs.rowGap || cs.gap || 9) || 9;
+  const chrome = (kick ? kick.offsetHeight : 0) + (bar ? bar.offsetHeight : 0)
+               + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom)
+               + parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth)
+               + gap * 2;
+  const room = ask.getBoundingClientRect().height - chrome;
+  log.style.maxHeight = Math.max(76, Math.round(room)) + 'px';
+}
+window.addEventListener('resize', () => { if (typeof render === 'function') fitAsk(); });
+
+// A DIFFERENT PANEL IS A DIFFERENT CONVERSATION. The answers were about the
+// District in 2030; they are not about the nation in 2024, and leaving them
+// on screen under a changed picture is the one way this box could mislead a
+// room. Switching jurisdiction, year or view empties it.
+function clearAsk(){
+  const l = document.getElementById('asklog');
+  if (l) l.innerHTML = '';
+}
+
 let rafPending = false;
 function scheduleLive(){
   if (rafPending) return;
@@ -1791,6 +1866,10 @@ function scheduleLive(){
 // Keep the figures in the rack current without touching any input. Moving one
 // service rescales the other five, so their printed values move too.
 function refreshRackValues(M){
+  document.querySelectorAll('#rackbody [data-ret]').forEach(row => {
+    const l = M.lanes.find(x => x.key === row.dataset.ret);
+    if (l) row.querySelector('.slval').textContent = money(l.cap - l.care);
+  });
   document.querySelectorAll('#rackbody [data-mix]').forEach(row => {
     const v = M.svc[row.dataset.mix];
     if (v !== undefined) row.querySelector('.slval').textContent = money(v);
@@ -1800,6 +1879,20 @@ function render(fast){
   const key = panelKey();
   const live = view === 'eco';
   const o = ORIG[key];
+
+  // HR-1 HAS NOTHING TO SAY ABOUT A YEAR THE LAW IS NOT IN. The tab used to
+  // sit there disabled on FY2024, which invites a click and answers with a
+  // sentence. It is simply not there.
+  const hasHR1 = !!(o && o.peels.some(p => p.kind === 'hr1'));
+  const hrBtn = document.querySelector('#tabs button[data-t="hr1"]');
+  if (hrBtn){
+    hrBtn.hidden = !hasHR1;
+    if (!hasHR1 && tab === 'hr1'){
+      tab = 'admin';
+      document.querySelectorAll('#tabs button').forEach(
+        x => x.classList.toggle('on', x.dataset.t === 'admin'));
+    }
+  }
 
   // pills and rack go grey wherever they cannot act
   document.querySelectorAll('#place button, #year button').forEach(b => {
@@ -1823,6 +1916,7 @@ function render(fast){
       + 'Choose Ecosystem.</p>';
     drawCtx(null, key);
     diag(null);
+    fitAsk();
     return;
   }
 
@@ -1833,11 +1927,11 @@ function render(fast){
       + '<p style="font-size:15px;line-height:1.55;color:#1A2733">The engine draws what the '
       + 'ledgers hand it. Nothing has been exported here, and a panel drawn from nothing '
       + 'would be an invention.</p></div>';
-    strip.innerHTML = ''; rack(); drawCtx(null, key); diag(null);
+    strip.innerHTML = ''; rack(); drawCtx(null, key); diag(null); fitAsk();
     return;
   }
 
-  const M = modelFor(key, ovOf(key), mixOf(key));
+  const M = modelFor(key, ovOf(key), mixOf(key), retOf(key));
   const L = draw(M, 'all');
   let svg = L.svg;
   if (borrowedHere() && !leversOn) svg = strikeBorrowed(svg);
@@ -1867,6 +1961,7 @@ function render(fast){
   if (fast) refreshRackValues(M); else rack();
   drawCtx(M, key);
   diag(M);
+  fitAsk();
 }
 
 // clickable: the plan and lane bands in the payer column, the service bars
@@ -1882,12 +1977,28 @@ function tagPicks(root, M){
 
 // ---------------------------------------------------------------------------
 // THE RACK
+// WHERE A TRIBUTARY LEAVES THE FLOW, left to right. The geometry already
+// records it: `src_x` is the x the outflow departs from, and a lane's
+// retention leaves at the payer column. Ordering the rack by it means the
+// list down the side reads in the same order as the picture across the top,
+// so a finger on the plate and a finger on the rack travel together.
+function leaveX(label){
+  const d = (GEOM.outflows||{})[label];
+  if (d){
+    if (typeof d.src_x === 'number') return d.src_x;
+    const col = (GEOM.cols||{})[d.src];
+    if (col) return col[0];
+  }
+  return 9999;
+}
+const PAYER_X = ((GEOM.cols||{}).PAYER || [1060])[0];
+
 function rack(){
   const key = panelKey(), o = ORIG[key], body = document.getElementById('rackbody');
   if (!o){ body.innerHTML = '<p class="tabnote" style="border:0;padding:0">No panel.</p>'; return; }
 
   if (tab === 'mix'){
-    const M = modelFor(key, ovOf(key), mixOf(key));
+    const M = modelFor(key, ovOf(key), mixOf(key), retOf(key));
     const mx = mixOf(key);
     const names = Object.keys(M.svc);
     let h = names.map(n => {
@@ -1925,7 +2036,32 @@ function rack(){
   }
 
   const ss = slidersFor(key);
-  if (!ss.length){
+  // THE PAYER LANE'S OWN ADMINISTRATION. Not a peel: it is the gap between
+  // what a lane was paid and what reached a claim, so it gets its own control.
+  // No source publishes a range for "what if the plans kept less", so these
+  // are excursion sliders like the rest of the Admin tab.
+  let retRows = [];
+  if (tab === 'admin'){
+    const M0 = modelFor(key, ovOf(key), mixOf(key), retOf(key));
+    const rv = retOf(key);
+    retRows = ORIG[key].lanes.map((l, li) => {
+      const pub = l.cap - l.care;
+      if (!(pub > 0.004)) return null;
+      const cur = rv[l.key] === undefined ? pub : rv[l.key];
+      const shown = (M0.lanes.find(x => x.key === l.key) || {});
+      const now = (shown.cap || 0) - (shown.care || 0);
+      return {x: PAYER_X + li, html: '<div class="sl' + (Math.abs(cur-pub) > 0.0005 ? ' moved' : '')
+        + '" data-ret="' + l.key + '" data-pub="' + pub + '">'
+        + '<div class="slrow"><span class="slname">' + l.label + ' \u2014 kept by the payer</span>'
+        + '<span class="slval">' + money(now) + '</span></div>'
+        + '<input type="range" min="0" max="' + Math.max(pub*2, 0.4).toFixed(3)
+        + '" step="0.01" value="' + cur + '">'
+        + '<div class="slnote">Administration and margin inside the lane. '
+        + 'Published at ' + money(pub) + '. No source publishes a range for it \u2014 '
+        + 'anything else is your figure. Lowering it sends the difference on to claims.</div></div>'};
+    }).filter(Boolean);
+  }
+  if (!ss.length && !retRows.length){
     body.innerHTML = '<p class="tabnote" style="border:0;padding:0">'
       + (tab === 'hr1'
          ? 'FY2024 is as it happened. The law is not in this panel, so there is nothing here to move.'
@@ -1933,20 +2069,36 @@ function rack(){
     return;
   }
   const ov = ovOf(key);
-  body.innerHTML = ss.map(s => {
+  const peelRows = ss.map(s => {
     const cur = ov[s.label] === undefined ? s.v : ov[s.label];
     const struck = borrowedHere() && !leversOn && BORROWED.includes(s.label);
     const moved = Math.abs(cur - s.v) > 0.0005;
-    return '<div class="sl ' + (s.ranged?'ranged':'') + (moved?' moved':'')
+    const html = '<div class="sl ' + (s.ranged?'ranged':'') + (moved?' moved':'')
       + (struck?' struck':'') + '" data-peel="' + s.label + '" data-pub="' + s.v + '">'
       + '<div class="slrow"><span class="slname">' + s.label + '</span>'
       + '<span class="slval">' + money(cur) + '</span></div>'
       + '<input type="range" min="' + s.lo.toFixed(3) + '" max="' + s.hi.toFixed(3)
       + '" step="0.01" value="' + cur + '">'
       + '<div class="slnote">' + s.note + '</div></div>';
-  }).join('')
+    return {x: leaveX(s.label), html: html};
+  });
+  // every tab reads in the order the money leaves the picture, so a finger on
+  // the plate and a finger on the rack travel together. On HR-1 that puts
+  // provider tax limits first: the match is never drawn, so it goes before
+  // the money has reached the state agency at all.
+  const rows = peelRows.concat(tab === 'admin' ? retRows : [])
+                       .sort((a,b) => a.x - b.x);
+  body.innerHTML = rows.map(r => r.html).join('')
   + '<p class="tabnote">Orange carries a published band and names its source. '
   + 'Grey does not: it moves freely, and the picture says so when it has.</p>';
+  body.querySelectorAll('[data-ret] input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const row = e.target.closest('[data-ret]'), v = parseFloat(e.target.value);
+      retOf(key)[row.dataset.ret] = v;
+      row.classList.toggle('moved', Math.abs(v - parseFloat(row.dataset.pub)) > 0.0005);
+      scheduleLive();
+    });
+  });
   body.querySelectorAll('[data-peel] input').forEach(inp => {
     inp.addEventListener('input', e => {
       const row = e.target.closest('[data-peel]'), v = parseFloat(e.target.value);
@@ -1966,7 +2118,7 @@ function drawCtx(M, key){
   const k24 = pl + '|2024', k30 = pl + '|2030';
   const M24 = modelFor(k24, null, null);
   const M30 = modelFor(k30, null, null);
-  const MYOU = modelFor(k30, ovOf(k30), mixOf(k30));
+  const MYOU = modelFor(k30, ovOf(k30), mixOf(k30), retOf(k30));
   const base = M || M30 || M24;
   if (!base){ el.innerHTML = '<div class="ctxkick">NOTHING TO SHOW</div>'; return; }
 
@@ -2043,7 +2195,7 @@ function sel(group, attr, val){
 }
 document.querySelectorAll('#place button[data-k]').forEach(b =>
   b.addEventListener('click', () => {
-    place = b.dataset.k; sel('#place','k',place);
+    place = b.dataset.k; sel('#place','k',place); clearAsk();
     if (!ORIG[panelKey()]){
       const other = Object.keys(ORIG).filter(k => k.startsWith(place+'|'))[0];
       if (other){ year = other.split('|')[1]; sel('#year','y',year); }
@@ -2051,9 +2203,11 @@ document.querySelectorAll('#place button[data-k]').forEach(b =>
     pick = null; render();
   }));
 document.querySelectorAll('#year button[data-y]').forEach(b =>
-  b.addEventListener('click', () => { year = b.dataset.y; sel('#year','y',year); render(); }));
+  b.addEventListener('click', () => { year = b.dataset.y; sel('#year','y',year);
+                                     clearAsk(); render(); }));
 document.querySelectorAll('#views button[data-v]').forEach(b =>
-  b.addEventListener('click', () => { view = b.dataset.v; sel('#views','v',view); render(); }));
+  b.addEventListener('click', () => { view = b.dataset.v; sel('#views','v',view);
+                                     clearAsk(); render(); }));
 document.querySelectorAll('#tabs button[data-t]').forEach(b =>
   b.addEventListener('click', () => {
     tab = b.dataset.t;
@@ -2061,8 +2215,8 @@ document.querySelectorAll('#tabs button[data-t]').forEach(b =>
     render();
   }));
 document.getElementById('reset').addEventListener('click', () => {
-  OV[panelKey()] = {}; MIX[panelKey()] = {};
-  const k30 = place + '|2030'; OV[k30] = {}; MIX[k30] = {};
+  OV[panelKey()] = {}; MIX[panelKey()] = {}; RET[panelKey()] = {};
+  const k30 = place + '|2030'; OV[k30] = {}; MIX[k30] = {}; RET[k30] = {};
   leversOn = true; render();
 });
 document.addEventListener('keydown', e => {
@@ -2118,7 +2272,7 @@ function expandQuery(q){
   const extra = [];
   if (nums.length){
     const key = panelKey();
-    const M = ORIG[key] ? modelFor(key, ovOf(key), mixOf(key)) : null;
+    const M = ORIG[key] ? modelFor(key, ovOf(key), mixOf(key), retOf(key)) : null;
     if (M){
       const named = [];
       M.peels.forEach(p => named.push([p.v, p.label]));
@@ -2189,7 +2343,7 @@ function liveState(){
   const pl = key.split('|')[0], yr = key.split('|')[1];
   const where = pl === 'DC' ? 'the District of Columbia' : 'the United States';
   if (!o) return 'Nothing is drawn: there is no panel for this combination.';
-  const M = modelFor(key, ovOf(key), mixOf(key));
+  const M = modelFor(key, ovOf(key), mixOf(key), retOf(key));
   const L = [];
 
   L.push('The panel on screen is ' + where + ', fiscal year ' + yr
@@ -2200,7 +2354,7 @@ function liveState(){
 
   if (pick){
     const M24 = modelFor(pl+'|2024', null, null), M30 = modelFor(pl+'|2030', null, null);
-    const MY  = modelFor(pl+'|2030', ovOf(pl+'|2030'), mixOf(pl+'|2030'));
+    const MY  = modelFor(pl+'|2030', ovOf(pl+'|2030'), mixOf(pl+'|2030'), retOf(pl+'|2030'));
     const f = m => { const v = valueOf(m, pl+'|'+(m===M24?'2024':'2030'), pick);
                      return v===null ? 'not in this panel' : money(v); };
     L.push('\nTHE USER HAS SELECTED: ' + pick.n + '.');
@@ -2346,7 +2500,8 @@ async function askInit(){
     card.className = 'qa';
     card.innerHTML = '<div class="q"></div><div class="a">…</div>';
     card.querySelector('.q').textContent = q;
-    log.appendChild(card); log.scrollTop = log.scrollHeight;
+    // the question box is at the top, so the newest answer belongs under it
+    log.insertBefore(card, log.firstChild); log.scrollTop = 0;
     const body = card.querySelector('.a');
     const prompt = INSTRUCTION
       + '\n=== WHAT IS DRAWN ===\n' + liveState()
@@ -2358,7 +2513,7 @@ async function askInit(){
       + '\n\n=== THE QUESTION ===\n' + q;
     try {
       const r = await sample(prompt, {modelTier:'default',
-        onText: ({text}) => { body.textContent = text; log.scrollTop = log.scrollHeight; }});
+        onText: ({text}) => { body.textContent = text; log.scrollTop = 0; }});
       body.textContent = r.text;
     } catch (err) {
       body.textContent = (err && err.code === 'rate_limited')
@@ -2380,10 +2535,10 @@ async function askInit(){
       link.addEventListener('click', () => {
         boxEl.hidden = !boxEl.hidden;
         link.textContent = label(!boxEl.hidden);
-        log.scrollTop = log.scrollHeight;
       });
       c2.appendChild(link); card.appendChild(c2); card.appendChild(boxEl);
     }
+    if (typeof fitAsk === 'function') fitAsk();
     asking = false; btn.disabled = false; inp.focus();
   });
 }
