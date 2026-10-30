@@ -1377,12 +1377,12 @@ function draw(M, zoom){
   // in itself rather than as one more band in the fan.
   const PROV_GAP = 50;
   let ay=disbTop;
-  if (M.P.mix_assumed){
+  const MIX_BORROWED = !!M.P.mix_assumed && (M.P.code||'').indexOf('DC') === 0;
+  if (MIX_BORROWED){
     t+=halo2(xPR[0]+PROV_W/2, ay-54, 'SERVICE MIX ASSUMED', 13, C.vio, 700, 'middle');
-    if ((M.P.code||'').indexOf('DC')===0)
-      t+=halo2(xPR[0]+PROV_W/2, ay-40,
-               'national shape on District dollars \u2014 not a DC measurement',
-               11, C.vio, 500, 'middle');
+    t+=halo2(xPR[0]+PROV_W/2, ay-40,
+             'national shape on District dollars \u2014 not a DC measurement',
+             11, C.vio, 500, 'middle');
   }
   if (M.absent>0.02){
     const bh=hb(M.absent,'Service allocation absent');
@@ -1463,7 +1463,7 @@ function draw(M, zoom){
     // was. One short line per bar, in the violet the panel uses for
     // everything it does not know.
     // under the bar, in the air PROV_GAP already leaves, not on top of it
-    if (M.P.mix_assumed)
+    if (MIX_BORROWED)
       t+=halo2(xPR[0]+PROV_W/2, ay+bh+15, 'mix assumed', 10.5, C.vio, 600, 'middle');
     provObs.push([xPR[0]-8, ay-26, xPR[0]+PROV_W+8, ay+bh+6]);
     provBars.push([ay, bh]);
@@ -2729,9 +2729,17 @@ function liveState(){
   }
   if (handMoved(key).length)
     L.push('Moved by hand, with no published range behind them: ' + handMoved(key).join(', ') + '.');
-  if (M.P.mix_assumed && pl === 'DC')
-    L.push('The service split is the national shape applied to District dollars. '
-         + 'The District publishes no managed-care split by service.');
+  if (M.P.mix_assumed)
+    L.push(pl === 'DC'
+      ? 'The service split is the national shape applied to District dollars. The '
+        + 'District publishes no managed-care split by service. This is declared on '
+        + 'the plate.'
+      : 'The service TOTALS are measured, off MACStats Exhibit 17. What is modelled '
+        + 'nationally is the division of each service bar BETWEEN PAYERS: the ledger '
+        + 'carries no interior for the claims matrix, and the rendered split is fitted '
+        + 'by iterative proportional fitting to both margins from a seed pattern that '
+        + 'carries no citation. This is NOT declared on the national plate \u2014 say so '
+        + 'if the question touches how a bar divides between payers.');
   if (borrowedHere())
     L.push('Two lanes here carry national numbers under District labels: the blocked '
          + 'Medicaid enrolment rule, and District provisions not separately scored. '
