@@ -1763,8 +1763,21 @@ function buildPanel(o, ovm, mixm, retm){
       if (r === undefined || !(l.cap > 0)) return l;
       const care = Math.max(0, Math.min(l.cap, l.cap - r));
       ratio[l.key] = l.care > 0 ? care / l.care : 1;
-      return Object.assign({}, l, {care: care,
-        plans: (l.plans||[]).map(q => Object.assign({}, q,
+      // WHAT THE LANE KEEPS IS DRAWN TWICE: once as the ribbon into the plan
+      // pool, which is cap less care and so follows the slider on its own,
+      // and once as the named terminals leaving that pool -- administration
+      // and public-company earnings. Those come from the lane's own adm and
+      // margin, and moving retention without moving them left money arriving
+      // at the pool that nothing took out of it: the flow visibly stopped
+      // balancing. The split holds its proportions as the total moves, which
+      // is the same narrowest-possible rule the lanes already declare.
+      const keep0 = l.cap - l.care, keep1 = l.cap - care;
+      const kf = keep0 > 0.0005 ? keep1 / keep0 : 1;
+      const scaleKeep = o2 => Object.assign({}, o2, {
+        adm:    typeof o2.adm    === 'number' ? o2.adm    * kf : o2.adm,
+        margin: typeof o2.margin === 'number' ? o2.margin * kf : o2.margin});
+      return Object.assign({}, scaleKeep(l), {care: care,
+        plans: (l.plans||[]).map(q => Object.assign({}, scaleKeep(q),
           {care: typeof q.care === 'number' ? q.care * ratio[l.key] : q.care}))});
     });
     if (Object.keys(ratio).length){
