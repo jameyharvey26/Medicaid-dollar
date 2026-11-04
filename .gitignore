@@ -20,3 +20,8 @@ paper_figs/
 engine_texts.json
 build_out/
 reference_renders/diffs/
+
+# generated review pages. Built from a scratch script against one moment of
+# the tree; stale as soon as anything upstream moves. One was committed by
+# accident in 434b2d1 and removed from the index in the follow-up.
+COMMIT_REVIEW_*.html
