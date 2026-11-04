@@ -1,0 +1,140 @@
+# DC endnote key order. APPEND-ONLY. Never reorder, never delete a line: DC-EN numbers are this file's line positions and documents cite them.
+DC24:anchor.budget.dedtax
+DC24:anchor.ex16.federal
+DC24:anchor.ex16.state
+DC24:anchor.ex16.total
+DC24:anchor.state.local_appropriation
+DC24:anchor.state.provider_assessments
+DC24:claims.cell.ffs.Hospitals
+DC24:claims.cell.ffs.Long-term care
+DC24:claims.cell.ffs.Physicians & clinics
+DC24:claims.cell.ffs.Rx drugs
+DC24:claims.cell.ffs.Wrap around services
+DC24:claims.row.dual
+DC24:claims.row.ffs
+DC24:claims.row.mco
+DC24:payer.amerihealth.admin
+DC24:payer.amerihealth.capitation
+DC24:payer.amerihealth.care
+DC24:payer.amerihealth.margin
+DC24:payer.dual.admin
+DC24:payer.dual.capitation
+DC24:payer.dual.care
+DC24:payer.dual.margin
+DC24:payer.ffs.admin
+DC24:payer.ffs.capitation
+DC24:payer.ffs.care
+DC24:payer.ffs.margin
+DC24:payer.hscsn.admin
+DC24:payer.hscsn.capitation
+DC24:payer.hscsn.care
+DC24:payer.hscsn.margin
+DC24:payer.mco.admin
+DC24:payer.mco.capitation
+DC24:payer.mco.care
+DC24:payer.mco.margin
+DC24:payer.medstar.admin
+DC24:payer.medstar.capitation
+DC24:payer.medstar.care
+DC24:payer.medstar.margin
+DC24:payer.pace.admin
+DC24:payer.pace.capitation
+DC24:payer.pace.care
+DC24:payer.pace.margin
+DC24:payer.united.admin
+DC24:payer.united.capitation
+DC24:payer.united.care
+DC24:payer.united.margin
+DC24:payer.wellpoint.admin
+DC24:payer.wellpoint.capitation
+DC24:payer.wellpoint.care
+DC24:payer.wellpoint.margin
+DC24:peel.admin
+DC24:peel.medicare
+DC24:scale
+DC24:source.federal
+DC24:source.state
+DC30:anchor.expansion.at_risk
+DC30:anchor.expansion.fy2024
+DC30:anchor.expansion.fy2030
+DC30:anchor.fmap.expansion
+DC30:anchor.fmap.regular
+DC30:anchor.msp.dc_qmb_only
+DC30:anchor.msp.national_qmb_only
+DC30:anchor.rate.default
+DC30:anchor.sdp.cut_fy2030
+DC30:anchor.sdp.grandfathered
+DC30:anchor.tax.base_fy2026
+DC30:anchor.tax.frozen_level
+DC30:anchor.tax.prior_law_fy2030
+DC30:claims.cell.dual.Hospitals
+DC30:claims.cell.dual.Long-term care
+DC30:claims.cell.dual.Physicians & clinics
+DC30:claims.cell.dual.Rx drugs
+DC30:claims.cell.dual.Wrap around services
+DC30:claims.cell.ffs.Hospitals
+DC30:claims.cell.ffs.Long-term care
+DC30:claims.cell.ffs.Physicians & clinics
+DC30:claims.cell.ffs.Rx drugs
+DC30:claims.cell.ffs.Wrap around services
+DC30:claims.cell.mco.Hospitals
+DC30:claims.cell.mco.Long-term care
+DC30:claims.cell.mco.Physicians & clinics
+DC30:claims.cell.mco.Rx drugs
+DC30:claims.cell.mco.Wrap around services
+DC30:claims.col.Hospitals
+DC30:claims.col.Long-term care
+DC30:claims.col.Physicians & clinics
+DC30:claims.col.Rx drugs
+DC30:claims.col.Wrap around services
+DC30:claims.row.dual
+DC30:claims.row.ffs
+DC30:claims.row.mco
+DC30:payer.amerihealth.admin
+DC30:payer.amerihealth.capitation
+DC30:payer.amerihealth.care
+DC30:payer.amerihealth.margin
+DC30:payer.dual.admin
+DC30:payer.dual.capitation
+DC30:payer.dual.care
+DC30:payer.dual.margin
+DC30:payer.ffs.admin
+DC30:payer.ffs.capitation
+DC30:payer.ffs.care
+DC30:payer.ffs.margin
+DC30:payer.hscsn.admin
+DC30:payer.hscsn.capitation
+DC30:payer.hscsn.care
+DC30:payer.hscsn.margin
+DC30:payer.mco.admin
+DC30:payer.mco.capitation
+DC30:payer.mco.care
+DC30:payer.mco.margin
+DC30:payer.medstar.admin
+DC30:payer.medstar.capitation
+DC30:payer.medstar.care
+DC30:payer.medstar.margin
+DC30:payer.pace.admin
+DC30:payer.pace.capitation
+DC30:payer.pace.care
+DC30:payer.pace.margin
+DC30:payer.united.admin
+DC30:payer.united.capitation
+DC30:payer.united.care
+DC30:payer.united.margin
+DC30:payer.wellpoint.admin
+DC30:payer.wellpoint.capitation
+DC30:payer.wellpoint.care
+DC30:payer.wellpoint.margin
+DC30:peel.Blocked Medicaid enrollment rule
+DC30:peel.Blocked senior enrollment rule
+DC30:peel.DC provisions not separately scored
+DC30:peel.Directed payment caps
+DC30:peel.Provider tax limits
+DC30:peel.Six-month renewals
+DC30:peel.Work reporting
+DC30:peel.admin
+DC30:peel.medicare
+DC30:scale
+DC30:source.federal
+DC30:source.state

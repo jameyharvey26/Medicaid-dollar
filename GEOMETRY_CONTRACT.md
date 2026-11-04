@@ -60,13 +60,70 @@ applied in two files that could have disagreed.
 | PAYER | 1060 | 1300 |
 | CLAIMS | 1300 | 1560 |
 | PROVIDERS | 1560 | 1760 |
-| BENEFICIARY | 1760 | 2180 |
 
 `SOURCE_X = 200` (FEDERAL x0 + 40).
 
-Canvas `W = 2200`. `H = 1416`, and unlike W and the scale, **H was never
-frozen** — it has grown when a tributary needed the room. `cY = 540` is the
-trunk's centreline. `bw = 18` is node bar width.
+`H = 1416`, and unlike the scale, **H was never frozen** — it has grown when a
+tributary needed the room. `cY = 540` is the trunk's centreline. `bw = 18` is
+node bar width.
+
+**BENEFICIARY is not in this table any more. See 1a.**
+
+## 1a. The beneficiary surface. Anchored, not sized. (D-132)
+
+`outflows.COLS` still declares `BENEFICIARY: (1760, 2180)`, and the left edge
+is the part that is frozen. The right edge is not, and `W` is derived from it
+rather than declared.
+
+**Why it is not a flow column.** Everything from FEDERAL to PROVIDERS is a
+Sankey column: a band's height is its value times `ys`, and the columns
+interlock so that one column's bands sum to the node feeding it. The
+beneficiary surface is two other things at once — a TERMINATION ANCHOR for the
+flows that reach people rather than services, and a DRAWING SURFACE for the
+population pies and the number line aligned beneath them. The first is
+structural and must not move. The second is presentation and must be free.
+
+**Frozen:**
+
+- `BENEFICIARY.x0 = 1760`, which is `PROVIDERS.x1`. The surface starts where
+  the provider column ends, with no gap.
+- That the surface exists in every renderer, at some width. At least one
+  lever terminates in it — the Medicare Savings rule, `term_col` and `reach`
+  both `BENEFICIARY` (D-89, EN-27, `tracker.FINAL_COL`) — and it is the only
+  lever on the diagram whose loss lands outside the delivery system. A
+  renderer that omitted the surface would have nowhere to put it.
+- `term_slot["BENEFICIARY"]` tracks the surface's RIGHT edge, whatever that
+  edge is. The engine already does this:
+  `Object.assign({}, GEOM.term_slot, {BENEFICIARY: W})`.
+- The pies and the number line beneath them are ALIGNED. Whatever the width,
+  a pie sits over its own segment of the line. This is the invariant that
+  makes the surface readable and it survives any resizing.
+
+**Free, and deliberately so (JW, 2026-11-03):**
+
+- The surface's WIDTH. The pies are planned for printed Sankeys and, in the
+  interactive version, for a separate view that is **not yet designed**. So
+  print wants it wide and the app wants it narrow, and the right width will
+  change again when that view is drawn. No rule here should make that
+  expensive.
+- Therefore `W` is DERIVED: `W = BENEFICIARY.x0 + surface_width`. It is not a
+  frozen constant and must not be treated as one.
+
+**The two widths in use today:**
+
+| renderer | surface width | W | what it holds |
+|---|---|---|---|
+| paper | 420 | 2200 | the population pies and the aligned number line |
+| engine | 200, matching PROVIDERS | 1960 | the termination anchor only; no room for pies |
+
+The engine's narrowing is CORRECT and intended, not a port defect. It is what
+lets the plate scale up inside the panel, and it loses nothing: the slot moves
+with the edge and the lever still lands. The engine's inline comment — "the
+beneficiary column is cropped to the provider column's width" — is the rule,
+and it now has a home outside the code.
+
+**What a renderer may NOT do**: draw the pies at a width that breaks their
+alignment with the number line, move `x0`, or drop the surface entirely.
 
 **Scale: `ys = 4.4` px per dollar.** One number, everywhere. This is what makes
 the columns puzzle pieces: every band is its value times `ys`, so a column's
