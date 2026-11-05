@@ -124,12 +124,23 @@ at EN-9 and EN-10.** It is the FY2024 CMS-64 all-population blend held constant 
 2030 under D-11, and it validates D-10's 64.7%. See `fmap.py`. If the federal share
 drifts, every per-$100 figure on the to-be moves with it.
 
-**EN-12 · HR-1 removes $10.26 of every $100 in FY2030. | P**
-$132.68 billion of total-computable spending against a $1,293.3 billion
+**EN-12 AMENDED · HR-1 removes $9.99 of every $100 in FY2030. | D**
+$129.25 billion of total-computable spending against a $1,293.3 billion
 denominator. On a federal-only basis without the gross-up at EN-13 the figure is
-$8.36. Composition: work reporting $4.08, blocked senior enrollment rule $1.27,
-provider tax limits $1.24, everything else $1.05, blocked Medicaid enrollment rule
-$1.03, directed payment caps $0.85, six-month renewals $0.75. See `tobe2030.py`.
+$8.36, unchanged — the chapter total was always sourced; only its division into
+lanes has moved. Composition: work reporting $3.95, provider tax limits $1.37,
+directed payment caps $1.28, blocked senior enrollment rule $1.06, everything
+else $0.89, blocked Medicaid enrollment rule $0.80, six-month renewals $0.64.
+See `tobe2030.py`.
+
+SUPERSEDES the $10.26 reading and its composition, per D-133 (2026-11-05). The
+earlier figures allocated FY2030 by spreading each lane's ten-year total across
+its statutory step schedule, because D-37 recorded that CBO published no
+per-section annual detail. CBO does publish it, in workbook 61570, and the
+allocation is read now rather than modelled — which is why the status mark
+moves from P to D. Directed payment caps rose $0.43 and the three lanes the
+model held at full effect each fell. The rebased D-70 figure moves with it,
+$10.34 to $10.07.
 
 **EN-13 · Gross-up from federal dollars to total-computable dollars. | D**
 Rates derived from CMS-64 FY2024 National Totals, four quarters, medical assistance
@@ -333,12 +344,18 @@ though a 2030 dollar buys what a 2024 dollar bought. Raise this when the pies ar
 next worked.
 
 **EN-34 · The flow steps down at each bite. | D**
+AMENDED 2026-11-05 per D-133; the lane figures are read from CBO's section
+detail rather than modelled, and every number in this reading moved except the
+two that are not HR-1 lanes.
 Reading the trunk left to right, per $100: 100.00 enters; provider tax limits
-narrows the federal band by 1.24 and the state band slides up, leaving 98.76 at
+narrows the federal band by 1.37 and the state band slides up, leaving 98.63 at
 the state agency; administration takes 5.07 and Medicare premiums 1.63 from the
-top edge; the blocked senior enrollment rule (1.27), work reporting (4.08),
-six-month renewals (0.75), the blocked Medicaid enrollment rule (1.03) and the
-residual (1.05) each step the bottom edge up in turn, leaving 83.89 disbursed.
+top edge; the blocked senior enrollment rule (1.06), work reporting (3.95),
+six-month renewals (0.64), the blocked Medicaid enrollment rule (0.80) and the
+residual (0.89) each step the bottom edge up in turn, leaving 84.59 disbursed.
+CONFIRM AGAINST THE REGENERATED TRACKER before publication: S-056 requires the
+drawn width to equal the running balance, and this entry was amended from the
+ledger, not from a re-render.
 Width at any point on the diagram equals the running balance on the tracker
 beneath it (S-056).
 

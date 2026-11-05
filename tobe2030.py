@@ -21,6 +21,8 @@
 #   This closes the D-61 gap for the aggregate. The component detail remains
 #   unavailable at the January 2025 vintage, so D-11 and S-043 still stand.
 
+import cbo61570 as _CBO
+
 FY30_DEFICIT   = 108.152   # $B, federal, sourced
 FED_OUTLAYS_30 = 837.0     # $B, federal, sourced, Jan-2025 vintage
 FED_SHARE      = 0.6472    # MODELLED (D-10 / fmap.py, FY2024 CMS-64 blend held
@@ -37,9 +39,19 @@ TEN_YR = {
     "Blocked Medicaid enrollment rule":  53.6,
     "Everything else":                   60.1,
 }
-# Ramp position at FY2030, from phasein.py. Derived from the statutory step
-# schedules; MODELLED (S-012).
-RAMP = {
+# RETIRED 2026-11-05 (D-133). The ramp weights below allocated FY2030 by
+# spreading each lane's TEN_YR total across the statutory step schedule. They
+# existed only because D-37 recorded that CBO publishes no per-section ANNUAL
+# detail. D-37's premise is false: workbook 61570 publishes every Chapter 1
+# section by fiscal year, and `cbo61570.py` carries it. The allocation is read
+# now, not modelled, and the weights are kept only as the record of what was
+# replaced. Nothing reads them.
+#
+# What they cost: at FY2030 they put directed payment caps at $10.93B against
+# CBO's $16.55B, 34 percent low, and the three lanes weighted 1.00 each ran
+# 17 to 29 percent high. The chapter total always conserved, because the
+# allocation was normalised to it, so the error never showed in a balance line.
+RAMP_RETIRED = {
     "Work reporting":                   1.00,
     "Provider tax limits":              0.60,
     "Directed payment caps":            0.50,
@@ -47,6 +59,19 @@ RAMP = {
     "Six-month renewals":               1.00,
     "Blocked Medicaid enrollment rule": 1.00,
     "Everything else":                  1.00,
+}
+
+# The lane names against CBO's section numbers. "Everything else" has no
+# section: it is the chapter total less the six named sections, and therefore
+# carries both the fifteen unnamed provisions and CBO's interaction netting
+# (D-134). That is why it cannot be read section by section.
+SECTION = {
+    "Work reporting":                   "71119",
+    "Provider tax limits":              "71115",
+    "Directed payment caps":            "71116",
+    "Blocked senior enrollment rule":   "71101",
+    "Six-month renewals":               "71107",
+    "Blocked Medicaid enrollment rule": "71102",
 }
 # Gross-up from federal dollars to total-computable dollars, from fmap.py.
 # Two lanes carry none by decision (D-39, D-41): the provider tax lane funds the
@@ -82,9 +107,11 @@ TERMINAL = {
     "Everything else":                  "will not become services",
 }
 
-raw = {k: TEN_YR[k] * RAMP[k] for k in TEN_YR}
-tot = sum(raw.values())
-fed30  = {k: raw[k] / tot * FY30_DEFICIT for k in raw}          # federal $B, FY2030
+# FY2030 federal $B by lane, READ from CBO's section-by-section workbook on
+# the deficit basis (D-45), not modelled. `cbo61570.deficit` is outlays minus
+# revenues and prints negative; this module carries magnitudes.
+fed30 = {k: -_CBO.deficit(sec, 2030) / 1000.0 for k, sec in SECTION.items()}
+fed30["Everything else"] = FY30_DEFICIT - sum(fed30.values())
 tc30   = {k: fed30[k] * GROSS[k] for k in fed30}                # total-computable $B
 per100 = {k: tc30[k] / TOTAL_30 * 100 for k in tc30}            # $ per $100
 

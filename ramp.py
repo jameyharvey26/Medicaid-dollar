@@ -1,10 +1,31 @@
-# FY2029 allocation across CBO-scored sections.
-# BASIS DISCIPLINE (D-36): section totals are DEFICIT effects, so allocate the
-# FY2029 DEFICIT figure (-$90.146B), not the outlay figure. Mixing them is the error.
-# BASIS FLAG 2026-08-27 (session 2): D-26's illustrative figures are computed from
-# $325.6B, the federal OUTLAY reduction for 71119 (CRS R48755), while TEN_YR below
-# uses $317.0B, the DEFICIT effect. An $8.6B section-level wedge, unresolved.
-# See WHITEPAPER_BRIEF_APPEND_2026-08-27b.md. Input to open task 2.
+# ramp.py — FY2029 allocation across CBO-scored sections.
+#
+# SUPERSEDED IN PART, 2026-11-05 (D-133). This file modelled the allocation by
+# spreading each lane's ten-year total across its statutory step schedule,
+# because D-37 recorded that CBO publishes no per-section ANNUAL detail.
+# D-37's premise is false. Workbook 61570 (CBO, 21 Jul 2025) publishes every
+# Chapter 1 section by fiscal year; `cbo61570.py` carries it. The allocation
+# is READ now. The modelled weights are kept below, unused, as the record of
+# what they cost:
+#
+#   FY2029, $B        modelled    CBO     error
+#   Directed payments     5.99   13.34   -55.1%
+#   E&E moratorium        8.60    5.84   +47.3%
+#   MSP moratorium       10.59    7.65   +38.4%
+#   Six-month redets      9.31    6.92   +34.4%
+#   Work requirements    38.15   38.67    +1.4%
+#   Provider taxes       11.73   11.65    -0.7%
+#   Everything else       5.79    6.08    +4.9%
+#
+# The total always conserved at 90.146 because the allocation was normalised
+# to it, which is why four lanes could be a third to a half wrong without any
+# balance line moving.
+#
+# BASIS (D-36 / D-45): deficit effect, outlays minus revenues. RESOLVED
+# 2026-11-05 (D-135): the "$8.6B section-level wedge, unresolved" flagged here
+# on 27 August is §71119's revenue line, -8,650 against outlays of -325,610,
+# giving the -316,960 that CBO prints as $317.0B. Both figures are CBO's, on
+# two bases. Open task 2 is closed.
 FY29_DEFICIT = 90.146
 TEN_YR = {  # $B, deficit effect, CBO Supplemental 28 Oct 2025
  "Work requirements §71119": 317.0,
@@ -15,9 +36,8 @@ TEN_YR = {  # $B, deficit effect, CBO Supplemental 28 Oct 2025
  "E&E moratorium §71102": 53.6,
  "Other + interactions": 60.1,
 }
-# Ramp position in FY2029, from statutory schedules in the CBO narrative.
-# weight = share of that section's steady-state effect realised in FY2029.
-RAMP = {
+# RETIRED (D-133). Nothing reads these.
+RAMP_RETIRED = {
  # blocked on enactment (Jul 2025); at full effect well before 2029
  "MSP moratorium §71101": 1.00,
  "E&E moratorium §71102": 1.00,
@@ -44,14 +64,19 @@ RAMP = {
  # mixed bag; assume mid-ramp
  "Other + interactions": 0.60,
 }
-raw = {k: TEN_YR[k]*RAMP[k] for k in TEN_YR}
-tot = sum(raw.values())
-print(f"{'Lane':38} {'10-yr $B':>9} {'ramp':>5} {'FY29 $B':>8} {'share':>6}")
+import cbo61570 as _CBO
+SECTION = {"Work requirements \u00a771119":"71119",
+           "Provider taxes \u00a771115":"71115",
+           "State directed payments \u00a771116":"71116",
+           "MSP moratorium \u00a771101":"71101",
+           "Six-month redeterminations \u00a771107":"71107",
+           "E&E moratorium \u00a771102":"71102"}
+alloc_read = {k: -_CBO.deficit(v, 2029)/1000.0 for k, v in SECTION.items()}
+alloc_read["Other + interactions"] = FY29_DEFICIT - sum(alloc_read.values())
+print(f"{'Lane':38} {'10-yr $B':>9} {'src':>5} {'FY29 $B':>8} {'share':>6}")
 print("-"*70)
-alloc={}
-for k,v in sorted(raw.items(), key=lambda x:-x[1]):
-    a = v/tot*FY29_DEFICIT
-    alloc[k]=a
-    print(f"{k:38} {TEN_YR[k]:9.1f} {RAMP[k]:5.2f} {a:8.2f} {a/FY29_DEFICIT*100:5.1f}%")
+alloc = dict(alloc_read)
+for k, a in sorted(alloc.items(), key=lambda x: -x[1]):
+    print(f"{k:38} {TEN_YR[k]:9.1f} {'read':>5} {a:8.2f} {a/FY29_DEFICIT*100:5.1f}%")
 print("-"*70)
 print(f"{'TOTAL':38} {sum(TEN_YR.values()):9.1f} {'':5} {sum(alloc.values()):8.2f} {100.0:5.1f}%")

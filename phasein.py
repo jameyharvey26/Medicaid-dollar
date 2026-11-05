@@ -79,6 +79,19 @@ STATUTE = {
         cite="Mixed; residual is PROVISIONAL per fmap.py."),
 }
 
+# SUPERSEDED FOR ALLOCATION, 2026-11-05 (D-133). The weights below are no
+# longer used to place a lane's dollars in a year: CBO publishes the annual
+# section detail in workbook 61570 and `cbo61570.py` carries it. The STATUTE
+# table above stands and is still the source for the District's own step
+# counts (tobe2030_dc.FY30_STEPS). What is retired is the inference FROM the
+# schedule TO the dollars, which was always the modelled step.
+#
+# The note on "Everything else" above was right and is now measured: the lane
+# is the residual basket PLUS CBO's interaction netting. At FY2030 that is
+# -16.823B of fifteen unnamed sections against +9.335B of netting, drawn as
+# -7.488B. Two components of opposite sign; they shared one weight here.
+# See D-134 and cbo61570.residual_split().
+#
 # --- Modelled ramp weights, derived from the schedules above ----------------
 # MODELLED (S-012). Each weight is the share of that lane's steady-state effect
 # realised in the given fiscal year, derived mechanically from the step schedule.

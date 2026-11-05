@@ -175,10 +175,13 @@ LANES = {
 }
 
 # Ten-year CBO figures from ramp.py, $B.
-# BASIS WARNING: these are the DEFICIT series. D-26's own illustrative figures
-# reverse-engineer to the OUTLAY series ($325.6B for 71119 vs $317.0B here), an
-# $8.6B section-level wedge. Open task 2. Rates above are basis-agnostic; these
-# dollar results are not, and move when task 2 resolves.
+# BASIS: the DEFICIT series, outlays minus revenues (D-45).
+# WARNING RESOLVED 2026-11-05 (D-135). The "$8.6B section-level wedge" is
+# section 71119's revenue line. Workbook 61570 scores the section twice:
+# outlays -325,610 and revenues -8,650, giving the deficit effect -316,960
+# that CBO prints as $317.0B. Both numbers are CBO's, on two bases, and this
+# table was already on the right one. Open task 2 is closed; nothing here
+# moves.
 TEN_YR_DEFICIT = {
     "Work reporting": 317.0,
     "Six-month renewals": 58.0,
