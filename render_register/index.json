@@ -1,77 +1,77 @@
 {
   "dc_2024_baseline": {
-    "blessed": "2026-10-29",
-    "reason": "DC payer column re-based on CY2024 Title XIX reporting; service fan drawn on an assumed national mix and declared ASSUMED, NOT MEASURED on the plate; plans on reserved palette colours. No DC figure is signed.",
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
     "sha": "79b0233c6af068fc"
   },
   "dc_2024_combined": {
-    "blessed": "2026-10-29",
-    "reason": "DC payer column re-based on CY2024 Title XIX reporting; service fan drawn on an assumed national mix and declared ASSUMED, NOT MEASURED on the plate; plans on reserved palette colours. No DC figure is signed.",
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
     "sha": "ad3b81d9a4926ff8"
   },
   "dc_2024_overlay": {
-    "blessed": "2026-10-29",
-    "reason": "DC payer column re-based on CY2024 Title XIX reporting; service fan drawn on an assumed national mix and declared ASSUMED, NOT MEASURED on the plate; plans on reserved palette colours. No DC figure is signed.",
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
     "sha": "c74fd2441caefeb2"
   },
   "national_2024_baseline": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
     "sha": "35f0651bea914a7e"
   },
   "national_2024_combined": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
     "sha": "40891e149e7bbdd4"
   },
   "national_2024_overlay": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
     "sha": "665db42da85e035f"
   },
   "national_2030_holds_baseline": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "db920689698d572c"
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
+    "sha": "0391396d88ebc9bd"
   },
   "national_2030_holds_combined": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "660992b254ef3b8f"
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
+    "sha": "223b9464ffaa2352"
   },
   "national_2030_holds_overlay": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "8ef7d6db8789af75"
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
+    "sha": "d4ed3fcb5f60a02f"
   },
   "national_2030_mixed_baseline": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "a4a1332c89ce8f41"
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
+    "sha": "7b1cbbdb17fc73c6"
   },
   "national_2030_mixed_combined": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "95229d76df3614cb"
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
+    "sha": "bff6e3bf8a2e2de8"
   },
   "national_2030_mixed_overlay": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "be3e6974f368932d"
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
+    "sha": "6c1e84513b1fa475"
   },
   "national_2030_scales_baseline": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "54f66333b0899e5b"
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
+    "sha": "cb129db148a0994f"
   },
   "national_2030_scales_combined": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "961b72dab26b70b4"
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
+    "sha": "a3946531f5f0a2d3"
   },
   "national_2030_scales_overlay": {
-    "blessed": "2026-09-28",
-    "reason": "D-115: provider tax tributary released from its fixed terminal so it drops below the HR-1 rule like the other six, and its bite moved clear of the vaccine peel. FY2030 panels only.",
-    "sha": "898f01e4834c4318"
+    "blessed": "2026-11-11",
+    "reason": "D-133: the FY2030 national lane allocation is read from CBO workbook 61570 rather than modelled from statutory step schedules. Nine FY2030 panels move and nothing else; the 2024 and DC panels are untouched. Lane values per $100 (D-70 basis): provider tax limits 1.25->1.38, directed payment caps 0.85->1.29, work reporting 4.11->3.98, six-month renewals 0.75->0.64, Medicaid enrollment rule 1.04->0.81, Medicare Savings rule 1.28->1.07, other 1.06->0.90. Total 10.34->10.07.",
+    "sha": "c1a2fb36c0becce1"
   }
 }

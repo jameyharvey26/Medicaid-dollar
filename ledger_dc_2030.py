@@ -51,8 +51,16 @@ B30 = "total computable"
 HR1_DC = {
     "Work reporting":                   ("STATE_AGENCY", "DISBURSE"),
     "Six-month renewals":               ("STATE_AGENCY", "PAYER"),
-    "Blocked Medicaid enrollment rule": ("STATE_AGENCY", "CLAIMS"),
-    "DC provisions not separately scored": ("STATE_AGENCY", "STATE_AGENCY"),
+    # Section 71102 became two lanes (D-123) and the leftovers lane became
+    # three named provisions (D-118). Each inherits the charge and reach of
+    # the lane it came out of, unchanged: where in the lifecycle a dollar
+    # stops is a property of the statute and of the flow, and splitting a
+    # lane is not a reason to move it.
+    "Blocked renewal automation":       ("STATE_AGENCY", "CLAIMS"),
+    "Blocked reconsideration period":   ("STATE_AGENCY", "CLAIMS"),
+    "LTSS home equity cap":             ("STATE_AGENCY", "STATE_AGENCY"),
+    "Legal immigrant eligibility":      ("STATE_AGENCY", "STATE_AGENCY"),
+    "Retroactive eligibility":          ("STATE_AGENCY", "STATE_AGENCY"),
     "Blocked senior enrollment rule":   ("STATE_AGENCY", "BENEFICIARY"),
     "Provider tax limits":              ("FEDERAL",      "FEDERAL"),
     "Directed payment caps":            ("CLAIMS",       "PROVIDERS"),
@@ -64,8 +72,11 @@ TERMINAL_DC = {
     "Directed payment caps":            "will not top up hospital rates",
     "Blocked senior enrollment rule":   "will not become premium help",
     "Six-month renewals":               "will not survive renewal",
-    "Blocked Medicaid enrollment rule": "will not become enrollment",
-    "DC provisions not separately scored": "will not become services",
+    "Blocked renewal automation":       "will not renew automatically",
+    "Blocked reconsideration period":   "will not come back after a lapse",
+    "LTSS home equity cap":             "will not pass the asset test",
+    "Legal immigrant eligibility":      "will not be eligible",
+    "Retroactive eligibility":          "will not be covered before the claim",
 }
 
 NO_HUNDRED = ("No District figure. CBO scores this lever nationally and "
@@ -145,6 +156,30 @@ _DERIVED = {
         "in tobe2030_dc. The District's per-$100 exposure comes out above "
         "the national one because it is over-represented in this group "
         "relative to its Medicaid spending, which is a finding, not a fault."),
+    # --- section 71102, two lanes (D-123/124) -----------------------------
+    "Blocked renewal automation": (
+        _T.RENEWAL_AUTOMATION_PER100,
+        ("anchor.renewal.headroom_dc", "anchor.renewal.headroom_national",
+         "scale"),
+        _T.RENEWAL_AUTOMATION_NOTE),
+    "Blocked reconsideration period": (
+        _T.RECONSIDERATION_PER100,
+        ("anchor.renewal.headroom_dc", "anchor.renewal.procedural_dc",
+         "scale"),
+        _T.RECONSIDERATION_NOTE),
+    # --- the three named provisions (D-118), read off CBO's FY2030 --------
+    "LTSS home equity cap": (
+        _T.HOME_EQUITY_PER100,
+        ("anchor.cbo.sec71108_fy2030", "anchor.share.ltss", "scale"),
+        _T.HOME_EQUITY_NOTE),
+    "Legal immigrant eligibility": (
+        _T.IMMIGRANT_PER100,
+        ("anchor.cbo.sec71109_fy2030", "anchor.share.total", "scale"),
+        _T.IMMIGRANT_NOTE),
+    "Retroactive eligibility": (
+        _T.RETROACTIVE_PER100,
+        ("anchor.cbo.sec71112_fy2030", "anchor.share.total", "scale"),
+        _T.RETROACTIVE_NOTE),
 }
 
 
@@ -161,21 +196,14 @@ _DERIVED = {
 # from is a residual — a remainder, not a thing — so a figure there would be a
 # different quantity wearing the lane's name. It stays absent and the view
 # draws it as a hole.
-_ASSUMED = {
-    "Blocked Medicaid enrollment rule": (
-        _T.ASSUMED_PAPERWORK_PER100, _T.ASSUMED_PAPERWORK_NOTE),
-    # ADDED 2026-10-29 PM, on JW's instruction for the web explorer: where the
-    # District has no answer, assume it works like the national model, draw
-    # it, say so, and keep a list. The argument against this lane in
-    # particular is NOT withdrawn and is recorded in DC_ENGINE_TODO.md: the
-    # national lane is a residual defined by what CBO scored, the District
-    # lane carries three named District provisions, and they are not the same
-    # quantity. The lane is drawn here with the national residual's magnitude
-    # because an explorer that cannot show FY2030 DC at all is worth less
-    # than one that shows it and declares the assumption.
-    "DC provisions not separately scored": (
-        _T.ASSUMED_RESIDUAL_PER100, _T.ASSUMED_RESIDUAL_NOTE),
-}
+# RETIRED 2026-11-18 (D-143). Both lanes behind this switch are gone: the
+# paperwork lane is two District-derived lanes and the leftovers lane is three
+# named provisions, each with its own District figure. The switch and its
+# argument are kept because the argument was right -- a drawn assumption that
+# says so beats a panel that cannot be drawn -- and because something else may
+# need it. It now has nothing to turn on, which is the outcome the comment it
+# replaced was asking for.
+_ASSUMED = {}
 ASSUMED_LEVERS_DEFAULT = True
 _assumed_levers = ASSUMED_LEVERS_DEFAULT
 
@@ -315,6 +343,80 @@ def ledger(assumed_mix: bool = True) -> Ledger:
                  "Healthy DC Plan; the 134-210% band reads 1 against 16,417 "
                  "a year earlier. A panel built off the FY2024 bands would "
                  "overstate both enrolment levers by about a sixth."),
+        # --- the District's own renewal record (D-123/124) --------------
+        "renewal.headroom_dc": Fig(
+            _T.HEADROOM_DC, source=_T.RENEWAL_SNAPSHOT_SOURCE,
+            vintage="March-June 2026",
+            basis="share of renewals NOT completed ex parte, District",
+            status=MEASURED,
+            note="HEADROOM, not the rate: section 71102 blocks a rule whose "
+                 "substance is ex parte renewal, so what the District stands "
+                 "to lose is what it has not already automated. Struck on "
+                 "FY2026 months from March 2026 forward only -- DHCF's "
+                 "Gainwell MMIS went live 1 March 2026 and the pre-March "
+                 "regime has ended."),
+        "renewal.headroom_national": Fig(
+            _T.HEADROOM_NAT, source=_T.RENEWAL_SNAPSHOT_SOURCE,
+            vintage="March-June 2026",
+            basis="share of renewals NOT completed ex parte, national",
+            status=MEASURED,
+            note="The denominator the District's headroom is divided by, on "
+                 "the same months of the same table. The District renews ex "
+                 "parte at about 1.6 times the national rate, so its "
+                 "headroom is about half."),
+        "renewal.procedural_dc": Fig(
+            _T.PROCEDURAL_DC, source=_T.RENEWAL_SNAPSHOT_SOURCE,
+            vintage="March-June 2026",
+            basis="share of renewals ending in procedural disenrolment, "
+                  "District",
+            status=MEASURED,
+            note="The second mechanism inside section 71102. The District's "
+                 "section 71102 dollars divide between the two lanes in "
+                 "proportion to this rate and the headroom above, which is "
+                 "the one modelled step in the split."),
+        # --- CBO's own FY2030 section detail (D-118 as D-133 supersedes it)
+        "cbo.sec71108_fy2030": Fig(
+            float(-_T.cbo_fy2030("71108")), source=_T.CBO_SECTION_SOURCE,
+            vintage="2025-07-21",
+            basis="section 71108, FY2030 deficit effect, $M, national",
+            status=MEASURED,
+            note="Read from CBO workbook 61570, which publishes every "
+                 "Chapter 1 section by fiscal year. It replaces a ten-year "
+                 "total spread across the years in force, which was the "
+                 "modelled step D-120 was written to improve and D-133 "
+                 "removed."),
+        "cbo.sec71109_fy2030": Fig(
+            float(-_T.cbo_fy2030("71109")), source=_T.CBO_SECTION_SOURCE,
+            vintage="2025-07-21",
+            basis="section 71109, FY2030 deficit effect, $M, national",
+            status=MEASURED,
+            note="Same source and same construction as 71108. The District "
+                 "figure derived from it is contested on STATUS, not on "
+                 "size: see the lane's own note and D-129."),
+        "cbo.sec71112_fy2030": Fig(
+            float(-_T.cbo_fy2030("71112")), source=_T.CBO_SECTION_SOURCE,
+            vintage="2025-07-21",
+            basis="section 71112, FY2030 deficit effect, $M, national",
+            status=MEASURED,
+            note="Same source and same construction as 71108."),
+        "share.ltss": Fig.derived(
+            _T.DC_LTSS_SHARE, ("anchor.ltc.dc_fy2024",),
+            basis="District share of national long-term care spending",
+            note="The base the home equity cap bites on is LTSS "
+                 "eligibility, so the District's share is struck on "
+                 "long-term care rather than on the hundred."),
+        "ltc.dc_fy2024": Fig(
+            _T.DC_LTC_FY24_M, source=_T.DC_LTC_SOURCE, vintage="FY2024",
+            basis="District long-term care spending, $M", status=MEASURED,
+            note="The same figure ledger_dc_2024 draws its long-term care "
+                 "band from; the selftest in tobe2030_dc checks the two "
+                 "have not drifted."),
+        "share.total": Fig.derived(
+            _T.DC_TOTAL_SHARE, ("scale",),
+            basis="District share of the national hundred",
+            note="The base the immigrant-eligibility and retroactive-"
+                 "coverage provisions bite on is eligibility generally, so "
+                 "the District's share is struck on the hundred."),
         "msp.dc_qmb_only": Fig(
             float(_T.MSP_DENOMINATOR), source=_T.ENROL_SOURCE,
             vintage="January 2026",
@@ -543,8 +645,12 @@ def ledger(assumed_mix: bool = True) -> Ledger:
                      if p.key in _ASSUMED and _assumed_levers
                      and not p.amount.is_absent)
     _n_derived = _n_all - _n_absent - _n_assumed
+    # Extended past seven on 2026-11-18: D-118 and D-123 split two lanes into
+    # five, so the panel now has ten. A KeyError here means a lane was added
+    # without anyone reading the sentence it appears in.
     _word = {0: "None", 1: "One", 2: "Two", 3: "Three", 4: "Four",
-             5: "Five", 6: "Six", 7: "Seven"}
+             5: "Five", 6: "Six", 7: "Seven", 8: "Eight", 9: "Nine",
+             10: "Ten", 11: "Eleven", 12: "Twelve"}
 
     return Ledger(
         geography="District of Columbia",

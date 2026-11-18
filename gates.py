@@ -42,7 +42,12 @@ EXPECT = {
         # `build.py sensitivity` runs.
         must=["build complete.",
               "State Admin / Eligibility Rules sit 24 units apart",
-              "Other reaches y=674, past Behavioral health's name at y=673"],
+              # y=673 until 2026-11-11. D-133 moved the FY2030 lane values,
+              # the beneficiary overlay shifted a pixel with them, and the
+              # advisory is the same advisory about the same overlap. Pinned
+              # again rather than loosened to a substring: a geometry
+              # advisory that stops naming coordinates stops being a pin.
+              "Other reaches y=674, past Behavioral health's name at y=672"],
         forbid=["Vaccines / Provider Tax"],
         regex=[(r"^\s+(?:NOTE|WARNING)\b", 2,
                 "exactly the two frozen advisories"),

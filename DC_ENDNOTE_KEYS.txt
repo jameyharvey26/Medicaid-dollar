@@ -138,3 +138,17 @@ DC30:peel.medicare
 DC30:scale
 DC30:source.federal
 DC30:source.state
+DC30:anchor.cbo.sec71108_fy2030
+DC30:anchor.cbo.sec71109_fy2030
+DC30:anchor.cbo.sec71112_fy2030
+DC30:anchor.ltc.dc_fy2024
+DC30:anchor.renewal.headroom_dc
+DC30:anchor.renewal.headroom_national
+DC30:anchor.renewal.procedural_dc
+DC30:anchor.share.ltss
+DC30:anchor.share.total
+DC30:peel.Blocked reconsideration period
+DC30:peel.Blocked renewal automation
+DC30:peel.LTSS home equity cap
+DC30:peel.Legal immigrant eligibility
+DC30:peel.Retroactive eligibility

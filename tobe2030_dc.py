@@ -35,11 +35,20 @@ import basis_dc as _B
 # list out again.
 DERIVED_LEVERS = {"Work reporting", "Provider tax limits",
                   "Directed payment caps", "Six-month renewals",
-                  "Blocked senior enrollment rule"}
+                  "Blocked senior enrollment rule",
+                  # D-118/D-123, written in 2026-11-18. Nothing on this panel
+                  # carries a national number under a District label any more.
+                  "Blocked renewal automation", "Blocked reconsideration period",
+                  "LTSS home equity cap", "Legal immigrant eligibility",
+                  "Retroactive eligibility"}
 
 LEVERS = ["Work reporting", "Provider tax limits", "Directed payment caps",
           "Blocked senior enrollment rule", "Six-month renewals",
-          "Blocked Medicaid enrollment rule", "Everything else"]
+          # Section 71102 is two lanes, split by mechanism (D-123).
+          "Blocked renewal automation", "Blocked reconsideration period",
+          # The leftovers lane is three named provisions (D-118).
+          "LTSS home equity cap", "Legal immigrant eligibility",
+          "Retroactive eligibility"]
 
 
 # ===========================================================================
@@ -264,25 +273,13 @@ NET_ACR_M = {2025: 307.0, 2026: 455.0, 2027: 299.0}
 # the paperwork lane is in it and stays in it, because the figure drawn for it
 # is an assumption rather than a derivation and vanishes when assumed_levers
 # is turned off.
-ABSENT_LEVERS = {
-    "Blocked Medicaid enrollment rule": (
-        "Section 71102 blocks the eligibility-and-enrolment rule. Its effect "
-        "falls on PROCESS — ABD interviews, renewal alignment, the 90-day "
-        "reconsideration period, CHIP lockouts — not on a nameable group, and "
-        "the people affected are those who WOULD HAVE enrolled or stayed "
-        "enrolled under easier mechanics. They are a counterfactual, not a "
-        "row in DHCF's enrolment report. JW, 2026-10-29: leave ABSENT and "
-        "draw it as absence; a provision-by-provision mapping of our own "
-        "would be a modelled step with no source behind it."),
-    "DC provisions not separately scored": (
-        "Renamed from 'Everything else' on JW's call, 2026-10-29. Nationally "
-        "that lane is a residual defined by what CBO scored, and a residual "
-        "cannot be re-derived from District sources because it is not a "
-        "thing, it is a remainder. The DC lane carries named District "
-        "provisions instead — see DC_NAMED_PROVISIONS — and is NOT comparable "
-        "lane-to-lane with the national residual. The provisions are real and "
-        "dated; none is sized, so the lane's amount stays ABSENT."),
-}
+# SUPERSEDED 2026-11-18 (D-143). Both lanes that lived here are gone. The
+# paperwork lane is now two District-derived lanes (D-123) and the leftovers
+# lane is three named provisions (D-118), so there is no lever on this panel
+# whose amount is absent. The reasons they WERE absent are kept in
+# DC_ENGINE_TODO.md and in the notes on the lanes that replaced them; what is
+# not kept is an empty table pretending to be a finding.
+ABSENT_LEVERS = {}
 
 # The three provisions that fill the renamed lane. Each is federal statute,
 # each has a date, none has a District dollar figure.
@@ -703,6 +700,168 @@ ASSUMED_PAPERWORK_NOTE = (
 
 
 # ===========================================================================
+# SECTION 71102, AS TWO LANES — derived on the District's own renewal record
+# ===========================================================================
+#
+# D-123. Section 71102 blocks one rule with two mechanisms in it: automated
+# (ex parte) renewal, and the reconsideration period that lets somebody
+# terminated for paperwork come back without reapplying. A jurisdiction's
+# exposure to each is a different quantity, and the District publishes both.
+#
+# D-124. Struck on FY2026 months from MARCH 2026 FORWARD only. A FY2030 panel
+# describes the District as it now operates, post-cut and post-MMIS: DHCF's
+# Gainwell go-live was 1 March 2026 and the pre-March regime has ended. The
+# earlier months are in DC_RESEARCH_2026-11-03.md and are deliberately not
+# averaged in.
+#
+# SOURCE. CMS, Medicaid and CHIP Eligibility Operations and Enrollment
+# Snapshot, "Coverage Retention and Disenrollment Rates by State". Percentages
+# of renewals due, as published.
+RENEWAL_SNAPSHOT_FY26 = {          # month: (DC ex parte, DC procedural,
+    "2026-03": (0.67, 0.16, 0.48, 0.15),   # national ex parte, nat procedural)
+    "2026-04": (0.72, 0.13, 0.47, 0.15),
+    "2026-05": (0.77, 0.11, 0.48, 0.15),
+    "2026-06": (0.70, 0.15, 0.47, 0.15),
+}
+RENEWAL_SNAPSHOT_SOURCE = (
+    "CMS, Medicaid and CHIP Eligibility Operations and Enrollment Snapshot, "
+    "Coverage Retention and Disenrollment Rates by State, months March to "
+    "June 2026 (D-124)")
+
+_n = len(RENEWAL_SNAPSHOT_FY26)
+EX_PARTE_DC   = sum(v[0] for v in RENEWAL_SNAPSHOT_FY26.values()) / _n
+PROCEDURAL_DC = sum(v[1] for v in RENEWAL_SNAPSHOT_FY26.values()) / _n
+EX_PARTE_NAT   = sum(v[2] for v in RENEWAL_SNAPSHOT_FY26.values()) / _n
+PROCEDURAL_NAT = sum(v[3] for v in RENEWAL_SNAPSHOT_FY26.values()) / _n
+
+# HEADROOM, not the rate. The blocked rule's substance is ex parte renewal, so
+# what a jurisdiction stands to lose is what it has NOT already automated.
+HEADROOM_DC  = 1.0 - EX_PARTE_DC
+HEADROOM_NAT = 1.0 - EX_PARTE_NAT
+
+# The District's exposure to the whole of section 71102, against the nation's.
+# ONE ratio for the lane total -- this is the single modelled step D-123
+# declares, and it is the ex parte headroom because that is the rule's
+# substance. The far end of each band is this ratio set to 1.0: the District
+# behaving like the average.
+PAPERWORK_EXPOSURE = HEADROOM_DC / HEADROOM_NAT
+
+# How the District's section 71102 dollars divide between the two mechanisms:
+# in proportion to the two District rates (D-123).
+_split = EX_PARTE_HEADROOM_WEIGHT = HEADROOM_DC
+_split2 = PROCEDURAL_WEIGHT = PROCEDURAL_DC
+RENEWAL_SHARE        = _split / (_split + _split2)
+RECONSIDERATION_SHARE = _split2 / (_split + _split2)
+
+# The lane total at the national rate, which is where it sat before D-123.
+_PAPERWORK_NATIONAL_PER100 = _T30.per100["Blocked Medicaid enrollment rule"]
+
+RENEWAL_AUTOMATION_HI   = _PAPERWORK_NATIONAL_PER100 * RENEWAL_SHARE
+RECONSIDERATION_HI      = _PAPERWORK_NATIONAL_PER100 * RECONSIDERATION_SHARE
+RENEWAL_AUTOMATION_PER100   = RENEWAL_AUTOMATION_HI * PAPERWORK_EXPOSURE
+RECONSIDERATION_PER100      = RECONSIDERATION_HI * PAPERWORK_EXPOSURE
+
+RENEWAL_AUTOMATION_NOTE = (
+    "DERIVED on the District's own renewal record, not on the national rate. "
+    "Section 71102 blocks a rule whose substance is ex parte renewal, and the "
+    "District already renews ex parte at about 1.6 times the national rate, "
+    "so it has less to lose from the block. Measured as renewal HEADROOM -- "
+    "100% less the ex parte rate -- over the FY2026 months from March 2026 "
+    "forward, against the national headroom on the same months. The band runs "
+    "from zero, meaning the District has already captured everything the rule "
+    "would have delivered, to the national rate, meaning it behaves like the "
+    "average. Source: " + RENEWAL_SNAPSHOT_SOURCE + ".")
+RECONSIDERATION_NOTE = (
+    "DERIVED. The other mechanism inside section 71102: the reconsideration "
+    "period that lets somebody terminated for paperwork return without "
+    "reapplying. The District's section 71102 dollars divide between the two "
+    "lanes in proportion to its own two rates -- renewal headroom against "
+    "procedural disenrolment -- which is the one modelled step. Source: "
+    + RENEWAL_SNAPSHOT_SOURCE + ".")
+
+
+# ===========================================================================
+# THE THREE NAMED PROVISIONS — the leftovers lane, replaced
+# ===========================================================================
+#
+# D-118. The lane stops carrying the national residual's rate. A residual is a
+# remainder rather than a thing, and the District lane always promised three
+# named provisions; now it draws them.
+#
+# D-119 AS SUPERSEDED, 2026-11-18. The sections were carried on CBO's ten-year
+# totals spread across the years each provision is in force, and D-120 then
+# replaced the flat spread with the statutory step schedules. Both are gone:
+# workbook 61570 publishes every Chapter 1 section BY FISCAL YEAR, so the
+# FY2030 figure is read rather than inferred (D-133). The modelled step that
+# remains is the District share, and it is the same share construction the
+# rest of this file uses.
+import cbo61570 as _CBO
+
+CBO_SECTION_SOURCE = _CBO.SOURCE
+
+def cbo_fy2030(sec: str) -> float:
+    """CBO's FY2030 deficit effect for a Chapter 1 section, $M, sign as CBO
+    prints it. Read, never inferred: see D-133."""
+    return float(_CBO.deficit(sec, 2030))
+
+# The District's share of the national base each provision bites on. The home
+# equity cap reaches LTSS eligibility, so its base is long-term care; the other
+# two reach eligibility generally, so their base is the hundred.
+# The District's FY2024 long-term care spending. SOURCED, and typed here only
+# because ledger_dc_2024 holds it inside a function where nothing can import
+# it; the selftest below checks the two have not drifted apart.
+DC_LTC_FY24_M = 1236.0
+DC_LTC_SOURCE = _B.EX17
+DC_LTSS_SHARE  = DC_LTC_FY24_M / _BN.LTC_FFS_M
+DC_TOTAL_SHARE = _B.DC_TOTAL_M / _BN.HUNDRED_M
+
+PROVISION_SECTION = {
+    "LTSS home equity cap":        ("71108", DC_LTSS_SHARE),
+    "Legal immigrant eligibility": ("71109", DC_TOTAL_SHARE),
+    "Retroactive eligibility":     ("71112", DC_TOTAL_SHARE),
+}
+
+def _provision_per100(name):
+    sec, share = PROVISION_SECTION[name]
+    return per100_30(-_CBO.deficit(sec, 2030) * share)
+
+HOME_EQUITY_PER100     = _provision_per100("LTSS home equity cap")
+IMMIGRANT_PER100       = _provision_per100("Legal immigrant eligibility")
+RETROACTIVE_PER100     = _provision_per100("Retroactive eligibility")
+
+# A band for the home equity cap, because the District is not the nation on
+# home values. ACS 2024: 29.9% of District owner-occupied homes are worth $1m
+# or more, against 8.0% nationally. NOT LIKE-FOR-LIKE and the note says so:
+# home VALUE is not home EQUITY, and LTSS applicants are poorer and far more
+# often renters than the owners that table describes.
+DC_HOMES_OVER_1M  = 0.299
+NAT_HOMES_OVER_1M = 0.080
+HOME_EQUITY_HI = HOME_EQUITY_PER100 * (DC_HOMES_OVER_1M / NAT_HOMES_OVER_1M)
+
+HOME_EQUITY_NOTE = (
+    "DERIVED. CBO scores section 71108 at its FY2030 figure in workbook "
+    "61570; this carries that as a rate on the District's own long-term care "
+    "spending. The far end scales it by the District's share of homes worth "
+    "$1m or more, 29.9% against 8.0% nationally (ACS 2024). NOT like-for-"
+    "like: home VALUE is not home EQUITY, and LTSS applicants are poorer and "
+    "far more often renters than the owners that table describes. At either "
+    "end the lane is under a cent and a half, which is the finding.")
+IMMIGRANT_NOTE = (
+    "DERIVED. CBO's FY2030 figure for section 71109, carried as a rate on the "
+    "District's own spending. STATUS CONTESTED (D-129): the provision is in "
+    "force federally, DHCF advised on it in February 2026, and a "
+    "Washington-only injunction exists in Neighborhood House v. HHS. The "
+    "band's floor is zero -- what the lane is worth if it is enjoined here "
+    "too -- and that is a legal question, not a measurement.")
+RETROACTIVE_NOTE = (
+    "DERIVED. CBO's FY2030 figure for section 71112, carried as a rate on the "
+    "District's own spending. One month of retroactive coverage for expansion "
+    "adults and two for everyone else, from 1 January 2027 -- the same rule, "
+    "in different units, as the 90-to-30 and 90-to-60 day change DHCF "
+    "states.")
+
+
+# ===========================================================================
 # THE FY2030 HUNDRED'S SUPERSESSION — hunted, not found
 # ===========================================================================
 #
@@ -746,15 +905,22 @@ def _check():
     assert abs(SCALE30 * 100.0 - FY30_HUNDRED_M) < 1e-9
     assert FY30_HUNDRED_M > _B.DC_TOTAL_M, "FY2030 must exceed FY2024"
 
-    # the lever set still partitions, with the lane renamed
-    assert set(ABSENT_LEVERS) | DERIVED_LEVERS == \
-        set(LEVERS) - {"Everything else"} | {"DC provisions not separately scored"}
+    # The lever set still partitions, and now every lever is derived.
+    assert set(ABSENT_LEVERS) | DERIVED_LEVERS == set(LEVERS), (
+        "every District lever must be either derived or declared absent, and "
+        "the two sets must cover the drawn lanes exactly")
+    assert not ABSENT_LEVERS, (
+        "D-143: no District lever is absent any more. If one becomes absent "
+        "again, say why in ABSENT_LEVERS rather than in a quiet edit")
     assert "Blocked senior enrollment rule" in DERIVED_LEVERS, (
         "the seniors lane is derived on the District's own QMB-only count; if "
         "it is absent again, say why here rather than in a quiet edit")
-    assert "Blocked Medicaid enrollment rule" in ABSENT_LEVERS, (
-        "the paperwork lane is ASSUMED, never derived. If it leaves this set "
-        "somebody has turned an assumption into a finding")
+    for _k in ("Blocked renewal automation", "Blocked reconsideration period",
+               "LTSS home equity cap", "Legal immigrant eligibility",
+               "Retroactive eligibility"):
+        assert _k in DERIVED_LEVERS, (
+            f"{_k} is a District-derived lane (D-118/D-123). If it ever "
+            "carries a national figure again that is a regression, not a fix")
 
     # Q2: the seniors band. The default sits at the TOP because the figure is
     # an upper bound for the District, and the floor is a real argument.

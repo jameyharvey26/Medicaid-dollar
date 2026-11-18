@@ -142,6 +142,10 @@
   .tick span.at-end{transform:translateX(-100%);text-align:right}
   .tick span.at-end::before{left:auto;right:1px}
   .sl.ranged .tick{height:30px}
+  /* A band with more than three marks cannot label them on one row without
+     the labels colliding, so the row grows and alternate marks drop. */
+  .sl .tick.tall, .sl.ranged .tick.tall{height:86px;margin-bottom:10px}
+  .sl .tick.tall span.lower, .sl.ranged .tick.tall span.lower{top:40px}
   .sl.ranged .slnote{color:#1F5A7A}
   .sl.struck .slname,.sl.struck .slval{text-decoration:line-through;color:var(--grey)}
   .tabnote{font-size:12px;color:var(--muted);line-height:1.45;
@@ -342,7 +346,7 @@
 
 <script>
 const GEOM = {"cols":{"FEDERAL":[160,350],"STATE_GOVT":[350,584],"STATE_AGENCY":[584,844],"DISBURSE":[844,1060],"PAYER":[1060,1300],"CLAIMS":[1300,1560],"PROVIDERS":[1560,1760],"BENEFICIARY":[1760,2180]},"source_x":200.0,"canvas":{"w":2200,"h":1416},"ys":4.4,"bw":18,"centre_y":540,"ctrl_max":340.0,"fan":{"top":800.0,"min_gap":40.0,"tight_gap":8.0,"label_h":45.0,"label_h_tight":30.0,"rule_y":1146.0,"floor":1140.0,"stack_top":806.0,"top_off":18.0},"source_tops":{"federal":126.0,"state":655.0},"term_slot":{"FEDERAL":350.0,"STATE_AGENCY":844.0,"DISBURSE":1060.0,"PAYER":1300.0,"CLAIMS":1560.0,"BENEFICIARY":2180.0},"term_fallback":"charged","outflows":{"Administration":{"cls":"ordinary","src":"STATE_AGENCY","edge":"top","src_x":639.0,"term_col":"STATE_AGENCY","term_y":250,"ret":false},"Federal oversight":{"cls":"ordinary","src":"STATE_AGENCY","edge":"top","src_x":689.0,"term_col":"STATE_AGENCY","term_y":206,"ret":false},"Medicare premiums":{"cls":"ordinary","src":"STATE_AGENCY","edge":"top","src_x":739.0,"term_col":"FEDERAL","term_y":134,"ret":true},"MCO plan administration":{"cls":"ordinary","src":"PAYER","edge":"top","term_col":"PAYER","ret":false},"Dual MCO plan administration":{"cls":"ordinary","src":"PAYER","edge":"top","term_col":"PAYER","ret":false},"Public-company earnings":{"cls":"ordinary","src":"PAYER","edge":"top","term_col":"PAYER","ret":false},"Vaccines for Children":{"cls":"ordinary","src":"FEDERAL","edge":"top","src_x":218.0,"term_col":"FEDERAL","ret":true},"Documented fraud":{"cls":"ordinary","src":"CLAIMS","edge":"bottom","src_x":1306.0,"term_col":"PROVIDERS","term_y":880,"ret":false},"Provider tax limits":{"cls":"hr1","src":"FEDERAL","edge":"fed_bottom","src_x":300.0,"term_col":"FEDERAL","ret":false,"label_side":"end"},"Work reporting":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":688.0,"term_col":"DISBURSE","ret":false,"reach":"DISBURSE"},"Six-month renewals":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":722.0,"term_col":"PAYER","ret":false,"reach":"PAYER"},"Blocked Medicaid enrollment rule":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":756.0,"term_col":"CLAIMS","ret":false,"reach":"CLAIMS","label":"Medicaid enrollment rule suspended"},"Everything else":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":790.0,"term_col":"STATE_AGENCY","ret":false,"label":"Other"},"Blocked senior enrollment rule":{"cls":"hr1","src":"STATE_AGENCY","edge":"bottom","src_x":824.0,"term_col":"BENEFICIARY","ret":false,"term_dy":80.4,"reach":"BENEFICIARY","label":"Medicare Savings rule suspended","label_side":"end"},"Directed payment caps":{"cls":"hr1","src":"CLAIMS","edge":"bottom","src_x":1302.0,"term_col":"PROVIDERS","ret":false,"label_dy":-30}}};
-const DATA = {"US|2024":{"code":"US2024","name":"National","strap":"CMS-64 FY2024 national totals. Measured, except where flagged.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Administration","v":4.2477,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1016,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":2.9231,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Documented fraud","v":0.1511,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.367,"care":35.9234,"adm":3.839,"margin":0.6046,"plans":[]},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":10.9688,"care":9.7597,"adm":1.0479,"margin":0.1612,"plans":[]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":41.3919,"care":41.3919,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"},"plans":[]}],"cells":{"ffs|Long-term care":20.13,"ffs|Hospitals":8.33,"ffs|Other":5.74,"ffs|Physicians & clinics":2.47,"ffs|Rx drugs":1.52,"ffs|Behavioral health":3.21,"mco|Long-term care":7.08,"mco|Hospitals":7.53,"mco|Other":7.63,"mco|Physicians & clinics":6.61,"mco|Rx drugs":2.06,"mco|Behavioral health":5.01,"dual|Long-term care":1.92,"dual|Hospitals":2.04,"dual|Other":2.07,"dual|Physicians & clinics":1.8,"dual|Rx drugs":0.56,"dual|Behavioral health":1.36},"disp":{"Other":"Wrap around services"},"mix_assumed":true,"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":87.07},"US|2030":{"code":"US2030_mixed","name":"National","strap":"Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Work reporting","v":4.1061,"kind":"hr1","charged":"STATE_AGENCY","reach":"DISBURSE"},{"label":"Six-month renewals","v":0.7513,"kind":"hr1","charged":"STATE_AGENCY","reach":"PAYER"},{"label":"Blocked Medicaid enrollment rule","v":1.0396,"kind":"hr1","charged":"STATE_AGENCY","reach":"CLAIMS"},{"label":"Everything else","v":1.0587,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Blocked senior enrollment rule","v":1.2801,"kind":"hr1","charged":"STATE_AGENCY","reach":"BENEFICIARY"},{"label":"Administration","v":4.28,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1023,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.6653,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Provider tax limits","v":1.2499,"kind":"hr1","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Directed payment caps","v":0.8517,"kind":"hr1","charged":"CLAIMS","reach":"PROVIDERS"},{"label":"Documented fraud","v":0.1389,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":36.7707,"care":32.723,"adm":3.497,"margin":0.5507,"plans":[]},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":9.9916,"care":8.8902,"adm":0.9546,"margin":0.1469,"plans":[]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":37.7044,"care":37.7044,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"},"plans":[]}],"cells":{"mco|Long-term care":6.2277,"mco|Hospitals":6.6236,"mco|Other":6.9503,"mco|Physicians & clinics":5.8143,"mco|Behavioral health":4.5637,"mco|Rx drugs":1.8765,"dual|Long-term care":1.6889,"dual|Hospitals":1.7944,"dual|Other":1.8856,"dual|Physicians & clinics":1.5833,"dual|Behavioral health":1.2388,"dual|Rx drugs":0.5101,"ffs|Long-term care":18.3367,"ffs|Hospitals":7.5879,"ffs|Other":5.2286,"ffs|Physicians & clinics":2.25,"ffs|Behavioral health":2.924,"ffs|Rx drugs":1.3846},"disp":{"Other":"Wrap around services"},"mix_assumed":true,"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":78.4689},"DC|2024":{"code":"DC2024","name":"DC","strap":"CMS-64 / MACStats FY2024 DC spine. The payer column is the four plans: AmeriHealth, Wellpoint and MedStar on their own CY2024 Title XIX reporting, each with its administration and margin; HSCSN on CY2023, with no published split. The District publishes no managed-care service mix, so that fan is absent.","sources":{"federal":73.17,"state":26.83},"peels":[{"label":"Administration","v":5.3522,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.9671,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.3019,"care":34.7341,"adm":{"absent":"Three of the four plans now publish their administration and margin on their Title XIX column, but HSCSN does not, so the LANE total is still not known. Published as absent rather than as the sum of three, which would be a floor presented as a total. HSCSN predates the managed care regulations and is not an MCO in the regulatory sense, so it files no comparable annual statement and has no Title XIX column to read. It reports to DHCF; that figure has not been acquired. CY2023 stands in, and this plan is therefore a year behind the other three."},"margin":{"absent":"See admin."},"plans":[{"key":"amerihealth","label":"AmeriHealth Caritas DC","entity":"AmeriHealth Caritas District of Columbia, Inc.","col":"#5C68AB","cap":18.6701,"care":16.2048,"adm":2.0685,"margin":0.3968},{"key":"wellpoint","label":"Wellpoint DC (formerly Amerigroup)","entity":"Amerigroup District of Columbia, Inc.","col":"#3C3A71","cap":7.6736,"care":6.3159,"adm":0.9541,"margin":0.4036},{"key":"medstar","label":"MedStar Family Choice DC","entity":"MedStar Family Choice DC","col":"#673479","cap":9.3642,"care":8.3584,"adm":0.9454,"margin":0.0604},{"key":"hscsn","label":"HSCSN","entity":"Health Services for Children with Special Needs, Inc.","col":"#A55BC8","cap":4.594,"care":3.855,"adm":{"absent":"hscsn: retention is measured, its split into administration and margin is not published. HSCSN predates the managed care regulations and is not an MCO in the regulatory sense, so it files no comparable annual statement and has no Title XIX column to read. It reports to DHCF; that figure has not been acquired. CY2023 stands in, and this plan is therefore a year behind the other three."},"margin":{"absent":"hscsn: see admin."}}]},{"key":"dual","label":"Dual and PACE capitation","kind":"dual","cap":0.9149,"care":0.9149,"adm":{"absent":"No DC retention figure for the dual or PACE lanes."},"margin":{"absent":"See admin."},"plans":[{"key":"united","label":"UnitedHealthcare District Dual Choice","entity":"UnitedHealthcare Insurance Company","col":"#26323C","cap":0.5718,"care":0.5718,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"pace","label":"PACE","entity":"","col":"#9CACB4","cap":0.3431,"care":0.3431,"adm":{"absent":"no split"},"margin":{"absent":"no split"}}]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":51.4639,"care":51.4639,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"},"plans":[]}],"cells":{"ffs|Long-term care":28.2708,"ffs|Physicians & clinics":9.2864,"ffs|Hospitals":6.7932,"ffs|Wrap around services":5.0778,"ffs|Rx drugs":2.0357,"mco|Long-term care":6.8449,"dual|Long-term care":0.1803,"mco|Hospitals":7.2784,"dual|Hospitals":0.1917,"mco|Physicians & clinics":6.3962,"dual|Physicians & clinics":0.1685,"mco|Wrap around services":12.222,"dual|Wrap around services":0.3219,"mco|Rx drugs":1.9926,"dual|Rx drugs":0.0525},"disp":{},"mix_assumed":true,"cols":["Long-term care","Hospitals","Physicians & clinics","Wrap around services","Rx drugs"],"claims":87.1129},"DC|2030":{"code":"DC2030","name":"DC","strap":"DRAFT. Five of seven HR-1 lanes are derived on District inputs. One is ASSUMED from the national share and says so. One carries no DC figure and is drawn as a violet placeholder. The FY2030 hundred and the disenrolment rate are modelled and declared.","sources":{"federal":73.17,"state":26.83},"peels":[{"label":"Work reporting","v":2.9527,"kind":"hr1","charged":"STATE_AGENCY","reach":"DISBURSE"},{"label":"Six-month renewals","v":0.5402,"kind":"hr1","charged":"STATE_AGENCY","reach":"PAYER"},{"label":"Blocked Medicaid enrollment rule","v":1.0317,"kind":"hr1","charged":"STATE_AGENCY","reach":"CLAIMS"},{"label":"DC provisions not separately scored","v":1.0507,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Blocked senior enrollment rule","v":2.0918,"kind":"hr1","charged":"STATE_AGENCY","reach":"BENEFICIARY"},{"label":"Provider tax limits","v":1.9468,"kind":"hr1","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Directed payment caps","v":1.6307,"kind":"hr1","charged":"CLAIMS","reach":"PROVIDERS"},{"label":"Administration","v":5.3522,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.9671,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":36.1213,"care":31.131,"adm":{"absent":"no split"},"margin":{"absent":"no split"},"plans":[{"key":"amerihealth","label":"AmeriHealth Caritas DC","entity":"AmeriHealth Caritas District of Columbia, Inc.","col":"#5C68AB","cap":16.7334,"care":14.5238,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"wellpoint","label":"Wellpoint DC (formerly Amerigroup)","entity":"Amerigroup District of Columbia, Inc.","col":"#3C3A71","cap":6.8776,"care":5.6608,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"medstar","label":"MedStar Family Choice DC","entity":"MedStar Family Choice DC","col":"#673479","cap":8.3928,"care":7.4914,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"hscsn","label":"HSCSN","entity":"Health Services for Children with Special Needs, Inc.","col":"#A55BC8","cap":4.1175,"care":3.4551,"adm":{"absent":"no split"},"margin":{"absent":"no split"}}]},{"key":"dual","label":"Dual and PACE capitation","kind":"dual","cap":0.82,"care":0.82,"adm":{"absent":"no split"},"margin":{"absent":"no split"},"plans":[{"key":"united","label":"UnitedHealthcare District Dual Choice","entity":"UnitedHealthcare Insurance Company","col":"#26323C","cap":0.5125,"care":0.5125,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"pace","label":"PACE","entity":"","col":"#9CACB4","cap":0.3075,"care":0.3075,"adm":{"absent":"no split"},"margin":{"absent":"no split"}}]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":46.1254,"care":46.1254,"adm":{"absent":"no split"},"margin":{"absent":"no split"},"plans":[]}],"cells":{"ffs|Long-term care":25.3382,"ffs|Physicians & clinics":8.3231,"ffs|Hospitals":6.0886,"ffs|Wrap around services":4.551,"ffs|Rx drugs":1.8245,"mco|Long-term care":5.8218,"dual|Long-term care":0.1533,"mco|Hospitals":6.1905,"dual|Hospitals":0.1631,"mco|Physicians & clinics":5.4401,"dual|Physicians & clinics":0.1433,"mco|Wrap around services":10.3951,"dual|Wrap around services":0.2738,"mco|Rx drugs":1.6948,"dual|Rx drugs":0.0446},"disp":{},"mix_assumed":true,"cols":["Long-term care","Hospitals","Physicians & clinics","Wrap around services","Rx drugs"],"claims":76.4457}};
+const DATA = {"US|2024":{"code":"US2024","name":"National","strap":"CMS-64 FY2024 national totals. Measured, except where flagged.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Administration","v":4.2477,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1016,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":2.9231,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Documented fraud","v":0.1511,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.367,"care":35.9234,"adm":3.839,"margin":0.6046,"plans":[]},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":10.9688,"care":9.7597,"adm":1.0479,"margin":0.1612,"plans":[]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":41.3919,"care":41.3919,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"},"plans":[]}],"cells":{"ffs|Long-term care":20.13,"ffs|Hospitals":8.33,"ffs|Other":5.74,"ffs|Physicians & clinics":2.47,"ffs|Rx drugs":1.52,"ffs|Behavioral health":3.21,"mco|Long-term care":7.08,"mco|Hospitals":7.53,"mco|Other":7.63,"mco|Physicians & clinics":6.61,"mco|Rx drugs":2.06,"mco|Behavioral health":5.01,"dual|Long-term care":1.92,"dual|Hospitals":2.04,"dual|Other":2.07,"dual|Physicians & clinics":1.8,"dual|Rx drugs":0.56,"dual|Behavioral health":1.36},"disp":{"Other":"Wrap around services"},"mix_assumed":true,"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":87.07},"US|2030":{"code":"US2030_mixed","name":"National","strap":"Every figure modelled. HR-1 lanes CBO Oct 2025; denominator CBO Jan 2025 vintage.","sources":{"federal":65.2893,"state":35.4726},"peels":[{"label":"Vaccines for Children","v":0.7619,"kind":"return","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Work reporting","v":3.9835,"kind":"hr1","charged":"STATE_AGENCY","reach":"DISBURSE"},{"label":"Six-month renewals","v":0.6412,"kind":"hr1","charged":"STATE_AGENCY","reach":"PAYER"},{"label":"Blocked Medicaid enrollment rule","v":0.8068,"kind":"hr1","charged":"STATE_AGENCY","reach":"CLAIMS"},{"label":"Everything else","v":0.9014,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Blocked senior enrollment rule","v":1.0661,"kind":"hr1","charged":"STATE_AGENCY","reach":"BENEFICIARY"},{"label":"Administration","v":4.28,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Federal oversight","v":0.1023,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.8793,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Provider tax limits","v":1.3813,"kind":"hr1","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Directed payment caps","v":1.2896,"kind":"hr1","charged":"CLAIMS","reach":"PROVIDERS"},{"label":"Documented fraud","v":0.1397,"kind":"fraud","charged":"PROVIDERS","reach":"PROVIDERS"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":36.9846,"care":32.9134,"adm":3.5174,"margin":0.5539,"plans":[]},{"key":"dual","label":"Dual MCO capitation","kind":"dual","cap":10.0497,"care":8.9419,"adm":0.9601,"margin":0.1477,"plans":[]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":37.9237,"care":37.9237,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"},"plans":[]}],"cells":{"mco|Long-term care":6.1514,"mco|Hospitals":6.5423,"mco|Other":6.9907,"mco|Physicians & clinics":5.743,"mco|Behavioral health":4.5902,"mco|Rx drugs":1.8874,"dual|Long-term care":1.6682,"dual|Hospitals":1.7724,"dual|Other":1.8966,"dual|Physicians & clinics":1.5639,"dual|Behavioral health":1.246,"dual|Rx drugs":0.5131,"ffs|Long-term care":18.4433,"ffs|Hospitals":7.632,"ffs|Other":5.259,"ffs|Physicians & clinics":2.263,"ffs|Behavioral health":2.941,"ffs|Rx drugs":1.3926},"disp":{"Other":"Wrap around services"},"mix_assumed":true,"cols":["Long-term care","Hospitals","Other","Physicians & clinics","Behavioral health","Rx drugs"],"claims":78.4963},"DC|2024":{"code":"DC2024","name":"DC","strap":"CMS-64 / MACStats FY2024 DC spine. The payer column is the four plans: AmeriHealth, Wellpoint and MedStar on their own CY2024 Title XIX reporting, each with its administration and margin; HSCSN on CY2023, with no published split. The District publishes no managed-care service mix, so that fan is absent.","sources":{"federal":73.17,"state":26.83},"peels":[{"label":"Administration","v":5.3522,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.9671,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":40.3019,"care":34.7341,"adm":{"absent":"Three of the four plans now publish their administration and margin on their Title XIX column, but HSCSN does not, so the LANE total is still not known. Published as absent rather than as the sum of three, which would be a floor presented as a total. HSCSN predates the managed care regulations and is not an MCO in the regulatory sense, so it files no comparable annual statement and has no Title XIX column to read. It reports to DHCF; that figure has not been acquired. CY2023 stands in, and this plan is therefore a year behind the other three."},"margin":{"absent":"See admin."},"plans":[{"key":"amerihealth","label":"AmeriHealth Caritas DC","entity":"AmeriHealth Caritas District of Columbia, Inc.","col":"#5C68AB","cap":18.6701,"care":16.2048,"adm":2.0685,"margin":0.3968},{"key":"wellpoint","label":"Wellpoint DC (formerly Amerigroup)","entity":"Amerigroup District of Columbia, Inc.","col":"#3C3A71","cap":7.6736,"care":6.3159,"adm":0.9541,"margin":0.4036},{"key":"medstar","label":"MedStar Family Choice DC","entity":"MedStar Family Choice DC","col":"#673479","cap":9.3642,"care":8.3584,"adm":0.9454,"margin":0.0604},{"key":"hscsn","label":"HSCSN","entity":"Health Services for Children with Special Needs, Inc.","col":"#A55BC8","cap":4.594,"care":3.855,"adm":{"absent":"hscsn: retention is measured, its split into administration and margin is not published. HSCSN predates the managed care regulations and is not an MCO in the regulatory sense, so it files no comparable annual statement and has no Title XIX column to read. It reports to DHCF; that figure has not been acquired. CY2023 stands in, and this plan is therefore a year behind the other three."},"margin":{"absent":"hscsn: see admin."}}]},{"key":"dual","label":"Dual and PACE capitation","kind":"dual","cap":0.9149,"care":0.9149,"adm":{"absent":"No DC retention figure for the dual or PACE lanes."},"margin":{"absent":"See admin."},"plans":[{"key":"united","label":"UnitedHealthcare District Dual Choice","entity":"UnitedHealthcare Insurance Company","col":"#26323C","cap":0.5718,"care":0.5718,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"pace","label":"PACE","entity":"","col":"#9CACB4","cap":0.3431,"care":0.3431,"adm":{"absent":"no split"},"margin":{"absent":"no split"}}]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":51.4639,"care":51.4639,"adm":{"absent":"fee-for-service has no plan administration"},"margin":{"absent":"fee-for-service has no margin"},"plans":[]}],"cells":{"ffs|Long-term care":28.2708,"ffs|Physicians & clinics":9.2864,"ffs|Hospitals":6.7932,"ffs|Wrap around services":5.0778,"ffs|Rx drugs":2.0357,"mco|Long-term care":6.8449,"dual|Long-term care":0.1803,"mco|Hospitals":7.2784,"dual|Hospitals":0.1917,"mco|Physicians & clinics":6.3962,"dual|Physicians & clinics":0.1685,"mco|Wrap around services":12.222,"dual|Wrap around services":0.3219,"mco|Rx drugs":1.9926,"dual|Rx drugs":0.0525},"disp":{},"mix_assumed":true,"cols":["Long-term care","Hospitals","Physicians & clinics","Wrap around services","Rx drugs"],"claims":87.1129},"DC|2030":{"code":"DC2030","name":"DC","strap":"DRAFT. Five of seven HR-1 lanes are derived on District inputs. One is ASSUMED from the national share and says so. One carries no DC figure and is drawn as a violet placeholder. The FY2030 hundred and the disenrolment rate are modelled and declared.","sources":{"federal":73.17,"state":26.83},"peels":[{"label":"Work reporting","v":2.8646,"kind":"hr1","charged":"STATE_AGENCY","reach":"DISBURSE"},{"label":"Six-month renewals","v":0.4611,"kind":"hr1","charged":"STATE_AGENCY","reach":"PAYER"},{"label":"Blocked renewal automation","v":0.2932,"kind":"hr1","charged":"STATE_AGENCY","reach":"CLAIMS"},{"label":"Blocked reconsideration period","v":0.1415,"kind":"hr1","charged":"STATE_AGENCY","reach":"CLAIMS"},{"label":"LTSS home equity cap","v":0.0026,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Legal immigrant eligibility","v":0.0561,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Retroactive eligibility","v":0.0446,"kind":"hr1","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Blocked senior enrollment rule","v":1.7421,"kind":"hr1","charged":"STATE_AGENCY","reach":"BENEFICIARY"},{"label":"Provider tax limits","v":1.9468,"kind":"hr1","charged":"FEDERAL","reach":"FEDERAL"},{"label":"Directed payment caps","v":1.6307,"kind":"hr1","charged":"CLAIMS","reach":"PROVIDERS"},{"label":"Administration","v":5.3522,"kind":"admin","charged":"STATE_AGENCY","reach":"STATE_AGENCY"},{"label":"Medicare premiums","v":1.9671,"kind":"return","charged":"STATE_AGENCY","reach":"STATE_AGENCY"}],"lanes":[{"key":"mco","label":"MCO capitation","kind":"mco","cap":37.0177,"care":31.9036,"adm":{"absent":"no split"},"margin":{"absent":"no split"},"plans":[{"key":"amerihealth","label":"AmeriHealth Caritas DC","entity":"AmeriHealth Caritas District of Columbia, Inc.","col":"#5C68AB","cap":17.1487,"care":14.8843,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"wellpoint","label":"Wellpoint DC (formerly Amerigroup)","entity":"Amerigroup District of Columbia, Inc.","col":"#3C3A71","cap":7.0483,"care":5.8012,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"medstar","label":"MedStar Family Choice DC","entity":"MedStar Family Choice DC","col":"#673479","cap":8.6011,"care":7.6773,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"hscsn","label":"HSCSN","entity":"Health Services for Children with Special Needs, Inc.","col":"#A55BC8","cap":4.2196,"care":3.5408,"adm":{"absent":"no split"},"margin":{"absent":"no split"}}]},{"key":"dual","label":"Dual and PACE capitation","kind":"dual","cap":0.8404,"care":0.8404,"adm":{"absent":"no split"},"margin":{"absent":"no split"},"plans":[{"key":"united","label":"UnitedHealthcare District Dual Choice","entity":"UnitedHealthcare Insurance Company","col":"#26323C","cap":0.5252,"care":0.5252,"adm":{"absent":"no split"},"margin":{"absent":"no split"}},{"key":"pace","label":"PACE","entity":"","col":"#9CACB4","cap":0.3151,"care":0.3151,"adm":{"absent":"no split"},"margin":{"absent":"no split"}}]},{"key":"ffs","label":"Fee-for-service","kind":"ffs","cap":47.2701,"care":47.2701,"adm":{"absent":"no split"},"margin":{"absent":"no split"},"plans":[]}],"cells":{"ffs|Long-term care":25.967,"ffs|Physicians & clinics":8.5296,"ffs|Hospitals":6.2397,"ffs|Wrap around services":4.664,"ffs|Rx drugs":1.8698,"mco|Long-term care":5.974,"dual|Long-term care":0.1574,"mco|Hospitals":6.3524,"dual|Hospitals":0.1673,"mco|Physicians & clinics":5.5824,"dual|Physicians & clinics":0.147,"mco|Wrap around services":10.6669,"dual|Wrap around services":0.281,"mco|Rx drugs":1.7391,"dual|Rx drugs":0.0458},"disp":{},"mix_assumed":true,"cols":["Long-term care","Hospitals","Physicians & clinics","Wrap around services","Rx drugs"],"claims":78.3833}};
 const C = {
   federal:'#3D6E8C', local:'#A8BFCE', agency:'#1F7A5A',
   // the paper's lane colours, read off its own render: teal, purple, slate
@@ -355,7 +359,14 @@ const panelKey = () => place + '|' + year;
 let wr = null;
 let zoomLevel = 'all';
 
-const money = v => '$' + v.toFixed(2);
+// A lane worth less than a cent must not print as $0.00: on this plate that
+// reads as nothing at all, and the home equity cap ($0.0047) is a real figure
+// whose SIZE is the finding. Sub-cent values keep enough places to be seen;
+// everything else is unchanged at two.
+const money = v => {
+  const a = Math.abs(v);
+  return '$' + (a > 0 && a < 0.01 ? v.toFixed(4) : v.toFixed(2));
+};
 
 // A lane's colour, stepped for the named plans inside it. One hue, several
 // weights: the payer column has to read as ONE lane divided, not as four
@@ -1411,7 +1422,21 @@ function draw(M, zoom){
     t+=halo2(xPR[0]+PROV_W/2, ay-8,`ABSENT \u00b7 ${money(M.absent)}`, 14, C.vio, 600,'middle');
     ay+=bh+PROV_GAP;
   }
-  const payCur={}; for (const c of c3) payCur[c.l.key]=careTop[c.l.key];
+  // THE FORK IS CARRIED ONWARD, NOT REBUILT. `arrive` already records where
+  // each plan's care landed at the claims column, and the comment where it is
+  // built says that is what it is for. This used to walk ONE cursor per LANE
+  // through the services, so a plan's ribbons left from wherever the lane's
+  // cursor had reached rather than from that plan's own block: the services
+  // interleave, so one plan's bands were scattered down the lane instead of
+  // fanning out of its own bar. Each plan now leaves from its own arrival
+  // block, at the inset its ribbon arrived with, so the colours composite
+  // into the provider bars in the proportions the ledger gave.
+  const payCur={};
+  for (const c of c3) payCur[c.l.key]=careTop[c.l.key];
+  const planCur={};
+  for (const a of arrive)
+    planCur[(a.seg.named ? 'p:'+a.seg.label : 'l:'+a.lane)]
+      = a.y + (a.seg.named ? PG : 0);
   const svcOrder=Object.entries(M.svc).sort((a,b)=>b[1]-a[1]);
   const provObs=[]; let provBars=[];
   for (const [name,v] of svcOrder){
@@ -1439,20 +1464,28 @@ function draw(M, zoom){
         kids.forEach((q,i)=>{
           const part=cell*q.care/kidTot, pseg=seg*q.care/kidTot;
           const qc = q.col || tint(c.col,i);
-          g+=band(xCL[0], xPR[0], payCur[c.l.key], sub, h(part), pseg, qc, .66);
+          const pk = 'p:'+q.label;
+          const py = planCur[pk] !== undefined ? planCur[pk] : payCur[c.l.key];
+          g+=band(xCL[0], xPR[0], py, sub, h(part), pseg, qc, .66);
           g+=`<rect data-pick="svc:${name}" x="${xPR[0]}" y="${sub}" width="${PROV_W}" height="${pseg}" fill="${qc}"/>`;
-          payCur[c.l.key]+=h(part); sub+=pseg;
+          if (planCur[pk] !== undefined) planCur[pk]+=h(part);
+          else payCur[c.l.key]+=h(part);
+          sub+=pseg;
         });
         cu+=seg;
         continue;
       }
-      g+=band(xCL[0], xPR[0], payCur[c.l.key], cu, h(cell), seg, c.col, .62);
+      const lk = 'l:'+c.l.key;
+      const ly = planCur[lk] !== undefined ? planCur[lk] : payCur[c.l.key];
+      g+=band(xCL[0], xPR[0], ly, cu, h(cell), seg, c.col, .62);
       // the BAR, in the claims colour scheme. The band is translucent and the
       // bar is not, and a hairline divides the payers, so the column reads as
       // a stack of bars AND says how much of each service came through which
       // payer. That story is the point of the column.
       g+=`<rect data-pick="svc:${name}" x="${xPR[0]}" y="${cu}" width="${PROV_W}" height="${seg}" fill="${c.col}"/>`;
-      payCur[c.l.key]+=h(cell); cu+=seg;
+      if (planCur[lk] !== undefined) planCur[lk]+=h(cell);
+      else payCur[c.l.key]+=h(cell);
+      cu+=seg;
     }
     // the name sits ABOVE its bar, centred on it, as the paper has it
     t+=halo2(xPR[0]+PROV_W/2, ay-8, `${M.P.disp[name]||name} ${money(v)}`, 14,
@@ -1729,16 +1762,15 @@ const PICKNAME = {'src:federal':'Federal share', 'src:state':'State share'};
 // Typed here because engine_data_export does not carry the dict across. It
 // should: these are declarations, and a declaration that lives in two places
 // drifts.
-const LANE_CONTENTS = {
-  'DC provisions not separately scored': [
-    ['Home equity cap for LTSS', 'from 1 January 2028'],
-    ['Legal immigrant eligibility', 'from 1 October 2026 \u2014 under preliminary '
-     + 'injunction, status contested'],
-    ['Retroactive eligibility', 'from 1 January 2027']
-  ]
-};
-const BORROWED = ['Blocked Medicaid enrollment rule',
-                  'DC provisions not separately scored'];
+// Emptied 2026-11-18: the three provisions are drawn as three lanes now,
+// so a list inside one lane would describe something that is not there.
+// D-118.
+const LANE_CONTENTS = {};
+// D-118 and D-123 retire both entries: the enrolment rule is two
+// District-derived lanes and the leftovers lane is three named provisions,
+// each with its own District figure. Nothing on this panel carries a
+// national number under a District label.
+const BORROWED = [];
 const borrowedHere = () => panelKey() === 'DC|2030';
 
 // ---------------------------------------------------------------------------
@@ -1757,12 +1789,21 @@ function buildPanel(o, ovm, mixm, retm){
   // lane is scaled by the same ratio, or the panel would draw dollars reaching
   // claims that no service accounts for and call the difference absence.
   if (retm){
+    // D-FIX 2026-11-03: what the lane releases goes into the service mix as an
+    // AMOUNT, not as a ratio. Scaling the cells by care/care0 also scales the
+    // room the lane leaves for peels charged AFTER the claim -- the directed
+    // payment cap -- and that peel is a fixed figure. The difference then has
+    // nowhere to go and the panel calls it absence, which is the thing the
+    // comment below says it is avoiding. `delta` carries the released dollars
+    // so the mix absorbs all of them and the declared absence stays put.
+    const delta = {};
     const ratio = {};
     P.lanes = P.lanes.map(l => {
       const r = retm[l.key];
       if (r === undefined || !(l.cap > 0)) return l;
       const care = Math.max(0, Math.min(l.cap, l.cap - r));
       ratio[l.key] = l.care > 0 ? care / l.care : 1;
+      delta[l.key] = care - l.care;
       // WHAT THE LANE KEEPS IS DRAWN TWICE: once as the ribbon into the plan
       // pool, which is cap less care and so follows the slider on its own,
       // and once as the named terminals leaving that pool -- administration
@@ -1782,9 +1823,16 @@ function buildPanel(o, ovm, mixm, retm){
     });
     if (Object.keys(ratio).length){
       const c2 = {};
+      const laneCell = {};
       for (const [k,v] of Object.entries(P.cells)){
         const lane = k.split('|')[0];
-        c2[k] = ratio[lane] !== undefined ? v * ratio[lane] : v;
+        laneCell[lane] = (laneCell[lane]||0) + v;
+      }
+      for (const [k,v] of Object.entries(P.cells)){
+        const lane = k.split('|')[0], d = delta[lane];
+        c2[k] = (d === undefined || !(laneCell[lane] > 0))
+              ? v
+              : v * (laneCell[lane] + d) / laneCell[lane];
       }
       P.cells = c2;
     }
@@ -1816,15 +1864,128 @@ function modelFor(key, ovm, mixm, retm){
 // SLIDERS
 //
 // Ranged, where a source published a band. Excursion, where nobody did.
+// EVERY DISTRICT LEVER WITH NAMED ENDS CARRIES THEM (JW, 3 November 2026).
+// A mark is [value, what that end IS]. Where an end is an argument rather
+// than a measurement, the note says which.
+//
+// GENERATED 2026-11-18 from ledger_dc_2030 and tobe2030_dc, then pasted. That
+// is the same leak the IMPLIED constant below carries and it is no better
+// here: engine_data_export should emit these alongside DATA so a band cannot
+// drift from the ledger it describes. Until it does, a ledger change means
+// regenerating this block. The provider tax lane is deliberately ABSENT from
+// this table: its floor could not be reproduced from the current constants
+// and a band end nobody can re-derive is worse than no band.
+const DCBANDS = {
+    "Blocked senior enrollment rule": {
+      lo: 0, hi: 1.74211,
+      marks: [[0, "already enrolled above the floor"], [1.74211, "DC default, upper bound"]],
+      note: "D-125. The District runs QMB only, to 300% FPL against a federal flo"
+          + "or of 100%, so it has already enrolled much of the population a bloc"
+          + "ked federal streamlining rule would have reached. The drawn figure i"
+          + "s therefore an UPPER BOUND and the band runs from it down to zero. D"
+          + "HCF holds the count that closes it \u2014 how many QMB-only enrollees sit"
+          + " above 100% FPL \u2014 and has not been asked."
+    },
+    "Blocked renewal automation": {
+      lo: 0, hi: 0.540145,
+      marks: [[0, "nothing left to win"], [0.293221, "DC FY2026 ex parte"], [0.540145, "national rate"]],
+      note: "DERIVED on the District's own renewal record, not on the national ra"
+          + "te. Section 71102 blocks a rule whose substance is ex parte renewal,"
+          + " and the District already renews ex parte at about 1.6 times the nat"
+          + "ional rate, so it has less to lose from the block. Measured as renew"
+          + "al HEADROOM -- 100% less the ex parte rate -- over the FY2026 months"
+          + " from March 2026 forward, against the national headroom on the same "
+          + "months. The band runs from zero, meaning the District has already ca"
+          + "ptured everything the rule would have delivered, to the national rat"
+          + "e, meaning it behaves like the average. Source: CMS, Medicaid and CH"
+          + "IP Eligibility Operations and Enrollment Snapshot, Coverage Retentio"
+          + "n and Disenrollment Rates by State, months March to June 2026 (D-124"
+          + ")."
+    },
+    "Blocked reconsideration period": {
+      lo: 0, hi: 0.260596,
+      marks: [[0, "nothing left to win"], [0.141466, "DC FY2026 procedural"], [0.260596, "national rate"]],
+      note: "DERIVED. The other mechanism inside section 71102: the reconsiderati"
+          + "on period that lets somebody terminated for paperwork return without"
+          + " reapplying. The District's section 71102 dollars divide between the"
+          + " two lanes in proportion to its own two rates -- renewal headroom ag"
+          + "ainst procedural disenrolment -- which is the one modelled step. Sou"
+          + "rce: CMS, Medicaid and CHIP Eligibility Operations and Enrollment Sn"
+          + "apshot, Coverage Retention and Disenrollment Rates by State, months "
+          + "March to June 2026 (D-124)."
+    },
+    "LTSS home equity cap": {
+      lo: 0.0025619, hi: 0.00957512,
+      marks: [[0.0025619, "national rate"], [0.00957512, "DC home values"]],
+      note: "DERIVED. CBO scores section 71108 at its FY2030 figure in workbook 6"
+          + "1570; this carries that as a rate on the District's own long-term ca"
+          + "re spending. The far end scales it by the District's share of homes "
+          + "worth $1m or more, 29.9% against 8.0% nationally (ACS 2024). NOT lik"
+          + "e-for-like: home VALUE is not home EQUITY, and LTSS applicants are p"
+          + "oorer and far more often renters than the owners that table describe"
+          + "s. At either end the lane is under a cent and a half, which is the f"
+          + "inding."
+    },
+    "Legal immigrant eligibility": {
+      lo: 0, hi: 0.0561371,
+      marks: [[0, "enjoined here"], [0.0561371, "in force"]],
+      note: "DERIVED. CBO's FY2030 figure for section 71109, carried as a rate on"
+          + " the District's own spending. STATUS CONTESTED (D-129): the provisio"
+          + "n is in force federally, DHCF advised on it in February 2026, and a "
+          + "Washington-only injunction exists in Neighborhood House v. HHS. The "
+          + "band's floor is zero -- what the lane is worth if it is enjoined her"
+          + "e too -- and that is a legal question, not a measurement."
+    },
+    "Retroactive eligibility": {
+      lo: 0, hi: 0.0446158,
+      marks: [[0, "not in force"], [0.0446158, "in force"]],
+      note: "DERIVED. CBO's FY2030 figure for section 71112, carried as a rate on"
+          + " the District's own spending. One month of retroactive coverage for "
+          + "expansion adults and two for everyone else, from 1 January 2027 -- t"
+          + "he same rule, in different units, as the 90-to-30 and 90-to-60 day c"
+          + "hange DHCF states."
+    },
+    "Directed payment caps": {
+      lo: 1.63073, hi: 2.4461,
+      marks: [[1.63073, "CMS rule, two steps"], [2.4461, "DHCF reading, three"]],
+      note: "The statute bites on rating periods beginning on or after 1 January "
+          + "2028. The District's rating period is the federal fiscal year, so FY"
+          + "2029 is the first affected and FY2030 is two steps in. DHCF's own de"
+          + "ck and testimony say reductions start in FY2028, which would make it"
+          + " three. The model follows the rule and keeps DHCF's reading as the f"
+          + "ar end rather than hiding the disagreement."
+    },
+    "Six-month renewals": {
+      lo: 0.461065, hi: 2.11943,
+      marks: [[0.461065, "CBO implied"], [1.14123, "Urban high \u201926"], [2.11943, "Urban medium \u201926"]],
+      note: "D-121/122. The default is CBO's own implied rate for this lever carr"
+          + "ied onto the District's expansion spending. The ends are Urban's Dis"
+          + "trict row for six-month redeterminations \u2014 7% under high mitigation,"
+          + " 13% under medium. Urban's expansion base is about 109,000 against t"
+          + "he District's own 78,322, so the ends are not yet like-for-like with"
+          + " the default."
+    },
+  };
+
 function spec(key, p){
   const s = {label:p.label, v:p.v, kind:p.kind, charged:p.charged};
+  // A District lever with named ends carries them. This sits immediately
+  // after `s` exists and before any generic handling, which assumes a single
+  // default with no band.
+  if (key.startsWith('DC') && DCBANDS[p.label]){
+    const bd = DCBANDS[p.label];
+    s.ranged = true; s.lo = bd.lo; s.hi = bd.hi;
+    s.marks = bd.marks.map(m => ({v: m[0], top: money(m[0]), bot: m[1]}));
+    s.note = bd.note;
+    return s;
+  }
   if (p.label === 'Work reporting'){
     // ONE BAND, BOTH PANELS (JW, 29 Oct, Q1: publish a range with a declared
     // default inside it, and let both become the slider).
     //
     // The band is in RATES, not dollars. Nationally the default IS the rate:
     // CBO's lever dollars over new-adult-group spending comes back to CBO's
-    // lever dollars exactly, so $4.11 is 18.1% of that spending by
+    // lever dollars exactly, so the drawn figure is that rate of that spending by
     // construction. On the District the same rate is carried onto the
     // District's own expansion spending. The ends are the only two times a
     // work requirement has run at scale.
@@ -2179,10 +2340,10 @@ function tickHTML(lo, hi, marks){
   const pos = v => (hi > lo) ? Math.min(1, Math.max(0, (v - lo) / (hi - lo))) : 0.5;
   // a label centred on a handle at either end hangs off the panel, so the
   // outermost marks align inward instead
-  return '<div class="tick">' + marks.map(m => {
+  return '<div class="tick' + (marks.length > 3 ? ' tall' : '') + '">' + marks.map((m, mi) => {
     const f = pos(m.v);
     const edge = f < 0.14 ? ' at-start' : f > 0.86 ? ' at-end' : '';
-    return '<span class="' + (m.cls||'') + edge + '" style="left:calc(11px + (100% - 22px) * '
+    return '<span class="' + (m.cls||'') + edge + (marks.length > 3 && (mi % 2) ? ' lower' : '') + '" style="left:calc(11px + (100% - 22px) * '
       + f.toFixed(4) + ')"><b>' + (m.top||money(m.v)) + '</b>'
       + (m.bot ? '<i>' + m.bot + '</i>' : '') + '</span>';
   }).join('') + '</div>';

@@ -58,16 +58,25 @@ def _root():
     to sit at a particular path. On a clean clone checked out anywhere else the
     gate reported every panel MISSING and told the user to run build.py, which
     they had just run. Read the declaration instead of assuming it.
+
+    FIXED 2026-11-11 (D-138). The regex above matched only a literal string,
+    and build.py declares `OUT = os.path.join(REPO, "build_out", "nat")`, so
+    the match never fired and the fallback returned the repo's PARENT. Every
+    panel then read MISSING with the advice "run build.py", which is exactly
+    the failure this function's own docstring was written to fix. Read the
+    quoted segments off the OUT line and join them under REPO instead.
     """
     try:
         with open(os.path.join(REPO, "build.py"), encoding="utf-8") as fh:
             for line in fh:
-                m = re.match(r'\s*OUT\s*=\s*["\'](.+?)["\']', line)
-                if m:
-                    return os.path.dirname(m.group(1))
+                if not re.match(r"\s*OUT\s*=", line):
+                    continue
+                parts = re.findall(r'["\']([^"\']+)["\']', line)
+                if parts:
+                    return os.path.dirname(os.path.join(REPO, *parts))
     except OSError:
         pass
-    return os.path.dirname(REPO)
+    return os.path.join(REPO, "build_out")
 
 
 def panel_texts(path):

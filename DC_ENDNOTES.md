@@ -186,9 +186,18 @@ Basis: non-federal share. Derived from: `anchor.ex16.state`, `anchor.ex16.total`
 
 ## DC FY2030 to-be (DRAFT)  (`DC30`)
 
-**8** measured  ·  **16** derived  ·  **42** modelled  ·  **0** client  ·  **18** absent
+**15** measured  ·  **23** derived  ·  **40** modelled  ·  **0** client  ·  **18** absent
 
-**0 of 84 figures signed by a person.**
+**0 of 96 figures signed by a person.**
+
+**DC-EN-140 · Anchor figure: cbo.sec71108_fy2030 — DC FY2030 to-be (DRAFT): 24.0000. | M**
+Source: CBO publication 61570, 21 July 2025, 61570-pl119-21-2025Recon-CLB.xlsx, sheet 'Title VII', table 7. Vintage: 2025-07-21. Basis: section 71108, FY2030 deficit effect, $M, national. Read from CBO workbook 61570, which publishes every Chapter 1 section by fiscal year. It replaces a ten-year total spread across the years in force, which was the modelled step D-120 was written to improve and D-133 removed. Verified: **no**. Ledger key: `DC30:anchor.cbo.sec71108_fy2030`.
+
+**DC-EN-141 · Anchor figure: cbo.sec71109_fy2030 — DC FY2030 to-be (DRAFT): 726.0000. | M**
+Source: CBO publication 61570, 21 July 2025, 61570-pl119-21-2025Recon-CLB.xlsx, sheet 'Title VII', table 7. Vintage: 2025-07-21. Basis: section 71109, FY2030 deficit effect, $M, national. Same source and same construction as 71108. The District figure derived from it is contested on STATUS, not on size: see the lane's own note and D-129. Verified: **no**. Ledger key: `DC30:anchor.cbo.sec71109_fy2030`.
+
+**DC-EN-142 · Anchor figure: cbo.sec71112_fy2030 — DC FY2030 to-be (DRAFT): 577.0000. | M**
+Source: CBO publication 61570, 21 July 2025, 61570-pl119-21-2025Recon-CLB.xlsx, sheet 'Title VII', table 7. Vintage: 2025-07-21. Basis: section 71112, FY2030 deficit effect, $M, national. Same source and same construction as 71108. Verified: **no**. Ledger key: `DC30:anchor.cbo.sec71112_fy2030`.
 
 **DC-EN-56 · Anchor figure: expansion.at_risk — DC FY2030 to-be (DRAFT): 78,322.0000 per $100. | M**
 Source: DHCF, Monthly Medicaid and Alliance Enrollment Report, February 2026 edition, data through January 2026, preliminary. Vintage: January 2026. Basis: childless adults 0-133% FPL, enrolled. NOT the FY2024 mix. The District cut childless adult and parent eligibility to 138% FPL itself, effective 1 January 2026, and auto-enrolled about 15,000 people into the Healthy DC Plan; the 134-210% band reads 1 against 16,417 a year earlier. A panel built off the FY2024 bands would overstate both enrolment levers by about a sixth. Verified: **no**. Ledger key: `DC30:anchor.expansion.at_risk`.
@@ -205,6 +214,9 @@ Source: Social Security Act sec. 1905(b) as amended by Balanced Budget Act of 19
 **DC-EN-60 · Anchor figure: fmap.regular — DC FY2030 to-be (DRAFT): 0.7000 per $100. | M**
 Source: Social Security Act sec. 1905(b) as amended by Balanced Budget Act of 1997 sec. 4725(b); HHS annual FMAP notice. Vintage: statutory. Basis: federal share of regular-match expenditure. Fixed at 70 percent by statute, not computed from the per-capita-income formula. This is the single largest driver of DC's divergence from the national figure on every enrollment-side lever. Verified: **no**. Ledger key: `DC30:anchor.fmap.regular`.
 
+**DC-EN-143 · Anchor figure: ltc.dc_fy2024 — DC FY2030 to-be (DRAFT): 1,236.0000. | M**
+Source: MACPAC, MACStats: Medicaid and CHIP Data Book, Exhibit 17, Total Medicaid Benefit Spending by State and Category, FY 2024, published February 2026; MACPAC analysis of CMS-64 FMR net expenditure data as of 3 June 2025. Vintage: FY2024. Basis: District long-term care spending, $M. The same figure ledger_dc_2024 draws its long-term care band from; the selftest in tobe2030_dc checks the two have not drifted. Verified: **no**. Ledger key: `DC30:anchor.ltc.dc_fy2024`.
+
 **DC-EN-61 · Anchor figure: msp.dc_qmb_only — DC FY2030 to-be (DRAFT): 12,880.0000 per $100. | M**
 Source: DHCF, Monthly Medicaid and Alliance Enrollment Report, February 2026 edition, data through January 2026, preliminary. Vintage: January 2026. Basis: QMB-only enrolment, people. DHCF publishes this as an eligibility category in a list that sums to total Medicaid, so it is QMB WITHOUT full Medicaid benefits. Rising while total Medicaid fell. The District offers the QMB group only, at 300% FPL against a federal floor of 100%. It operates no SLMB and no QI group. MACPAC, Medicare Savings Programs: Enrollment Trends, June 2024, note 10. Verified: **no**. Ledger key: `DC30:anchor.msp.dc_qmb_only`.
 
@@ -214,11 +226,26 @@ Source: MACPAC, Medicare Savings Programs: Enrollment Trends, June 2024, Table 3
 **DC-EN-63 · Anchor figure: rate.default — DC FY2030 to-be (DRAFT): 0.2040 per $100. | P**
 Source: implied by tobe2030's FY2030 lever dollars over national new-adult-group spending (MACStats Exhibit 21 share, FY2023), both already in this repo. Vintage: FY2030. Basis: share of expansion-group spending lost to the two enrolment levers. THE ONE MODELLED STEP in both enrolment levers. Default is the rate implied by CBO's own national score, derived from figures already in this repo and typed nowhere; a rate is not a dollar allocation, and that distinction belongs on the plate. Published as a band running up to the New Hampshire outcome, with Arkansas between. THE ENDS ARE NOT LIKE-FOR-LIKE: the default is a share of expansion-group spending, which includes people the requirement exempts, while the observed ends are coverage loss among those SUBJECT. DC's exempt share is the next acquisition. Verified: **no**. Ledger key: `DC30:anchor.rate.default`.
 
+**DC-EN-144 · Anchor figure: renewal.headroom_dc — DC FY2030 to-be (DRAFT): 0.2850 per $100. | M**
+Source: CMS, Medicaid and CHIP Eligibility Operations and Enrollment Snapshot, Coverage Retention and Disenrollment Rates by State, months March to June 2026 (D-124). Vintage: March-June 2026. Basis: share of renewals NOT completed ex parte, District. HEADROOM, not the rate: section 71102 blocks a rule whose substance is ex parte renewal, so what the District stands to lose is what it has not already automated. Struck on FY2026 months from March 2026 forward only -- DHCF's Gainwell MMIS went live 1 March 2026 and the pre-March regime has ended. Verified: **no**. Ledger key: `DC30:anchor.renewal.headroom_dc`.
+
+**DC-EN-145 · Anchor figure: renewal.headroom_national — DC FY2030 to-be (DRAFT): 0.5250 per $100. | M**
+Source: CMS, Medicaid and CHIP Eligibility Operations and Enrollment Snapshot, Coverage Retention and Disenrollment Rates by State, months March to June 2026 (D-124). Vintage: March-June 2026. Basis: share of renewals NOT completed ex parte, national. The denominator the District's headroom is divided by, on the same months of the same table. The District renews ex parte at about 1.6 times the national rate, so its headroom is about half. Verified: **no**. Ledger key: `DC30:anchor.renewal.headroom_national`.
+
+**DC-EN-146 · Anchor figure: renewal.procedural_dc — DC FY2030 to-be (DRAFT): 0.1375 per $100. | M**
+Source: CMS, Medicaid and CHIP Eligibility Operations and Enrollment Snapshot, Coverage Retention and Disenrollment Rates by State, months March to June 2026 (D-124). Vintage: March-June 2026. Basis: share of renewals ending in procedural disenrolment, District. The second mechanism inside section 71102. The District's section 71102 dollars divide between the two lanes in proportion to this rate and the headroom above, which is the one modelled step in the split. Verified: **no**. Ledger key: `DC30:anchor.renewal.procedural_dc`.
+
 **DC-EN-64 · Anchor figure: sdp.cut_fy2030 — DC FY2030 to-be (DRAFT): 97.0400. | D**
 Basis: reduction in state directed payments, FY2030, $M. Derived from: `anchor.sdp.grandfathered`. Two steps of 10 percentage points off the grandfathered total. DC's rating period is the federal fiscal year, established from CMS's approval letter, control name DC_Fee_IPH_New_20231001-20240930. The statute bites on rating periods beginning on or after 1 January 2028, so FY2028 (beginning 1 October 2027) is too early and FY2029 is the first affected period. RESOLVED 2026-10-29 on CMS-2449-P, which states the test in exactly those terms, and on a second confirmation of the rating period from the FY2025 preprint. DHCF's own deck says FY2028, which would make FY2030 the third step and the reduction $145.56M; the model does not move to meet it, and the question is worth putting to DHCF before publication. Verified: **no**. Ledger key: `DC30:anchor.sdp.cut_fy2030`.
 
 **DC-EN-65 · Anchor figure: sdp.grandfathered — DC FY2030 to-be (DRAFT): 485.2000. | P**
 Source: D.C. Department of Health Care Finance, FY 2026 Medicaid Advisory Committee meeting, 22 April 2026, summary of ACR changes FY2025-FY2027. Vintage: FY2025. Basis: state directed payments, $M, approved by CMS. DHCF's own planning assumption, used on JW's instruction 2026-10-07 and footnoted as an assumption. DHCF states the provider fee funds revert to the FY2025 level in FY2027 because taxes are frozen at their 4 July 2025 level. The FY2026 projection of $658.7M would give a larger base and the grandfathering window appears to permit it, but it rested on a CMS approval still outstanding in April 2026. Verified: **no**. Ledger key: `DC30:anchor.sdp.grandfathered`.
+
+**DC-EN-147 · Anchor figure: share.ltss — DC FY2030 to-be (DRAFT): 0.0064 per $100. | D**
+Basis: District share of national long-term care spending. Derived from: `anchor.ltc.dc_fy2024`. The base the home equity cap bites on is LTSS eligibility, so the District's share is struck on long-term care rather than on the hundred. Verified: **no**. Ledger key: `DC30:anchor.share.ltss`.
+
+**DC-EN-148 · Anchor figure: share.total — DC FY2030 to-be (DRAFT): 0.0046 per $100. | D**
+Basis: District share of the national hundred. Derived from: `scale`. The base the immigrant-eligibility and retroactive-coverage provisions bite on is eligibility generally, so the District's share is struck on the hundred. Verified: **no**. Ledger key: `DC30:anchor.share.total`.
 
 **DC-EN-66 · Anchor figure: tax.base_fy2026 — DC FY2030 to-be (DRAFT): 285.9400. | M**
 Source: Government of the District of Columbia, Department of Health Care Finance (HT0), Table HT0-2, FY2027 Proposed Budget and Financial Plan chapter, which carries all four years on one table. Vintage: FY2026. Basis: dedicated taxes, approved, $M. DHCF Table HT0-2, which carries four years on one table. The FY2024 cell on this line is identical to basis_dc.DC_DEDTAX_M, which is how we know the budget table and the basis read the same line. APPROPRIATION basis, not CMS-64 — the warning basis_dc already carries. Verified: **no**. Ledger key: `DC30:anchor.tax.base_fy2026`.
@@ -229,82 +256,82 @@ Source: Government of the District of Columbia, Department of Health Care Financ
 **DC-EN-68 · Anchor figure: tax.prior_law_fy2030 — DC FY2030 to-be (DRAFT): 351.1833. | D**
 Basis: dedicated tax revenue under prior law, FY2030, $M. Derived from: `anchor.tax.base_fy2026`. The FY2026 approved level grown at the prior-law rate. MODELLED: that the tax base tracks Medicaid spending. Verified: **no**. Ledger key: `DC30:anchor.tax.prior_law_fy2030`.
 
-**DC-EN-69 · Claims allocation: dual into Hospitals — DC FY2030 to-be (DRAFT): 0.1649 per $100. | P**
+**DC-EN-69 · Claims allocation: dual into Hospitals — DC FY2030 to-be (DRAFT): 0.1673 per $100. | P**
 Source: ledger_national_2024. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Reduced proportionally by the directed payment caps, which are charged at claims and land inside the capitated leg of this fan. Verified: **no**. Ledger key: `DC30:claims.cell.dual.Hospitals`.
 
-**DC-EN-70 · Claims allocation: dual into Long-term care — DC FY2030 to-be (DRAFT): 0.1551 per $100. | P**
+**DC-EN-70 · Claims allocation: dual into Long-term care — DC FY2030 to-be (DRAFT): 0.1574 per $100. | P**
 Source: ledger_national_2024. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Reduced proportionally by the directed payment caps, which are charged at claims and land inside the capitated leg of this fan. Verified: **no**. Ledger key: `DC30:claims.cell.dual.Long-term care`.
 
-**DC-EN-71 · Claims allocation: dual into Physicians & clinics — DC FY2030 to-be (DRAFT): 0.1449 per $100. | P**
+**DC-EN-71 · Claims allocation: dual into Physicians & clinics — DC FY2030 to-be (DRAFT): 0.1470 per $100. | P**
 Source: ledger_national_2024. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Reduced proportionally by the directed payment caps, which are charged at claims and land inside the capitated leg of this fan. Verified: **no**. Ledger key: `DC30:claims.cell.dual.Physicians & clinics`.
 
-**DC-EN-72 · Claims allocation: dual into Rx drugs — DC FY2030 to-be (DRAFT): 0.0452 per $100. | P**
+**DC-EN-72 · Claims allocation: dual into Rx drugs — DC FY2030 to-be (DRAFT): 0.0458 per $100. | P**
 Source: ledger_national_2024. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Reduced proportionally by the directed payment caps, which are charged at claims and land inside the capitated leg of this fan. Verified: **no**. Ledger key: `DC30:claims.cell.dual.Rx drugs`.
 
-**DC-EN-73 · Claims allocation: dual into Wrap around services — DC FY2030 to-be (DRAFT): 0.2770 per $100. | P**
+**DC-EN-73 · Claims allocation: dual into Wrap around services — DC FY2030 to-be (DRAFT): 0.2810 per $100. | P**
 Source: ledger_national_2024. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Reduced proportionally by the directed payment caps, which are charged at claims and land inside the capitated leg of this fan. Verified: **no**. Ledger key: `DC30:claims.cell.dual.Wrap around services`.
 
-**DC-EN-74 · Claims allocation: ffs into Hospitals — DC FY2030 to-be (DRAFT): 6.1548 per $100. | P**
+**DC-EN-74 · Claims allocation: ffs into Hospitals — DC FY2030 to-be (DRAFT): 6.2397 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:claims.cell.ffs.Hospitals`.
 
-**DC-EN-75 · Claims allocation: ffs into Long-term care — DC FY2030 to-be (DRAFT): 25.6140 per $100. | P**
+**DC-EN-75 · Claims allocation: ffs into Long-term care — DC FY2030 to-be (DRAFT): 25.9670 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:claims.cell.ffs.Long-term care`.
 
-**DC-EN-76 · Claims allocation: ffs into Physicians & clinics — DC FY2030 to-be (DRAFT): 8.4137 per $100. | P**
+**DC-EN-76 · Claims allocation: ffs into Physicians & clinics — DC FY2030 to-be (DRAFT): 8.5296 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:claims.cell.ffs.Physicians & clinics`.
 
-**DC-EN-77 · Claims allocation: ffs into Rx drugs — DC FY2030 to-be (DRAFT): 1.8444 per $100. | P**
+**DC-EN-77 · Claims allocation: ffs into Rx drugs — DC FY2030 to-be (DRAFT): 1.8698 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:claims.cell.ffs.Rx drugs`.
 
-**DC-EN-78 · Claims allocation: ffs into Wrap around services — DC FY2030 to-be (DRAFT): 4.6006 per $100. | P**
+**DC-EN-78 · Claims allocation: ffs into Wrap around services — DC FY2030 to-be (DRAFT): 4.6640 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:claims.cell.ffs.Wrap around services`.
 
-**DC-EN-79 · Claims allocation: mco into Hospitals — DC FY2030 to-be (DRAFT): 6.2615 per $100. | P**
+**DC-EN-79 · Claims allocation: mco into Hospitals — DC FY2030 to-be (DRAFT): 6.3524 per $100. | P**
 Source: ledger_national_2024. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Reduced proportionally by the directed payment caps, which are charged at claims and land inside the capitated leg of this fan. Verified: **no**. Ledger key: `DC30:claims.cell.mco.Hospitals`.
 
-**DC-EN-80 · Claims allocation: mco into Long-term care — DC FY2030 to-be (DRAFT): 5.8885 per $100. | P**
+**DC-EN-80 · Claims allocation: mco into Long-term care — DC FY2030 to-be (DRAFT): 5.9740 per $100. | P**
 Source: ledger_national_2024. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Reduced proportionally by the directed payment caps, which are charged at claims and land inside the capitated leg of this fan. Verified: **no**. Ledger key: `DC30:claims.cell.mco.Long-term care`.
 
-**DC-EN-81 · Claims allocation: mco into Physicians & clinics — DC FY2030 to-be (DRAFT): 5.5025 per $100. | P**
+**DC-EN-81 · Claims allocation: mco into Physicians & clinics — DC FY2030 to-be (DRAFT): 5.5824 per $100. | P**
 Source: ledger_national_2024. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Reduced proportionally by the directed payment caps, which are charged at claims and land inside the capitated leg of this fan. Verified: **no**. Ledger key: `DC30:claims.cell.mco.Physicians & clinics`.
 
-**DC-EN-82 · Claims allocation: mco into Rx drugs — DC FY2030 to-be (DRAFT): 1.7142 per $100. | P**
+**DC-EN-82 · Claims allocation: mco into Rx drugs — DC FY2030 to-be (DRAFT): 1.7391 per $100. | P**
 Source: ledger_national_2024. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Reduced proportionally by the directed payment caps, which are charged at claims and land inside the capitated leg of this fan. Verified: **no**. Ledger key: `DC30:claims.cell.mco.Rx drugs`.
 
-**DC-EN-83 · Claims allocation: mco into Wrap around services — DC FY2030 to-be (DRAFT): 10.5143 per $100. | P**
+**DC-EN-83 · Claims allocation: mco into Wrap around services — DC FY2030 to-be (DRAFT): 10.6669 per $100. | P**
 Source: ledger_national_2024. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Reduced proportionally by the directed payment caps, which are charged at claims and land inside the capitated leg of this fan. Verified: **no**. Ledger key: `DC30:claims.cell.mco.Wrap around services`.
 
-**DC-EN-84 · Claims allocation: col margin, Hospitals — DC FY2030 to-be (DRAFT): 12.5812 per $100. | D**
+**DC-EN-84 · Claims allocation: col margin, Hospitals — DC FY2030 to-be (DRAFT): 12.7593 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `claims.cell.mco.Hospitals`, `claims.cell.dual.Hospitals`, `claims.cell.ffs.Hospitals`. Struck from this column's cells. Verified: **no**. Ledger key: `DC30:claims.col.Hospitals`.
 
-**DC-EN-85 · Claims allocation: col margin, Long-term care — DC FY2030 to-be (DRAFT): 31.6577 per $100. | D**
+**DC-EN-85 · Claims allocation: col margin, Long-term care — DC FY2030 to-be (DRAFT): 32.0984 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `claims.cell.mco.Long-term care`, `claims.cell.dual.Long-term care`, `claims.cell.ffs.Long-term care`. Struck from this column's cells. Verified: **no**. Ledger key: `DC30:claims.col.Long-term care`.
 
-**DC-EN-86 · Claims allocation: col margin, Physicians & clinics — DC FY2030 to-be (DRAFT): 14.0611 per $100. | D**
+**DC-EN-86 · Claims allocation: col margin, Physicians & clinics — DC FY2030 to-be (DRAFT): 14.2590 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `claims.cell.mco.Physicians & clinics`, `claims.cell.dual.Physicians & clinics`, `claims.cell.ffs.Physicians & clinics`. Struck from this column's cells. Verified: **no**. Ledger key: `DC30:claims.col.Physicians & clinics`.
 
-**DC-EN-87 · Claims allocation: col margin, Rx drugs — DC FY2030 to-be (DRAFT): 3.6037 per $100. | D**
+**DC-EN-87 · Claims allocation: col margin, Rx drugs — DC FY2030 to-be (DRAFT): 3.6547 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `claims.cell.mco.Rx drugs`, `claims.cell.dual.Rx drugs`, `claims.cell.ffs.Rx drugs`. Struck from this column's cells. Verified: **no**. Ledger key: `DC30:claims.col.Rx drugs`.
 
-**DC-EN-88 · Claims allocation: col margin, Wrap around services — DC FY2030 to-be (DRAFT): 15.3918 per $100. | D**
+**DC-EN-88 · Claims allocation: col margin, Wrap around services — DC FY2030 to-be (DRAFT): 15.6119 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `claims.cell.mco.Wrap around services`, `claims.cell.dual.Wrap around services`, `claims.cell.ffs.Wrap around services`. Struck from this column's cells. Verified: **no**. Ledger key: `DC30:claims.col.Wrap around services`.
 
-**DC-EN-89 · Claims allocation: row margin, dual — DC FY2030 to-be (DRAFT): 0.7871 per $100. | D**
+**DC-EN-89 · Claims allocation: row margin, dual — DC FY2030 to-be (DRAFT): 0.7985 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `claims.cell.dual.Long-term care`, `claims.cell.dual.Hospitals`, `claims.cell.dual.Physicians & clinics`, `claims.cell.dual.Wrap around services`, `claims.cell.dual.Rx drugs`. Struck from this row's cells. Verified: **no**. Ledger key: `DC30:claims.row.dual`.
 
-**DC-EN-90 · Claims allocation: row margin, ffs — DC FY2030 to-be (DRAFT): 46.6275 per $100. | D**
+**DC-EN-90 · Claims allocation: row margin, ffs — DC FY2030 to-be (DRAFT): 47.2701 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `claims.cell.ffs.Long-term care`, `claims.cell.ffs.Hospitals`, `claims.cell.ffs.Physicians & clinics`, `claims.cell.ffs.Wrap around services`, `claims.cell.ffs.Rx drugs`. Struck from this row's cells. Verified: **no**. Ledger key: `DC30:claims.row.ffs`.
 
-**DC-EN-91 · Claims allocation: row margin, mco — DC FY2030 to-be (DRAFT): 29.8810 per $100. | D**
+**DC-EN-91 · Claims allocation: row margin, mco — DC FY2030 to-be (DRAFT): 30.3147 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `claims.cell.mco.Long-term care`, `claims.cell.mco.Hospitals`, `claims.cell.mco.Physicians & clinics`, `claims.cell.mco.Wrap around services`, `claims.cell.mco.Rx drugs`. Struck from this row's cells. Verified: **no**. Ledger key: `DC30:claims.row.mco`.
 
 **DC-EN-92 · Payer lane: amerihealth, plan administration — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
 no split Verified: **no**. Ledger key: `DC30:payer.amerihealth.admin`.
 
-**DC-EN-93 · Payer lane: amerihealth, money in — DC FY2030 to-be (DRAFT): 16.9155 per $100. | P**
+**DC-EN-93 · Payer lane: amerihealth, money in — DC FY2030 to-be (DRAFT): 17.1487 per $100. | P**
 Source: NAIC annual statement, CY2024, Title XIX Medicaid column, Analysis of Operations by Lines of Business. Vintage: CY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.amerihealth.capitation`.
 
-**DC-EN-94 · Payer lane: amerihealth, money reaching care — DC FY2030 to-be (DRAFT): 14.6819 per $100. | P**
+**DC-EN-94 · Payer lane: amerihealth, money reaching care — DC FY2030 to-be (DRAFT): 14.8843 per $100. | P**
 Source: NAIC annual statement, CY2024, Title XIX Medicaid column, Analysis of Operations by Lines of Business. Vintage: CY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.amerihealth.care`.
 
 **DC-EN-95 · Payer lane: amerihealth, plan margin — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
@@ -313,10 +340,10 @@ no split Verified: **no**. Ledger key: `DC30:payer.amerihealth.margin`.
 **DC-EN-96 · Payer lane: dual, plan administration — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
 no split Verified: **no**. Ledger key: `DC30:payer.dual.admin`.
 
-**DC-EN-97 · Payer lane: dual, money in — DC FY2030 to-be (DRAFT): 0.8289 per $100. | P**
+**DC-EN-97 · Payer lane: dual, money in — DC FY2030 to-be (DRAFT): 0.8404 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.dual.capitation`.
 
-**DC-EN-98 · Payer lane: dual, money reaching care — DC FY2030 to-be (DRAFT): 0.8289 per $100. | P**
+**DC-EN-98 · Payer lane: dual, money reaching care — DC FY2030 to-be (DRAFT): 0.8404 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.dual.care`.
 
 **DC-EN-99 · Payer lane: dual, plan margin — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
@@ -325,10 +352,10 @@ no split Verified: **no**. Ledger key: `DC30:payer.dual.margin`.
 **DC-EN-100 · Payer lane: ffs, plan administration — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
 no split Verified: **no**. Ledger key: `DC30:payer.ffs.admin`.
 
-**DC-EN-101 · Payer lane: ffs, money in — DC FY2030 to-be (DRAFT): 46.6275 per $100. | P**
+**DC-EN-101 · Payer lane: ffs, money in — DC FY2030 to-be (DRAFT): 47.2701 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.ffs.capitation`.
 
-**DC-EN-102 · Payer lane: ffs, money reaching care — DC FY2030 to-be (DRAFT): 46.6275 per $100. | P**
+**DC-EN-102 · Payer lane: ffs, money reaching care — DC FY2030 to-be (DRAFT): 47.2701 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.ffs.care`.
 
 **DC-EN-103 · Payer lane: ffs, plan margin — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
@@ -337,10 +364,10 @@ no split Verified: **no**. Ledger key: `DC30:payer.ffs.margin`.
 **DC-EN-104 · Payer lane: hscsn, plan administration — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
 no split Verified: **no**. Ledger key: `DC30:payer.hscsn.admin`.
 
-**DC-EN-105 · Payer lane: hscsn, money in — DC FY2030 to-be (DRAFT): 4.1623 per $100. | P**
+**DC-EN-105 · Payer lane: hscsn, money in — DC FY2030 to-be (DRAFT): 4.2196 per $100. | P**
 Source: DHCF managed care performance report. Vintage: CY2023 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.hscsn.capitation`.
 
-**DC-EN-106 · Payer lane: hscsn, money reaching care — DC FY2030 to-be (DRAFT): 3.4927 per $100. | P**
+**DC-EN-106 · Payer lane: hscsn, money reaching care — DC FY2030 to-be (DRAFT): 3.5408 per $100. | P**
 Source: DHCF managed care performance report. Vintage: CY2023 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.hscsn.care`.
 
 **DC-EN-107 · Payer lane: hscsn, plan margin — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
@@ -349,10 +376,10 @@ no split Verified: **no**. Ledger key: `DC30:payer.hscsn.margin`.
 **DC-EN-108 · Payer lane: mco, plan administration — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
 no split Verified: **no**. Ledger key: `DC30:payer.mco.admin`.
 
-**DC-EN-109 · Payer lane: mco, money in — DC FY2030 to-be (DRAFT): 36.5145 per $100. | P**
+**DC-EN-109 · Payer lane: mco, money in — DC FY2030 to-be (DRAFT): 37.0177 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.mco.capitation`.
 
-**DC-EN-110 · Payer lane: mco, money reaching care — DC FY2030 to-be (DRAFT): 31.4699 per $100. | P**
+**DC-EN-110 · Payer lane: mco, money reaching care — DC FY2030 to-be (DRAFT): 31.9036 per $100. | P**
 Vintage:  held to FY2030. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.mco.care`.
 
 **DC-EN-111 · Payer lane: mco, plan margin — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
@@ -361,10 +388,10 @@ no split Verified: **no**. Ledger key: `DC30:payer.mco.margin`.
 **DC-EN-112 · Payer lane: medstar, plan administration — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
 no split Verified: **no**. Ledger key: `DC30:payer.medstar.admin`.
 
-**DC-EN-113 · Payer lane: medstar, money in — DC FY2030 to-be (DRAFT): 8.4842 per $100. | P**
+**DC-EN-113 · Payer lane: medstar, money in — DC FY2030 to-be (DRAFT): 8.6011 per $100. | P**
 Source: NAIC annual statement, CY2024, Schedule T, Premiums and Other Considerations Allocated by States and Territories, District of Columbia row, Medicaid Title XIX. Vintage: CY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.medstar.capitation`.
 
-**DC-EN-114 · Payer lane: medstar, money reaching care — DC FY2030 to-be (DRAFT): 7.5729 per $100. | P**
+**DC-EN-114 · Payer lane: medstar, money reaching care — DC FY2030 to-be (DRAFT): 7.6773 per $100. | P**
 Source: NAIC annual statement, CY2024, Schedule T, Premiums and Other Considerations Allocated by States and Territories, District of Columbia row, Medicaid Title XIX. Vintage: CY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.medstar.care`.
 
 **DC-EN-115 · Payer lane: medstar, plan margin — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
@@ -373,10 +400,10 @@ no split Verified: **no**. Ledger key: `DC30:payer.medstar.margin`.
 **DC-EN-116 · Payer lane: pace, plan administration — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
 no split Verified: **no**. Ledger key: `DC30:payer.pace.admin`.
 
-**DC-EN-117 · Payer lane: pace, money in — DC FY2030 to-be (DRAFT): 0.3108 per $100. | P**
+**DC-EN-117 · Payer lane: pace, money in — DC FY2030 to-be (DRAFT): 0.3151 per $100. | P**
 Source: CMS-64 / MACStats FY2024 DC. Vintage: FY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.pace.capitation`.
 
-**DC-EN-118 · Payer lane: pace, money reaching care — DC FY2030 to-be (DRAFT): 0.3108 per $100. | P**
+**DC-EN-118 · Payer lane: pace, money reaching care — DC FY2030 to-be (DRAFT): 0.3151 per $100. | P**
 Vintage:  held to FY2030. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.pace.care`.
 
 **DC-EN-119 · Payer lane: pace, plan margin — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
@@ -385,10 +412,10 @@ no split Verified: **no**. Ledger key: `DC30:payer.pace.margin`.
 **DC-EN-120 · Payer lane: united, plan administration — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
 no split Verified: **no**. Ledger key: `DC30:payer.united.admin`.
 
-**DC-EN-121 · Payer lane: united, money in — DC FY2030 to-be (DRAFT): 0.5181 per $100. | P**
+**DC-EN-121 · Payer lane: united, money in — DC FY2030 to-be (DRAFT): 0.5252 per $100. | P**
 Source: DC budget book. Vintage: FY2024 held to FY2030. Basis: Medicaid wrap only. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.united.capitation`.
 
-**DC-EN-122 · Payer lane: united, money reaching care — DC FY2030 to-be (DRAFT): 0.5181 per $100. | P**
+**DC-EN-122 · Payer lane: united, money reaching care — DC FY2030 to-be (DRAFT): 0.5252 per $100. | P**
 Vintage:  held to FY2030. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.united.care`.
 
 **DC-EN-123 · Payer lane: united, plan margin — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
@@ -397,29 +424,38 @@ no split Verified: **no**. Ledger key: `DC30:payer.united.margin`.
 **DC-EN-124 · Payer lane: wellpoint, plan administration — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
 no split Verified: **no**. Ledger key: `DC30:payer.wellpoint.admin`.
 
-**DC-EN-125 · Payer lane: wellpoint, money in — DC FY2030 to-be (DRAFT): 6.9525 per $100. | P**
+**DC-EN-125 · Payer lane: wellpoint, money in — DC FY2030 to-be (DRAFT): 7.0483 per $100. | P**
 Source: NAIC annual statement, CY2024, Title XIX Medicaid column, Analysis of Operations by Lines of Business. Vintage: CY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.wellpoint.capitation`.
 
-**DC-EN-126 · Payer lane: wellpoint, money reaching care — DC FY2030 to-be (DRAFT): 5.7224 per $100. | P**
+**DC-EN-126 · Payer lane: wellpoint, money reaching care — DC FY2030 to-be (DRAFT): 5.8012 per $100. | P**
 Source: NAIC annual statement, CY2024, Title XIX Medicaid column, Analysis of Operations by Lines of Business. Vintage: CY2024 held to FY2030. Basis: total computable. MODELLED by composition-held. The FY2024 share is carried to FY2030 unchanged on the stated assumption that the shape of the dollar does not move, only its level. Not a projection of this figure; no DC source projects it. Rescaled onto the FY2030 disbursement, which the HR-1 levers have already reduced. Verified: **no**. Ledger key: `DC30:payer.wellpoint.care`.
 
 **DC-EN-127 · Payer lane: wellpoint, plan margin — DC FY2030 to-be (DRAFT): ABSENT. | ABSENT**
 no split Verified: **no**. Ledger key: `DC30:payer.wellpoint.margin`.
 
-**DC-EN-128 · Peel: Blocked Medicaid enrollment rule — DC FY2030 to-be (DRAFT): 0.8007 per $100. | P**
-Basis: $ per $100 of the FY2030 prior-law DC hundred. ASSUMED, NOT MEASURED. No District figure exists for this lever and none is derivable: section 71102's effect falls on process -- interviews, renewal alignment, the reconsideration period, CHIP lockouts -- and the people affected are those who WOULD HAVE enrolled or stayed enrolled under easier mechanics, who are a counterfactual rather than a row in DHCF's enrolment report. The figure drawn is the NATIONAL share of each Medicaid dollar, applied to the District's hundred. It assumes the District's enrolment mechanics behave like the national average, which is the one thing this project otherwise refuses to assume. Turn assumed_levers off to see the lane as absence. Verified: **no**. Ledger key: `DC30:peel.Blocked Medicaid enrollment rule`.
+**DC-EN-149 · Peel: Blocked reconsideration period — DC FY2030 to-be (DRAFT): 0.1415 per $100. | D**
+Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `anchor.renewal.headroom_dc`, `anchor.renewal.procedural_dc`, `scale`. DERIVED. The other mechanism inside section 71102: the reconsideration period that lets somebody terminated for paperwork return without reapplying. The District's section 71102 dollars divide between the two lanes in proportion to its own two rates -- renewal headroom against procedural disenrolment -- which is the one modelled step. Source: CMS, Medicaid and CHIP Eligibility Operations and Enrollment Snapshot, Coverage Retention and Disenrollment Rates by State, months March to June 2026 (D-124). Verified: **no**. Ledger key: `DC30:peel.Blocked reconsideration period`.
+
+**DC-EN-150 · Peel: Blocked renewal automation — DC FY2030 to-be (DRAFT): 0.2932 per $100. | D**
+Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `anchor.renewal.headroom_dc`, `anchor.renewal.headroom_national`, `scale`. DERIVED on the District's own renewal record, not on the national rate. Section 71102 blocks a rule whose substance is ex parte renewal, and the District already renews ex parte at about 1.6 times the national rate, so it has less to lose from the block. Measured as renewal HEADROOM -- 100% less the ex parte rate -- over the FY2026 months from March 2026 forward, against the national headroom on the same months. The band runs from zero, meaning the District has already captured everything the rule would have delivered, to the national rate, meaning it behaves like the average. Source: CMS, Medicaid and CHIP Eligibility Operations and Enrollment Snapshot, Coverage Retention and Disenrollment Rates by State, months March to June 2026 (D-124). Verified: **no**. Ledger key: `DC30:peel.Blocked renewal automation`.
 
 **DC-EN-129 · Peel: Blocked senior enrollment rule — DC FY2030 to-be (DRAFT): 1.7421 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `anchor.msp.dc_qmb_only`, `anchor.msp.national_qmb_only`, `scale`. The District's own QMB-only enrolment as a share of the national QMB-only count, applied to CBO's score for the lever. Both counts are published and both were checked to be the same definition before they were divided. The ONE modelled step is that the lever's dollars fall in proportion to QMB-only enrolment. UPPER BOUND FOR THE DISTRICT, and the reason is a District one: the District runs the QMB group only, to 300% FPL against a federal floor of 100%, so it has already enrolled much of the population a blocked federal streamlining rule would have reached. The band runs from this figure DOWN to zero and the acquisition that closes it — how many of those enrollees sit above the federal floor — is named in tobe2030_dc. The District's per-$100 exposure comes out above the national one because it is over-represented in this group relative to its Medicaid spending, which is a finding, not a fault. Verified: **no**. Ledger key: `DC30:peel.Blocked senior enrollment rule`.
 
-**DC-EN-130 · Peel: DC provisions not separately scored — DC FY2030 to-be (DRAFT): 0.8946 per $100. | P**
-Basis: $ per $100 of the FY2030 prior-law DC hundred. ASSUMED, NOT MEASURED, AND NOT THE SAME QUANTITY. Drawn at the national 'everything else' lane's share of each Medicaid dollar. Nationally that lane is a RESIDUAL -- what CBO scored less the named levers -- and a residual cannot be re-derived from District sources because it is a remainder rather than a thing. The District lane carries three named District provisions instead: the LTSS home equity cap, the legal immigrant eligibility restriction (under preliminary injunction, status contested) and retroactive coverage. None of the three is sized. The figure drawn is therefore a placeholder with a national number on it, not a District estimate, and it is the first thing on the list to replace. Turn assumed_levers off to see the lane as absence. Verified: **no**. Ledger key: `DC30:peel.DC provisions not separately scored`.
-
 **DC-EN-131 · Peel: Directed payment caps — DC FY2030 to-be (DRAFT): 1.6307 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `anchor.sdp.cut_fy2030`, `scale`. Two steps of the phase-down against the grandfathered base, divided by the FY2030 hundred. BOTH parents are modelled: the base is DHCF's planning assumption and the hundred is a declared growth rate. The figure is no stronger than either. The first affected period is FY2029, resolved on CMS-2449-P against DHCF's own FY2028 statement. Verified: **no**. Ledger key: `DC30:peel.Directed payment caps`.
 
+**DC-EN-151 · Peel: LTSS home equity cap — DC FY2030 to-be (DRAFT): 0.0026 per $100. | D**
+Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `anchor.cbo.sec71108_fy2030`, `anchor.share.ltss`, `scale`. DERIVED. CBO scores section 71108 at its FY2030 figure in workbook 61570; this carries that as a rate on the District's own long-term care spending. The far end scales it by the District's share of homes worth $1m or more, 29.9% against 8.0% nationally (ACS 2024). NOT like-for-like: home VALUE is not home EQUITY, and LTSS applicants are poorer and far more often renters than the owners that table describes. At either end the lane is under a cent and a half, which is the finding. Verified: **no**. Ledger key: `DC30:peel.LTSS home equity cap`.
+
+**DC-EN-152 · Peel: Legal immigrant eligibility — DC FY2030 to-be (DRAFT): 0.0561 per $100. | D**
+Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `anchor.cbo.sec71109_fy2030`, `anchor.share.total`, `scale`. DERIVED. CBO's FY2030 figure for section 71109, carried as a rate on the District's own spending. STATUS CONTESTED (D-129): the provision is in force federally, DHCF advised on it in February 2026, and a Washington-only injunction exists in Neighborhood House v. HHS. The band's floor is zero -- what the lane is worth if it is enjoined here too -- and that is a legal question, not a measurement. Verified: **no**. Ledger key: `DC30:peel.Legal immigrant eligibility`.
+
 **DC-EN-132 · Peel: Provider tax limits — DC FY2030 to-be (DRAFT): 1.9468 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `anchor.tax.prior_law_fy2030`, `anchor.tax.frozen_level`, `scale`. The divergence between a prior-law tax base grown to FY2030 and a line frozen at the FY2025 level, because section 71115 freezes the tax in NOMINAL terms and the gap therefore widens every year. MODELLED in one step: that the tax base would have tracked Medicaid spending, so it grows at the same rate as the hundred. The measured FY2027 step of $49.77M is the floor and is drawn beside it. Published at the NON-FEDERAL level: DC's dedicated tax draws match, so the total-computable effect is larger, and the multiplier is declared absent rather than guessed (fmap_dc, D-39 divergence). Verified: **no**. Ledger key: `DC30:peel.Provider tax limits`.
+
+**DC-EN-153 · Peel: Retroactive eligibility — DC FY2030 to-be (DRAFT): 0.0446 per $100. | D**
+Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `anchor.cbo.sec71112_fy2030`, `anchor.share.total`, `scale`. DERIVED. CBO's FY2030 figure for section 71112, carried as a rate on the District's own spending. One month of retroactive coverage for expansion adults and two for everyone else, from 1 January 2027 -- the same rule, in different units, as the 90-to-30 and 90-to-60 day change DHCF states. Verified: **no**. Ledger key: `DC30:peel.Retroactive eligibility`.
 
 **DC-EN-133 · Peel: Six-month renewals — DC FY2030 to-be (DRAFT): 0.4611 per $100. | D**
 Basis: $ per $100 of the FY2030 prior-law DC hundred. Derived from: `anchor.expansion.fy2030`, `anchor.rate.default`, `scale`. Same population, same denominator, same modelled rate as work reporting, at the share CBO's own score implies for this lever. Effective 1 January 2027, twelve-month certification to six. Verified: **no**. Ledger key: `DC30:peel.Six-month renewals`.
