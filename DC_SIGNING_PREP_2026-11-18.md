@@ -28,6 +28,65 @@ better shape; none has been opened this session.
 
 ---
 
+## 0. WHAT THIS SESSION DID, and what is left — added after the fixes
+
+Sections 1 to 8 below are the diagnosis, written before anything was changed,
+and are left as written. Four of the defects are now fixed (D-150 and D-151,
+commit `b27c364`); the structural one is not, and it is now on the pile.
+
+| § | defect | state |
+|---|---|---|
+| 1 | no signing path for DC or any state | **OPEN — on the pile, see §0.1** |
+| 3 | collections fold undeclared | FIXED, D-150 |
+| 3 | eleven `_s()` figures carrying a STALE source | FIXED, D-150 |
+| 4.1 | four lanes MEASURED and not measurements | FIXED, D-151 |
+| 4.2 | nine plan figures MEASURED and rescaled | FIXED, D-151 |
+| 5 | plan margin construction | FIXED, D-151 — **but see the correction below** |
+
+**A correction to §5.** This document said AmeriHealth's margin was
+"overstated by about 46%" and that the fix was to subtract the premium
+deficiency reserve. That was wrong, and the figure has been left unchanged.
+The reserve is money the plan kept: it did not buy care and is not
+administration, retention has to close, and deducting it would have left a
+dollar undrawn, which is an S-108 failure. What was actually wrong was the
+DESCRIPTION — "margin" reads as earnings, and for AmeriHealth a third of it
+is a reserve movement. D-151 names the two parts on the figure instead of
+moving the money. The Wellpoint and MedStar findings stand unchanged and both
+were real errors in the dollars.
+
+### 0.1 On the pile: states have no signature process
+
+**JW's ruling, 18 November 2026: a state gets its own signature process, the
+same as national.** Not a shared register with panel-prefixed keys, which is
+what §1 below proposed — a register of its own.
+
+That is the better answer and for a reason §1 missed. A shared dict makes
+every jurisdiction's signing a change to one file that every other
+jurisdiction's build reads, so a District signature and a national signature
+can collide, and adding the fifth state means editing a file four other
+panels depend on. Per-jurisdiction registers make adding a state the addition
+of a file.
+
+The shape:
+
+- `signatures.py` keeps the national register and loses nothing.
+- `signatures_dc.py` is new and empty of entries: `REVIEW`, `SIGNED`,
+  `UNSIGNED`, and the same `LAPSED_*` record of what was agreed and when.
+- `_sign` moves out of `ledger_national_2024.py` — nothing in it is national;
+  it walks `sources`, `scale`, `peels`, `payers` and the matrices and builds
+  its keys from structure — into `ledger.py` or a small `signing.py`, taking
+  the register as an argument.
+- Each jurisdiction's ledger calls it with its own register. A state added
+  later brings its own.
+
+Still true and still the reason this blocks signing: **until this exists,
+District entries have nowhere to go.** `coverage.py dc` will go on reporting
+every DC figure as unverified no matter what anyone agrees to.
+
+Allocated: **D-150** and **D-151** are the fixes below; **D-152** is this item, recorded OPEN.
+
+---
+
 ## 1. The structural blocker: DC has no signing path
 
 `_sign` is defined **inside `ledger_national_2024.py`** (line 135) and called
