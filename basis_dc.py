@@ -50,6 +50,64 @@ DC_ADMIN_M = 234.0
 #   = total computable, Exhibit 16       $4,372M
 DC_MEDICARE_M = 86.0
 
+# ---- Exhibit 17's nine fee-for-service columns, District row --------------
+# READ FROM THE EXHIBIT, 18 November 2026. These were not here before: the
+# panel typed the five diagram nodes directly and the nine columns behind them
+# existed nowhere in the repo, so the mapping Tier 1.3 of DC_SIGNOFF_LIST calls
+# "a judgement that needs agreeing" could not be read, only taken on trust.
+# Column order verified against the exhibit's own TOTAL row, which reproduces
+# basis_national.py's nine constants exactly.
+DC_HOSPITAL_M = 297.0
+DC_PHYSICIAN_M = 30.0
+DC_DENTAL_M = 6.0
+DC_OTHER_PRACTITIONER_M = 14.0
+DC_CLINIC_M = 362.0                 # clinic, health center, FQHC, birth center
+DC_OTHER_ACUTE_M = 226.0
+DC_DRUGS_M = 89.0                   # net of rebates, as nationally
+DC_INSTITUTIONAL_LTSS_M = 501.0
+DC_HCBS_M = 735.0
+
+DC_CAP_M = 1802.0                   # managed care and premium assistance
+DC_COLL_M = -10.0                   # third-party liability, estate, other
+
+# The five diagram nodes, mapped from the nine published columns on exactly
+# the rule basis_national.py uses. Written out so a reader can disagree with
+# it; the dollars are Exhibit 17's own. S-105: derived, not typed.
+DC_LTC_FFS_M = DC_INSTITUTIONAL_LTSS_M + DC_HCBS_M                    # 1,236
+DC_WRAP_FFS_M = DC_OTHER_ACUTE_M + DC_DENTAL_M                        #   232
+DC_PHYS_FFS_M = (DC_PHYSICIAN_M + DC_CLINIC_M
+                 + DC_OTHER_PRACTITIONER_M)                           #   406
+DC_FFS_GROSS_M = (DC_LTC_FFS_M + DC_HOSPITAL_M + DC_WRAP_FFS_M
+                  + DC_PHYS_FFS_M + DC_DRUGS_M)                       # 2,260
+
+# Behavioral health is not a District node: DHCF folds it into wrap-around
+# services, which is why the national BH and Other columns land there too.
+
+# ---- COLLECTIONS, D-150 ---------------------------------------------------
+# WHAT WAS WRONG. Until 18 November the District took the whole of Exhibit
+# 17's collections line out of ONE service node. Four of the five nodes
+# matched the published columns to the dollar; wrap-around services was drawn
+# at $222M against the $232M the exhibit prints, short by exactly the $10M
+# recovery. Nothing in the repo recorded that this had been done, and the
+# wrap-around node is the catch-all — the one that already absorbs whatever
+# does not fit a named column — so the reduction was invisible by
+# construction. A reader comparing the panel against Exhibit 17 would have
+# found four columns right and the residual one wrong.
+#
+# WHAT IT IS NOW. D-83's convention, applied to the District: Exhibit 17
+# reports collections as a single unallocated negative and declines to say
+# which lane recovered the money, so it is folded pro rata across the
+# capitated and fee-for-service lanes by each lane's share of gross. Because
+# both lanes take the same factor, no service node carries a reduction the
+# source does not show, and the panel still closes on Exhibit 16's total.
+#
+# A MODELLED allocation of a MEASURED total. The key is ours; the dollars are
+# measured. MACPAC computes its own service shares exclusive of collections
+# rather than distributing them, which is the same refusal.
+#
+# JW, 18 November 2026: one rule everywhere, so the next state inherits it.
+DC_GROSS_LANES_M = DC_FFS_GROSS_M + DC_CAP_M                          # 4,062
+
 # ---- the non-federal share, by instrument ---------------------------------
 # Exhibit 16 reports a single non-federal share; DC's appropriation splits it,
 # and one part is not a general-fund appropriation at all. Dedicated Taxes are
@@ -69,6 +127,34 @@ SCALE = DC_TOTAL_M / 100.0
 
 def per100(m: float) -> float:
     return m / SCALE
+
+
+# ---- the payer lanes, net of collections ----------------------------------
+# What is left after the two things that peel before the payers. DC has no
+# federal oversight peel (declaration 1 below), so the District's list is
+# shorter than the national one by MFCU and survey-and-certification.
+DC_REACHES_PAYERS_M = DC_TOTAL_M - DC_ADMIN_M - DC_MEDICARE_M         # 4,052
+
+# The gap between gross lanes and what reaches them IS the collections line,
+# and this assert is what says so rather than a comment claiming it.
+assert abs((DC_GROSS_LANES_M - DC_REACHES_PAYERS_M) + DC_COLL_M) < 1e-9, (
+    "Exhibit 17 no longer reconciles: gross lanes less what reaches the "
+    "payers should equal the collections line")
+
+# One factor, applied to both lanes and to every node under them. D-83.
+DC_NET = DC_REACHES_PAYERS_M / DC_GROSS_LANES_M
+
+DC_FFS_M = DC_FFS_GROSS_M * DC_NET                      # 2,254.436
+DC_CAP_NET_M = DC_CAP_M * DC_NET                        # 1,797.564
+
+# The five nodes, netted. Shape from the nine columns, size from the lane.
+DC_FFS_NODES_M = {
+    "Long-term care": DC_LTC_FFS_M * DC_NET,
+    "Hospitals": DC_HOSPITAL_M * DC_NET,
+    "Wrap around services": DC_WRAP_FFS_M * DC_NET,
+    "Physicians & clinics": DC_PHYS_FFS_M * DC_NET,
+    "Rx drugs": DC_DRUGS_M * DC_NET,
+}
 
 
 # ---- what this hundred is NOT, declared ------------------------------------

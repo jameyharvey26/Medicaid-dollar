@@ -26,7 +26,8 @@ from ledger import (Fig, Ledger, MEASURED, MODELLED, Matrix, Payer, Peel,
                     DERIVED)
 from basis_dc import (DC_ADMIN_M, DC_DEDTAX_M, DC_FED_M, DC_MEDICARE_M,
                       DC_STATE_M, DC_TOTAL_M, DHCF_BUDGET, EX16, EX17,
-                      SCALE)
+                      SCALE, DC_CAP_NET_M, DC_FFS_M, DC_FFS_NODES_M, DC_NET,
+                      DC_FFS_GROSS_M, DC_CAP_M, DC_COLL_M)
 
 SPINE = "CMS-64 / MACStats FY2024 DC"
 # RE-ACQUIRED 2026-09-15. Phase 1 and the first half of Phase 2 of
@@ -119,11 +120,18 @@ def _mc(v, note=""):
                status=MEASURED, note=(note + " " + STALE).strip())
 
 
-mc_total = 1802 / SCALE
-pace = 15 / SCALE
-dsnp = 25 / SCALE
+# D-150. The lanes come from basis_dc now, net of collections on D-83's
+# pro-rata key. They used to be typed here as 1802 and 2250, which carried the
+# whole collections line inside the fee-for-service half and, below, inside
+# one service node. See basis_dc.py, COLLECTIONS.
+mc_total = DC_CAP_NET_M / SCALE
+# PACE and the D-SNP wrap are two MODELLED constants, not readings. They are
+# netted on the same factor as the lane they are carved out of, so the carve
+# does not quietly restore gross dollars to a netted lane.
+pace = 15 * DC_NET / SCALE
+dsnp = 25 * DC_NET / SCALE
 mco_cap = mc_total - pace - dsnp
-ffs = 2250 / SCALE
+ffs = DC_FFS_M / SCALE
 
 # ===========================================================================
 # PLAN-LEVEL FIGURES — each plan's own Title XIX line, CY2024
@@ -191,32 +199,83 @@ HSCSN_WHY = ("HSCSN predates the managed care regulations and is not an MCO "
 
 # dollars, as filed. S-105: typed once here because they are read off a
 # source; every per-$100 figure below is derived.
-_PREM = {                                   # Title XIX, earned, DC
-    "amerihealth": 747_775_854,             # change in unearned reserves: 0
-    "wellpoint":   337_597_417 - 30_252_084,
-    "medstar":     375_055_803,             # Schedule T, DC row
-    "hscsn":       184_000_000,             # CY2023, DHCF managed care report
-}
-_CARE_D = {
-    "amerihealth": 649_036_647,             # total hospital and medical
-    "wellpoint":   253_829_876 - 863_824,   # subtotal less reinsurance recoveries
-    "hscsn":       154_400_000,             # CY2023, DHCF managed care report
-}
-# expense lines published for the ENTITY only, with the base they apportion by
-_ENTITY_ADMIN = {
-    "wellpoint": (14_661_826 + 30_930_821,
-                  (337_597_417 - 30_252_084) / (397_034_585 - 30_338_504)),
-    "medstar":   (23_370_822 + 69_514_545,
-                  375_055_803 / 920_065_573),
-}
-_MEDSTAR_ENTITY_CARE = 821_242_215           # Title XIX, both jurisdictions
-_PLAN_ADMIN = {                              # published by column
-    "amerihealth": 27_887_325 + 54_960_568,
-}
+#
+# ONE RULE, D-151. Every plan's figures come from the SAME five lines of the
+# SAME column of its own annual statement — the Title XIX Medicaid column of
+# the Analysis of Operations by Lines of Business — and are apportioned only
+# where that column covers more than the District:
+#
+#   line 7   total revenues              -> capitation
+#   line 17  total hospital and medical  -> care
+#   19 + 20  claims adjustment + general administrative -> admin
+#   line 21  increase in A&H reserves    -> a deduction, see below
+#   line 24  net underwriting gain       -> what the residual must reproduce
+#
+# Because the statement's own line 24 is line 7 less lines 17 to 22, a margin
+# struck as premium less care less administration less reserves EQUALS the
+# plan's published Title XIX underwriting gain, exactly. `agreement()` below
+# asserts it for every plan, so the construction is checked against the source
+# rather than trusted. S-105: the margin is still derived and never typed.
+#
+# WHAT THIS REPLACES, read from the three filings on 18 November 2026. Three
+# plans, three different errors, in three different directions:
+#
+#   AmeriHealth  line 21 was ignored. The plan booked $5,003,850 against
+#                contracts it expected to lose on, entirely to Title XIX, and
+#                the statement counts that as a cost of the Medicaid
+#                business. The residual did not. Margin was drawn 46% high.
+#   Wellpoint    the expense lines were apportioned from the entity total,
+#                on a comment saying they are "published for the entity". They
+#                are not: the statement prints claims adjustment and general
+#                administrative in the Title XIX column, $12,042,234 and
+#                $25,404,488. The apportionment was unnecessary and wrong by
+#                $766,632.
+#   MedStar      revenue came from Schedule T and costs from the Title XIX
+#                column, which are not the same quantity: Schedule T is direct
+#                premium, the column is net of ceded reinsurance and includes
+#                other health care revenue. The two bases differed by
+#                $851,976 before apportionment.
+#
+# MedStar is the only plan needing a share at all. Its Title XIX column is
+# Maryland and the District together; Schedule T's District row against the
+# column's direct premium is the only published District-specific split.
+_MEDSTAR_SHARE = 375_055_803 / 920_065_573
 
-_CARE_D["medstar"] = _MEDSTAR_ENTITY_CARE * _ENTITY_ADMIN["medstar"][1]
-for _k, (_tot, _sh) in _ENTITY_ADMIN.items():
-    _PLAN_ADMIN[_k] = _tot * _sh
+# line 7, total revenues, Title XIX column
+_PREM = {
+    "amerihealth": 747_775_854,
+    "wellpoint":   337_597_417 - 30_252_084,      # net premium less unearned
+    "medstar":     920_917_549 * _MEDSTAR_SHARE,  # both jurisdictions, shared
+    "hscsn":       184_000_000,                   # CY2023, DHCF report
+}
+# line 17, total hospital and medical, Title XIX column
+_CARE_D = {
+    "amerihealth": 649_036_647,
+    "wellpoint":   253_829_876 - 863_824,         # subtotal less reinsurance
+    "medstar":     821_242_215 * _MEDSTAR_SHARE,
+    "hscsn":       154_400_000,                   # CY2023, DHCF report
+}
+# lines 19 and 20, Title XIX column. Published by column for all three.
+_PLAN_ADMIN = {
+    "amerihealth": 27_887_325 + 54_960_568,
+    "wellpoint":   12_042_234 + 25_404_488,
+    "medstar":    (23_370_822 + 69_514_545) * _MEDSTAR_SHARE,
+}
+# line 21, increase in reserves for accident and health contracts, Title XIX.
+# AmeriHealth's is a premium deficiency reserve in full (Part 2D note (a));
+# the other two report none (MedStar's Note 30 says so in terms).
+_PLAN_RESERVE = {
+    "amerihealth": 5_003_850,
+    "wellpoint":   0,
+    "medstar":     0,
+}
+# line 24, net underwriting gain, Title XIX column. NOT used to build
+# anything — it is what agreement() checks the residual against.
+_PLAN_GAIN = {
+    "amerihealth": 10_887_464,
+    "wellpoint":   16_932_559,
+    "medstar":     6_789_967 * _MEDSTAR_SHARE,
+}
 
 # ---- to the hundred -------------------------------------------------------
 # The plans are scaled to the managed-care lane, which is the CMS-64 figure
@@ -231,9 +290,48 @@ _TO_LANE = (mco_cap * SCALE * 1e6) / _PREM_T
 _cap = {k: v * _TO_LANE / 1e6 / SCALE for k, v in _PREM.items()}
 _care = {k: v * _TO_LANE / 1e6 / SCALE for k, v in _CARE_D.items()}
 _adm = {k: v * _TO_LANE / 1e6 / SCALE for k, v in _PLAN_ADMIN.items()}
-# margin is what is left of the premium after care and administration. It is a
-# residual and is labelled one; nothing publishes it directly.
+_rsv = {k: v * _TO_LANE / 1e6 / SCALE for k, v in _PLAN_RESERVE.items()}
+# Margin is what is left of the premium after care and administration, and it
+# STAYS that: retention is capitation less care and it has to close, so a
+# third component cannot simply be deducted and left undrawn (S-108).
+#
+# WHAT THE RESERVE IS. AmeriHealth set $5,003,850 aside against Title XIX
+# contracts it expected to lose money on — a premium deficiency reserve, Part
+# 2D note (a). Its statement counts that as an underwriting deduction, so its
+# published Title XIX underwriting gain of $10,887,464 is AFTER it. The money
+# did not buy care and is not administration; it stayed with the plan. On a
+# panel that asks where the dollar went, it is retained, and in a two-bucket
+# retention it belongs here.
+#
+# So the figure is unchanged and the DESCRIPTION was what was wrong: "margin"
+# read as earnings, and for AmeriHealth a third of it is a reserve movement.
+# D-151 names the two parts rather than moving the money.
 _mgn = {k: _cap[k] - _care[k] - _adm[k] for k in _adm}
+
+
+def agreement(tol=1e-6):
+    """Every plan's residual margin IS its published gain plus its reserve.
+
+    The check that makes the residual a reading rather than an estimate. It
+    compares on filed dollars, before the scaling to the CMS-64 lane, because
+    the scaling is ours and the agreement is the statement's.
+    """
+    out = []
+    for k in _PLAN_GAIN:
+        got = _PREM[k] - _CARE_D[k] - _PLAN_ADMIN[k]
+        want = _PLAN_GAIN[k] + _PLAN_RESERVE[k]
+        if abs(got - want) > max(tol, abs(want) * 1e-9):
+            out.append(f"{k}: residual {got:,.2f} against published "
+                       f"{want:,.2f}, off by {got - want:,.2f}")
+    if out:
+        raise AssertionError(
+            "plan margin no longer reproduces the filed underwriting "
+            "gain plus the filed reserve movement:\n  "
+            + "\n  ".join(out))
+    return len(_PLAN_GAIN)
+
+
+agreement()
 
 # retained for the legacy byte-identity path only
 _rev = {"amerihealth": 841.0, "wellpoint": 425.3, "medstar": 411.2}
@@ -356,7 +454,15 @@ def _assumed_shares():
 
 
 def _cells(ffs_n, legacy, assumed=False):
-    c = {("ffs", k): _s(v) for k, v in ffs_n.items()}
+    # Exhibit 17's nine published columns, mapped to the five District nodes
+    # in basis_dc and netted on the collections factor. _s() stamped these
+    # with the generic spine source and a STALE note until 18 November, which
+    # named no document a signer could open; they are Exhibit 17 readings and
+    # now say so. Parity with the national panel's `_m()` cells.
+    c = {("ffs", k): _x17(v, "Mapped from Exhibit 17's nine fee-for-service "
+                             "columns; the mapping is in basis_dc.py. Netted "
+                             "on the collections factor, D-150.")
+         for k, v in ffs_n.items()}
     if assumed and not legacy:
         sh = _assumed_shares()
         mco_care, dual_care = sum(_care.values()), pace + dsnp
@@ -407,7 +513,13 @@ def build(legacy_mix: bool = False, assumed_mix: bool = False) -> Ledger:
 
     payers.append(Payer(
         "mco", "MCO capitation", "mco",
-        capitation=_s(mco_cap, "Managed-care lump less PACE and the D-SNP wrap."),
+        capitation=Fig(mco_cap, source=EX17, vintage=V, basis=B,
+                       status=MODELLED,
+                       note="Exhibit 17's $1,802M of managed care, net of "
+                            "the collections fold (D-150), less the PACE and "
+                            "D-SNP carves, which are MODELLED. Nothing "
+                            "publishes this figure; MEASURED until "
+                            "18 November 2026. D-151."),
         care=Fig.derived(sum(_care.values()),
                          tuple(f"payer.{k}.care" for k in _care)),
         admin=(Fig(mco_cap - sum(_care.values()), status=MODELLED,
@@ -422,18 +534,31 @@ def build(legacy_mix: bool = False, assumed_mix: bool = False) -> Ledger:
         margin=(Fig(0.0, status=MODELLED, note="legacy: no earnings carve")
                 if legacy_mix else Fig.absent("See admin."))))
 
+    # STATUS, D-151. These were MEASURED until 18 November. They are not
+    # measurements: every plan figure on this plate is its filed Title XIX
+    # figure multiplied by `_TO_LANE`, which is ours, and no statement
+    # contains the resulting number — AmeriHealth files $747.776M and the
+    # plate draws $814.071M. A signature on a MEASURED figure asserts that a
+    # person opened a source and agreed with THAT number, so MEASURED here
+    # would put a signature on a figure nobody can open. MODELLED, with the
+    # filed figure named in the note, is what the plate actually holds.
+    # The readings themselves stay MEASURED and signable, one level up, in
+    # `anchor.ex17.*` and in each plan's own statement.
     PLAN_BASIS = {
         "amerihealth": ("Title XIX column, published in full. Nothing "
-                        "apportioned.", NAIC24, MEASURED),
-        "wellpoint":   ("Title XIX column for premium and care; the two "
-                        "expense lines are published for the entity and are "
-                        "apportioned by Title XIX's share of earned revenue.",
-                        NAIC24, MEASURED),
-        "medstar":     ("Schedule T, District of Columbia row — the entity "
-                        "writes Title XIX in Maryland as well and its "
-                        "Title XIX column is both jurisdictions. Expenses "
-                        "apportioned by DC's share of Title XIX premium.",
-                        NAIC24_T, MEASURED),
+                        "apportioned. Filed Title XIX total revenues "
+                        "$747,775,854.", NAIC24, MODELLED),
+        "wellpoint":   ("Title XIX column throughout — premium, care, and "
+                        "BOTH expense lines, which the statement prints by "
+                        "column and which this ledger apportioned from the "
+                        "entity total until D-151. Filed Title XIX total "
+                        "revenues $307,345,333.", NAIC24, MODELLED),
+        "medstar":     ("Title XIX column, apportioned: the entity writes "
+                        "Title XIX in Maryland as well, and Schedule T's "
+                        "District row against the column's direct premium is "
+                        "the only published District split. Revenue and costs "
+                        "now share one basis, which they did not until "
+                        "D-151.", NAIC24_T, MODELLED),
         "hscsn":       (HSCSN_WHY, MCR, MODELLED),
     }
     for key, label, entity, _pal in PLANS:
@@ -451,12 +576,23 @@ def build(legacy_mix: bool = False, assumed_mix: bool = False) -> Ledger:
         if key in _adm:
             admin = _f(_adm[key], "Claims adjustment plus general "
                                   "administrative expenses.")
+            _res_m = _PLAN_RESERVE.get(key, 0)
+            _split = (
+                f" Of this, ${_res_m:,.0f} of filed dollars is an increase in "
+                f"reserves for accident and health contracts — a premium "
+                f"deficiency reserve in full — and the remainder is the "
+                f"plan's published Title XIX net underwriting gain of "
+                f"${_PLAN_GAIN[key]:,.0f}. Retained either way; not earnings "
+                f"in full. D-151." if _res_m else
+                f" The plan reports no reserve movement on Title XIX, so this "
+                f"IS its published net underwriting gain of "
+                f"${_PLAN_GAIN[key]:,.0f} of filed dollars. D-151.")
             margin = Fig.derived(
                 _mgn[key], (f"payer.{key}.capitation", f"payer.{key}.care",
                             f"payer.{key}.admin"),
                 basis=B,
                 note="Residual: premium less care less administration. "
-                     "Nothing publishes a plan's Medicaid margin directly.")
+                     "Nothing publishes a District margin directly." + _split)
         else:
             admin = Fig.absent(
                 f"{key}: retention is measured, its split into administration "
@@ -470,11 +606,20 @@ def build(legacy_mix: bool = False, assumed_mix: bool = False) -> Ledger:
             admin=admin, margin=margin,
             entity=entity))
 
+    _DUALNOTE = ("D-151. PACE and the D-SNP wrap are two MODELLED constants "
+                 "and their sum is one too: no source publishes a $40M "
+                 "District dual-and-PACE line. Exhibit 17 publishes $1,802M "
+                 "of managed care and nothing below it. MEASURED until "
+                 "18 November, which would have put a signature on a "
+                 "subtraction of two estimates.")
     payers.append(Payer(
         "dual", "Dual and PACE capitation", "dual",
-        capitation=_s(pace + dsnp),
-        care=_s(pace + dsnp, "No DC retention figure for these lanes, so "
-                             "capitation runs through to care."),
+        capitation=Fig(pace + dsnp, source=EX17, vintage=V, basis=B,
+                       status=MODELLED, note=_DUALNOTE),
+        care=Fig(pace + dsnp, source=EX17, vintage=V, basis=B,
+                 status=MODELLED,
+                 note="No DC retention figure for these lanes, so capitation "
+                      "runs through to care. " + _DUALNOTE),
         admin=(Fig(0.0, status=MODELLED, note="legacy: no dual retention")
                if legacy_mix else
                Fig.absent("No DC retention figure for the dual or PACE lanes.")),
@@ -501,13 +646,23 @@ def build(legacy_mix: bool = False, assumed_mix: bool = False) -> Ledger:
 
     payers.append(Payer(
         "ffs", "Fee-for-service", "ffs",
-        capitation=_s(ffs), care=_s(ffs, "Rule A: no payer, no retention."),
+        capitation=Fig(ffs, source=EX17, vintage=V, basis=B, status=MODELLED,
+                       note="D-83 as applied by D-150. Exhibit 17's nine "
+                            "fee-for-service columns of $2,260M, net of the "
+                            "collections fold. The dollars are measured; the "
+                            "fold is ours. Same construction and same status "
+                            "as the national panel's lane."),
+        care=Fig(ffs, source=EX17, vintage=V, basis=B, status=MODELLED,
+                 note="Rule A: fee-for-service has no payer and no "
+                      "retention. It runs through the payer phase "
+                      "unchanged."),
         admin=Fig.absent("fee-for-service has no plan administration"),
         margin=Fig.absent("fee-for-service has no margin")))
 
-    _ffs_n = {"Long-term care": 1236 / SCALE, "Physicians & clinics": 406 / SCALE,
-              "Hospitals": 297 / SCALE, "Wrap around services": 222 / SCALE,
-              "Rx drugs": 89 / SCALE}
+    # Derived from Exhibit 17's nine published columns in basis_dc, netted on
+    # the same factor as the lane. These were typed here until 18 November,
+    # and the wrap-around figure carried a $10M reduction nothing recorded.
+    _ffs_n = {k: v / SCALE for k, v in DC_FFS_NODES_M.items()}
 
     claims = Matrix(
         name="claims",
@@ -542,6 +697,30 @@ def build(legacy_mix: bool = False, assumed_mix: bool = False) -> Ledger:
             "ex16.state": _x(DC_STATE_M,
                              "Non-federal share of total Medicaid, DC, "
                              "FY 2024, $M."),
+            # Exhibit 17's own three lines, put on the register 18 November
+            # 2026 (D-150). They were arithmetic inside basis_dc and a
+            # comment in this file, so Tier 1.2 of DC_SIGNOFF_LIST asked for
+            # a signature on figures that were not figures. These are pure
+            # readings — the signable form of the reconciliation — and every
+            # lane below is derived or modelled from them.
+            "ex17.ffs_gross": _x17(
+                DC_FFS_GROSS_M,
+                "Fee-for-service, the sum of Exhibit 17's nine published "
+                "columns, DC, FY 2024, $M. The nine and their mapping to the "
+                "five District nodes are in basis_dc.py."),
+            "ex17.managed_care": _x17(
+                DC_CAP_M,
+                "Managed care and premium assistance, DC, FY 2024, $M. "
+                "Exhibit 17 publishes nothing below this line: the PACE and "
+                "D-SNP carves under it are modelled."),
+            "ex17.collections": _x17(
+                DC_COLL_M,
+                "Collections — third-party liability, estate and other "
+                "recoveries, NOT drug rebates — reported as a single "
+                "unallocated negative. The source declines to say which lane "
+                "recovered the money, so it is folded pro rata by share of "
+                "gross (D-83, applied to the District by D-150). Reported "
+                "here, not drawn."),
             "budget.dedtax": Fig(
                 DC_DEDTAX_M, source=DHCF_BUDGET, vintage=V,
                 basis="dedicated taxes, appropriated, $M",
