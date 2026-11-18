@@ -25,3 +25,14 @@ reference_renders/diffs/
 # the tree; stale as soon as anything upstream moves. One was committed by
 # accident in 434b2d1 and removed from the index in the follow-up.
 COMMIT_REVIEW_*.html
+
+# generated explorer artifacts. build_explorer.py rewrites both on every
+# run and nothing reads a committed copy; they were added by accident in
+# 551ba9f and produce a ~36,000-line diff per rebuild. Same rule as the build
+# outputs above. D-149.
+medicaid_dollar_explorer.html
+explorer_data.json
+
+# scratch the assistant writes. Nothing here belongs in the repo; a 49MB zip
+# reached history this way once.
+Claude outputs/
