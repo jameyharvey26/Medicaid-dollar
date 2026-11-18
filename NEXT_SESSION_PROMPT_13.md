@@ -1,15 +1,24 @@
-# Next session — clear the dangling issues, then the number line and the executive views
+# Next session — clear the dangling issues, sign the District, wire the views
 
-Drafted by Claude on 18 November 2026 at JW's request. Edit before use; it is
-a brief, not a specification.
+Drafted by Claude on 18 November 2026 at JW's request; revised the same day
+after he corrected what the executive views are and added the signing work.
+Edit before use; it is a brief, not a specification.
 
-The repo is committed at `370c799`, three commits ahead of `origin/main` and
-**not pushed**. Push before anything else, or `git log origin/main..main` to
-see what is waiting.
+## Where the repo is
+
+**`/Users/jameyharvey/Documents/GitHub/Medicaid-dollar` on JW's Mac.** Ask for
+that folder and nothing else. In a Cowork session it mounts at
+`$HOME/mnt/Medicaid-dollar` inside the Linux VM; work there with `device_bash`
+rather than staging files into the cloud container, which is slower and leaves
+two copies to drift.
+
+The repo is committed at **`f72d0e0`**, four commits ahead of `origin/main`
+and **not pushed**. Push first, or run `git log origin/main..main` to see what
+is waiting.
 
 Read in this order: this file, then `DECISIONS.md` from **D-133** down (it
-runs to D-148), then `SESSION_NOTES_2026-11-03.md`. The three recent commits
-carry long messages that are part of the record — `git log -3` is worth the
+runs to D-148), then `SESSION_NOTES_2026-11-03.md`. The four recent commits
+carry long messages that are part of the record — `git log -4` is worth the
 two minutes.
 
 ---
@@ -39,7 +48,118 @@ port.** The five lanes are correct in the ledger and unverified on the plate.
 
 ---
 
-## The dangling issues, in the order I would take them
+## 1. Sign the District numbers
+
+JW wants this done next session. It is the single largest gap between the
+District and the national panels, and no amount of modelling closes it.
+
+**The mechanism.** `signatures.py` is a register, not a stamp. A signature is
+a key, the exact value that was agreed, and who agreed it. `_sign` matches the
+ledger against the register; if a figure has moved since it was signed the
+build does not quietly re-sign it, it reports **LAPSED** and fails. That
+design exists because on 16 September a provider phase moved and JW's
+signature was carried onto four totals he had never seen, with every gate
+passing. Correcting a figure costs a deliberate line in the register, and that
+is the point.
+
+**The rule that governs it — S-093, JW, 16 September.** No signature without a
+stacked before-and-after of every panel the change touches, rendered full
+width, with the changed figures named above it. `reference_renders/` holds the
+prior examples (see `sign_2026-09-26_D91.png`). The register is the record
+that this happened.
+
+**What to sign.** `signatures.py` carries no DC entry at all. The realistic
+target is the **41 MEASURED figures** — 26 on DC FY2024, 15 on DC FY2030 —
+because measured means a published source exists to open. Derived figures
+inherit their standing from their parents; modelled figures are declarations
+rather than readings, and signing one asserts something different. The current
+state:
+
+| panel | figures | measured | derived | modelled | absent | signed |
+|---|---|---|---|---|---|---|
+| DC FY2024 | 55 | 26 | 11 | 6 | 12 | **0** |
+| DC FY2030 | 96 | 15 | 23 | 40 | 18 | **0** |
+
+`DC_ENDNOTES.md` is the working list: every figure has an entry carrying its
+source, vintage, basis and a `Verified:` line that currently reads **no**.
+`DC_SIGNOFF_LIST.md` already groups the items into three tiers and is the
+right place to start rather than the endnote register itself.
+
+**Claude cannot sign anything.** `verified` is "YYYY-MM-DD initials" and the
+initials belong to a person who opened the source and agreed with it. What
+Claude can do is prepare: pull each source to the point where JW can see it,
+produce the S-093 stacked renders, draft the register lines, and flag the ones
+where the source does not say what the ledger claims. Expect some of those —
+that is what the exercise is for. Also expect a DC analogue of `UNSIGNED`: on
+the national panels two margins are deliberately unsigned because the endnote
+states they have no primary source, and signing them would assert that someone
+opened a document the register says does not exist.
+
+---
+
+## 2. The executive views — wire the static artifacts to the ledger
+
+**What they are.** Lenses on the ledger, built as **static artifacts** for the
+original whitepaper. Today they are not lenses at all: `make_figs.py` defines
+each one as a **pixel rectangle cropped out of a rendered panel PNG** —
+`crop("fig3_payer.png", _OF.COLS["DISBURSE"][0], 90, 1400, 780)` and so on,
+with the boxes recorded in `crops.json`, 14 entries.
+
+**What JW wants.** Take those static views and wire them to the ledger so they
+become interactive — the same move `geometry_export.py` and
+`engine_data_export.py` already made for the spine and the panel data. A view
+should be a named selection over the ledger that the engine can draw live,
+not a bitmap rectangle that goes stale the moment a figure moves.
+
+**The bridge already exists, partly.** Several crops are *already* expressed
+in ledger column terms rather than raw pixels — `_OF.COLS["DISBURSE"]`,
+`_OF.COLS["CLAIMS"]` — which is exactly the handle to pull. The ones still
+written as bare numbers are the ones to understand first.
+
+The inventory, from `make_figs.py`:
+
+| static view | what it is a lens on |
+|---|---|
+| `fig1_panel_2024` / `fig6_panel_2030` | the whole panel, uncropped |
+| `fig2_sources` | sources of funds |
+| `fig3_payer` | the payer column onward |
+| `fig4_providers`, `fig9_providers_2030` | provider revenue |
+| `fig4b_providers_pies` | the claims-to-provider composition |
+| `fig5_numberline`, `fig10_numberline_2030`, `figA_lines_pair` | the number line |
+| `fig7_lanes_2030` | the HR-1 ribbons |
+| `fig6/7/8_taper_*`, `cover_taper` | the taper, from `cover/` |
+| `fig9_population`, `fig13/15_households` | beneficiaries |
+
+The engine already has three lenses on a panel and a place/year pair of
+control axes, so there is a shape to follow. If the executive views become a
+fourth control axis, most of this is wiring. Where a view has no ledger path
+behind it — the household figures are the likeliest — say so rather than
+inventing one.
+
+**Do not start by drawing.** Start by listing, for each view above, which
+ledger keys it covers and whether a crop box is doing work that a ledger
+selection cannot yet do.
+
+---
+
+## 3. The number line
+
+It exists in four places and they do not agree: `make_figs.py` crops it,
+`compose.py` and `instances.py` carry its configuration, `explorer.py` has its
+own, and `GEOMETRY_CONTRACT.md` §1a freezes the **pie-to-number-line
+alignment** on the beneficiary surface. "Wire it up" should mean one number
+line, built from the ledger, used by the paper, the engine and the explorer.
+
+Start by reading those four and writing down where they disagree.
+
+Note D-132: the beneficiary column is an **anchored but unsized surface**. Its
+left edge and the pie-to-number-line alignment are frozen; its width is a
+renderer's choice. The paper draws 420 and the engine 200, and both are
+correct. Whatever the number line becomes must hold under both.
+
+---
+
+## 4. The dangling issues, in the order I would take them
 
 ### Blocking, because they hide other faults
 
@@ -64,16 +184,18 @@ port.** The five lanes are correct in the ledger and unverified on the plate.
    REGENERATED TRACKER marker** because it was amended from the ledger rather
    than from a re-render. Confirm it, then sweep the rest of the file: any
    entry quoting a FY2030 lane figure is suspect. A generator for `ENDNOTES.md`
-   on the `dc_endnotes.py` pattern would end this class of problem.
+   on the `dc_endnotes.py` pattern would end this class of problem — and would
+   make the signing work in §1 cheaper, because the `Verified:` lines would
+   then come off one register instead of two.
 
 ### Leaks — numbers that can drift without anything noticing
 
 4. **`DCBANDS` is generated from the ledger and pasted into the engine**
-   (D-148). `engine_data_export.py` should emit the bands alongside `DATA`, the
-   way `GEOM` and the panel figures already travel. Until it does, a ledger
-   change silently leaves the bands stale. The same leak already cost us once:
-   `IMPLIED` sat at 0.181112 after the rate moved, putting Arkansas and New
-   Hampshire in the wrong places on a correct default (D-147).
+   (D-148). `engine_data_export.py` should emit the bands alongside `DATA`.
+   Until it does, a ledger change silently leaves the bands stale. The same
+   leak already cost us once: `IMPLIED` sat at 0.181112 after the rate moved,
+   putting Arkansas and New Hampshire in the wrong places on a correct default
+   (D-147).
 
 5. **The provider tax lane has no band.** Its floor could not be reproduced
    from the current constants, so it was left out rather than typed. Recover
@@ -82,7 +204,8 @@ port.** The five lanes are correct in the ledger and unverified on the plate.
 6. **`$2.90` is typed in six places** including `ENDNOTES.md` EN-19 and EN-27,
    against `peel.medicare` signed at **2.9231**. S-105 says derive, never type
    an output. Closed as a *range* question at D-131; the typing was never
-   fixed.
+   fixed. Worth doing before §1, since EN-19 and EN-27 are figures somebody is
+   about to be asked to sign.
 
 ### Smaller, but each one is a real fault
 
@@ -113,51 +236,6 @@ port.** The five lanes are correct in the ledger and unverified on the plate.
   band exists in prose, the control does not.
 - `EXEMPT_SHARE` narrowed but not bounded. Dual and PACE retention, and the
   DHCF managed-care service split, still absent.
-- **0 of 151 District figures are signed.** `signatures.py` carries no DC
-  entry. Measured says where a number came from; verified says a named person
-  opened the source and agreed with it. This is the single largest gap between
-  the District and the national panels and no amount of modelling closes it.
-
----
-
-## The work JW actually wants: the number line and the executive views
-
-### The number line
-
-It already exists in three places and they are not the same thing:
-`make_figs.py` emits `fig5_numberline.png` and `fig10_numberline_2030.png`;
-`compose.py` and `instances.py` carry its configuration; `explorer.py` has its
-own; and `GEOMETRY_CONTRACT.md` §1a freezes the **pie-to-number-line
-alignment** on the beneficiary surface. "Wire it up" should mean one number
-line, built from the ledger, used by the paper, the engine and the explorer —
-the same move `geometry_export.py` and `engine_data_export.py` made for the
-spine and the panel data.
-
-Start by reading those four and writing down where they disagree. Do not start
-by drawing.
-
-Note D-132: the beneficiary column is an **anchored but unsized surface**. Its
-left edge and the pie-to-number-line alignment are frozen; its width is a
-renderer's choice. The paper draws 420 and the engine 200, and both are
-correct. Whatever the number line becomes must hold under both.
-
-### The executive views
-
-**ASK JW WHAT THIS MEANS BEFORE BUILDING ANYTHING.** It is not defined
-anywhere in the repo and it is the one item in this brief with no prior
-decision behind it. Worth settling in the first ten minutes:
-
-- Who is the reader, and what decision are they making?
-- Is it a new panel, a new view of an existing panel, or a new artifact
-  (deck, one-pager, a lens in the engine like the three already there)?
-- Does it show the hundred, the taper, the levers, or the beneficiaries?
-- National, District, or both — and if both, what happens to the panels where
-  the District has no figure?
-
-The engine already has three lenses on a panel (D-ae72184 era) and a place/year
-pair of control axes. If the executive view is a fourth lens, it is cheap. If
-it is a new artifact, it needs its own ledger path and its own gate, and that
-is a different size of job.
 
 ---
 
@@ -167,6 +245,8 @@ is a different size of job.
   listed above (items 4 and 6).
 - **S-108**: absence is drawn, never estimated. The District panel now has no
   absent levers, which makes this easier to forget, not harder.
+- **S-093**: no signature without a stacked before-and-after of every panel the
+  change touches, rendered full width, with the changed figures named above it.
 - **S-032**: `ENDNOTES.md` and `DC_ENDNOTES.md` are append-only and stably
   numbered. `DC_ENDNOTE_KEYS.txt` is the registry; DC-EN numbers are its line
   positions and documents cite them. **Never reorder or delete a line.**
@@ -183,10 +263,14 @@ is a different size of job.
 - The Cowork Linux VM has no Playwright browser and cannot download one.
   `render_v8_0.py`, `anchorproof.py` and `engine_texts.py` all need one.
   `resvg-py`, `pymupdf` and `playwright` itself install from pip there; the
-  browser does not.
+  browser does not. The paper was rendered by splitting the job: substitute on
+  the VM, render in the cloud container, commit the PDF back.
 - `cbo.gov` refuses the egress proxy for direct download. The workbook was
   retrieved through the in-app browser against the page's own origin. The data
   is transcribed in `cbo61570.py` and does not need fetching again.
 - `git` cannot remove its own `.git/index.lock` in a connected folder until
   file deletion is approved for that folder. Approve it at the start of a
   session that will commit, or git leaves locks that break later commands.
+- The VM has no git identity configured. Commits were made by setting
+  `GIT_AUTHOR_*` / `GIT_COMMITTER_*` for the one command rather than changing
+  JW's config.
