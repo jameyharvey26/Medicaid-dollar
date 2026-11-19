@@ -198,6 +198,61 @@
    "term_col": "PROVIDERS",
    "ret": false,
    "label_dy": -30
+  },
+  "DC provisions not separately scored": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 790.0,
+   "term_col": "STATE_AGENCY",
+   "ret": false
+  },
+  "Blocked renewal automation": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 756.0,
+   "term_col": "CLAIMS",
+   "ret": false,
+   "reach": "CLAIMS",
+   "label": "Renewal automation blocked"
+  },
+  "Blocked reconsideration period": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 773.0,
+   "term_col": "CLAIMS",
+   "ret": false,
+   "reach": "CLAIMS",
+   "label": "Reconsideration period blocked"
+  },
+  "LTSS home equity cap": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 790.0,
+   "term_col": "STATE_AGENCY",
+   "ret": false,
+   "label": "Home equity cap"
+  },
+  "Legal immigrant eligibility": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 801.0,
+   "term_col": "STATE_AGENCY",
+   "ret": false,
+   "label": "Immigrant eligibility ended"
+  },
+  "Retroactive eligibility": {
+   "cls": "hr1",
+   "src": "STATE_AGENCY",
+   "edge": "bottom",
+   "src_x": 812.0,
+   "term_col": "STATE_AGENCY",
+   "ret": false,
+   "label": "Retroactive coverage ended"
   }
  }
 }

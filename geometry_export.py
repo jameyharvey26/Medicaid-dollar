@@ -30,6 +30,9 @@ from instances import T_SLOT
 _OF_KEYS = ("cls", "src", "edge", "src_x", "term_col", "term_y", "ret",
             "term_dy", "reach", "label", "label_side", "label_dy")
 
+
+
+
 REPO = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(REPO, "engine", "geometry.json")
 # `exportproof.py` points this at a copy so it can check for drift without
@@ -114,15 +117,31 @@ def main():
         # BELOW the fan's first row so that it survives the rule moving. Any
         # remaining absolute `term_y` belongs to an ordinary outflow that is
         # not a fan participant and is not a pin for this purpose.
-        # ALIASES ARE EXCLUDED. A state edition that renames a lane adds a key
-        # to OUTFLOWS pointing at geometry that is already exported under the
-        # national name. Exporting both would put a second entry in the
-        # engine's spine for one position on the flow, and the engine would
-        # carry a District editorial decision as though it were geometry.
-        # The rename belongs to the view, not to the spine.
+        # EVERY LANE IS EXPORTED, including the District's. This used to
+        # exclude aliases, on the reasoning that a state edition renaming a
+        # lane points at geometry already exported under the national name, so
+        # exporting both would put two entries in the engine's spine for one
+        # position on the flow.
+        #
+        # That reasoning assumed an alias is a pure rename carrying nothing of
+        # its own. D-143 split two national lanes into five District ones and
+        # D-154 gave each its own printed name and its own trunk slot. Excluded
+        # wholesale, the engine had no entry for any of them and fell back to
+        # the column's left edge: all five left from x=584, and the engine's DC
+        # FY2030 panel carried SIX margin crossings while the paper panel
+        # carried none. It had also been printing the national labels.
+        #
+        # Two entries at one x is not a contradiction and never was. They are
+        # different lanes that leave at the same place, and no two of them are
+        # ever on the same panel — `Blocked renewal automation` is drawn only
+        # on a District panel and `Blocked Medicaid enrollment rule` only on a
+        # national one. What the engine needs is an entry for every lane it may
+        # draw, and the rule that withheld some of them is removed rather than
+        # narrowed: a condition here is one more thing to be wrong about, and
+        # it was wrong for three weeks without anyone being able to see it.
         "outflows": {
             name: {k: d[k] for k in _OF_KEYS if d.get(k) is not None}
-            for name, d in OF.OUTFLOWS.items() if name not in OF.ALIASES
+            for name, d in OF.OUTFLOWS.items()
         },
     }
     # The fan's first row sits this far below the HR-1 rule. sankey._draw_hr1

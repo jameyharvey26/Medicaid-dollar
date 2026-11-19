@@ -31,9 +31,12 @@ REPO = os.path.dirname(os.path.abspath(__file__))
 ENGINE = os.path.join(REPO, "engine", "explorer_engine.html")
 OUT = os.path.join(REPO, "engine_renders")
 
+# ("DC", "2030") joins 19 November 2026. The engine has drawn it all along --
+# it is the largest panel of the four -- and no gate had ever looked at it.
 PANELS = {("US", "2024"): "national_2024",
           ("US", "2030"): "national_2030_mixed",
-          ("DC", "2024"): "dc_2024"}
+          ("DC", "2024"): "dc_2024",
+          ("DC", "2030"): "dc_2030"}
 
 # The engine's main flow, which is what the envelope is derived from. The first
 # six are the lanes the paper's own BODY names: federal, state, trunk, MCO, dual,
@@ -92,7 +95,16 @@ def dump():
             pg.wait_for_timeout(500)
             pg.evaluate("() => document.getElementById('reset').click()")
             pg.wait_for_timeout(400)
-            svg = pg.evaluate("() => document.querySelector('#plate svg').outerHTML")
+            # '#plate svg' until 19 November, and there has been no #plate in
+            # this engine since it was restructured. The selector returned
+            # null, the gate could not run, and D-142 recorded the symptom --
+            # "the engine loads but never paints #plate svg" -- as a property
+            # of the Cowork VM's missing browser. It was not. This gate would
+            # have failed the same way on any machine with a working
+            # Playwright, which is what it was waiting for. The engine draws
+            # all four panels, and drew them the whole time.
+            svg = pg.evaluate(
+                "() => document.querySelector('#picture svg').outerHTML")
             # fills that are patterns carry no colour the envelope can use; they
             # are tributaries, never body, so a flat loss hex is the honest
             # substitute and keeps the grammar parseable.
