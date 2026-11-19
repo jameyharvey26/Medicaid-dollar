@@ -32,7 +32,12 @@ def _state(fig, cycle=None, key=None, named=None):
     if fig is None:
         return MISS, ""
     if fig.lapsed:
-        return LAPSED, f"signed at {fig.verified_value}, now {fig.value}"
+        # Two ways to lapse since 19 November: the number moved, or the
+        # source, vintage or basis behind it was rewritten while the number
+        # held still. The second used to be invisible. `lapse_reason` names
+        # which, because "LAPSED" on its own sends a reader to check the
+        # wrong thing.
+        return LAPSED, fig.lapse_reason
     if fig.verified and cycle and fig.vintage and fig.vintage != cycle:
         return STALE, (f"{fig.source} {fig.vintage}".strip()
                        + f" — signed against {fig.vintage}, cycle is {cycle}")

@@ -503,6 +503,22 @@ def _cols(ffs_n, legacy, assumed=False):
             for k in NODES}
 
 
+# Signing, D-152. The District has its own register, `signatures_dc.py`, for
+# the reason signing.py sets out: the District reuses national key strings
+# exactly, so one shared register would let a District signature silently
+# lapse a national one. The register is empty today — the mechanism exists and
+# nobody has opened a source for this panel yet — so every figure below reads
+# as recorded and unverified, which is the honest state and what
+# `coverage.py dc` reports.
+import signatures_dc as _REG
+import signing
+
+
+def _sign(L: Ledger) -> Ledger:
+    """Attach the District register's signatures. See signing.sign."""
+    return signing.sign(L, _REG)
+
+
 def build(legacy_mix: bool = False, assumed_mix: bool = False) -> Ledger:
     """`legacy_mix=True` reproduces exactly what `ledger_dc.py` carried: the
     national managed-care service mix applied to DC's plan care, and the
@@ -680,7 +696,7 @@ def build(legacy_mix: bool = False, assumed_mix: bool = False) -> Ledger:
              "plan financial filings, MLR reporting, NAIC Title XIX exhibits.",
     )
 
-    return Ledger(
+    return _sign(Ledger(
         geography="District of Columbia",
         year="FY2024",
         scenario="as_is",
@@ -822,4 +838,4 @@ def build(legacy_mix: bool = False, assumed_mix: bool = False) -> Ledger:
             "state dimension and is the route in.",
         ],
         note="Every vintage inherited and unverified. " + STALE,
-    )
+    ))

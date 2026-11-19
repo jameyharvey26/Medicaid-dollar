@@ -129,39 +129,18 @@ def _m(v, note=""):
 # holds the exact value each figure was agreed at; a figure that has moved
 # since is not signed, and `check` fails the build rather than letting a
 # signature travel onto a number nobody has seen.
-from signatures import REVIEW, SIGNED, UNSIGNED
+#
+# The routine itself moved out to signing.py on 19 November (D-152). Nothing
+# in it was national: it walks the ledger's structure and builds its keys from
+# it, and keeping it here was the reason the District had no signing path at
+# all. This module keeps its own register and nothing about this panel moves.
+import signatures as _REG
+import signing
 
 
 def _sign(L: Ledger) -> Ledger:
-    """Attach the register's signature to every figure still at its signed value."""
-    def s(f, key):
-        if key in UNSIGNED or f.status not in (MEASURED, MODELLED):
-            return f
-        if key not in SIGNED:
-            return f                      # never signed; coverage reports it
-        signed_at = SIGNED[key]
-        if f.value is None or abs(f.value - signed_at) > 1e-9:
-            # Moved since it was agreed. Record the signature AND the old
-            # value so `lapsed` fires and names both numbers.
-            return replace(f, verified=REVIEW, verified_value=signed_at)
-        return f.sign(REVIEW)
-
-    for k in L.sources:
-        L.sources[k] = s(L.sources[k], f"source.{k}")
-    L.scale = s(L.scale, "scale")
-    for pl in L.peels:
-        pl.amount = s(pl.amount, f"peel.{pl.key}")
-    for p in L.payers:
-        for fld in ("capitation", "care", "admin", "margin"):
-            setattr(p, fld, s(getattr(p, fld), f"payer.{p.key}.{fld}"))
-    for m in [L.claims] + ([L.beneficiaries] if L.beneficiaries else []):
-        for k in list(m.row_margin):
-            m.row_margin[k] = s(m.row_margin[k], f"{m.name}.row.{k}")
-        for k in list(m.col_margin):
-            m.col_margin[k] = s(m.col_margin[k], f"{m.name}.col.{k}")
-        for k in list(m.cell):
-            m.cell[k] = s(m.cell[k], f"{m.name}.cell.{k[0]}.{k[1]}")
-    return L
+    """Attach the national register's signatures. See signing.sign."""
+    return signing.sign(L, _REG)
 
 
 def build() -> Ledger:

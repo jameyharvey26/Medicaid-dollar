@@ -23,6 +23,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass, field, replace
 from typing import Dict, List, Optional, Tuple
 
@@ -76,6 +77,15 @@ class Fig:
     # verified, and nothing else in the system would notice. Set by `sign()`,
     # never by hand.
     verified_value: Optional[float] = None
+    # The PROVENANCE that was agreed, fingerprinted. A signature says someone
+    # opened a source and agreed with a number. Both halves can move, and
+    # until 19 November only one of them was watched: a figure could keep its
+    # value and have its source, vintage or basis rewritten underneath it, and
+    # the signature would ride along onto a claim nobody had checked. That is
+    # the same failure `verified_value` was added to stop, in the other
+    # dimension. None means a signature predating this and covering the number
+    # alone. Set by `sign()`, never by hand.
+    verified_source: Optional[str] = None
 
     # ---- construction ---------------------------------------------------
     @staticmethod
@@ -83,20 +93,58 @@ class Fig:
         return Fig(None, source="", vintage="", basis="", status=ABSENT,
                    note=note or why)
 
-    def sign(self, who: str) -> "Fig":
+    def sign(self, who: str, provenance: Optional[str] = None) -> "Fig":
         """Record that someone opened the source and agreed with this value.
 
         `who` is "YYYY-MM-DD initials". Verification is valid for the vintage
         the figure declares, so a figure verified against MACStats FY2024 stays
         verified until the ledger is re-anchored to a later vintage. It does
         not expire on the calendar and it does not expire on a rebuild.
+
+        `provenance` is the fingerprint that was agreed. Pass it to bind the
+        signature to where the figure says it came from as well as to what it
+        says; omit it for a signature over the number alone.
         """
-        return replace(self, verified=who, verified_value=self.value)
+        return replace(self, verified=who, verified_value=self.value,
+                       verified_source=provenance)
+
+    @property
+    def provenance(self) -> str:
+        """A short fingerprint of where this figure says it came from.
+
+        Source, vintage and basis — the three fields the endnote register
+        prints as the figure's research footnote, and the three a reader would
+        have to open to check it. NOT the note: prose gets improved, and a
+        signature that lapsed on a typo fix would teach people to stop
+        improving it.
+        """
+        raw = "\x1f".join((self.source or "", self.vintage or "",
+                           self.basis or ""))
+        return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:12]
 
     @property
     def lapsed(self) -> bool:
-        """Verified, then changed. The signature no longer covers the value."""
-        return bool(self.verified) and self.verified_value != self.value
+        """Verified, then changed. The signature no longer covers the figure.
+
+        Either half can lapse it: the number, or the provenance behind it.
+        """
+        if not self.verified:
+            return False
+        if self.verified_value != self.value:
+            return True
+        return (self.verified_source is not None
+                and self.verified_source != self.provenance)
+
+    @property
+    def lapse_reason(self) -> str:
+        """Which half moved, in words, for whatever is reporting it."""
+        if not self.lapsed:
+            return ""
+        if self.verified_value != self.value:
+            return f"signed at {self.verified_value}, now {self.value}"
+        return (f"the number is unchanged; its source, vintage or basis has "
+                f"been rewritten since it was signed "
+                f"({self.verified_source} -> {self.provenance})")
 
     @staticmethod
     def derived(value: float, parents, basis: str = "", note: str = "") -> "Fig":
