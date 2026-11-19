@@ -212,6 +212,25 @@ SEED={p:{**{g:v for g,v in zip(G,r)},
 seed=_SEED4
 
 
+
+def _money(v, places=2):
+    """A lane's amount, where a lane smaller than a cent is still a lane.
+
+    "%.2f" prints a real 0.0026 lane as "0.00", which is a NUMBER claiming the
+    lane is empty -- the exact thing the placeholder branch refuses to print,
+    arrived at from the other direction. The District's FY2030 home equity cap
+    lane is 0.0026 per $100 and read as zero on the first render of it. D-146
+    fixed this in the engine; the paper renderer had the same defect, and
+    nobody had drawn a sub-cent lane here before.
+
+    Below half a cent, four places. Above it nothing changes, so no figure on
+    any blessed panel moves.
+    """
+    if v and abs(v) < 0.005:
+        return "−$%.4f" % v
+    return "−$%.*f" % (places, v)
+
+
 def render(cfg):
     """Draw one instance. cfg is an Instance from instances.py."""
     global svg
@@ -1084,7 +1103,7 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
         # cannot read as belonging to the row beneath.
         # A placeholder says what is missing. It must not say a number, and
         # it must not say "\u2212$0.00", which is a number.
-        _amt = _PH.LABEL if _why else f"\u2212${v:.2f}"
+        _amt = _PH.LABEL if _why else _money(v)
         if name in COMPACT:
             _head = f"{_lab}  {_amt}"
             lbg(lx,ly,_head,12,an)
@@ -1108,7 +1127,7 @@ def _draw_hr1(cfg, bites, ys, TB, obstacles=(), pinned=(), rule_y=788.0):
                 f'y2="{ly+14:.1f}" stroke="{WARMD}" stroke-width="0.9" stroke-opacity="0.6"/>')
             _w2=_ph_of(cfg,it["name"])
             _t2=(f"{it['name']}  {_PH.LABEL}" if _w2
-                 else f"{it['name']}  \u2212${amt:.2f}")
+                 else f"{it['name']}  {_money(amt)}")
             lbg(k+26,ly+18,_t2,12,"start")
             txt(k+26,ly+18,_t2,12,_PH.VIOLET if _w2 else WARMD,"start","bold",halo=False)
             lbg(k+26,ly+31,it["sub"],10,"start")

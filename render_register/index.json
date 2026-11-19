@@ -1,77 +1,92 @@
 {
   "dc_2024_baseline": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "3143736a3511c3b6"
   },
   "dc_2024_combined": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "dddd558f408d69ec"
   },
   "dc_2024_overlay": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "c74fd2441caefeb2"
+  },
+  "dc_2030_baseline": {
+    "blessed": "2026-11-19",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
+    "sha": "a6f4c2045085b100"
+  },
+  "dc_2030_combined": {
+    "blessed": "2026-11-19",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
+    "sha": "bce845289c93f260"
+  },
+  "dc_2030_overlay": {
+    "blessed": "2026-11-19",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
+    "sha": "52a00c04fd057c03"
   },
   "national_2024_baseline": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "35f0651bea914a7e"
   },
   "national_2024_combined": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "40891e149e7bbdd4"
   },
   "national_2024_overlay": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "665db42da85e035f"
   },
   "national_2030_holds_baseline": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "0391396d88ebc9bd"
   },
   "national_2030_holds_combined": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "223b9464ffaa2352"
   },
   "national_2030_holds_overlay": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "d4ed3fcb5f60a02f"
   },
   "national_2030_mixed_baseline": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "7b1cbbdb17fc73c6"
   },
   "national_2030_mixed_combined": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "bff6e3bf8a2e2de8"
   },
   "national_2030_mixed_overlay": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "6c1e84513b1fa475"
   },
   "national_2030_scales_baseline": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "cb129db148a0994f"
   },
   "national_2030_scales_combined": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "a3946531f5f0a2d3"
   },
   "national_2030_scales_overlay": {
     "blessed": "2026-11-19",
-    "reason": "JW 2026-11-18, on reference_renders/diffs/DC_2024_stacked_2026-11-18.png. Exhibit 17's collections line folds pro rata across the capitated and fee-for-service lanes instead of coming entirely out of wrap-around services, and every plan figure comes from one rule applied to the Title XIX column of its own statement. Wrap-around is restored to what Exhibit 17 prints.",
+    "reason": "JW 2026-11-19. The District FY2030 panel enters the register. It carried three violet placeholders when it was last looked at; D-143 derived all five of the District's own lanes and ABSENT_LEVERS is empty, so there are none left. It also could not be drawn at all: views.V_DC_2030 still named the two lanes D-143 retired, and nothing called build_dc_2030, so the ledger was right for three weeks with no picture of it. Ten tributaries, each with its own name, zero crossings in the margin, tracker line adds up as printed.",
     "sha": "c1a2fb36c0becce1"
   }
 }

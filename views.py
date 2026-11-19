@@ -103,34 +103,74 @@ SA_LEVERS = ("Work reporting", "Six-month renewals",
              "Blocked Medicaid enrollment rule", "Everything else")
 SA_TRUNK = SA_LEVERS + ("Blocked senior enrollment rule",)
 
-# DC renames the residual lane (JW, 2026-10-29): nationally "Everything else"
-# is a remainder defined by what CBO scored and cannot be re-derived from
-# District sources, so the DC lane carries named District provisions instead
-# and is not comparable lane-to-lane. The national tuples are left alone.
+# DC does not rename the national lanes any more — it replaces them. D-143
+# retired the two composite lanes and wrote five District-derived lanes in
+# their place: section 71102 became `Blocked renewal automation` and `Blocked
+# reconsideration period` (D-123), and the leftovers lane became the three
+# named provisions (D-118).
+#
+# THIS VIEW WAS NOT UPDATED WHEN THAT HAPPENED, and that is why the panel has
+# been unrendered since. `DC_SA_LEVERS` still named the two retired lanes, so
+# `PeelSum.resolve` raised KeyError on the first one and the build stopped
+# before it drew anything. Nobody saw it because nothing calls
+# `build_dc_2030()` — it is not wired into `build.py`'s entry point. The
+# ledger was right and the picture of it could not be made.
 DC_SA_LEVERS = ("Work reporting", "Six-month renewals",
-                "Blocked Medicaid enrollment rule",
-                "DC provisions not separately scored")
+                "Blocked renewal automation", "Blocked reconsideration period",
+                "LTSS home equity cap", "Legal immigrant eligibility",
+                "Retroactive eligibility")
 DC_SA_TRUNK = DC_SA_LEVERS + ("Blocked senior enrollment rule",)
 
-# The renamed lane keeps the residual's GEOMETRY. outflows.OUTFLOWS is the
-# national declaration of where each tributary leaves and how far it reaches,
-# and renaming a DC lane is an editorial act, not a claim about the flow — the
-# provisions in it still leave at the state agency and still stop there. So
-# the DC name maps back to the national key for position and reach, and
-# outflows is left untouched. If the DC lane ever leaves somewhere else, that
-# is a finding and it earns its own entry there rather than this alias.
-DC_GEOM_ALIAS = {"DC provisions not separately scored": "Everything else"}
+# Each new lane keeps the GEOMETRY of the lane it came out of.
+# `outflows.OUTFLOWS` is the national declaration of where a tributary leaves
+# the trunk and how far it reaches, and splitting a lane is an editorial act,
+# not a claim about the flow: D-143 holds the charge and reach of every new
+# lane identical to its parent's, and `ledger_dc_2030.HR1_DC` says so in the
+# data. So the DC names map back to the national keys for position, and
+# outflows is left untouched. If a DC lane ever leaves somewhere else, that is
+# a finding and it earns its own entry there rather than an alias here.
+DC_GEOM_ALIAS = {
+    # section 71102, split in two — both still leave at the state agency and
+    # both still reach the claims column
+    "Blocked renewal automation":     "Blocked Medicaid enrollment rule",
+    "Blocked reconsideration period": "Blocked Medicaid enrollment rule",
+    # the three named provisions out of the leftovers lane — all three leave
+    # at the state agency and stop there
+    "LTSS home equity cap":       "Everything else",
+    "Legal immigrant eligibility": "Everything else",
+    "Retroactive eligibility":     "Everything else",
+}
 
-# The terminal copy follows the rename. The three provisions are named rather
-# than exemplified, because unlike the national residual they are a closed and
-# dated list — and one of them is enjoined, which the panel has to carry.
-DC_SUB_2030 = {k: v for k, v in SUB_2030.items() if k != "Everything else"}
-DC_SUB_2030["DC provisions not separately scored"] = (
-    "home equity cap, immigrant eligibility (enjoined), retroactive coverage")
+# Terminal copy per lane. The national residual's entry goes, because the DC
+# panel no longer has a residual: it has five named provisions, a closed and
+# dated list, and one of them is enjoined, which the panel has to carry.
+DC_SUB_2030 = {k: v for k, v in SUB_2030.items()
+               if k not in ("Everything else",
+                            "Blocked Medicaid enrollment rule")}
+DC_SUB_2030.update({
+    "Blocked renewal automation":
+        "will not be renewed without a form the District already has",
+    "Blocked reconsideration period":
+        "will not come back after a paperwork lapse",
+    "LTSS home equity cap":
+        "will not pass the home equity test for long-term care",
+    "Legal immigrant eligibility":
+        "will not be eligible — but see the injunction below",
+    "Retroactive eligibility":
+        "will not be covered for the months before the claim",
+})
 
 
 def _dc_of(name):
-    return _OF[DC_GEOM_ALIAS.get(name, name)]
+    """A DC lane's geometry: its own entry where outflows declares one, and
+    the lane it came out of otherwise.
+
+    The fallback used to be the only path, which silently discarded the DC
+    slots outflows declares for the split lanes: five tributaries resolved to
+    two trunk positions and two of them crossed in the margin. Prefer the
+    District's own entry.
+    """
+    return _OF.get(name) or _OF[DC_GEOM_ALIAS.get(name, name)]
 
 V_2030 = View(
     root="state_agency",
@@ -202,8 +242,8 @@ V_DC_2030 = View(
     show_beneficiaries=False,
     kicker="TO BE  \u00b7  DISTRICT OF COLUMBIA  \u00b7  FY2030",
     title="$100 of DC Medicaid spending under prior law, with P.L. 119-21 applied",
-    strap="DRAFT. Five of seven HR-1 lanes are derived on District inputs. "
-          "One is ASSUMED from the national share and says so. One carries no "
-          "DC figure and is drawn as a violet placeholder. The FY2030 hundred "
-          "and the disenrolment rate are modelled and declared.",
+    strap="DRAFT. Every HR-1 lane is derived on District inputs: no lane is "
+          "absent, assumed, or carrying a national figure under a District "
+          "label. The FY2030 hundred and the disenrolment rate are modelled "
+          "and declared.",
 )

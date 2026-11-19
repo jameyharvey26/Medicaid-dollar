@@ -1,0 +1,164 @@
+<svg viewBox="0 0 2200 1416" width="100%" xmlns="http://www.w3.org/2000/svg">
+<g id="baseline" display="none">
+</g>
+<g id="overlay-hr1">
+<defs><pattern id="hr1hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#6f4747" stroke-width="2.1" stroke-opacity="0.55"/></pattern><pattern id="phhatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#A78BFA" stroke-width="2.1" stroke-opacity="0.85"/></pattern></defs>
+<line x1="330" y1="842.5" x2="1560" y2="842.5" stroke="#8B5A5A" stroke-width="1.1" stroke-dasharray="7 5" stroke-opacity="0.7"/>
+<text x="336.0" y="834.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#8B5A5A" text-anchor="start" font-weight="bold">HR-1 TAKES THESE OUT</text>
+<path d="M300.0,536.4 C325.0,536.4 325.0,860.5 350.0,860.5 L350.0,869.0 C325.0,869.0 325.0,544.9 300.0,544.9 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Provider tax limits" data-kind="provision" data-val="1.9468"/>
+<path d="M300.0,536.4 C325.0,536.4 325.0,860.5 350.0,860.5 L350.0,869.0 C325.0,869.0 325.0,544.9 300.0,544.9 Z" fill="url(#hr1hatch)"/>
+<rect x="350.0" y="860.5" width="6.0" height="8.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="210.3" y="872.0" width="135.7" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="342.0" y="884.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Provider tax limits</text>
+<rect x="198.0" y="888.0" width="148.0" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="342.0" y="898.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">federal match never drawn</text>
+<rect x="297.7" y="900.0" width="48.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="342.0" y="912.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$1.95</text>
+<path d="M688.0,751.4 C766.0,751.4 766.0,1103.3 844.0,1103.3 L844.0,1106.7 C766.0,1106.7 766.0,754.8 688.0,754.8 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="LTSS home equity cap" data-kind="provision" data-val="0.0026"/>
+<path d="M688.0,751.4 C766.0,751.4 766.0,1103.3 844.0,1103.3 L844.0,1106.7 C766.0,1106.7 766.0,754.8 688.0,754.8 Z" fill="url(#hr1hatch)"/>
+<rect x="844.0" y="1103.3" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="664.0" y="1110.3" width="176.0" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="836.0" y="1122.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Home equity cap  −$0.0026</text>
+<rect x="535.2" y="1126.3" width="304.8" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="836.0" y="1136.3" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not pass the home equity test for long-term care</text>
+<path d="M722.0,751.2 C783.0,751.2 783.0,1087.9 844.0,1087.9 L844.0,1091.3 C783.0,1091.3 783.0,754.6 722.0,754.6 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Legal immigrant eligibility" data-kind="provision" data-val="0.0561"/>
+<path d="M722.0,751.2 C783.0,751.2 783.0,1087.9 844.0,1087.9 L844.0,1091.3 C783.0,1091.3 783.0,754.6 722.0,754.6 Z" fill="url(#hr1hatch)"/>
+<rect x="844.0" y="1087.9" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="840.0" y="1094.9" width="243.2" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="844.0" y="1106.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Immigrant eligibility ended  −$0.06</text>
+<rect x="840.0" y="1110.9" width="293.6" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="844.0" y="1120.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not be eligible — but see the injunction below</text>
+<path d="M756.0,751.0 C800.0,751.0 800.0,1063.9 844.0,1063.9 L844.0,1067.3 C800.0,1067.3 800.0,754.4 756.0,754.4 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Retroactive eligibility" data-kind="provision" data-val="0.0446"/>
+<path d="M756.0,751.0 C800.0,751.0 800.0,1063.9 844.0,1063.9 L844.0,1067.3 C800.0,1067.3 800.0,754.4 756.0,754.4 Z" fill="url(#hr1hatch)"/>
+<rect x="844.0" y="1063.9" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="603.5" y="1070.9" width="236.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="836.0" y="1082.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Retroactive coverage ended  −$0.04</text>
+<rect x="546.4" y="1086.9" width="293.6" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="836.0" y="1096.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not be covered for the months before the claim</text>
+<path d="M773.0,738.4 C916.5,738.4 916.5,1039.3 1060.0,1039.3 L1060.0,1051.9 C916.5,1051.9 916.5,751.0 773.0,751.0 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Work reporting" data-kind="provision" data-val="2.8646"/>
+<path d="M773.0,738.4 C916.5,738.4 916.5,1039.3 1060.0,1039.3 L1060.0,1051.9 C916.5,1051.9 916.5,751.0 773.0,751.0 Z" fill="url(#hr1hatch)"/>
+<rect x="1060.0" y="1039.3" width="6.0" height="12.6" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1056.0" y="1054.9" width="155.8" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1060.0" y="1066.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Work reporting  −$2.86</text>
+<rect x="1056.0" y="1070.9" width="282.4" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1060.0" y="1080.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not enroll; would have reached disbursements</text>
+<path d="M790.0,736.3 C1045.0,736.3 1045.0,999.9 1300.0,999.9 L1300.0,1003.3 C1045.0,1003.3 1045.0,739.7 790.0,739.7 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Six-month renewals" data-kind="provision" data-val="0.4611"/>
+<path d="M790.0,736.3 C1045.0,736.3 1045.0,999.9 1300.0,999.9 L1300.0,1003.3 C1045.0,1003.3 1045.0,739.7 790.0,739.7 Z" fill="url(#hr1hatch)"/>
+<rect x="1300.0" y="999.9" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1113.3" y="1006.9" width="182.7" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1292.0" y="1018.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Six-month renewals  −$0.46</text>
+<rect x="985.6" y="1022.9" width="310.4" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1292.0" y="1032.9" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not survive renewal; would have reached the payer</text>
+<path d="M801.0,735.1 C1141.0,735.1 1141.0,984.5 1560.0,984.5 L1560.0,987.9 C1141.0,987.9 1141.0,738.5 801.0,738.5 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Blocked renewal automation" data-kind="provision" data-val="0.2932"/>
+<path d="M801.0,735.1 C1141.0,735.1 1141.0,984.5 1560.0,984.5 L1560.0,987.9 C1141.0,987.9 1141.0,738.5 801.0,738.5 Z" fill="url(#hr1hatch)"/>
+<rect x="1560.0" y="984.5" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1556.0" y="991.5" width="236.5" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1560.0" y="1003.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="start" font-weight="bold">Renewal automation blocked  −$0.29</text>
+<rect x="1556.0" y="1007.5" width="338.4" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1560.0" y="1017.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="start" font-weight="normal" font-style="italic">will not be renewed without a form the District already has</text>
+<path d="M812.0,734.4 C1152.0,734.4 1152.0,960.5 1560.0,960.5 L1560.0,963.9 C1152.0,963.9 1152.0,737.8 812.0,737.8 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Blocked reconsideration period" data-kind="provision" data-val="0.1415"/>
+<path d="M812.0,734.4 C1152.0,734.4 1152.0,960.5 1560.0,960.5 L1560.0,963.9 C1152.0,963.9 1152.0,737.8 812.0,737.8 Z" fill="url(#hr1hatch)"/>
+<rect x="1560.0" y="960.5" width="6.0" height="4.0" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1292.6" y="967.5" width="263.4" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1552.0" y="979.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Reconsideration period blocked  −$0.14</text>
+<rect x="1312.8" y="983.5" width="243.2" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1552.0" y="993.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not come back after a paperwork lapse</text>
+<path d="M824.0,726.8 C1164.0,726.8 1164.0,940.9 2180.0,940.9 L2180.0,948.5 C1164.0,948.5 1164.0,734.4 824.0,734.4 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Blocked senior enrollment rule" data-kind="provision" data-val="1.7421"/>
+<path d="M824.0,726.8 C1164.0,726.8 1164.0,940.9 2180.0,940.9 L2180.0,948.5 C1164.0,948.5 1164.0,734.4 824.0,734.4 Z" fill="url(#hr1hatch)"/>
+<rect x="2180.0" y="940.9" width="6.0" height="7.7" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1905.9" y="951.5" width="270.1" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="2172.0" y="963.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Medicare Savings rule suspended  −$1.74</text>
+<rect x="1826.4" y="967.5" width="349.6" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="2172.0" y="977.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">2023 rule; dual eligibles pay these Medicare costs themselves</text>
+<path d="M1302.0,374.7 C1431.0,374.7 1431.0,860.5 1560.0,860.5 L1560.0,867.6 C1431.0,867.6 1431.0,381.9 1302.0,381.9 Z" fill="#8B5A5A" fill-opacity="0.74" stroke="#8B5A5A" stroke-opacity="0.45" stroke-width="0.6" data-trace="Directed payment caps" data-kind="provision" data-val="1.6307"/>
+<path d="M1302.0,374.7 C1431.0,374.7 1431.0,860.5 1560.0,860.5 L1560.0,867.6 C1431.0,867.6 1431.0,381.9 1302.0,381.9 Z" fill="url(#hr1hatch)"/>
+<rect x="1560.0" y="860.5" width="6.0" height="7.2" rx="2" fill="#6f4747" fill-opacity="1.0"/>
+<rect x="1406.9" y="840.6" width="149.1" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1552.0" y="852.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#6f4747" text-anchor="end" font-weight="bold">Directed payment caps</text>
+<rect x="1223.2" y="856.6" width="332.8" height="16.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1552.0" y="866.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#6f6f6f" text-anchor="end" font-weight="normal" font-style="italic">will not top up hospital, nursing facility, academic rates</text>
+<rect x="1507.7" y="868.6" width="48.3" height="18.0" rx="3" fill="#ffffff" fill-opacity="0.82"/>
+<text x="1552.0" y="880.6" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#8B5A5A" text-anchor="end" font-weight="bold">−$1.63</text>
+<text x="150.0" y="1442.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#8B5A5A" text-anchor="start" font-weight="bold">NOT SHOWN, AND NOT ESTIMATED</text>
+<line x1="150" y1="1450.0" x2="2176" y2="1450.0" stroke="#8B5A5A" stroke-width="0.8" stroke-opacity="0.45"/>
+<text x="150.0" y="1470.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• MODELLED. DC's FY2024 hundred grown to FY2030 at the prior-law rate implied by the national</text>
+<text x="150.0" y="1486.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">model's own counterfactual — basis_national's FY2024 hundred against tobe2030's FY2030 prior-law</text>
+<text x="150.0" y="1503.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">total, CBO January 2025 baseline vintage. Derived in code, never typed. Corroborated by, not derived</text>
+<text x="150.0" y="1519.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">from, DC's own observed growth of 5.49% on Exhibit 16 FY2022-24. SUPERSESSION HUNTED AND NOT FOUND,</text>
+<text x="150.0" y="1536.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">2026-10-29: both DHCF agency chapters, the FY2026 budget testimony, the FY2026 budget slides and the</text>
+<text x="150.0" y="1552.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">June 2025 MCAC budget presentation all stop at the budget year, and the District publishes its</text>
+<text x="150.0" y="1569.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">four-year plan at District and fund level rather than as an agency Medicaid trajectory. Not proved</text>
+<text x="150.0" y="1585.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">absent — the Executive Summary volume of the FY2026 Proposed budget is unchecked. The</text>
+<text x="150.0" y="1602.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">national-implied rate stands until then.</text>
+<text x="150.0" y="1624.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• Public-company earnings and dual-plan retention: no DC figure</text>
+<text x="150.0" y="1647.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• The payer lanes are the FY2024 composition rescaled proportionally onto the FY2030 disbursement,</text>
+<text x="150.0" y="1663.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">which the HR-1 levers have already reduced. Proportional because the stated assumption is that the</text>
+<text x="150.0" y="1680.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">shape of the dollar does not move, only its level; no lane is claimed to absorb more of a lever than</text>
+<text x="150.0" y="1696.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">another. A lever that falls on one lane in particular would break that, and would be drawn</text>
+<text x="150.0" y="1713.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">     differently.</text>
+<text x="150.0" y="1735.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• Ten of the ten HR-1 tributaries are derived on District inputs. Where a lane is derived, nothing</text>
+<text x="150.0" y="1752.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">is allocated from CBO's national score: the denominators are DHCF's, the dollars are DHCF's, and</text>
+<text x="150.0" y="1768.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">where a rate is modelled it is declared as one. Each lane that is not derived records what would be</text>
+<text x="150.0" y="1785.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">needed to derive it from District sources.</text>
+<text x="150.0" y="1807.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• The seniors lane is derived on a District denominator and is an UPPER BOUND. The District's own</text>
+<text x="150.0" y="1824.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">QMB-only enrolment, as a share of the national QMB-only count, applied to CBO's score for the lever;</text>
+<text x="150.0" y="1840.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">both counts are published and both were checked to be the same definition before they were divided.</text>
+<text x="150.0" y="1857.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">The District runs the QMB group ONLY, to 300% of the poverty line against a federal floor of 100%,</text>
+<text x="150.0" y="1873.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">so it has already enrolled much of the population a blocked federal streamlining rule would have</text>
+<text x="150.0" y="1890.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">reached. The band therefore runs from the figure drawn DOWN to zero rather than around it. The</text>
+<text x="150.0" y="1906.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">District's per-$100 exposure comes out above the national one because it is over-represented in this</text>
+<text x="150.0" y="1923.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">group relative to its Medicaid spending — a finding, not a fault. Closing the band needs one count</text>
+<text x="150.0" y="1939.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">DHCF holds and does not publish: how many of those enrollees sit above the federal floor.</text>
+<text x="838.7" y="1470.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• There is no residual lane on this panel. Nationally “Everything else” is a remainder defined by</text>
+<text x="838.7" y="1486.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">what CBO scored, which cannot be re-derived from District sources because it is not a thing. It was</text>
+<text x="838.7" y="1503.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">retired here and three named District provisions were written in its place — the LTSS home equity</text>
+<text x="838.7" y="1519.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">cap, the legal immigrant eligibility restriction, and retroactive coverage — each struck on CBO’s</text>
+<text x="838.7" y="1536.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">published FY2030 section figure and a District share. All three are now sized; the declaration that</text>
+<text x="838.7" y="1552.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">none was sized was true until section figures replaced ten-year totals and is withdrawn. Nothing on</text>
+<text x="838.7" y="1569.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">this panel is comparable lane-to-lane with the national residual. The immigrant provision is under a</text>
+<text x="838.7" y="1585.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">preliminary injunction and its status is contested.</text>
+<text x="838.7" y="1608.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• The two enrolment levers rest on one modelled step: the share of the expansion group that does not</text>
+<text x="838.7" y="1624.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">survive them. It is published as a band with a declared default inside it, and the default is the</text>
+<text x="838.7" y="1641.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">rate implied by CBO's own score rather than a figure of our choosing. THE BAND'S ENDS ARE NOT</text>
+<text x="838.7" y="1657.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">LIKE-FOR-LIKE WITH ITS DEFAULT: the default is a share of expansion-group spending, which includes</text>
+<text x="838.7" y="1674.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">people the requirement exempts, while the Arkansas and New Hampshire outcomes are coverage loss</text>
+<text x="838.7" y="1690.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">among those subject to the requirement. Until the District's exempt share is established the upper</text>
+<text x="838.7" y="1707.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">end is an upper bound.</text>
+<text x="838.7" y="1729.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• Provider tax limits and directed payment caps are coupled in the District and are not coupled in</text>
+<text x="838.7" y="1746.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">the national model. DC's directed payments are financed by a hospital provider tax, the tax freeze</text>
+<text x="838.7" y="1762.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">returns the programme to its FY2025 level in FY2027, and the phase-down then runs on that reverted</text>
+<text x="838.7" y="1779.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">base from FY2029. The coupling is now MODELLED IN SEQUENCE. The two lanes do not double-count</text>
+<text x="838.7" y="1795.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">because they are not the same dollar: the tax lever is non-federal FINANCING that will not be</text>
+<text x="838.7" y="1812.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">collected and leaves at state government, the directed payment lever is a PAYMENT that will not be</text>
+<text x="838.7" y="1828.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">made and leaves at claims. Two stages of one event, drawn where the money actually stops.</text>
+<text x="838.7" y="1851.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• The provider tax lever is published at the NON-FEDERAL level. In the District the dedicated tax is</text>
+<text x="838.7" y="1867.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">the non-federal share and it draws federal match, so a dollar of tax never collected costs more than</text>
+<text x="838.7" y="1884.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">a dollar of Medicaid. The multiplier is not established and is declared absent rather than guessed.</text>
+<text x="838.7" y="1900.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">This is a divergence from the national treatment, not an application of it.</text>
+<text x="838.7" y="1923.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• Section 71115's rate taper does not reach the District at all. The expansion-state safe harbour</text>
+<text x="838.7" y="1939.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">steps down to 3.5 percent by FY2032 and DC's hospital tax is 3 percent of net patient revenue, below</text>
+<text x="838.7" y="1956.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">every step including the floor. The District's entire exposure is the freeze on taxes not imposed as</text>
+<text x="838.7" y="1972.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">of 4 July 2025. A jurisdiction can be fully exposed to the section while sitting under every</text>
+<text x="838.7" y="1989.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">threshold in its schedule.</text>
+<text x="1527.3" y="1470.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• The first year of the directed payment phase-down is FY2029, resolved on the rule. CMS-2449-P</text>
+<text x="1527.3" y="1486.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">states that the phase-down begins with the first rating period starting on or after 1 January 2028,</text>
+<text x="1527.3" y="1503.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">and DC's rating period is the federal fiscal year, confirmed on two documents. A period beginning 1</text>
+<text x="1527.3" y="1519.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">October 2027 starts too early. DHCF's own budget materials say FY2028, which would make FY2030 the</text>
+<text x="1527.3" y="1536.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">third step and the reduction $145.56M; the disagreement is recorded rather than averaged, and the</text>
+<text x="1527.3" y="1552.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">model does not move to meet it.</text>
+<text x="1527.3" y="1575.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• The phase-down does not terminate by FY2030. KFF's analysis of the approved preprints puts 100</text>
+<text x="1527.3" y="1591.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">percent of the District's hospital directed payment above the new limit, because the base rate alone</text>
+<text x="1527.3" y="1608.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">already exceeds the Medicare-based ceiling, so the programme runs down over ten steps and FY2030 at</text>
+<text x="1527.3" y="1624.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">two is partial. Stating the termination YEAR on District evidence rather than on KFF's conversion</text>
+<text x="1527.3" y="1641.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">needs DC hospitals' commercial price as a percentage of Medicare, which is not yet acquired.</text>
+<text x="1527.3" y="1663.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• No DC service allocation is published and none has been estimated, so the claims fan is</text>
+<text x="1527.3" y="1680.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">unallocated, as in FY2024.</text>
+<text x="1527.3" y="1702.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">• The prior-law FY2030 flow holds the FY2024 composition and grows only the level. Every trunk and</text>
+<text x="1527.3" y="1719.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">lane figure on this panel is that assumption, not a projection: no DC source projects them. It</text>
+<text x="1527.3" y="1735.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">ignores known shape changes — enrolment growth concentrated among people aged 65+, dual-eligible</text>
+<text x="1527.3" y="1752.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">capitation rising faster than the rest of the book, and the District's own FY2026 eligibility</text>
+<text x="1527.3" y="1768.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">     reductions.</text>
+<text x="1527.3" y="1791.0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">Absent data is left absent. Filling a gap with a share would produce a modelled figure wearing a measured</text>
+<text x="1527.3" y="1807.5" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11.5" fill="#6f6f6f" text-anchor="start" font-weight="normal">figure's clothes.</text>
+</g>
+</svg>

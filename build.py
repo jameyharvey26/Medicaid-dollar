@@ -139,10 +139,18 @@ def build_dc_2030():
     up; nothing built it, because with one lever of seven derived there was
     nothing to look at. With four derived there is.
 
-    It does NOT go in the render register yet. A panel carrying three violet
-    placeholders is for looking at, not for blessing, and placeholder.py
-    refuses to let it ship. Blessing it would pin an unfinished picture as the
-    thing every later render is compared against.
+    INTO THE REGISTER, 19 November 2026. It was a draft because it carried
+    three violet placeholders, and a panel with placeholders is for looking at
+    rather than for blessing: pinning one would make an unfinished picture the
+    thing every later render is compared against. D-143 derived all five of
+    the District's own lanes and `ABSENT_LEVERS` is empty, so there are no
+    placeholders left and the reason has expired.
+
+    It could not be drawn at all until today. `views.V_DC_2030` still named
+    the two lanes D-143 retired, so `PeelSum.resolve` raised KeyError before
+    anything was rendered, and nothing noticed because nothing called this
+    function — it was never wired to `build.py`'s entry point. The ledger was
+    right for three weeks and no picture of it could be made.
     """
     import ledger_dc_2024 as DC
     import ledger_dc_2030 as DC30
@@ -197,12 +205,11 @@ def build_dc_2030():
     cfg = compose(L, views.V_DC_2030)
     gate(cfg, "DC FY2030 to-be")
     base, over = sankey.render(cfg)
-    # NOT through emit(). emit() copies into reference_renders, which is the
-    # blessed register, and a draft panel there reads as a NEW panel to
-    # renderproof and as an ORPHAN to crossings — which is exactly what it
-    # did the first time this ran. A draft is for looking at. It goes to
-    # drafts/ and nothing compares it to anything.
-    emit_draft("dc_2030_draft", base, over)
+    # Through emit() now: reference_renders is the blessed register, and this
+    # panel belongs in it. renderproof compares it on every run and crossings
+    # reads it off sheet.PANELS, where it has a real entry rather than the
+    # declared blank it carried while it could not be built.
+    emit("dc_2030", base, over)
 
 
 def build_2030(variant="mixed"):
@@ -253,6 +260,7 @@ if __name__ == "__main__":
                         "--set", "overhead"], check=True)
     if which in ("all", "dc"):
         print("DC FY2024 as-is"); build_dc()
+        print("DC FY2030 to-be"); build_dc_2030()
     if which == "all":
         # Every declared set is rebuilt, so no sheet in reference_renders/ can go
         # stale behind a render that moved. Adding a set to sheet.py:SETS is

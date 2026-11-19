@@ -74,7 +74,11 @@ def panel(png, kicker, title, sub, accent=GREEN, blocked=None):
                 accent=accent, blocked=blocked)
 
 
-DC_2030_BLOCKED = [
+# RETIRED 19 November 2026. Every reason below has expired: D-143 derived the
+# District's own lane vector from District inputs, so there is nothing left to
+# scale from the national mix and nothing left blank. Kept, not deleted,
+# because what a panel refused to draw and why is part of the record.
+DC_2030_BLOCKED_RETIRED = [
     "This panel is blank on purpose.",
     "",
     "DC-specific HR-1 lane values do not exist yet, and the national lane mix cannot be",
@@ -132,12 +136,12 @@ PANELS = {
         GREEN),
 
     "dc_2030": panel(
-        None,
+        "dc_2030_combined.png",
         "TO BE  \u00b7  DISTRICT OF COLUMBIA  \u00b7  FY2030",
-        "Not yet buildable",
-        "",
-        WARM,
-        blocked=DC_2030_BLOCKED),
+        "$100 of DC Medicaid spending under prior law, with P.L. 119-21 applied",
+        "Every HR-1 lane derived on District inputs. The FY2030 hundred and "
+        "the disenrolment rate are modelled and declared.",
+        WARM),
 }
 
 SETS = {

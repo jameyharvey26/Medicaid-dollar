@@ -198,9 +198,69 @@ TRACKER_COL = {
 # ALIASES is public and the national agreement check reads it: a name in here
 # is a rename of a lane that already has a declaration, so it is NOT a
 # tributary the national ledger has forgotten to carry.
-ALIASES = {"DC provisions not separately scored": "Everything else"}
+# D-143 retired the two composite DC lanes and wrote five District-derived
+# lanes in their place. Each keeps the geometry of the lane it came out of,
+# because D-143 holds its charge and reach identical to its parent's and
+# `ledger_dc_2030.HR1_DC` says so in the data: splitting a lane is not a
+# reason to move where in the lifecycle its dollar stops. Registered as
+# aliases for the same reason the first one was — a rename or a split is
+# editorial, and a real entry here would assert a finding about the flow that
+# nobody has made.
+ALIASES = {
+    # the old DC residual, kept so an older render still resolves
+    "DC provisions not separately scored": "Everything else",
+    # section 71102, split in two (D-123)
+    "Blocked renewal automation":     "Blocked Medicaid enrollment rule",
+    "Blocked reconsideration period": "Blocked Medicaid enrollment rule",
+    # the three named provisions out of the leftovers lane (D-118)
+    "LTSS home equity cap":        "Everything else",
+    "Legal immigrant eligibility": "Everything else",
+    "Retroactive eligibility":     "Everything else",
+}
+# What an alias copies is GEOMETRY. It must not copy `label`, and that is not
+# a detail -- it is the whole point of the lanes that now use it. The alias was
+# written for a RENAME, one DC lane onto one national lane, where inheriting
+# the printed name was harmless. D-143 made it a SPLIT: five District lanes
+# onto two national geometries. Copying the label wholesale printed "Other"
+# three times over the three named provisions D-118 exists to name, and
+# "Medicaid enrollment rule suspended" twice over the two lanes D-123 exists
+# to separate. The panel undid both decisions in the drawing while the ledger
+# held them correctly.
+#
+# So: geometry is inherited, the printed name is the District's own.
+DC_LABEL = {
+    "Blocked renewal automation":     "Renewal automation blocked",
+    "Blocked reconsideration period": "Reconsideration period blocked",
+    "LTSS home equity cap":           "Home equity cap",
+    "Legal immigrant eligibility":    "Immigrant eligibility ended",
+    "Retroactive eligibility":        "Retroactive coverage ended",
+}
+
+# Where each lane LEAVES the trunk is LAYOUT, not a claim about the flow --
+# the outflows header's own Ledger / View / Layout split. Charge and reach are
+# the claims, and D-143 holds those identical to the parent lane's. The trunk
+# x is a slot on a canvas.
+#
+# Five lanes sharing two slots put two curves out of the same point, and they
+# crossed in the margin at (766,745), which rule 2.9 forbids. The District has
+# eight tributaries leaving at the state agency where the national panel has
+# five, so the DC slots are tighter and are declared here rather than
+# inherited. Keyed on the DC name, so the national panel is untouched.
+DC_SRC_X = {
+    "Blocked renewal automation":     _at("STATE_AGENCY", 172),
+    "Blocked reconsideration period": _at("STATE_AGENCY", 189),
+    "LTSS home equity cap":           _at("STATE_AGENCY", 206),
+    "Legal immigrant eligibility":    _at("STATE_AGENCY", 217),
+    "Retroactive eligibility":        _at("STATE_AGENCY", 228),
+}
+
 for _dc, _nat in ALIASES.items():
     OUTFLOWS[_dc] = dict(OUTFLOWS[_nat])
+    OUTFLOWS[_dc].pop("label", None)
+    if _dc in DC_LABEL:
+        OUTFLOWS[_dc]["label"] = DC_LABEL[_dc]
+    if _dc in DC_SRC_X:
+        OUTFLOWS[_dc]["src_x"] = DC_SRC_X[_dc]
     TRACKER_COL[_dc] = TRACKER_COL[_nat]
 
 # Tracker checkpoints. Shared furniture, identical on every artifact (S-060).

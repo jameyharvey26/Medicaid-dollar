@@ -49,9 +49,14 @@ EXPECT = {
               # advisory that stops naming coordinates stops being a pin.
               "Other reaches y=674, past Behavioral health's name at y=672"],
         forbid=["Vaccines / Provider Tax"],
-        regex=[(r"^\s+(?:NOTE|WARNING)\b", 2,
-                "exactly the two frozen advisories"),
-               (r"tracker line adds up as printed", 3,
+        # 2 and 3 until 19 November. `build.py dc` now draws the District
+        # FY2030 panel as well, so there is a fourth tracker line and the
+        # third advisory is that panel's own copy of the pinned State Admin /
+        # Eligibility Rules spacing. Re-pinned to the new counts rather than
+        # loosened: a count that stops counting stops being a gate.
+        regex=[(r"^\s+(?:NOTE|WARNING)\b", 3,
+                "exactly the three frozen advisories"),
+               (r"tracker line adds up as printed", 4,
                 "every panel's tracker line reconciles on its printed figures")],
     ),
     # FALSE GREEN, 27 September. This suite runs build.py, which renders the
@@ -72,9 +77,12 @@ EXPECT = {
     # Same class as the renderproof defect below, and the same fix: build the
     # panel before measuring it.
     "crossings.py": dict(
-        must=["dc_2024", "national_2024", "national_2030_holds",
+        # dc_2030 joins on 19 November. It was a declared blank in sheet.py
+        # while it could not be built, so crossings had nothing to measure;
+        # it now has a real entry and is measured like any other panel.
+        must=["dc_2024", "dc_2030", "national_2024", "national_2030_holds",
               "national_2030_mixed", "national_2030_scales"],
-        regex=[(r"0 crossing\(s\) in the margin", 5, "five panels clean")],
+        regex=[(r"0 crossing\(s\) in the margin", 6, "six panels clean")],
         forbid=["ORPHAN"],
     ),
     # ORDERING DEFECT, 7 October. The FALSE GREEN fix above added
