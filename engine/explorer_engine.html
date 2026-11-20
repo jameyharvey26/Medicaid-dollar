@@ -911,8 +911,22 @@ function draw(M, zoom){
   const H0 = cY-hundred*ys/2;
   g+=band(xSG[0], xSA[0], fedLane[0], H0, (fed-fb-fo)*ys, (fed-fb-fo)*ys, C.federal, .8);
   g+=band(xSG[0], xSA[0], stLane[0], H0+(fed-fb-fo)*ys, h(state), h(state), C.local, .8);
-  t+=txt((xSG[0]+xSA[0])/2, H0+(fed-fb-fo)*ys/2+5, `Federal ${(100*(fed-fb-fo)/hundred).toFixed(1)}%`, 15,'#FFFFFF','middle',600);
-  t+=txt((xSG[0]+xSA[0])/2, H0+(fed-fb-fo)*ys+h(state)/2+5, `State ${(100*state/hundred).toFixed(1)}%`, 15,'#1A2733','middle',600);
+  // THE BLENDED SHARE, NOT THE APPROPRIATION SHARE, and struck BEFORE the
+  // levers. D-159, JW 19 November. This read (fed-fb-fo)/hundred, which is
+  // the share AFTER the HR-1 federal bite and over the post-lever hundred:
+  // 72.6/27.4 on the District FY2030 panel against the paper's 73.2/26.8.
+  // Both were arithmetically right and both were labelled the same way, so a
+  // reader moving between the two artifacts could not tell which they had.
+  //
+  // sankey.py strikes it as (fed-fo)/ARRIVE: the HR-1 bite is NOT taken out
+  // of the percentage, though it is taken out of the band's drawn height just
+  // above. The label answers "how was this dollar blended", the geometry
+  // answers "how much of it is left", and they are different questions. Only
+  // a 100-percent-federal peel before the blend moves the share, which is the
+  // difference D-70 exposes. ARRIVE is already computed above and is the same
+  // quantity sankey calls _ARRIVE.
+  t+=txt((xSG[0]+xSA[0])/2, H0+(fed-fb-fo)*ys/2+5, `Federal ${ARRIVE ? (100*(fed-fo)/ARRIVE).toFixed(1) : '0.0'}%`, 15,'#FFFFFF','middle',600);
+  t+=txt((xSG[0]+xSA[0])/2, H0+(fed-fb-fo)*ys+h(state)/2+5, `State ${ARRIVE ? (100*state/ARRIVE).toFixed(1) : '0.0'}%`, 15,'#1A2733','middle',600);
 
   // ---- the state agency node: the hundred, one contiguous block
   g+=`<rect data-pick="stn:Budgeted to Medicaid" x="${xSA[0]}" y="${H0}" width="${bw}" height="${h(hundred)}" fill="${C.agency}"/>`;
