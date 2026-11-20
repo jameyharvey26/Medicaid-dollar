@@ -89,8 +89,15 @@ def dump():
         pg.wait_for_timeout(1200)
         for (place, year), panel in PANELS.items():
             pg.evaluate(
-                "a => { document.querySelector(`#place button[data-k=\"${a[0]}\"]`).click();"
-                "       document.querySelector(`#year button[data-y=\"${a[1]}\"]`).click(); }",
+                # Geography and timeframe were two pill rows until 20 November.
+                # They are one grid now -- years down, places across -- so a
+                # panel is chosen in a single click. On the ecosystem view the
+                # grid holds one cell, so clicking a new one displaces whatever
+                # was there and leaves exactly the panel this gate asked for.
+                "a => { const b = document.querySelector("
+                "         `#mx button[data-k=\"${a[0]}|${a[1]}\"]`);"
+                "       if (!b) throw new Error(`no grid cell ${a[0]}|${a[1]}`);"
+                "       b.click(); }",
                 [place, year])
             pg.wait_for_timeout(500)
             pg.evaluate("() => document.getElementById('reset').click()")

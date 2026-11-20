@@ -27,6 +27,32 @@
   /* the middle band takes whatever height the page has spare, so the
      question box fills the gutter instead of leaving it white */
 
+  /* ---- the comparison grid, years down and places across ----------------
+     Transposed on JW's instruction, 20 November: a state that lands is a new
+     COLUMN and the year rows never change, so the control grows sideways
+     instead of being redrawn. Selected is navy on white rather than the
+     pill row's orange -- also his call, and it keeps the grid from competing
+     with the picture for the eye.
+     At the cap the unselected cells go grey but stay live: clicking one
+     drops whichever panel was chosen FIRST. Greying a control that still
+     works is only honest if it says what it will do, so each one carries the
+     name of the panel it would replace. */
+  table.mx{border-collapse:separate;border-spacing:5px;font-family:Jost,system-ui,sans-serif}
+  table.mx th{font-size:11px;font-weight:700;letter-spacing:.09em;color:var(--navy);
+              text-transform:uppercase;text-align:center;padding:0 2px 1px}
+  table.mx th.ph{color:#9AA7B2}
+  table.mx th.rh{text-align:right;padding-right:7px;font-size:13.5px;letter-spacing:.02em}
+  table.mx td button{min-width:104px;height:34px;border-radius:4px;cursor:pointer;
+       border:2px solid var(--navy);background:#fff;color:var(--navy);
+       font-family:inherit;font-size:14px;font-weight:600;padding:0 12px}
+  table.mx td button:hover{background:#EDF1F6}
+  table.mx td button.on{background:var(--navy);color:#fff}
+  table.mx td button.atcap{border-color:#B9C3CC;color:#909CA7;background:#F4F6F8}
+  table.mx td button.atcap:hover{border-color:var(--navy);color:var(--navy);background:#EDF1F6}
+  table.mx td button.ph,table.mx td button:disabled{border-style:dashed;border-color:#C9D2D9;
+       color:#B3BDC6;background:#fff;cursor:default}
+  .mxcap{font-family:Jost,system-ui,sans-serif;font-size:12.5px;color:#5A6B7A;
+         max-width:230px;line-height:1.45;padding-top:9px}
   /* ---- pills, the Agilian idiom: navy off, orange on, grey inert ---- */
   .pill{
     font-family:Jost,system-ui,sans-serif;font-size:15px;font-weight:600;
@@ -93,7 +119,13 @@
   .tabs button[hidden]{display:none}
   .rackbody{padding:14px 15px;display:flex;flex-direction:column;gap:15px;
             background:#fff;margin:0 3px;flex:1 1 auto;overflow:auto;max-height:560px}
-  .rackfoot{padding:10px 15px;display:flex;justify-content:flex-end}
+  .rackfoot{padding:10px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  /* WHICH PANEL THE DIALS ACT ON. With two or four panels on screen the
+     rack still drives one of them, and a control whose subject is not
+     written down is a control a reader will misread. */
+  .rackon{font-family:Jost,system-ui,sans-serif;font-size:12px;color:#5A6B7A;
+          line-height:1.35;text-align:left}
+  .rackon b{display:block;font-size:13px;color:var(--navy);font-weight:600}
   .resetbtn{
     font-family:Jost,system-ui,sans-serif;font-size:14px;font-weight:600;letter-spacing:.08em;
     min-height:40px;padding:0 26px;border-radius:999px;cursor:pointer;
@@ -261,19 +293,22 @@
 
   <div class="topstrip">
     <div class="grp">
-      <span class="glab">Geography</span>
-      <div class="pills" id="place">
-        <button type="button" class="pill on" data-k="US">National</button>
-        <button type="button" class="pill" data-k="DC">DC</button>
-        <button type="button" class="pill ph" disabled>KY</button>
-      </div>
+      <span class="glab">Compare</span>
+      <table class="mx" id="mx">
+        <tr><th class="rh"></th><th>National</th><th>District</th><th class="ph">Kentucky</th></tr>
+        <tr><th class="rh">2024</th>
+          <td><button type="button" data-k="US|2024" class="on">National 24</button></td>
+          <td><button type="button" data-k="DC|2024">District 24</button></td>
+          <td><button type="button" class="ph" disabled>&#8212;</button></td></tr>
+        <tr><th class="rh">2030</th>
+          <td><button type="button" data-k="US|2030">National 30</button></td>
+          <td><button type="button" data-k="DC|2030">District 30</button></td>
+          <td><button type="button" class="ph" disabled>&#8212;</button></td></tr>
+      </table>
     </div>
     <div class="grp">
-      <span class="glab">Timeframe</span>
-      <div class="pills" id="year">
-        <button type="button" class="pill on" data-y="2024">2024</button>
-        <button type="button" class="pill" data-y="2030">2030</button>
-      </div>
+      <span class="glab">&#160;</span>
+      <div class="mxcap" id="mxcap"></div>
     </div>
     <div class="brand">
       <b>One hundred Medicaid dollars</b>
@@ -306,7 +341,7 @@
           <button type="button" data-t="mix">Service Mix</button>
         </div>
         <div class="rackbody" id="rackbody"></div>
-        <div class="rackfoot"><button type="button" class="resetbtn" id="reset">RESET</button></div>
+        <div class="rackfoot"><span class="rackon" id="rackon"></span><button type="button" class="resetbtn" id="reset">RESET</button></div>
       </div>
 
       <div class="ctx" id="ctx">
@@ -356,6 +391,53 @@ const C = {
 let place = 'US';
 let year = '2024';
 const panelKey = () => place + '|' + year;
+
+// ---------------------------------------------------------------------------
+// WHAT IS BEING COMPARED. Geography and timeframe used to be two pill rows
+// and the answer was always one panel. They are one grid now -- years down,
+// places across -- because the question a reader actually has is "this one
+// against that one", and because a state that lands is then a new COLUMN
+// rather than a redesign. JW, 20 November.
+//
+// SEL is kept in the order the cells were CLICKED, because the rule at the
+// cap is first-on-first-off. Everything that draws asks for selSorted(),
+// which is grid order, so a picture does not rearrange itself under a reader
+// who is only adding to it.
+//
+// `place` and `year` stay: the ecosystem view, the question box and the
+// retrieval are all about one panel, and that panel is the first cell in grid
+// order. They are derived from SEL and never set by hand.
+const GRIDORDER = ['US|2024', 'DC|2024', 'US|2030', 'DC|2030'];
+const CAP = {eco: 1, exec: 2, line: 4};
+let SEL = ['US|2024'];
+const selSorted = () => SEL.slice().sort((a, b) =>
+  ((GRIDORDER.indexOf(a) + 1) || 99) - ((GRIDORDER.indexOf(b) + 1) || 99));
+// THE PANEL THE DIALS ACT ON. The slider rack drives one panel, because OV,
+// MIX and RET are keyed by panel and a 2030 lever has no meaning on a 2024
+// ledger. It is the one chosen MOST RECENTLY -- a reader picks it by
+// clicking its cell -- and the rack prints its name so it is never guessed.
+// On the ecosystem view there is only one panel, so this is that panel.
+const rackKey = () => SEL[SEL.length - 1] || 'US|2024';
+function primary(){
+  const first = selSorted()[0] || 'US|2024';
+  place = first.split('|')[0];
+  year  = first.split('|')[1];
+}
+// TWO DIFFERENT SHRINKS, AND THEY ARE NOT THE SAME EVENT. Clicking a fifth
+// cell is a reader choosing to swap, and the one that goes is the one chosen
+// first -- his rule. Moving to a view with a smaller cap is not a choice
+// about panels at all, so what goes is whatever was added LAST, and stepping
+// out to the ecosystem view and back leaves the reader where they started
+// rather than on a panel they never picked.
+function fitCap(){
+  const cap = CAP[view] || 1;
+  while (SEL.length > cap) SEL.pop();
+  const want = [place + '|2024', place + '|2030'];
+  want.forEach(k => {
+    if (SEL.length < Math.min(cap, 2) && ORIG[k] && !SEL.includes(k)) SEL.push(k);
+  });
+  primary();
+}
 let wr = null;
 let zoomLevel = 'all';
 
@@ -1790,7 +1872,7 @@ const LANE_CONTENTS = {};
 // each with its own District figure. Nothing on this panel carries a
 // national number under a District label.
 const BORROWED = [];
-const borrowedHere = () => panelKey() === 'DC|2030';
+const borrowedHere = () => rackKey() === 'DC|2030';
 
 // ---------------------------------------------------------------------------
 // A PANEL, WITH THE USER'S HAND ON IT
@@ -2255,7 +2337,7 @@ const NLT = (x, y, s2, fs, fill, anchor, w2, italic, tip) =>
   + `${s2}</text>`;
 
 const NL = {
-  padL: 150, padR: 90, rowH: 250, top: 70,
+  padL: 290, padR: 90, rowH: 250, top: 70,
   dot: 13, lw: 2.2
 };
 
@@ -2351,90 +2433,133 @@ function lineSelfTest(M, st){
   return bad;
 }
 
+// THE TWO FAINT TINTS. A figure the reader has moved is drawn twice: where it
+// sits now, solid, and where it sat before, faint. The faint one is a TINT OF
+// ITS OWN COLOUR rather than a third "you changed this" colour, so a moved
+// overhead figure still reads as overhead and a moved provision still reads
+// as the law. JW, 20 November: he keeps the faint markers if the colours are
+// right, and a separate change-colour is what made them wrong.
+const GHOST = {admin: '#D3DAE0', hr1: '#D9C4C1', fraud: '#D3DAE0', bad: '#D3DAE0'};
+const MKCOL = {admin: '#8E9BA6', hr1: 'var(--warn)', fraud: '#8E9BA6', bad: 'var(--vio)'};
+
+// Everything a panel is worth with the dials as the reader has set them, and
+// everything it is worth untouched. The second is not stored anywhere: it is
+// the same model run with empty dials, which is the only definition of
+// "default" that cannot drift from the first.
+const baseModel = key => modelFor(key, {}, {}, {});
+const PANELNAME = key => {
+  const [p, y] = key.split('|');
+  return (p === 'DC' ? 'District' : (ORIG[key] && ORIG[key].name) || p) + ' ' + y;
+};
+
 // One number line. Returns {svg, faults} so the caller can declare a fault
 // rather than this function deciding how to shout about it.
-function lineRow(M, key, y, label, W, dim){
+//
+// EVERY SUBTRACTION IS NAMED, not just the checkpoints. JW, 20 November: the
+// line has to show all the detail, including what the law takes and what
+// overhead takes, because those move when the dials move and a picture that
+// hides them cannot show what moving a dial did.
+function lineRow(M, M0, key, y, W, showStations){
   const st = stationsOf(M, key);
+  const st0 = M0 ? stationsOf(M0, key) : null;
   const x0 = NL.padL, x1 = W - NL.padR;
   const step = (x1 - x0) / (st.length - 1);
-  const ink = dim ? '#8C9AA6' : 'var(--ink)';
-  const inkD = dim ? '#9AA5AF' : 'var(--ink)';
   let g = '';
 
-  g += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="${dim ? '#C9D2D9' : '#1A2733'}" stroke-width="${NL.lw}"/>`;
-  g += NLT(x0 - 22, y + 11, label, 30, dim ? '#AAB6C0' : '#01215e', 'end', 700);
+  g += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#1A2733" stroke-width="${NL.lw}"/>`;
+  g += NLT(x0 - 24, y + 4, PANELNAME(key), 28, '#01215e', 'end', 700);
+  const moved = handMoved(key);
+  if (moved.length)
+    g += NLT(x0 - 24, y + 36, 'dials moved', 19, 'var(--warn)', 'end', 600);
 
-  const top = st[0][1] || 1;
   st.forEach((s, i) => {
     const x = x0 + step * i;
-    g += `<circle cx="${x}" cy="${y}" r="${NL.dot}" fill="${dim ? '#C9D2D9' : '#01215e'}"/>`;
-    g += NLT(x, y - 30, money(s[1]), 30, inkD, 'middle', 700);
-    const nm = String(s[0]).split(' ');
-    const half = nm.length > 2 ? Math.ceil(nm.length / 2) : nm.length;
-    g += NLT(x, y + 40, nm.slice(0, half).join(' '), 15, ink, 'middle', 700);
-    if (half < nm.length)
-      g += NLT(x, y + 58, nm.slice(half).join(' '), 15, ink, 'middle', 700);
-    if (i > 0){
-      const pc = top ? (1 - s[1] / top) * 100 : 0;
-      g += NLT(x, y + (half < nm.length ? 76 : 58), pc.toFixed(2) + '% less', 13,
-               dim ? '#AAB6C0' : 'var(--muted)', 'middle', 400);
+    const anc = i === st.length - 1 ? 'end' : 'middle';
+    g += `<circle cx="${x}" cy="${y}" r="${NL.dot}" fill="#01215e"/>`;
+    if (st0 && Math.abs(st0[i][1] - s[1]) > 0.005)
+      g += NLT(x, y - 62, 'was ' + money(st0[i][1]), 19, '#A9B6C2', anc, 600, true);
+    g += NLT(x, y - 30, money(s[1]), 30, '#01215e', anc, 700);
+    if (showStations){
+      const nm = String(s[0]).split(' ');
+      const half = nm.length > 2 ? Math.ceil(nm.length / 2) : nm.length;
+      g += NLT(x, y + 212, nm.slice(0, half).join(' '), 19, 'var(--muted)', anc, 700);
+      if (half < nm.length)
+        g += NLT(x, y + 234, nm.slice(half).join(' '), 19, 'var(--muted)', anc, 700);
     }
   });
 
-  // the subtractions, hung under the stretch they are charged against
+  // the subtractions, hung under the stretch they are charged against.
+  // Neighbours alternate between two tiers: a phase can carry three markers
+  // whose names are longer than the space between them, and side by side on
+  // one tier they wrote over each other.
   for (let i = 0; i < st.length - 1; i++){
     const marks = gapMarks(M, i);
     if (!marks.length) continue;
+    const m0 = M0 ? gapMarks(M0, i) : [];
     const a = x0 + step * i, b = x0 + step * (i + 1);
     marks.forEach((mk, j) => {
       const x = a + (b - a) * (j + 1) / (marks.length + 1);
-      const col = dim ? '#C2CBD2' : (mk.kind === 'hr1' ? 'var(--warn)' : '#8E9BA6');
-      const dy = 44 + j * 0;
+      const col = MKCOL[mk.kind] || '#8E9BA6';
+      const gc  = GHOST[mk.kind] || '#D3DAE0';
+      const prev = m0.find(z => z.name === mk.name);
+      const was = prev ? prev.v : undefined;
+      const ch = was !== undefined && Math.abs(was - mk.v) > 0.005;
+      const ty = y + 56 + (j % 2) * 76;
       const tip = mk.members && mk.members.length > 1
         ? mk.members.map(p => `${p.label}  ${money(p.v)}`).join('\n') : '';
-      g += `<rect x="${x - 6}" y="${y - 6}" width="12" height="12" fill="${col}" transform="rotate(45 ${x} ${y})"/>`;
-      g += `<line x1="${x}" y1="${y + 8}" x2="${x}" y2="${y + dy - 14}" stroke="${col}" stroke-width="1.1" stroke-opacity="0.75"/>`;
-      g += NLT(x, y + dy + 2, money(-mk.v), 19, col, 'middle', 700, false, tip);
-      g += NLT(x, y + dy + 22, mk.name, 13, col, 'middle', 400, false, tip);
+      if (ch)
+        g += `<rect x="${x - 34}" y="${y - 9}" width="18" height="18" fill="${gc}" `
+           + `transform="rotate(45 ${x - 25} ${y})"/>`;
+      g += `<rect x="${x - 11}" y="${y - 11}" width="22" height="22" fill="${col}" transform="rotate(45 ${x} ${y})"/>`;
+      g += `<line x1="${x}" y1="${y + 14}" x2="${x}" y2="${ty - 22}" stroke="${col}" stroke-width="1.1" stroke-opacity="0.55"/>`;
+      g += NLT(x, ty, money(-mk.v), 26, col, 'middle', 700, false, tip);
+      g += NLT(x, ty + 23, mk.name, 17, col, 'middle', 400, false, tip);
+      if (ch) g += NLT(x, ty + 45, 'was ' + money(-was), 16, gc, 'middle', 700, true);
     });
   }
-  return {svg: g, faults: dim ? [] : lineSelfTest(M, st)};
+  return {svg: g, faults: lineSelfTest(M, st)};
 }
 
-// BOTH YEARS, STACKED. JW, 20 November: the comparison IS the picture, so the
-// year buttons do not change it -- they are left live and marked as not
-// acting here, because a control that silently does nothing is worse than one
-// that says so. The later year follows the dials; the earlier one cannot,
-// because no lever in this law applies to a year it was not in.
-function drawLine(place){
-  const W = 2080, H = NL.top + NL.rowH + 210;   // two rows and the labels under the second
-  const k24 = place + '|2024', k30 = place + '|2030';
-  const M24 = modelFor(k24, ovOf(k24), mixOf(k24), retOf(k24));
-  const M30 = modelFor(k30, ovOf(k30), mixOf(k30), retOf(k30));
-  let g = '', faults = [];
+// AS MANY LINES AS THE GRID HAS SELECTED, up to four. The view used to draw
+// one place in both years, which made the comparison a property of the
+// picture rather than something a reader chose. The grid chooses it now:
+// National against the District in one year, one place across both, or any
+// four of them stacked. Drawn in GRID ORDER rather than the order they were
+// clicked, so the picture does not rearrange itself under a reader who is
+// only adding to it. JW, 20 November.
+function drawLine(keys){
+  const W = 2200;
+  const rows = keys.filter(k => ORIG[k]);
+  if (!rows.length) return null;
+  const H = NL.top + 80 + rows.length * NL.rowH + 120;
+  let g = '', faults = [], neg = [];
 
-  if (M24){
-    const r = lineRow(M24, k24, NL.top + 70, '2024', W, false);
-    g += r.svg; faults = faults.concat(r.faults);
-  }
-  if (M30){
-    const r = lineRow(M30, k30, NL.top + 70 + NL.rowH, '2030', W, false);
-    g += r.svg; faults = faults.concat(r.faults);
-  }
-  if (!M24 && !M30) return null;
-
-  g += NLT(NL.padL, 34, 'THE SAME HUNDRED DOLLARS, TWICE', 17, 'var(--muted)', 'start', 700);
-  g += NLT(NL.padL, 56,
-       (place === 'DC' ? 'District of Columbia' : 'National')
-       + ' · what reaches care, before and after P.L. 119-21', 15, 'var(--muted)', 'start', 400);
-
-  const neg = [];
-  [[M24, '2024'], [M30, '2030']].forEach(([m, y]) => {
-    if (!m) return;
-    const u = negativeResidual(m);
-    if (u) neg.push(`FY${y} leaves ${money(u)} unaccounted for between claims paid `
-                  + `and services delivered.`);
+  rows.forEach((k, r) => {
+    const M = modelFor(k, ovOf(k), mixOf(k), retOf(k));
+    if (!M) return;
+    const M0 = baseModel(k);
+    const rr = lineRow(M, M0, k, NL.top + 110 + r * NL.rowH, W, r === rows.length - 1);
+    g += rr.svg;
+    faults = faults.concat(rr.faults.map(s => PANELNAME(k) + ' — ' + s));
+    const u = negativeResidual(M);
+    if (u) neg.push(`${PANELNAME(k)} leaves ${money(u)} unaccounted for between claims `
+                  + `paid and services delivered.`);
   });
+
+  g += NLT(NL.padL - 24, 40, 'THE SAME HUNDRED DOLLARS, SIDE BY SIDE', 21, 'var(--muted)', 'start', 700);
+  g += NLT(NL.padL - 24, 68, rows.map(PANELNAME).join('  ·  ')
+       + ' — what reaches care, and what each subtraction takes on the way',
+       19, 'var(--muted)', 'start', 400);
+
+  // the key, under the last line
+  const ky = NL.top + 110 + rows.length * NL.rowH + 50;
+  const chip = (x, fill, label) =>
+    `<rect x="${x - 11}" y="${ky - 11}" width="22" height="22" fill="${fill}" transform="rotate(45 ${x} ${ky})"/>`
+    + NLT(x + 26, ky + 8, label, 19, 'var(--ink)', 'start', 400);
+  g += chip(NL.padL + 6, '#8E9BA6', 'Overhead');
+  g += chip(NL.padL + 300, '#8B5A5A', 'P.L. 119-21');
+  g += chip(NL.padL + 640, '#D3DAE0', '');
+  g += chip(NL.padL + 672, '#D9C4C1', 'Where it sat before you moved it');
 
   return {
     svg: `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" `
@@ -2484,135 +2609,188 @@ function taperTakes(M, year){
   return out;
 }
 
-function drawExec(place, year){
-  const key = place + '|' + year;
-  const other = year === '2030' ? '2024' : '2030';
-  const M = modelFor(key, ovOf(key), mixOf(key), retOf(key));
-  if (!M) return null;
-  const Mo = modelFor(place + '|' + other, ovOf(place + '|' + other),
-                      mixOf(place + '|' + other), retOf(place + '|' + other));
+// THREE BANDS, NOT TWO. The taper carried one pale band for "what the
+// subject has taken". A reader cannot tell overhead from the law inside a
+// single colour, and those are the two quantities the whole argument turns
+// on. Navy is what is still on the line, grey is overhead, rust is P.L.
+// 119-21 -- the same rust the ecosystem view draws its provisions in, so the
+// two pictures name the same thing the same way. JW, 20 November.
+//
+// THE BANDS ARE STRUCK AT THE CHARGE, not at the reach. A stack has to total
+// the same hundred dollars at every phase or it is not a stack, and only the
+// charge-side split does: what has left the line by a checkpoint is exactly
+// the sum of the markers the number line hangs under the stretches before
+// it. The provisions are still NAMED at their reach, below, which is where
+// the paper puts its diamonds and what S-085 is about. The band says where
+// the dollar was taken; the label says where it stopped.
+function taperBands(M, key){
   const st = stationsOf(M, key);
-  const sto = Mo ? stationsOf(Mo, place + '|' + other) : null;
-  const hr1 = year === '2030';
-
-  const W = 2080, padL = 56, padR = 56;
-  const x0 = padL, x1 = W - padR, span = (x1 - x0) / (st.length - 1);
-  const yTop = 150, BAND = 210;
-  const ys = BAND / (st[0][1] || 1);
-  const h = v => Math.max(v * ys, 0);
-
-  // what the subject has taken by each checkpoint, cumulative
-  const takes = taperTakes(M, year);
-  const cum = st.map((_, i) =>
-    takes.filter(t => STATION_OF_REACH[t.reach] <= i).reduce((a, b) => a + b.v, 0));
-
-  const bot = st.map((s, i) => yTop + h(s[1]));
-  const pal = st.map((s, i) => bot[i] + h(cum[i]));
-
-  const navy = '#01215e', pale = '#C8D4E0', warm = '#8B5A5A';
-  let g = '';
-
-  // the band: flat top, a bottom edge that rises as money leaves
-  const fwd = st.map((_, i) => `${x0 + span * i},${yTop}`).join(' ');
-  const back = st.map((_, i) => `${x1 - span * i},${bot[st.length - 1 - i]}`).join(' ');
-  g += `<polygon points="${fwd} ${back}" fill="${navy}"/>`;
-  const pTop = st.map((_, i) => `${x0 + span * i},${bot[i]}`).join(' ');
-  const pBot = st.map((_, i) => `${x1 - span * i},${pal[st.length - 1 - i]}`).join(' ');
-  g += `<polygon points="${pTop} ${pBot}" fill="${pale}"/>`;
-
-  g += NLT(x0 + 26, yTop + 58, '$100', 38, '#FFFFFF', 'start', 700);
-  g += NLT(x0 + 26, yTop + 86, 'of Medicaid spending', 17, '#C8D4E0', 'start', 400);
-
-  // the checkpoints
-  st.forEach((s, i) => {
-    const x = x0 + span * i, anc = i === st.length - 1 ? 'end' : 'start';
-    const tx = i === st.length - 1 ? x : x + 8;
-    if (i > 0) g += `<line x1="${x}" y1="${yTop}" x2="${x}" y2="${bot[i]}" stroke="#FFFFFF" stroke-width="3"/>`;
-    g += NLT(tx, 44, TAPER_PHASE[i] || String(s[0]).toUpperCase(), 17, 'var(--ink)', anc, 700);
-    if (sto)
-      g += NLT(tx, 70, `was ${money(sto[i][1])} in FY${other}`, 15, 'var(--muted)', anc, 400);
-    g += NLT(tx, 122, money(s[1]), 34, navy, anc, 700);
-  });
-
-  // the provisions, at the phase their dollar stops
-  const byStation = {};
-  takes.forEach(t => {
-    const i = STATION_OF_REACH[t.reach];
-    if (i == null) return;
-    (byStation[i] = byStation[i] || []).push(t);
-  });
-  // EACH STATION GETS ITS OWN COLUMN, and the text wraps inside it. Left to
-  // itself every block started under its own diamond at a fixed width, so the
-  // last two stations -- which are the closest together and carry the most
-  // provisions between them -- wrote over each other. The column runs from a
-  // station's diamond to the next station that has anything to say, so an
-  // empty phase lends its width to the one before it.
-  const used = Object.keys(byStation).map(Number).sort((a, b) => a - b);
-  const wrap = (text, px, perChar) => {
-    const max = Math.max(8, Math.floor(px / perChar));
-    const out = [];
-    let line = '';
-    String(text).split(' ').forEach(w => {
-      if (!line.length) line = w;
-      else if ((line + ' ' + w).length <= max) line += ' ' + w;
-      else { out.push(line); line = w; }
+  return st.map((s, i) => {
+    let adm = 0, law = 0;
+    for (let q = 0; q < i; q++) gapMarks(M, q).forEach(mk => {
+      if (mk.kind === 'hr1') law += mk.v; else adm += mk.v;
     });
-    if (line.length) out.push(line);
-    return out.slice(0, 3);
-  };
+    return {care: s[1], adm, law, name: s[0]};
+  });
+}
 
-  // Columns are laid out RIGHT TO LEFT. Left to right, the final station sits
-  // on the right edge with no room after it, so its block has to be pulled
-  // back inside the frame -- and pulling it back is what put it on top of the
-  // station before it. Place the last one first, then walk backwards keeping
-  // a minimum gap, and no two can overlap however many provisions a phase
-  // collects.
-  const MINW = 250, MAXW = 470;
-  const lefts = used.map(i => x0 + span * i + 14);
-  if (lefts.length) lefts[lefts.length - 1] = Math.min(lefts[lefts.length - 1], x1 - MINW);
-  for (let n = lefts.length - 2; n >= 0; n--)
-    lefts[n] = Math.min(lefts[n], lefts[n + 1] - (MINW + 26));
-  const widths = used.map((_, n) => n + 1 < used.length
-    ? Math.min(lefts[n + 1] - lefts[n] - 26, MAXW)
-    : Math.min(x1 - lefts[n], MAXW));
+// ONE OR TWO PANELS. Two is the cap: the arithmetic under each phase is the
+// point of this picture, four of them would be four times the height, and
+// the number line is the view that carries a four-way comparison. With one
+// panel selected the provisions are named underneath as they always were;
+// with two, that space goes to the difference between them instead, which is
+// the only reason to put two side by side. JW, 20 November: the UI may change
+// with context.
+function drawExec(keys){
+  const sel2 = keys.filter(k => ORIG[k]).slice(0, 2);
+  if (!sel2.length) return null;
+  const W = 2200, padL = 56, padR = 56;
+  const x0 = padL, x1 = W - padR;
+  const navy = '#01215e', adm = '#8E9BA6', warm = '#8B5A5A', faint = '#C2CBD2';
+  const BAND = 230;
+  let g = '', cursor = 128, deepest = 0, faults = [];
 
-  let deepest = 0;
-  used.forEach((i, n) => {
-    const x = x0 + span * i;
-    const colW = widths[n];
-    const lx = lefts[n];
-    byStation[i].sort((a, b) => b.v - a.v);
-    let ly = pal[i] + 120;
-    byStation[i].forEach(t => {
-      const nm = wrap(PAPERNAME[t.label] || t.label, colW, 12.6);
-      const cl = wrap((PAPERCLAUSE[t.label] || REACHWORD[t.reach] || '').split(';')[0],
-                      colW, 8.8);
-      g += `<rect x="${x - 13}" y="${pal[i] - 13}" width="26" height="26" fill="${warm}" transform="rotate(45 ${x} ${pal[i]})"/>`;
-      g += `<path d="M${x},${pal[i] + 16} L${x},${ly - 26} L${lx - 6},${ly - 26}" fill="none" stroke="#6E7F8C" stroke-width="1.3"/>`;
-      g += NLT(lx, ly - 18, money(-t.v), 30, warm, 'start', 700);
-      nm.forEach((l, q) => { g += NLT(lx, ly + 18 + q * 29, l, 24, 'var(--ink)', 'start', 400); });
-      let cy = ly + 18 + nm.length * 29 + 6;
-      cl.forEach(l => { g += NLT(lx, cy, l, 17, 'var(--muted)', 'start', 400, true); cy += 23; });
-      ly = cy + 54;
-      deepest = Math.max(deepest, cy);
+  const panels = sel2.map(k => {
+    const M = modelFor(k, ovOf(k), mixOf(k), retOf(k));
+    return M ? {k, M, b: taperBands(M, k), M0: baseModel(k)} : null;
+  }).filter(Boolean);
+  if (!panels.length) return null;
+  const n = panels[0].b.length;
+  const span = (x1 - x0) / (n - 1);
+
+  // the phase headings, once, across the top
+  for (let i = 0; i < n; i++){
+    const x = x0 + span * i, anc = i === n - 1 ? 'end' : 'start';
+    g += NLT(i === n - 1 ? x : x + 9, 50,
+             TAPER_PHASE[i] || String(panels[0].b[i].name).toUpperCase(),
+             19, 'var(--muted)', anc, 700);
+  }
+
+  panels.forEach(p => {
+    const top = cursor;
+    const ys = BAND / (p.b[0].care + p.b[0].adm + p.b[0].law || 1);
+    const h = v => Math.max(v * ys, 0);
+    const bot = p.b.map(b => top + h(b.care));
+    const am  = p.b.map((b, i) => bot[i] + h(b.adm));
+    const lw  = p.b.map((b, i) => am[i] + h(b.law));
+    const fwd = p.b.map((_, i) => `${x0 + span * i},${top}`).join(' ');
+    g += `<polygon points="${fwd} ${p.b.map((_, i) => `${x1 - span * i},${bot[n - 1 - i]}`).join(' ')}" fill="${navy}"/>`;
+    g += `<polygon points="${p.b.map((_, i) => `${x0 + span * i},${bot[i]}`).join(' ')} `
+       + `${p.b.map((_, i) => `${x1 - span * i},${am[n - 1 - i]}`).join(' ')}" fill="${adm}"/>`;
+    g += `<polygon points="${p.b.map((_, i) => `${x0 + span * i},${am[i]}`).join(' ')} `
+       + `${p.b.map((_, i) => `${x1 - span * i},${lw[n - 1 - i]}`).join(' ')}" fill="${warm}"/>`;
+    g += NLT(x0 + 24, top + 52, PANELNAME(p.k), 34, '#FFFFFF', 'start', 700);
+    if (handMoved(p.k).length)
+      g += NLT(x0 + 24, top + 80, 'dials moved', 19, '#C8D4E0', 'start', 600);
+
+    p.b.forEach((b, i) => {
+      const x = x0 + span * i, anc = i === n - 1 ? 'end' : 'start';
+      const tx = i === n - 1 ? x : x + 9;
+      if (i > 0) g += `<line x1="${x}" y1="${top}" x2="${x}" y2="${lw[i]}" stroke="#FFFFFF" stroke-width="3"/>`;
+      g += NLT(tx, top - 14, money(b.care), 34, navy, anc, 700);
+      g += NLT(tx, lw[n - 1] + 42, money(-b.adm) + '  overhead', 21,
+               b.adm > 0.005 ? adm : faint, anc, 600);
+      g += NLT(tx, lw[n - 1] + 70, money(-b.law) + '  law', 21,
+               b.law > 0.005 ? warm : faint, anc, 600);
     });
+    p.foot = lw[n - 1] + 70;
+    p.lw = lw; p.bot = bot; p.am = am; p.top = top;
+    cursor = p.foot + 120;
+    deepest = Math.max(deepest, p.foot);
   });
 
-  // legend
-  const ly = deepest + 110;
-  g += `<rect x="${x0}" y="${ly - 20}" width="46" height="26" fill="${navy}"/>`;
-  g += NLT(x0 + 62, ly, `FY${year} ${hr1 ? 'projected spend, after P.L. 119-21' : 'spending, under prior law'}`,
-           19, 'var(--ink)', 'start', 400);
-  g += `<rect x="${x0 + 640}" y="${ly - 20}" width="46" height="26" fill="${pale}"/>`;
-  g += NLT(x0 + 702, ly, hr1 ? 'Money impacted by P.L. 119-21'
-                             : 'Money that never reaches care', 19, 'var(--ink)', 'start', 400);
+  if (panels.length === 2){
+    const yD = deepest + 100;
+    g += `<line x1="${x0}" y1="${yD - 46}" x2="${x1}" y2="${yD - 46}" stroke="#C9D2D9" stroke-width="1.5"/>`;
+    g += NLT(x0, yD - 14, PANELNAME(panels[1].k) + ' less ' + PANELNAME(panels[0].k),
+             19, 'var(--muted)', 'start', 700);
+    for (let i = 0; i < n; i++){
+      const x = x0 + span * i, anc = i === n - 1 ? 'end' : 'start';
+      const tx = i === n - 1 ? x : x + 9;
+      const d = panels[1].b[i].care - panels[0].b[i].care;
+      g += NLT(tx, yD + 24, (d > 0.005 ? '+' : '') + money(d), 30,
+               Math.abs(d) < 0.005 ? 'var(--muted)' : (d > 0 ? navy : warm), anc, 700);
+    }
+    deepest = yD + 24;
+  } else {
+    // ONE PANEL: name the provisions underneath, at the phase their dollar
+    // stops, as this view has always done.
+    const p = panels[0];
+    const year = p.k.split('|')[1];
+    const takes = taperTakes(p.M, year);
+    const byStation = {};
+    takes.forEach(t => {
+      const i = STATION_OF_REACH[t.reach];
+      if (i == null) return;
+      (byStation[i] = byStation[i] || []).push(t);
+    });
+    const used = Object.keys(byStation).map(Number).sort((a, b) => a - b);
+    const wrap = (text, px, perChar) => {
+      const max = Math.max(8, Math.floor(px / perChar));
+      const out = []; let line = '';
+      String(text).split(' ').forEach(w => {
+        if (!line.length) line = w;
+        else if ((line + ' ' + w).length <= max) line += ' ' + w;
+        else { out.push(line); line = w; }
+      });
+      if (line.length) out.push(line);
+      return out.slice(0, 3);
+    };
+    // RIGHT TO LEFT. The final phase sits on the right edge with no room
+    // after it, so placing left to right forces its block back inside the
+    // frame and on top of the one before it.
+    const MINW = 250, MAXW = 470;
+    const lefts = used.map(i => x0 + span * i + 14);
+    if (lefts.length) lefts[lefts.length - 1] = Math.min(lefts[lefts.length - 1], x1 - MINW);
+    for (let q = lefts.length - 2; q >= 0; q--)
+      lefts[q] = Math.min(lefts[q], lefts[q + 1] - (MINW + 26));
+    const widths = used.map((_, q) => q + 1 < used.length
+      ? Math.min(lefts[q + 1] - lefts[q] - 26, MAXW)
+      : Math.min(x1 - lefts[q], MAXW));
+    const base = p.foot + 70;
+    used.forEach((i, q) => {
+      const x = x0 + span * i, colW = widths[q], lx = lefts[q];
+      byStation[i].sort((a, b) => b.v - a.v);
+      let ly = base + 60;
+      byStation[i].forEach(t => {
+        const col = t.kind === 'hr1' ? warm : adm;
+        const nm = wrap(PAPERNAME[t.label] || t.label, colW, 12.6);
+        const cl = wrap((PAPERCLAUSE[t.label] || REACHWORD[t.reach] || '').split(';')[0],
+                        colW, 8.8);
+        g += `<rect x="${x - 13}" y="${base - 13}" width="26" height="26" fill="${col}" transform="rotate(45 ${x} ${base})"/>`;
+        g += `<path d="M${x},${base + 16} L${x},${ly - 26} L${lx - 6},${ly - 26}" fill="none" stroke="#6E7F8C" stroke-width="1.3"/>`;
+        g += NLT(lx, ly - 18, money(-t.v), 30, col, 'start', 700);
+        nm.forEach((l, z) => { g += NLT(lx, ly + 18 + z * 29, l, 24, 'var(--ink)', 'start', 400); });
+        let cy = ly + 18 + nm.length * 29 + 6;
+        cl.forEach(l => { g += NLT(lx, cy, l, 17, 'var(--muted)', 'start', 400, true); cy += 23; });
+        ly = cy + 54;
+        deepest = Math.max(deepest, cy);
+      });
+    });
+  }
+
+  // the key
+  const ly = deepest + 100;
+  const chip = (x, fill, label) =>
+    `<rect x="${x}" y="${ly - 20}" width="46" height="26" fill="${fill}"/>`
+    + NLT(x + 62, ly, label, 19, 'var(--ink)', 'start', 400);
+  g += chip(x0, navy, 'Reaches care');
+  g += chip(x0 + 420, adm, 'Overhead');
+  g += chip(x0 + 760, warm, 'Taken by P.L. 119-21');
+
+  const neg = [];
+  panels.forEach(p => {
+    const u = negativeResidual(p.M);
+    if (u) neg.push(`${PANELNAME(p.k)} leaves ${money(u)} unaccounted for between claims `
+                  + `paid and services delivered.`);
+  });
 
   const H = ly + 70;
   return {
     svg: `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" `
        + `style="color:var(--ink)" font-family="Jost,sans-serif">`
        + `<rect width="${W}" height="${H}" fill="transparent"/>${g}</svg>`,
-    faults: []
+    faults, negResid: neg
   };
 }
 
@@ -2624,7 +2802,8 @@ function render(fast){
   // HR-1 HAS NOTHING TO SAY ABOUT A YEAR THE LAW IS NOT IN. The tab used to
   // sit there disabled on FY2024, which invites a click and answers with a
   // sentence. It is simply not there.
-  const hasHR1 = !!(o && o.peels.some(p => p.kind === 'hr1'));
+  const rk = rackKey(), ro = ORIG[rk];
+  const hasHR1 = !!(ro && ro.peels.some(p => p.kind === 'hr1'));
   const hrBtn = document.querySelector('#tabs button[data-t="hr1"]');
   if (hrBtn){
     hrBtn.hidden = !hasHR1;
@@ -2637,27 +2816,19 @@ function render(fast){
 
   // EVERY TAB ANSWERS TO THE SAME CONTROLS. JW, 20 November. These used to go
   // grey on the two paper figures, because a photograph cannot be driven. The
-  // figures are drawn from the model now, so place and the whole slider rack
-  // act on all of them and a dial moved on one tab is already moved on the
-  // others -- there is one state and one model behind all four.
+  // figures are drawn from the model now, so the grid and the whole slider
+  // rack act on all of them and a dial moved on one tab is already moved on
+  // the others -- there is one state and one model behind all four.
   //
-  // The year is the single exception, and only on the number line, because
-  // that view IS the comparison between the two years: it carries both at
-  // once and neither pill alone would be true of it. Greyed rather than
-  // hidden, so a reader can see the control exists and is not acting here.
+  // The year pill row and the geography pill row are gone: they were two
+  // controls answering one question, and the grid answers it in one place
+  // with the cap written next to it.
   const ep = effPlace();
-  const yearActs = view !== 'line';
-  document.querySelectorAll('#place button').forEach(b => {
-    const mine = !!b.dataset.k && b.dataset.k === ep;
-    b.classList.toggle('on', mine);
-    b.classList.toggle('ph', !b.dataset.k);
-    b.disabled = !b.dataset.k;
-  });
-  document.querySelectorAll('#year button').forEach(b => {
-    b.classList.toggle('on', yearActs && b.dataset.y === year);
-    b.classList.toggle('ph', !yearActs);
-    b.disabled = !yearActs;
-  });
+  syncGrid();
+  const rackon = document.getElementById('rackon');
+  if (rackon) rackon.innerHTML = SEL.length > 1
+    ? 'these dials act on<b>' + PANELNAME(rk) + '</b>'
+    : '';
   // The context panel reads what you PICKED on the plate. There is nothing to
   // pick on a number line or a ranked list, so it stays hidden there -- the
   // sliders beside it do act.
@@ -2668,7 +2839,7 @@ function render(fast){
   const pic   = document.getElementById('picture');
 
   if (!live){
-    const R = view === 'line' ? drawLine(ep) : drawExec(ep, year);
+    const R = view === 'line' ? drawLine(selSorted()) : drawExec(selSorted());
     if (!R){
       pic.innerHTML = '<div style="padding:50px 18px;max-width:700px">'
         + '<h2 style="font-family:Jost,sans-serif;font-size:24px;color:var(--vio);margin:0 0 10px">'
@@ -2694,13 +2865,14 @@ function render(fast){
           + 'than the claims that fed it. The figure is drawn rather than hidden '
           + 'because hiding it is what kept it undiagnosed.</div>';
     dd += '<div class="declare">Drawn from the same model as the Ecosystem view, '
-       + 'with the dials as you have set them. ' + (view === 'line'
-          ? 'Both years are shown because the comparison is the picture; the year '
-            + 'buttons do not act here. The later year follows the sliders, the '
-            + 'earlier one cannot \u2014 no lever in this law applies to a year it '
-            + 'was not in.'
-          : 'The subject follows the year: what P.L. 119-21 takes in 2030, and what '
-            + 'the dollar loses under prior law in 2024.') + '</div>';
+       + 'with the dials as you have set them, for the panels chosen in the grid '
+       + 'above. ' + (view === 'line'
+          ? 'A faint marker is where a figure sat before you moved a dial; nothing '
+            + 'is ghosted that has not actually moved. No lever in this law applies '
+            + 'to a year it was not in, so a 2024 line does not answer the HR-1 tab.'
+          : 'The bands are struck where a dollar is CHARGED, so the three of them '
+            + 'total the same hundred at every phase. The provisions are named at '
+            + 'their reach, which is where the dollar stops.') + '</div>';
     if (ep === 'DC')
       dd += '<div class="declare">No District figure in this panel has been opened at '
          + 'source and agreed by a person.</div>';
@@ -2813,7 +2985,7 @@ function tickHTML(lo, hi, marks){
 }
 
 function rack(){
-  const key = panelKey(), o = ORIG[key], body = document.getElementById('rackbody');
+  const key = rackKey(), o = ORIG[key], body = document.getElementById('rackbody');
   if (!o){ body.innerHTML = '<p class="tabnote" style="border:0;padding:0">No panel.</p>'; return; }
 
   if (tab === 'mix'){
@@ -3068,21 +3240,46 @@ function sel(group, attr, val){
   document.querySelectorAll(group + ' button').forEach(b =>
     b.classList.toggle('on', b.dataset[attr] === val));
 }
-document.querySelectorAll('#place button[data-k]').forEach(b =>
+// THE GRID. A cell that is already chosen comes off; a cell that is not goes
+// on, and at the cap the panel chosen FIRST comes off to make room. The cells
+// that cannot be added without displacing something are greyed, but they
+// still work -- so each one says, on hover, which panel it would replace.
+// Greying a live control is only honest if it tells you what it will do.
+function syncGrid(){
+  const cap = CAP[view] || 1;
+  const full = SEL.length >= cap;
+  const first = SEL[0];
+  document.querySelectorAll('#mx button[data-k]').forEach(b => {
+    const k = b.dataset.k, on = SEL.includes(k);
+    b.classList.toggle('on', on);
+    // Greyed only where the cap is something a reader can BUMP INTO. On the
+    // ecosystem view the cap is one and always has been, so greying three
+    // cells out of four there would say the control is broken rather than
+    // that it is full.
+    b.classList.toggle('atcap', !on && full && cap > 1);
+    b.title = on
+      ? (SEL.length > 1 ? 'Remove ' + PANELNAME(k) : 'The last panel cannot be removed')
+      : (full ? 'Replaces ' + PANELNAME(first) : 'Add ' + PANELNAME(k));
+  });
+  const capEl = document.getElementById('mxcap');
+  if (capEl) capEl.textContent = cap === 1
+    ? 'One panel at a time on the Ecosystem view.'
+    : 'Up to ' + (cap === 2 ? 'two' : 'four') + ' at once on the '
+      + (view === 'exec' ? 'Exec Summary' : 'Number line') + ' — '
+      + SEL.length + ' chosen.';
+}
+document.querySelectorAll('#mx button[data-k]').forEach(b =>
   b.addEventListener('click', () => {
-    place = b.dataset.k; sel('#place','k',place); clearAsk();
-    if (!ORIG[panelKey()]){
-      const other = Object.keys(ORIG).filter(k => k.startsWith(place+'|'))[0];
-      if (other){ year = other.split('|')[1]; sel('#year','y',year); }
-    }
-    pick = null; render();
+    const k = b.dataset.k;
+    if (!ORIG[k]) return;
+    if (SEL.includes(k)){ if (SEL.length > 1) SEL = SEL.filter(x => x !== k); }
+    else { SEL.push(k); while (SEL.length > (CAP[view] || 1)) SEL.shift(); }
+    primary(); clearAsk(); pick = null; syncGrid(); render();
   }));
-document.querySelectorAll('#year button[data-y]').forEach(b =>
-  b.addEventListener('click', () => { year = b.dataset.y; sel('#year','y',year);
-                                     clearAsk(); render(); }));
 document.querySelectorAll('#views button[data-v]').forEach(b =>
   b.addEventListener('click', () => { view = b.dataset.v; sel('#views','v',view);
-                                     clearAsk(); render(); }));
+                                     fitCap(); syncGrid();
+                                     clearAsk(); pick = null; render(); }));
 document.querySelectorAll('#tabs button[data-t]').forEach(b =>
   b.addEventListener('click', () => {
     tab = b.dataset.t;
@@ -3103,7 +3300,8 @@ document.querySelectorAll('#lens .pair').forEach(pair => {
 });
 
 document.getElementById('reset').addEventListener('click', () => {
-  OV[panelKey()] = {}; MIX[panelKey()] = {}; RET[panelKey()] = {};
+  SEL.forEach(k => { OV[k] = {}; MIX[k] = {}; RET[k] = {}; });
+  const rk = rackKey(); OV[rk] = {}; MIX[rk] = {}; RET[rk] = {};
   const k30 = place + '|2030'; OV[k30] = {}; MIX[k30] = {}; RET[k30] = {};
   leversOn = true; render();
 });
