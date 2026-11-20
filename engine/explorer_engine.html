@@ -2445,95 +2445,169 @@ function drawLine(place){
 }
 
 // ---------------------------------------------------------------------------
-// EXEC SUMMARY -- where the money stops.
+// EXEC SUMMARY -- the taper. Figure 6's grammar, drawn from the model.
 //
-// In 2030 the subject is P.L. 119-21: each provision, at the phase its dollar
-// stops. In 2024 the law is not in yet and there is nothing it has taken, so
-// the subject is the ordinary leakage -- what the dollar loses on its way to
-// care under prior law. JW, 20 November. The SHAPE is identical either way,
-// which is the point: the tab always answers the same question, and only the
-// subject of it changes with the year.
+// The first live version of this tab was a ranked bar chart. It carried the
+// right figures and it was not this picture: Figure 6 is a BAND that narrows
+// as money leaves it, with the phase it leaves at written above and the
+// provision that takes it written below, and the shape is the argument. A bar
+// chart ranks; a taper shows a hundred dollars getting smaller. JW, 20
+// November: it did not look anything like the figure it replaced.
+//
+// Same five checkpoints as the number line, from the same `stationsOf`, so
+// the two tabs cannot disagree. The band's height is the running balance. The
+// pale band under it is what the tab's subject has taken by that point,
+// cumulative. Names and clauses come from PAPERNAME, PAPERCLAUSE and
+// REACHWORD -- the engine's own declarations, already used by the ecosystem
+// view, so nothing here is typed twice.
+//
+// A provision sits at its REACH, not where it is charged, which is where the
+// ecosystem view draws its terminal and what the diamond in the paper marks.
 
-const PHASE_ORDER = ['FEDERAL', 'STATE_GOVT', 'STATE_AGENCY', 'DISBURSE',
-                     'PAYER', 'CLAIMS', 'PROVIDERS', 'BENEFICIARY'];
+const TAPER_PHASE = ['FEDERAL AND STATE SHARES', 'STATE AGENCY', 'DISBURSEMENTS',
+                     'CLAIMS TO PROVIDERS', 'BENEFICIARIES'];
+const STATION_OF_REACH = {
+  FEDERAL: 0, STATE_GOVT: 0, STATE_AGENCY: 1, DISBURSE: 2,
+  PAYER: 3, CLAIMS: 3, PROVIDERS: 4, BENEFICIARY: 4
+};
 
-function execRows(M, year){
+function taperTakes(M, year){
   const hr1 = year === '2030';
-  const src = M.peels.filter(p => hr1 ? p.kind === 'hr1'
-                                      : (p.kind !== 'hr1' && p.v > 1e-9));
-  const rows = src.map(p => ({
-    label: p.label, v: p.v, where: p.reach || p.charged, kind: p.kind
-  }));
-  if (!hr1){
-    // what the plans keep never was a peel; on this tab it is leakage like
-    // any other and is named as what it is
-    M.lanes.forEach(l => {
-      const kept = l.cap - l.care;
-      if (kept > 1e-9)
-        rows.push({label: l.label + ' — retained', v: kept,
-                   where: 'PAYER', kind: 'admin'});
-    });
-  }
-  rows.sort((a, b) => (PHASE_ORDER.indexOf(a.where) - PHASE_ORDER.indexOf(b.where))
-                      || (b.v - a.v));
-  return rows;
+  const out = M.peels
+    .filter(p => (hr1 ? p.kind === 'hr1' : p.kind !== 'hr1') && p.v > 1e-9)
+    .map(p => ({label: p.label, v: p.v, reach: p.reach || p.charged, kind: p.kind}));
+  if (!hr1) M.lanes.forEach(l => {
+    const kept = l.cap - l.care;
+    if (kept > 1e-9) out.push({label: l.label.replace(/ capitation$/, '') + ' retention',
+                               v: kept, reach: 'PAYER', kind: 'admin'});
+  });
+  return out;
 }
 
 function drawExec(place, year){
   const key = place + '|' + year;
+  const other = year === '2030' ? '2024' : '2030';
   const M = modelFor(key, ovOf(key), mixOf(key), retOf(key));
   if (!M) return null;
-  const rows = execRows(M, year);
+  const Mo = modelFor(place + '|' + other, ovOf(place + '|' + other),
+                      mixOf(place + '|' + other), retOf(place + '|' + other));
+  const st = stationsOf(M, key);
+  const sto = Mo ? stationsOf(Mo, place + '|' + other) : null;
   const hr1 = year === '2030';
-  const W = 2080, padL = 150, padR = 150;
-  const barL = 640, barR = W - padR - 240;
-  const rowH = 46, top = 150, phaseGap = 30;
-  // A heading needs its own air or it sits on the bar above it, and reads as
-  // a label for that bar rather than for the group below.
-  let groups = 0, seenW = null;
-  rows.forEach(r => { if (r.where !== seenW){ groups++; seenW = r.where; } });
-  const H = top + rows.length * rowH + Math.max(groups - 1, 0) * phaseGap + 120;
-  const tot = rows.reduce((a, b) => a + b.v, 0);
-  const max = rows.reduce((a, b) => Math.max(a, b.v), 0) || 1;
+
+  const W = 2080, padL = 56, padR = 56;
+  const x0 = padL, x1 = W - padR, span = (x1 - x0) / (st.length - 1);
+  const yTop = 150, BAND = 210;
+  const ys = BAND / (st[0][1] || 1);
+  const h = v => Math.max(v * ys, 0);
+
+  // what the subject has taken by each checkpoint, cumulative
+  const takes = taperTakes(M, year);
+  const cum = st.map((_, i) =>
+    takes.filter(t => STATION_OF_REACH[t.reach] <= i).reduce((a, b) => a + b.v, 0));
+
+  const bot = st.map((s, i) => yTop + h(s[1]));
+  const pal = st.map((s, i) => bot[i] + h(cum[i]));
+
+  const navy = '#01215e', pale = '#C8D4E0', warm = '#8B5A5A';
   let g = '';
 
-  g += NLT(padL, 48, hr1 ? 'WHERE P.L. 119-21 STOPS THE MONEY'
-                         : 'WHERE THE MONEY STOPS UNDER PRIOR LAW', 17, 'var(--muted)', 'start', 700);
-  g += NLT(padL, 76, (place === 'DC' ? 'District of Columbia' : 'National') + ' · FY' + year
-       + ' · ' + money(tot) + ' of every $100, in '
-       + rows.length + (rows.length === 1 ? ' lane' : ' lanes'), 15, 'var(--muted)', 'start', 400);
-  g += NLT(padL, 120, hr1 ? 'PROVISION' : 'WHAT TAKES IT', 12, 'var(--muted)', 'start', 700);
-  g += NLT(barL, 120, 'STOPS AT', 12, 'var(--muted)', 'start', 700);
-  g += `<line x1="${padL}" y1="132" x2="${W - padR}" y2="132" stroke="var(--rule)" stroke-width="1.4"/>`;
+  // the band: flat top, a bottom edge that rises as money leaves
+  const fwd = st.map((_, i) => `${x0 + span * i},${yTop}`).join(' ');
+  const back = st.map((_, i) => `${x1 - span * i},${bot[st.length - 1 - i]}`).join(' ');
+  g += `<polygon points="${fwd} ${back}" fill="${navy}"/>`;
+  const pTop = st.map((_, i) => `${x0 + span * i},${bot[i]}`).join(' ');
+  const pBot = st.map((_, i) => `${x1 - span * i},${pal[st.length - 1 - i]}`).join(' ');
+  g += `<polygon points="${pTop} ${pBot}" fill="${pale}"/>`;
 
-  let last = null, shift = 0;
-  rows.forEach((r, i) => {
-    if (r.where !== last && last !== null) shift += phaseGap;
-    const y = top + i * rowH + 26 + shift;
-    const col = r.kind === 'hr1' ? 'var(--warn)' : '#8E9BA6';
-    if (r.where !== last){
-      g += NLT(padL, y - 27, (COLNAME[r.where] || r.where).toUpperCase(), 11,
-               'var(--muted)', 'start', 700);
-      g += `<line x1="${padL}" y1="${y - 21}" x2="${W - padR}" y2="${y - 21}" `
-         + `stroke="var(--rule)" stroke-width="0.8" stroke-opacity="0.55"/>`;
-      last = r.where;
-    }
-    g += NLT(padL, y + 6, r.label, 19, 'var(--ink)', 'start', 500);
-    const w = Math.max((r.v / max) * (barR - barL), 2);
-    g += `<rect x="${barL}" y="${y - 10}" width="${w}" height="20" fill="${col}" opacity="0.88" rx="2"/>`;
-    g += NLT(barR + 18, y + 7, money(-r.v), 21, col, 'start', 700);
+  g += NLT(x0 + 26, yTop + 58, '$100', 38, '#FFFFFF', 'start', 700);
+  g += NLT(x0 + 26, yTop + 86, 'of Medicaid spending', 17, '#C8D4E0', 'start', 400);
+
+  // the checkpoints
+  st.forEach((s, i) => {
+    const x = x0 + span * i, anc = i === st.length - 1 ? 'end' : 'start';
+    const tx = i === st.length - 1 ? x : x + 8;
+    if (i > 0) g += `<line x1="${x}" y1="${yTop}" x2="${x}" y2="${bot[i]}" stroke="#FFFFFF" stroke-width="3"/>`;
+    g += NLT(tx, 44, TAPER_PHASE[i] || String(s[0]).toUpperCase(), 17, 'var(--ink)', anc, 700);
+    if (sto)
+      g += NLT(tx, 70, `was ${money(sto[i][1])} in FY${other}`, 15, 'var(--muted)', anc, 400);
+    g += NLT(tx, 122, money(s[1]), 34, navy, anc, 700);
   });
 
-  const footY = top + rows.length * rowH + shift + 18;
-  g += `<line x1="${padL}" y1="${footY}" x2="${W - padR}" `
-     + `y2="${footY}" stroke="var(--rule)" stroke-width="1.4"/>`;
-  g += NLT(padL, footY + 34,
-       hr1 ? 'Every lane derived on this jurisdiction’s own inputs where a figure exists.'
-           : 'Ordinary leakage. This is what the dollar loses under prior law, before any '
-             + 'provision of P.L. 119-21 applies.', 15, 'var(--muted)', 'start', 400);
-  g += NLT(barR + 18, footY + 34, money(-tot), 23,
-           hr1 ? 'var(--warn)' : '#8E9BA6', 'start', 700);
+  // the provisions, at the phase their dollar stops
+  const byStation = {};
+  takes.forEach(t => {
+    const i = STATION_OF_REACH[t.reach];
+    if (i == null) return;
+    (byStation[i] = byStation[i] || []).push(t);
+  });
+  // EACH STATION GETS ITS OWN COLUMN, and the text wraps inside it. Left to
+  // itself every block started under its own diamond at a fixed width, so the
+  // last two stations -- which are the closest together and carry the most
+  // provisions between them -- wrote over each other. The column runs from a
+  // station's diamond to the next station that has anything to say, so an
+  // empty phase lends its width to the one before it.
+  const used = Object.keys(byStation).map(Number).sort((a, b) => a - b);
+  const wrap = (text, px, perChar) => {
+    const max = Math.max(8, Math.floor(px / perChar));
+    const out = [];
+    let line = '';
+    String(text).split(' ').forEach(w => {
+      if (!line.length) line = w;
+      else if ((line + ' ' + w).length <= max) line += ' ' + w;
+      else { out.push(line); line = w; }
+    });
+    if (line.length) out.push(line);
+    return out.slice(0, 3);
+  };
 
+  // Columns are laid out RIGHT TO LEFT. Left to right, the final station sits
+  // on the right edge with no room after it, so its block has to be pulled
+  // back inside the frame -- and pulling it back is what put it on top of the
+  // station before it. Place the last one first, then walk backwards keeping
+  // a minimum gap, and no two can overlap however many provisions a phase
+  // collects.
+  const MINW = 250, MAXW = 470;
+  const lefts = used.map(i => x0 + span * i + 14);
+  if (lefts.length) lefts[lefts.length - 1] = Math.min(lefts[lefts.length - 1], x1 - MINW);
+  for (let n = lefts.length - 2; n >= 0; n--)
+    lefts[n] = Math.min(lefts[n], lefts[n + 1] - (MINW + 26));
+  const widths = used.map((_, n) => n + 1 < used.length
+    ? Math.min(lefts[n + 1] - lefts[n] - 26, MAXW)
+    : Math.min(x1 - lefts[n], MAXW));
+
+  let deepest = 0;
+  used.forEach((i, n) => {
+    const x = x0 + span * i;
+    const colW = widths[n];
+    const lx = lefts[n];
+    byStation[i].sort((a, b) => b.v - a.v);
+    let ly = pal[i] + 120;
+    byStation[i].forEach(t => {
+      const nm = wrap(PAPERNAME[t.label] || t.label, colW, 12.6);
+      const cl = wrap((PAPERCLAUSE[t.label] || REACHWORD[t.reach] || '').split(';')[0],
+                      colW, 8.8);
+      g += `<rect x="${x - 13}" y="${pal[i] - 13}" width="26" height="26" fill="${warm}" transform="rotate(45 ${x} ${pal[i]})"/>`;
+      g += `<path d="M${x},${pal[i] + 16} L${x},${ly - 26} L${lx - 6},${ly - 26}" fill="none" stroke="#6E7F8C" stroke-width="1.3"/>`;
+      g += NLT(lx, ly - 18, money(-t.v), 30, warm, 'start', 700);
+      nm.forEach((l, q) => { g += NLT(lx, ly + 18 + q * 29, l, 24, 'var(--ink)', 'start', 400); });
+      let cy = ly + 18 + nm.length * 29 + 6;
+      cl.forEach(l => { g += NLT(lx, cy, l, 17, 'var(--muted)', 'start', 400, true); cy += 23; });
+      ly = cy + 54;
+      deepest = Math.max(deepest, cy);
+    });
+  });
+
+  // legend
+  const ly = deepest + 110;
+  g += `<rect x="${x0}" y="${ly - 20}" width="46" height="26" fill="${navy}"/>`;
+  g += NLT(x0 + 62, ly, `FY${year} ${hr1 ? 'projected spend, after P.L. 119-21' : 'spending, under prior law'}`,
+           19, 'var(--ink)', 'start', 400);
+  g += `<rect x="${x0 + 640}" y="${ly - 20}" width="46" height="26" fill="${pale}"/>`;
+  g += NLT(x0 + 702, ly, hr1 ? 'Money impacted by P.L. 119-21'
+                             : 'Money that never reaches care', 19, 'var(--ink)', 'start', 400);
+
+  const H = ly + 70;
   return {
     svg: `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" `
        + `style="color:var(--ink)" font-family="Jost,sans-serif">`
@@ -2541,7 +2615,6 @@ function drawExec(place, year){
     faults: []
   };
 }
-
 
 function render(fast){
   const key = panelKey();
